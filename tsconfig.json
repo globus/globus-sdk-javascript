@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es6",
+    "module": "es6",
+    "lib": ["es2017", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+    "strict": true,
+    "composite": true,
+    "esModuleInterop": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "declaration": true,
+    "declarationMap": true,
+    "types": ["jest", "node"],
+    "baseUrl": ".",
+    "outDir": "dist/esm",
+    "rootDir": "./src"
+  },
+  "files": ["./src/index.ts"],
+  "include": ["./src/**/*.ts"],
+  "exclude": [
+    "node_modules",
+    "tmp",
+    "dist",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/__tests__/*",
+    "**/__utils__/*",
+    "**/__mocks__/*"
+  ]
+}

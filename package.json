@@ -1,0 +1,51 @@
+{
+  "name": "@globus/sdk",
+  "version": "1.12.0-alpha",
+  "private": true,
+  "description": "The Globus SDK for Javascript",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "files": [],
+  "scripts": {
+    "test": "jest",
+    "coverage": "jest --coverage",
+    "build": "rm -rf ./dist && tsc --build && tsc --build tsconfig.cjs.json && webpack && node ./scripts/generate-package-json.js",
+    "watch": "tsc --watch",
+    "generate:docs": "npx typedoc",
+    "publish-to-npm": "npm run build && cp README.md dist && cp LICENSE dist && rm dist/*.tsbuildinfo && cd dist && npm publish"
+  },
+  "homepage": "https://github.com/globus/globus-sdk-javascript#readme",
+  "bugs": {
+    "url": "https://github.com/globus/globus-sdk-javascript/issues"
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@globus/types": "0.0.5",
+    "@types/jest": "29.5.6",
+    "jest": "29.7.0",
+    "msw": "^1.2.1",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.1",
+    "tslib": "^2.6.2",
+    "typedoc": "^0.25.1",
+    "typescript": "^5.2.2",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "dependencies": {
+    "cross-fetch": "^4.0.0",
+    "js-pkce": "^1.2.1"
+  },
+  "peerDependencies": {
+    "@globus/types": "^0.0.5"
+  },
+  "peerDependenciesMeta": {
+    "@globus/types": {
+      "optional": true
+    }
+  }
+}
