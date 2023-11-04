@@ -17,3 +17,4 @@ jobs:
         with:
           release-type: node
           package-name: '@globus/sdk'
+          pull-request-title-pattern: 'chore: release ${version}'
