@@ -4,9 +4,9 @@
  * @see [Globus Auth API Documentation](https://docs.globus.org/api/auth/)
  * @module
  */
-import { build } from "../../core/url";
+import { build } from "../../core/url.js";
 
-import * as AUTH from "./config";
+import * as AUTH from "./config.js";
 
 /**
  * @private

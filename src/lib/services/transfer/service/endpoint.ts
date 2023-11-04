@@ -1,11 +1,11 @@
-import { serviceRequest } from "../../shared";
+import { serviceRequest } from "../../shared.js";
 
-import { ID } from "../config";
+import { ID } from "../config.js";
 
 import type {
   ServiceMethodDynamicSegments,
   JSONFetchResponse,
-} from "../../../services/types";
+} from "../../../services/types.js";
 
 /**
  * Fetch an endpoint by its UUID.

@@ -1,11 +1,10 @@
-import { HTTP_METHODS, serviceRequest } from "../../shared";
+import { HTTP_METHODS, serviceRequest } from "../../shared.js";
 
-import type { ServiceMethodDynamicSegments } from "../../types";
+import { getHeadersForService } from "../shared.js";
+import { ID } from "../config.js";
 
-import { getHeadersForService } from "../shared";
-import { ID } from "../config";
-
-import type { Transfer } from "../types";
+import type { Transfer } from "../types.js";
+import type { ServiceMethodDynamicSegments } from "../../types.js";
 
 /**
  * List the contents of the directory at the specified path on an endpoint’s filesystem.

@@ -42,11 +42,11 @@
 /// <reference types="@globus/types/transfer" />
 /// <reference types="@globus/types/search" />
 
-export * as authorization from "./lib/core/authorization";
-export * as auth from "./lib/services/auth";
-export * as transfer from "./lib/services/transfer";
-export * as search from "./lib/services/search";
-export * as groups from "./lib/services/groups";
-export * as flows from "./lib/services/flows";
-export * as gcs from "./lib/services/globus-connect-server";
-export * as timer from "./lib/services/timer";
+export * as authorization from "./lib/core/authorization.js";
+export * as auth from "./lib/services/auth/index.js";
+export * as transfer from "./lib/services/transfer/index.js";
+export * as search from "./lib/services/search/index.js";
+export * as groups from "./lib/services/groups/index.js";
+export * as flows from "./lib/services/flows/index.js";
+export * as gcs from "./lib/services/globus-connect-server/index.js";
+export * as timer from "./lib/services/timer/index.js";

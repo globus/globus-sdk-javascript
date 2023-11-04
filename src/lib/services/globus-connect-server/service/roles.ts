@@ -1,6 +1,6 @@
-import { getRequiredScopes } from "../index";
+import { getRequiredScopes } from "../index.js";
 
-import { HTTP_METHODS, serviceRequest } from "../../../services/shared";
+import { HTTP_METHODS, serviceRequest } from "../../../services/shared.js";
 
 import type {
   GCSServiceMethod,

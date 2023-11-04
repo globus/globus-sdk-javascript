@@ -8,14 +8,17 @@ import PKCE from "js-pkce";
 
 import type IConfig from "js-pkce/dist/IConfig";
 import type ITokenResponse from "js-pkce/dist/ITokenResponse";
-import { getAuthorizationEndpoint, getTokenEndpoint } from "../services/auth";
+import {
+  getAuthorizationEndpoint,
+  getTokenEndpoint,
+} from "../services/auth/index.js";
 import {
   addTokenResponse,
   getTokenForScope,
   reset as resetTokens,
-} from "./consent";
+} from "./consent.js";
 
-import { createStorage, StorageSystem } from "./storage";
+import { createStorage, StorageSystem } from "./storage/index.js";
 
 let storage: StorageSystem;
 

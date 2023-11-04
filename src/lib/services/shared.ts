@@ -1,9 +1,9 @@
-import { fetchWithScope } from "../core/fetch";
-import { build } from "../core/url";
-import { getSDKOptions, Service } from "../core/global";
+import { fetchWithScope } from "../core/fetch.js";
+import { build } from "../core/url.js";
+import { getSDKOptions, Service } from "../core/global.js";
 
-import type { ServiceMethodOptions, SDKOptions } from "./types";
-import type { GCSConfiguration } from "../services/globus-connect-server";
+import type { ServiceMethodOptions, SDKOptions } from "./types.js";
+import type { GCSConfiguration } from "../services/globus-connect-server/index.js";
 
 export enum HTTP_METHODS {
   POST = "POST",

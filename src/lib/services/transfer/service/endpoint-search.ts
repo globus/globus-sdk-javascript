@@ -1,11 +1,10 @@
-import { serviceRequest } from "../../shared";
+import { serviceRequest } from "../../shared.js";
+import { ID } from "../config.js";
 
 import type {
   BaseServiceMethodOptions,
   SDKOptions,
-} from "../../../services/types";
-
-import { ID } from "../config";
+} from "../../../services/types.js";
 
 /**
  * Get a list of endpoints matching the search filters in a given search scope.

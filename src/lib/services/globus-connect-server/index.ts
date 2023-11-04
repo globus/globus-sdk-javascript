@@ -12,17 +12,17 @@ import type {
   ServiceMethod,
   ServiceMethodDynamicSegments,
   BaseServiceMethodOptions,
-} from "../types";
+} from "../types.js";
 
 /**
  * Service methods for the Globus Connect Server Manager API.
  */
-export * as collections from "./service/collections";
-export * as endpoint from "./service/endpoint";
-export * as roles from "./service/roles";
-export * as storageGateways from "./service/storage-gateways";
-export * as userCredentials from "./service/user-credentials";
-export * as versioning from "./service/versioning";
+export * as collections from "./service/collections.js";
+export * as endpoint from "./service/endpoint.js";
+export * as roles from "./service/roles.js";
+export * as storageGateways from "./service/storage-gateways.js";
+export * as userCredentials from "./service/user-credentials.js";
+export * as versioning from "./service/versioning.js";
 
 const SCOPES = {
   HIGH_ASSURANCE: "urn:globus:auth:scope:<ENDPOINT_ID>:manage_collections",

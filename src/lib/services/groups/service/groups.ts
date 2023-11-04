@@ -1,13 +1,13 @@
-import { ID, SCOPES } from "../config";
-import { build } from "../../../core/url";
-import { fetchWithScope } from "../../../core/fetch";
+import { ID, SCOPES } from "../config.js";
+import { build } from "../../../core/url.js";
+import { fetchWithScope } from "../../../core/fetch.js";
 
+import type { operations, components } from "@globus/types/groups";
 import type {
   JSONFetchResponse,
   ServiceMethod,
   ServiceMethodDynamicSegments,
-} from "../../types";
-import type { operations, components } from "@globus/types/groups";
+} from "../../types.js";
 
 /**
  * @see https://groups.api.globus.org/redoc#tag/groups/operation/get_my_groups_and_memberships_v2_groups_my_groups_get

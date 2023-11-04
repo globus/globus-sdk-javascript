@@ -1,8 +1,8 @@
-import { HTTP_METHODS, serviceRequest } from "../../shared";
-import { ID } from "../config";
+import { HTTP_METHODS, serviceRequest } from "../../shared.js";
+import { ID } from "../config.js";
 
-import type { SDKOptions, ServiceMethod } from "../../types";
 import type { components } from "@globus/types/timer";
+import type { SDKOptions, ServiceMethod } from "../../types.js";
 
 export const create = function (options, sdkOptions?: SDKOptions) {
   return serviceRequest(

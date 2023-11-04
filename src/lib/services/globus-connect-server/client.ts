@@ -14,14 +14,14 @@
  *
  * const result = await client.endpoint.get();
  */
-import { type GCSConfiguration } from ".";
+import { type GCSConfiguration } from "./index.js";
 
-import * as collections from "./service/collections";
-import * as endpoint from "./service/endpoint";
-import * as roles from "./service/roles";
-import * as storageGateways from "./service/storage-gateways";
-import * as userCredentials from "./service/user-credentials";
-import * as versioning from "./service/versioning";
+import * as collections from "./service/collections.js";
+import * as endpoint from "./service/endpoint.js";
+import * as roles from "./service/roles.js";
+import * as storageGateways from "./service/storage-gateways.js";
+import * as userCredentials from "./service/user-credentials.js";
+import * as versioning from "./service/versioning.js";
 
 type TailOfTuple<T extends unknown[], Head extends unknown[]> = T extends [
   ...Head,

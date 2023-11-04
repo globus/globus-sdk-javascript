@@ -1,12 +1,12 @@
-import { ID, SCOPES } from "../config";
-import { build } from "../../../core/url";
-import { fetchWithScope } from "../../../core/fetch";
+import { ID, SCOPES } from "../config.js";
+import { build } from "../../../core/url.js";
+import { fetchWithScope } from "../../../core/fetch.js";
 
+import type { operations } from "@globus/types/groups";
 import type {
   JSONFetchResponse,
   ServiceMethodDynamicSegments,
-} from "../../types";
-import type { operations } from "@globus/types/groups";
+} from "../../types.js";
 
 /**
  * Perform actions on members of the group.

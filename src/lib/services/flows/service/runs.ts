@@ -1,7 +1,7 @@
-import { ID, SCOPES } from "../config";
-import { serviceRequest } from "../../shared";
+import { ID, SCOPES } from "../config.js";
+import { serviceRequest } from "../../shared.js";
 
-import type { ServiceMethod } from "../../../services/types";
+import type { ServiceMethod } from "../../../services/types.js";
 
 /**
  * @see https://globusonline.github.io/flows/#tag/Runs/paths/~1runs/get
