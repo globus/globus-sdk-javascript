@@ -1,5 +1,5 @@
-import { fetch } from "./internals/fetch";
-import { getTokenForScope } from "./consent";
+import { fetch } from "./internals/fetch.js";
+import { getTokenForScope } from "./consent.js";
 
 type GlobusScope = string;
 

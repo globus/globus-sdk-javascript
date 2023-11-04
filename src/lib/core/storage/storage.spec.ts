@@ -1,8 +1,8 @@
-import type { StorageSystem } from "./index";
+import type { StorageSystem } from "./index.js";
 
-import storage, { __reset } from "./index";
-import { MemoryStorage } from "./memory";
-import { LocalStorage } from "./local-storage";
+import storage, { __reset } from "./index.js";
+import { MemoryStorage } from "./memory.js";
+import { LocalStorage } from "./local-storage.js";
 
 describe("storage", () => {
   afterEach(() => {

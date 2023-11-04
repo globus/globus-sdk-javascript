@@ -1,4 +1,4 @@
-import { HTTP_METHODS } from "../shared";
+import { HTTP_METHODS } from "../shared.js";
 
 export function getHeadersForService(
   method: keyof typeof HTTP_METHODS

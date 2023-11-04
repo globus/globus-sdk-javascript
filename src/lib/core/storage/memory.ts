@@ -1,4 +1,4 @@
-import type { StorageSystem } from "./index";
+import type { StorageSystem } from "./index.js";
 
 export class MemoryStorage implements StorageSystem {
   #cache: Record<string, unknown> = {};

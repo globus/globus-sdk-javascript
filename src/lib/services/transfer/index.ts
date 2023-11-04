@@ -4,7 +4,7 @@
  * @see [Globus Transfer API Documentation](https://docs.globus.org/api/transfer/)
  * @module
  */
-import * as TRANSFER from "./config";
+import * as TRANSFER from "./config.js";
 
 /**
  * @private
@@ -12,8 +12,8 @@ import * as TRANSFER from "./config";
  */
 export const CONFIG = TRANSFER;
 
-import { endpointSearch } from "./service/endpoint-search";
+import { endpointSearch } from "./service/endpoint-search.js";
 export { endpointSearch };
-export * as fileOperations from "./service/file-operations";
-export * as taskSubmission from "./service/task-submission";
-export * as endpoint from "./service/endpoint";
+export * as fileOperations from "./service/file-operations.js";
+export * as taskSubmission from "./service/task-submission.js";
+export * as endpoint from "./service/endpoint.js";

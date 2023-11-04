@@ -1,5 +1,5 @@
-import { getRequiredScopes } from "../index";
-import { serviceRequest } from "../../../services/shared";
+import { getRequiredScopes } from "../index.js";
+import { serviceRequest } from "../../../services/shared.js";
 
 import type { GCSServiceMethod } from "../index";
 import type { JSONFetchResponse } from "../../types";

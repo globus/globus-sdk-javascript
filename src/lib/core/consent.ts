@@ -1,5 +1,5 @@
-import { getStorage } from "./storage";
-import type { Token, TokenResponse } from "../services/auth";
+import { getStorage } from "./storage/index.js";
+import type { Token, TokenResponse } from "../services/auth/index.js";
 
 import ITokenResponse from "js-pkce/dist/ITokenResponse";
 

@@ -1,12 +1,12 @@
-import * as AUTH from "../services/auth/config";
-import * as TRANSFER from "../services/transfer/config";
-import * as FLOWS from "../services/flows/config";
-import * as GROUPS from "../services/groups/config";
-import * as SEARCH from "../services/search/config";
-import * as TIMER from "../services/timer/config";
+import * as AUTH from "../services/auth/config.js";
+import * as TRANSFER from "../services/transfer/config.js";
+import * as FLOWS from "../services/flows/config.js";
+import * as GROUPS from "../services/groups/config.js";
+import * as SEARCH from "../services/search/config.js";
+import * as TIMER from "../services/timer/config.js";
 
-import { EnvironmentConfigurationError } from "./errors";
-import { SDKOptions } from "../services/types";
+import { EnvironmentConfigurationError } from "./errors.js";
+import { SDKOptions } from "../services/types.js";
 
 function getRuntime() {
   return typeof window !== "undefined" ? window : process;

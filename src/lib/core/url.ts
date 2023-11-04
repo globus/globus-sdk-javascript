@@ -3,9 +3,9 @@ import {
   getEnvironment,
   Environment,
   Service,
-} from "./global";
-import type { GCSConfiguration } from "../services/globus-connect-server";
-import { SDKOptions } from "../services/types";
+} from "./global.js";
+import type { GCSConfiguration } from "../services/globus-connect-server/index.js";
+import { SDKOptions } from "../services/types.js";
 
 /**
  * Return the base URL for a service (based on the environment).

@@ -1,4 +1,4 @@
-import type { Environment } from "../../core/global";
+import type { Environment } from "../../core/global.js";
 
 export const ID = "TRANSFER";
 export const HOSTS: Partial<Record<Environment, string>> = {

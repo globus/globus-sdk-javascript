@@ -1,6 +1,9 @@
-import { ID, SCOPES } from "../config";
-import { HTTP_METHODS, serviceRequest } from "../../../services/shared";
-import type { ServiceMethod, ServiceMethodDynamicSegments } from "../../types";
+import { ID, SCOPES } from "../config.js";
+import { HTTP_METHODS, serviceRequest } from "../../../services/shared.js";
+import type {
+  ServiceMethod,
+  ServiceMethodDynamicSegments,
+} from "../../types.js";
 
 /**
  * @see https://globusonline.github.io/flows/#tag/Flows/paths/~1flows/get

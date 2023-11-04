@@ -1,4 +1,4 @@
-import { StorageSystem } from "./index";
+import { StorageSystem } from "./index.js";
 
 export class LocalStorage implements StorageSystem {
   get<T>(key: string): T | null | unknown {

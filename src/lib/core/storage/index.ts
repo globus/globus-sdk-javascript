@@ -1,5 +1,5 @@
-import { MemoryStorage } from "./memory";
-import { LocalStorage } from "./local-storage";
+import { MemoryStorage } from "./memory.js";
+import { LocalStorage } from "./local-storage.js";
 /**
  * Acts as a basic wrapper for storage layers to make their surface APIs consistent.
  */

@@ -1,11 +1,11 @@
-import { HTTP_METHODS, serviceRequest } from "../../shared";
+import { HTTP_METHODS, serviceRequest } from "../../shared.js";
 
 import type {
   JSONFetchResponse,
   ServiceMethodDynamicSegments,
-} from "../../types";
+} from "../../types.js";
 
-import { ID, SCOPES } from "../config";
+import { ID, SCOPES } from "../config.js";
 
 /**
  * @param index_id The UUID of the index to query.
@@ -49,9 +49,7 @@ export const post = function (
   index_id,
   options,
   sdkOptions?
-): Promise<
-  JSONFetchResponse<Globus.Search.GSearchResult>
-> {
+): Promise<JSONFetchResponse<Globus.Search.GSearchResult>> {
   return serviceRequest(
     {
       service: ID,
@@ -80,6 +78,6 @@ export const post = function (
       facets?: Array<Globus.Search.GFacet>;
       boosts?: Array<Globus.Search.GBoost>;
       sort?: Array<Globus.Search.GSort>;
-    }
+    };
   }
 >;

@@ -1,7 +1,7 @@
-import { stringifyParameters } from "../core/url";
-import { ENVIRONMENTS } from "../core/global";
+import { stringifyParameters } from "../core/url.js";
+import { ENVIRONMENTS } from "../core/global.js";
 
-import type { FetchOverrides } from "../core/fetch";
+import type { FetchOverrides } from "../core/fetch.js";
 
 export interface JSONFetchResponse<Res> extends Response {
   json(): Promise<Res>;

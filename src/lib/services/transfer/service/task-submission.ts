@@ -1,11 +1,10 @@
-import { HTTP_METHODS, serviceRequest } from "../../shared";
+import { HTTP_METHODS, serviceRequest } from "../../shared.js";
 
-import type { SDKOptions, ServiceMethod } from "../../types";
+import { getHeadersForService } from "../shared.js";
+import { ID } from "../config.js";
 
-import { getHeadersForService } from "../shared";
-import { ID } from "../config";
-
-import type { Transfer } from "../types";
+import type { Transfer } from "../types.js";
+import type { SDKOptions, ServiceMethod } from "../../types.js";
 
 /**
  * Submit a delete task. A delete submission contains a single endpoint and a
