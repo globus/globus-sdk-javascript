@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.13.0 (2023-11-04)
+
+
+### Bug Fixes
+
+* updates file paths to include '.js' and directories to use explicit 'index.js' for proper ESM support. ([#3](https://github.com/globusonline/globus-sdk-javascript/issues/3)) ([2b9b3cc](https://github.com/globusonline/globus-sdk-javascript/commit/2b9b3ccfbc10729cddd6d59f35cd944a7a1b4530))
+
+
+### Miscellaneous Chores
+
+* **internal:** updates release-please configuration ([8641488](https://github.com/globusonline/globus-sdk-javascript/commit/86414886549da7271d445a5cf4d7bc290f3ab789))
+
 ## [1.12.0-alpha](https://github.com/globusonline/globus-js/compare/@globus/sdk@1.11.0-alpha...@globus/sdk@1.12.0-alpha) (2023-10-30)
 
 ### Bug Fixes
