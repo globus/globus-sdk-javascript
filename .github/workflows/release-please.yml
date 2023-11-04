@@ -18,3 +18,19 @@ jobs:
           release-type: node
           package-name: '@globus/sdk'
           pull-request-title-pattern: 'chore: release ${version}'
+      # Publish to NPM
+      - uses: actions/checkout@v4
+        # Only run if a release was created
+        if: ${{ steps.release.outputs.release_created }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/hydrogen
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@globus'
+        if: ${{ steps.release.outputs.release_created }}
+      - run: npm ci
+        if: ${{ steps.release.outputs.release_created }}
+      - run: npm run publish-to-npm
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+        if: ${{ steps.release.outputs.release_created }}

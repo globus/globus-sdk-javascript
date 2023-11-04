@@ -13,7 +13,7 @@
     "build": "rm -rf ./dist && tsc --build && tsc --build tsconfig.cjs.json && webpack && node ./scripts/generate-package-json.js",
     "watch": "tsc --watch",
     "generate:docs": "npx typedoc",
-    "publish-to-npm": "npm run build && cp README.md dist && cp LICENSE dist && rm dist/*.tsbuildinfo && cd dist && npm publish"
+    "publish-to-npm": "npm run build && cp README.md dist && cp LICENSE dist && rm dist/*.tsbuildinfo && cd dist && npm publish --access public"
   },
   "homepage": "https://github.com/globus/globus-sdk-javascript#readme",
   "bugs": {
