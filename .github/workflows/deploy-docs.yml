@@ -24,7 +24,7 @@ jobs:
       - run: npm run generate:docs
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ASSUMED_ROLE }}
           aws-region: ${{ secrets.AWS_ASSUMED_ROLE_REGION }}
