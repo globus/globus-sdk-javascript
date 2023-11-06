@@ -1,4 +1,4 @@
-[![npm](https://img.shields.io/npm/v/@globus/sdk)](https://www.npmjs.com/package/@globus/sdk)
+[![npm](https://img.shields.io/npm/v/@globus/sdk?style=flat-square&logo=npm&color=000&label)](https://www.npmjs.com/package/@globus/sdk)
 
 
 The Globus SDK for JavaScript provides first class TypeScript support and makes it easy to call Globus services using idiomatic JavaScript APIs to build Node.js and web applications.
@@ -31,10 +31,11 @@ We aim to support all Active LTS [Node.js releases](https://nodejs.org/en/about/
 
 | Version    |         |
 |------------|---------|
-| Node.js 16 | [![lts/gallium](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml) ||
-| Node.js 18 | [![lts/hydrogen](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml) |
-| Node.js 20 |    🧪    |
+| Node.js 16 | [![lts/gallium](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/test.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml) ||
+| Node.js 18 | [![lts/hydrogen](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/test.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml) |
+| Node.js 20 |    🧪 Experimental Support[^1]    |
 
+[^1]: Not covered by test suite.
 
 ### Browser Support
 
