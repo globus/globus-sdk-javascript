@@ -1,5 +1,3 @@
-[![Test Suite](https://github.com/globusonline/globus-sdk-javascript/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/globusonline/globus-sdk-javascript/actions/workflows/test.yml)
-
 [![npm](https://img.shields.io/npm/v/@globus/sdk)](https://www.npmjs.com/package/@globus/sdk)
 
 
