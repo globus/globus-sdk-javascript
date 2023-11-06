@@ -1,4 +1,7 @@
-![@globus/sdk - test](https://github.com/globusonline/globus-sdk-javascript/actions/workflows/test.yml/badge.svg)
+[![Test Suite](https://github.com/globusonline/globus-sdk-javascript/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/globusonline/globus-sdk-javascript/actions/workflows/test.yml)
+
+[![npm](https://img.shields.io/npm/v/@globus/sdk)](https://www.npmjs.com/package/@globus/sdk)
+
 
 The Globus SDK for JavaScript provides first class TypeScript support and makes it easy to call Globus services using idiomatic JavaScript APIs to build Node.js and web applications.
 
@@ -30,11 +33,11 @@ npm install @globus/sdk @globus/types
 
 We aim to support all Active LTS [Node.js releases](https://nodejs.org/en/about/releases/). We intend to support all Maintenance LTS versions until their official end-of-life.
 
-| Version    |         |       |
-|------------|---------|-------|
-| Node.js 16 |    ✅    ||
-| Node.js 18 |    ✅    ||
-| Node.js 20 |    🧪    ||
+| Version    |         |
+|------------|---------|
+| Node.js 16 | [![lts/gallium](https://github.com/globusonline/globus-sdk-javascript/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/globusonline/globus-sdk-javascript/actions/workflows/test.yml) ||
+| Node.js 18 | [![lts/hydrogen](https://github.com/globusonline/globus-sdk-javascript/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/globusonline/globus-sdk-javascript/actions/workflows/test.yml) |
+| Node.js 20 |    🧪    |
 
 
 ### Browser Support
@@ -43,10 +46,10 @@ Officially, the SDK supports widely adopted evergreen browsers: Edge, Chrome, Sa
 
 | Browser         | Version |
 |-----------------|---------|
-| Google Chrome   |         |
-| Mozilla Firefox |         |
-| Microsoft Edge  |         |
-| Apple Safari    |         |
+| Google Chrome   |    –    |
+| Mozilla Firefox |    –    |
+| Microsoft Edge  |    –    |
+| Apple Safari    |    –    |
 
 ### ESM, CommonJS, and UMD
 
