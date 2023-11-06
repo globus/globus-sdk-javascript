@@ -1,0 +1,34 @@
+name: "docs"
+
+env:
+  AWS_S3_UPLOAD_PATH: s3://globus-jb/@globus/sdk
+
+on:
+  push:
+    paths:
+      - "packages/libs/sdk/**"
+    branches: [main]
+  workflow_call:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "lts/hydrogen"
+      - run: npm install
+      - run: npm run generate:docs
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUMED_ROLE }}
+          aws-region: ${{ secrets.AWS_ASSUMED_ROLE_REGION }}
+      - run: |
+          aws s3 sync ./docs $AWS_S3_UPLOAD_PATH
