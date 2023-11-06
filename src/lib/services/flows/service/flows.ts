@@ -6,7 +6,7 @@ import type {
 } from "../../types.js";
 
 /**
- * @see https://globusonline.github.io/flows/#tag/Flows/paths/~1flows/get
+ * @see https://globusonline.github.io/globus-flows/#tag/Flows/paths/~1flows/get
  */
 export const getAll = function (options?, sdkOptions?) {
   return serviceRequest(
@@ -24,7 +24,7 @@ export const getAll = function (options?, sdkOptions?) {
 }>;
 
 /**
- * @see https://globusonline.github.io/flows/#tag/Flows/paths/~1flows~1{flow_id}/get
+ * @see https://globusonline.github.io/globus-flows/#tag/Flows/paths/~1flows~1{flow_id}/get
  */
 export const get = function (flow_id, options?, sdkOptions?) {
   return serviceRequest(
@@ -39,7 +39,7 @@ export const get = function (flow_id, options?, sdkOptions?) {
 } satisfies ServiceMethodDynamicSegments<string, Record<string, any>>;
 
 /**
- * @see https://globusonline.github.io/flows/#tag/Flows/paths/~1flows~1{flow_id}/delete
+ * @see https://globusonline.github.io/globus-flows/#tag/Flows/paths/~1flows~1{flow_id}/delete
  */
 export const destroy = function (flow_id, options?, sdkOptions?) {
   return serviceRequest(

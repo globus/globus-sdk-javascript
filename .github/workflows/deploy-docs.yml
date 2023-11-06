@@ -1,8 +1,5 @@
 name: "docs"
 
-env:
-  AWS_S3_UPLOAD_PATH: s3://globus-jb/@globus/sdk
-
 on:
   push:
     branches: [main]

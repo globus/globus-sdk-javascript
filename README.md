@@ -4,7 +4,7 @@
 The Globus SDK for JavaScript provides first class TypeScript support and makes it easy to call Globus services using idiomatic JavaScript APIs to build Node.js and web applications.
 
 
-- [@globus/sdk API Documentation](https://globusonline.github.io/globus-sdk-javascript/)
+- [@globus/sdk API Documentation](https://globus.github.io/globus-sdk-javascript/)
 
 ## Installation
 
@@ -31,8 +31,8 @@ We aim to support all Active LTS [Node.js releases](https://nodejs.org/en/about/
 
 | Version    |         |
 |------------|---------|
-| Node.js 16 | [![lts/gallium](https://github.com/globusonline/globus-sdk-javascript/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/globusonline/globus-sdk-javascript/actions/workflows/test.yml) ||
-| Node.js 18 | [![lts/hydrogen](https://github.com/globusonline/globus-sdk-javascript/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/globusonline/globus-sdk-javascript/actions/workflows/test.yml) |
+| Node.js 16 | [![lts/gallium](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml) ||
+| Node.js 18 | [![lts/hydrogen](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml) |
 | Node.js 20 |    🧪    |
 
 
