@@ -24,6 +24,8 @@ export function getTokenEndpoint() {
   return build(AUTH.ID, "/v2/oauth2/token");
 }
 
+export * as identities from "./service/identities.js";
+
 export type Token = ITokenResponse & {
   resource_server: string;
   id_token?: string;
