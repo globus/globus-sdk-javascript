@@ -5,8 +5,6 @@ env:
 
 on:
   push:
-    paths:
-      - "packages/libs/sdk/**"
     branches: [main]
   workflow_call:
 
