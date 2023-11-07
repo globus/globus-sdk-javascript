@@ -8,6 +8,21 @@
  * - All service methods accept a `ServiceMethodOptions` object to pass query parameters, a payload, and headers.
  * - All service methods support a tail argument to pass options to the SDK, including the composed `fetch` call.
  *
+ * #### Service Method Names
+ *
+ * Basic CRUD operations provided by services are exposed as the following:
+ *
+ * | Service Method Name | HTTP Method | Description                  | Example |
+ * | --------------------| ----------- | ---------------------------- | ------- |
+ * | `get`               | `GET`       | Fetch a single resource.     | `transfer.endpoint.get()` |
+ * | `getAll`            | `GET`       | Fetch a list of resources.   | `flows.flows.getAll()`    |
+ * | `create`            | `POST`      | Create a new resource.       | `gcs.roles.create()`      |
+ * | `update`            | `PUT`       | Update an existing resource. | `gcs.endpoint.update()`   |
+ * | `patch`             | `PATCH`     | Update an existing resource. | `gcs.endpoint.patch()`    |
+ * | `remove`            | `DELETE`    | Delete an existing resource. | `gcs.collections.remove()`|
+ *
+ * Methods that do not map to obvious CRUD operations are named according to the resource. i.e., `groups.groups.getMyGroups()`, `transfer.endpointSearch()`, `search.query.post()`
+ *
  * @example <caption>Using the SDK to search for endpoints via Transfer API.</caption>
  * import { transfer } from "@globus/sdk";
  *
