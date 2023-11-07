@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.0](https://github.com/globus/globus-sdk-javascript/compare/v1.13.0...v1.14.0) (2023-11-07)
+
+
+### Features
+
+* adds Node.js lts/iron to test matrix; Node.js 20 is now officially supported. ([#8](https://github.com/globus/globus-sdk-javascript/issues/8)) ([66b4fb2](https://github.com/globus/globus-sdk-javascript/commit/66b4fb2d58194860fd941f02bd0d90de31287d97))
+* **Globus Auth:** adds support for the Identities resources in the Globus Auth API ([#7](https://github.com/globus/globus-sdk-javascript/issues/7)) ([b56667d](https://github.com/globus/globus-sdk-javascript/commit/b56667dbc26f779ddefb55deef4e2676c7591cd0))
+
 ## 1.13.0 (2023-11-04)
 
 
