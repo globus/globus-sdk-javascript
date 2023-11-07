@@ -1,5 +1,5 @@
 import { getRequiredScopes } from "../index.js";
-import { serviceRequest } from "../../shared.js";
+import { HTTP_METHODS, serviceRequest } from "../../shared.js";
 
 import type {
   GCSServiceMethod,
@@ -60,5 +60,36 @@ export const get = function (
   operations["getCollection"]["parameters"]["path"]["collection_id"],
   {
     query?: operations["getCollection"]["parameters"]["query"];
+  }
+>;
+
+/**
+ * @see https://docs.globus.org/globus-connect-server/v5.4/api/openapi_Collections/#deleteCollection
+ */
+export const remove = function (
+  configuration,
+  collection_id,
+  options?,
+  sdkOptions?
+): Promise<
+  JSONFetchResponse<
+    operations["deleteCollection"]["responses"]["200"]["content"]["application/json"]
+  >
+> {
+  return serviceRequest(
+    {
+      service: configuration,
+      scope: getRequiredScopes(configuration),
+      path: `/api/collections/${collection_id}`,
+      method: HTTP_METHODS.DELETE,
+    },
+    options,
+    sdkOptions
+  );
+} satisfies GCSServiceMethodDynamicSegments<
+  operations["deleteCollection"]["parameters"]["path"]["collection_id"],
+  {
+    query?: never;
+    payload?: never;
   }
 >;

@@ -62,6 +62,7 @@ export function getClient(configuration: GCSConfiguration) {
     collections: {
       get: bind(collections.get, configuration),
       getAll: bind(collections.getAll, configuration),
+      remove: bind(collections.remove, configuration),
     },
     userCredentials: {
       get: bind(userCredentials.get, configuration),

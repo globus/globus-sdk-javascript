@@ -74,4 +74,64 @@ describe("gcs – collection", () => {
       }
     `);
   });
+
+  test("remove", async () => {
+    const result = await collections.remove(
+      GCS_CONFIGURATION,
+      "some-uuid"
+    );
+    const {
+      req: { url, method, headers },
+    } = (await result.json()) as unknown as MirroredRequest;
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchInlineSnapshot(`
+      {
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "gzip,deflate",
+          "connection": "close",
+          "host": "fa5e.bd7c.data.globus.org",
+          "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+        },
+        "method": "DELETE",
+        "url": "https://fa5e.bd7c.data.globus.org/api/collections/some-uuid",
+      }
+    `);
+  });
+
+  test("remove – with headers", async () => {
+    const result = await collections.remove(
+      GCS_CONFIGURATION,
+      "some-uuid",
+      {
+        headers: {
+          Authorization: "some-token",
+        },
+      }
+    );
+    const {
+      req: { url, method, headers },
+    } = (await result.json()) as unknown as MirroredRequest;
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchInlineSnapshot(`
+      {
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "gzip,deflate",
+          "authorization": "some-token",
+          "connection": "close",
+          "host": "fa5e.bd7c.data.globus.org",
+          "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+        },
+        "method": "DELETE",
+        "url": "https://fa5e.bd7c.data.globus.org/api/collections/some-uuid",
+      }
+    `);
+  });
 });
