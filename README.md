@@ -27,14 +27,14 @@ npm install @globus/sdk @globus/types
 
 ### Node.js
 
-We aim to support all Active LTS [Node.js releases](https://nodejs.org/en/about/releases/). We intend to support all Maintenance LTS versions until their official end-of-life.
+We aim to support all Active LTS [Node.js releases](https://nodejs.org/en/about/previous-releases). We intend to support all Maintenance LTS versions until their official end-of-life.
 
-| Version    |         |
-|------------|---------|
-| Node.js 16 | [![lts/gallium](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/test.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml) ||
-| Node.js 18 | [![lts/hydrogen](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/test.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml) |
-| Node.js 20 | [![lts/iron](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/test.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml) |
-| Node.js 22 |    🧪 Experimental Support[^1]    |
+| Version    |         |         |
+|------------|---------|---------|
+| Node.js 16 | [![lts/gallium](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/test.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml) | **⚠️ Node.js 16 is now EOL. Support will be removed in a breaking change release (`v2.x`), but based on this library being in its early stages, we recommend upgrading immediately.** |
+| Node.js 18 | [![lts/hydrogen](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/test.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml) ||
+| Node.js 20 | [![lts/iron](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/test.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml) ||
+| Node.js 22 |    🧪 Experimental Support[^1]    ||
 
 
 [^1]: Not covered by automated test suite(s).
