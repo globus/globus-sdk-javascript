@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.0](https://github.com/globus/globus-sdk-javascript/compare/v1.14.0...v1.15.0) (2023-11-07)
+
+
+### Features
+
+* **GCS:** adds collections.remove() support ([#10](https://github.com/globus/globus-sdk-javascript/issues/10)) ([f12e516](https://github.com/globus/globus-sdk-javascript/commit/f12e516fd8754735d9cb694cfb1f9c3df78e287d))
+
 ## [1.14.0](https://github.com/globus/globus-sdk-javascript/compare/v1.13.0...v1.14.0) (2023-11-07)
 
 
