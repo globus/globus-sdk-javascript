@@ -9,3 +9,7 @@ export const HOSTS: Partial<Record<Environment, string>> = {
   staging: "auth.staging.globuscs.info",
   preview: "auth.preview.globus.org",
 };
+
+export const SCOPES = {
+  VIEW_IDENTITIES: "urn:globus:auth:scope:auth.globus.org:view_identities",
+};
