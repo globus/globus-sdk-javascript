@@ -33,9 +33,11 @@ We aim to support all Active LTS [Node.js releases](https://nodejs.org/en/about/
 |------------|---------|
 | Node.js 16 | [![lts/gallium](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/test.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml) ||
 | Node.js 18 | [![lts/hydrogen](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/test.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml) |
-| Node.js 20 |    🧪 Experimental Support[^1]    |
+| Node.js 20 | [![lts/iron](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/test.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml) |
+| Node.js 22 |    🧪 Experimental Support[^1]    |
 
-[^1]: Not covered by test suite.
+
+[^1]: Not covered by automated test suite(s).
 
 ### Browser Support
 
