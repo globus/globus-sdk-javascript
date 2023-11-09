@@ -1,0 +1,27 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "sourceMap": true,
+    "importHelpers": true,
+    "target": "es6",
+    "module": "es2022",
+    "lib": ["es2022", "dom"],
+    "declaration": true,
+    "declarationMap": true,
+    "baseUrl": ".",
+    "outDir": "dist/esm",
+    "rootDir": "./src"
+  },
+  "files": ["./src/index.ts"],
+  "include": ["./src/**/*.ts"],
+  "exclude": [
+    "node_modules",
+    "tmp",
+    "dist",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/__tests__/*",
+    "**/__utils__/*",
+    "**/__mocks__/*"
+  ]
+}

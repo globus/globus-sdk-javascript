@@ -10,8 +10,8 @@
   "scripts": {
     "test": "jest",
     "coverage": "jest --coverage",
-    "build": "rm -rf ./dist && tsc --build && tsc --build tsconfig.cjs.json && webpack && node ./scripts/generate-package-json.js",
-    "watch": "tsc --watch",
+    "build": "rm -rf ./dist && tsc --build tsconfig.package.json && tsc --build tsconfig.cjs.json && webpack && node ./scripts/generate-package-json.js",
+    "watch": "tsc --watch tsconfig.package.json",
     "generate:docs": "npx typedoc",
     "publish-to-npm": "npm run build && cp README.md dist && cp LICENSE dist && rm dist/*.tsbuildinfo && cd dist && npm publish --access public"
   },
@@ -22,6 +22,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@globus/types": "0.0.5",
+    "@tsconfig/recommended": "^1.0.3",
     "@types/jest": "29.5.8",
     "jest": "29.7.0",
     "msw": "^1.2.1",
