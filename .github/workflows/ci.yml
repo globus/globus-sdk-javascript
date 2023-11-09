@@ -1,0 +1,37 @@
+name: 'ci'
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_call:
+
+jobs:
+  inspect-code:
+    name: 'Inspect Code'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          cache: npm
+          node-version: lts/iron
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run test
+  node-compatibility:
+    name: 'Node.js Compatibility'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['lts/gallium', 'lts/hydrogen']
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          cache: npm
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm run test
