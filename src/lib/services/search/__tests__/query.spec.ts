@@ -1,7 +1,7 @@
 import { createStorage } from "../../../../lib/core/storage";
 import { query } from "..";
 
-import type { MirroredRequest } from "../../../../../mocks/handlers";
+import type { MirroredRequest } from "../../../../__mocks__/handlers";
 
 describe("search – query", () => {
   test("get", async () => {

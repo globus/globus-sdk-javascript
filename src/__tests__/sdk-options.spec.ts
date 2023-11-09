@@ -1,5 +1,5 @@
 import { timer } from "../index";
-import type { MirroredRequest } from "../../mocks/handlers";
+import type { MirroredRequest } from "../__mocks__/handlers";
 
 describe("sdk-options", () => {
   test("environment", async () => {

@@ -1,5 +1,5 @@
 import { serviceRequest } from "../shared";
-import type { MirroredRequest } from "../../../../mocks/handlers";
+import { mirror } from "../../../__mocks__/handlers";
 
 describe("serviceRequest", () => {
   it("generates a service request", async () => {
@@ -26,9 +26,10 @@ describe("serviceRequest", () => {
       }
     );
 
+  
     const {
       req: { url, method, headers },
-    } = (await request.json()) as MirroredRequest;
+    } = await mirror(request);
 
     expect({
       url,
@@ -86,7 +87,7 @@ describe("serviceRequest", () => {
 
     const {
       req: { url, method, headers },
-    } = (await request.json()) as MirroredRequest;
+    } = await mirror(request);
 
     expect({
       url,
@@ -129,7 +130,7 @@ describe("serviceRequest", () => {
 
     const {
       req: { url, method, headers },
-    } = (await request.json()) as MirroredRequest;
+    } = await mirror(request);
 
     expect({
       url,

@@ -1,0 +1,65 @@
+import {type RestContext, type RestRequest, rest} from 'msw';
+
+/**
+ * A mirrored request from MSW. This can be used to easilty validate the shape
+ * of a request that was dispatched to the server.
+ * 
+ * @deprecated Use the `mirror` method instead; `export` will be removed in a future release.
+ */
+export type MirroredRequest = {
+	__msw: 'FALLBACK';
+	req: Pick<RestRequest, 'url' | 'method'> & {
+		/**
+		 * MSW returns a `Headers` object, which is not JSON serializable. We
+		 * mirror as a plain object.
+		 */
+		headers: Record<string, string>;
+		/**
+		 * JSON payload provided with the request, if any.
+		 */
+		json?: unknown;
+	};
+	ctx: RestContext;
+};
+
+export const handlers = [
+	/**
+	 * For the majority of tests, we simply want to validate the shape of the
+	 * request object that was dispatched to the server. By returning the request
+	 * object, here, assertions can be run against it in individual tests.
+	 */
+	rest.all('*', async (request, res, ctx) => {
+		const headers: MirroredRequest['req']['headers'] = {};
+		for (const [key, value] of request.headers.entries()) {
+			headers[key] = value;
+		}
+
+		const mirror: MirroredRequest = {
+			__msw: 'FALLBACK',
+			req: {
+				url: request.url,
+				method: request.method,
+				headers,
+			},
+			ctx,
+		};
+
+		try {
+			mirror.req.json = await request.json();
+		} catch {
+			// ignore error
+		}
+
+		return res(ctx.json(mirror));
+	}),
+];
+
+/**
+ * When `msw` is used in a test, the `mirror` method can be used
+ * on the Response of a `fetch` to provide prope type information.
+ * 
+ * @param response The `Response` object from a `fetch` call that `msw` intercepted.
+ */
+export async function mirror(response: Response): Promise<MirroredRequest> {
+	return await response.json();
+}
