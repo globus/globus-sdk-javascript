@@ -1,7 +1,7 @@
 import { membership } from "..";
 import { createStorage } from "../../../../lib/core/storage";
 
-import type { MirroredRequest } from "../../../../../mocks/handlers";
+import type { MirroredRequest } from "../../../../__mocks__/handlers";
 
 test("membership - act", async () => {
   createStorage("memory");
