@@ -1,8 +1,6 @@
 [![npm](https://img.shields.io/npm/v/@globus/sdk?style=flat-square&logo=npm&color=000&label)](https://www.npmjs.com/package/@globus/sdk)
 
-
 The Globus SDK for JavaScript provides first class TypeScript support and makes it easy to call Globus services using idiomatic JavaScript APIs to build Node.js and web applications.
-
 
 - [@globus/sdk API Documentation](https://globus.github.io/globus-sdk-javascript/)
 
@@ -22,20 +20,18 @@ npm install @globus/sdk
 npm install @globus/sdk @globus/types
 ```
 
-
 ## Supported Platforms
 
 ### Node.js
 
 We aim to support all Active LTS [Node.js releases](https://nodejs.org/en/about/previous-releases). We intend to support all Maintenance LTS versions until their official end-of-life.
 
-| Version    |         |         |
-|------------|---------|---------|
-| Node.js 16 | [![lts/gallium](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/test.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml) | **⚠️ Node.js 16 is now EOL. Support will be removed in a breaking change release (`v2.x`), but based on this library being in its early stages, we recommend upgrading immediately.** |
-| Node.js 18 | [![lts/hydrogen](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/test.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml) ||
-| Node.js 20 | [![lts/iron](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/test.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml) ||
-| Node.js 22 |    🧪 Experimental Support[^1]    ||
-
+| Version    |                                                                                                                                                                                                                     |                                                                                                                                                                                       |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Node.js 16 | [![lts/gallium](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/test.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml)  | **⚠️ Node.js 16 is now EOL. Support will be removed in a breaking change release (`v2.x`), but based on this library being in its early stages, we recommend upgrading immediately.** |
+| Node.js 18 | [![lts/hydrogen](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/test.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml) |                                                                                                                                                                                       |
+| Node.js 20 | [![lts/iron](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/test.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/test.yml)     |                                                                                                                                                                                       |
+| Node.js 22 | 🧪 Experimental Support[^1]                                                                                                                                                                                         |                                                                                                                                                                                       |
 
 [^1]: Not covered by automated test suite(s).
 
@@ -44,17 +40,18 @@ We aim to support all Active LTS [Node.js releases](https://nodejs.org/en/about/
 Officially, the SDK supports widely adopted evergreen browsers: Edge, Chrome, Safari, and Firefox. Our bundled browser distributions target ECMAScript 2015 (ES6), which has [broader browser support](https://caniuse.com/es6) but may not be explicitly evaluated.
 
 | Browser         | Version |
-|-----------------|---------|
-| Google Chrome   |    –    |
-| Mozilla Firefox |    –    |
-| Microsoft Edge  |    –    |
-| Apple Safari    |    –    |
+| --------------- | ------- |
+| Google Chrome   | –       |
+| Mozilla Firefox | –       |
+| Microsoft Edge  | –       |
+| Apple Safari    | –       |
 
 ### ESM, CommonJS, and UMD
 
 We distribute our package targeting three different module systems: ESM, CommonJS, and UMD.
 
 #### ESM
+
 The ESM distribution is the `module` export of the package.
 
 ```js

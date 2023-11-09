@@ -1,32 +1,31 @@
-import { serviceRequest } from "../shared";
-import { mirror } from "../../../__mocks__/handlers";
+import { serviceRequest } from '../shared';
+import { mirror } from '../../../__mocks__/handlers';
 
-describe("serviceRequest", () => {
-  it("generates a service request", async () => {
+describe('serviceRequest', () => {
+  it('generates a service request', async () => {
     const request = await serviceRequest(
       {
-        service: "AUTH",
-        scope: "a:required:scope",
-        path: "/some-path",
+        service: 'AUTH',
+        scope: 'a:required:scope',
+        path: '/some-path',
       },
       {
         query: {
-          foo: "bar",
+          foo: 'bar',
         },
       },
       {
-        environment: "test",
+        environment: 'test',
         fetch: {
           options: {
             headers: {
-              Authorization: "Bearer example-token",
+              Authorization: 'Bearer example-token',
             },
           },
         },
-      }
+      },
     );
 
-  
     const {
       req: { url, method, headers },
     } = await mirror(request);
@@ -51,12 +50,12 @@ describe("serviceRequest", () => {
     `);
   });
 
-  it("merges passed SDKOptions with (global) GLOBUS_SDK_OPTIONS", async () => {
-    process.env["GLOBUS_SDK_OPTIONS"] = JSON.stringify({
+  it('merges passed SDKOptions with (global) GLOBUS_SDK_OPTIONS', async () => {
+    process.env['GLOBUS_SDK_OPTIONS'] = JSON.stringify({
       fetch: {
         options: {
           headers: {
-            "User-Agent": "globus-sdk",
+            'User-Agent': 'globus-sdk',
           },
         },
       },
@@ -64,25 +63,25 @@ describe("serviceRequest", () => {
 
     const request = await serviceRequest(
       {
-        service: "AUTH",
-        scope: "a:required:scope",
-        path: "/some-path",
+        service: 'AUTH',
+        scope: 'a:required:scope',
+        path: '/some-path',
       },
       {
         query: {
-          foo: "bar",
+          foo: 'bar',
         },
       },
       {
-        environment: "test",
+        environment: 'test',
         fetch: {
           options: {
             headers: {
-              Authorization: "Bearer example-token",
+              Authorization: 'Bearer example-token',
             },
           },
         },
-      }
+      },
     );
 
     const {
@@ -109,23 +108,23 @@ describe("serviceRequest", () => {
     `);
   });
 
-  it("uses (global) GLOBUS_SDK_OPTIONS", async () => {
-    process.env["GLOBUS_SDK_OPTIONS"] = JSON.stringify({
-      environment: "test",
+  it('uses (global) GLOBUS_SDK_OPTIONS', async () => {
+    process.env['GLOBUS_SDK_OPTIONS'] = JSON.stringify({
+      environment: 'test',
       fetch: {
         options: {
           headers: {
-            "User-Agent": "globus-sdk",
-            Authorization: "Bearer APPLICATION_TOKEN",
+            'User-Agent': 'globus-sdk',
+            Authorization: 'Bearer APPLICATION_TOKEN',
           },
         },
       },
     });
 
     const request = await serviceRequest({
-      service: "AUTH",
-      scope: "a:required:scope",
-      path: "/some-path",
+      service: 'AUTH',
+      scope: 'a:required:scope',
+      path: '/some-path',
     });
 
     const {

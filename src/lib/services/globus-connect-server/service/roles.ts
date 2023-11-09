@@ -1,14 +1,11 @@
-import { getRequiredScopes } from "../index.js";
+import type { operations } from '@globus/types/gcs-manager/api';
+import { getRequiredScopes } from '../index.js';
 
-import { HTTP_METHODS, serviceRequest } from "../../../services/shared.js";
+import { HTTP_METHODS, serviceRequest } from '../../../services/shared.js';
 
-import type {
-  GCSServiceMethod,
-  GCSServiceMethodDynamicSegments,
-} from "../index";
+import type { GCSServiceMethod, GCSServiceMethodDynamicSegments } from '../index';
 
-import type { JSONFetchResponse } from "../../types";
-import type { operations } from "@globus/types/gcs-manager/api";
+import type { JSONFetchResponse } from '../../types';
 
 /**
  * @see https://docs.globus.org/globus-connect-server/v5.4/api/openapi_Roles/#listRoles
@@ -16,11 +13,9 @@ import type { operations } from "@globus/types/gcs-manager/api";
 export const getAll = function (
   configuration,
   options?,
-  sdkOptions?
+  sdkOptions?,
 ): Promise<
-  JSONFetchResponse<
-    operations["listRoles"]["responses"]["200"]["content"]["application/json"]
-  >
+  JSONFetchResponse<operations['listRoles']['responses']['200']['content']['application/json']>
 > {
   return serviceRequest(
     {
@@ -29,10 +24,10 @@ export const getAll = function (
       path: `/api/roles`,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies GCSServiceMethod<{
-  query?: operations["listRoles"]["parameters"]["query"];
+  query?: operations['listRoles']['parameters']['query'];
 }>;
 
 /**
@@ -42,11 +37,9 @@ export const get = function (
   configuration,
   role_id,
   options?,
-  sdkOptions?
+  sdkOptions?,
 ): Promise<
-  JSONFetchResponse<
-    operations["getRole"]["responses"]["200"]["content"]["application/json"]
-  >
+  JSONFetchResponse<operations['getRole']['responses']['200']['content']['application/json']>
 > {
   return serviceRequest(
     {
@@ -55,10 +48,10 @@ export const get = function (
       path: `/api/roles/${role_id}`,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations["getRole"]["parameters"]["path"]["role_id"],
+  operations['getRole']['parameters']['path']['role_id'],
   {
     query?: never;
     payload?: never;
@@ -72,11 +65,9 @@ export const remove = function (
   configuration,
   role_id,
   options?,
-  sdkOptions?
+  sdkOptions?,
 ): Promise<
-  JSONFetchResponse<
-    operations["deleteRole"]["responses"]["200"]["content"]["application/json"]
-  >
+  JSONFetchResponse<operations['deleteRole']['responses']['200']['content']['application/json']>
 > {
   return serviceRequest(
     {
@@ -86,10 +77,10 @@ export const remove = function (
       method: HTTP_METHODS.DELETE,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations["deleteRole"]["parameters"]["path"]["role_id"],
+  operations['deleteRole']['parameters']['path']['role_id'],
   {
     query?: never;
     payload?: never;
@@ -102,11 +93,9 @@ export const remove = function (
 export const create = function (
   configuration,
   options,
-  sdkOptions?
+  sdkOptions?,
 ): Promise<
-  JSONFetchResponse<
-    operations["postRoles"]["responses"]["200"]["content"]["application/json"]
-  >
+  JSONFetchResponse<operations['postRoles']['responses']['200']['content']['application/json']>
 > {
   return serviceRequest(
     {
@@ -116,8 +105,8 @@ export const create = function (
       method: HTTP_METHODS.POST,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies GCSServiceMethod<{
-  payload: operations["postRoles"]["requestBody"]["content"]["application/json"];
+  payload: operations['postRoles']['requestBody']['content']['application/json'];
 }>;

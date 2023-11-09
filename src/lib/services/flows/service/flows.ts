@@ -1,9 +1,6 @@
-import { ID, SCOPES } from "../config.js";
-import { HTTP_METHODS, serviceRequest } from "../../../services/shared.js";
-import type {
-  ServiceMethod,
-  ServiceMethodDynamicSegments,
-} from "../../types.js";
+import { ID, SCOPES } from '../config.js';
+import { HTTP_METHODS, serviceRequest } from '../../../services/shared.js';
+import type { ServiceMethod, ServiceMethodDynamicSegments } from '../../types.js';
 
 /**
  * @see https://globusonline.github.io/globus-flows/#tag/Flows/paths/~1flows/get
@@ -16,7 +13,7 @@ export const getAll = function (options?, sdkOptions?) {
       path: `/flows`,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies ServiceMethod<{
   query?: Record<string, string>;
@@ -34,7 +31,7 @@ export const get = function (flow_id, options?, sdkOptions?) {
       path: `/flows/${flow_id}`,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<string, Record<string, any>>;
 
@@ -50,7 +47,7 @@ export const destroy = function (flow_id, options?, sdkOptions?) {
       method: HTTP_METHODS.DELETE,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,

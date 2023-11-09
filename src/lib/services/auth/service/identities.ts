@@ -1,10 +1,7 @@
-import { ID, SCOPES } from "../config.js";
-import { serviceRequest } from "../../../services/shared.js";
+import { ID, SCOPES } from '../config.js';
+import { serviceRequest } from '../../../services/shared.js';
 
-import type {
-  ServiceMethod,
-  ServiceMethodDynamicSegments,
-} from "../../types.js";
+import type { ServiceMethod, ServiceMethodDynamicSegments } from '../../types.js';
 
 /**
  * Fetch a single Identity by ID.
@@ -18,7 +15,7 @@ export const get = function (identity_id, options = {}, sdkOptions?) {
       path: `/identities/${identity_id}`,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<string, Record<string, any>>;
 
@@ -34,7 +31,7 @@ export const getAll = function (options = {}, sdkOptions?) {
       path: `/identities`,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies ServiceMethod<{
   query?: {

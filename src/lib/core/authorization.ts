@@ -4,28 +4,22 @@
  * @module
  * @experimental
  */
-import PKCE from "js-pkce";
+import PKCE from 'js-pkce';
 
-import type IConfig from "js-pkce/dist/IConfig";
-import type ITokenResponse from "js-pkce/dist/ITokenResponse";
-import {
-  getAuthorizationEndpoint,
-  getTokenEndpoint,
-} from "../services/auth/index.js";
-import {
-  addTokenResponse,
-  getTokenForScope,
-  reset as resetTokens,
-} from "./consent.js";
+import type IConfig from 'js-pkce/dist/IConfig';
+import type ITokenResponse from 'js-pkce/dist/ITokenResponse';
+import { getAuthorizationEndpoint, getTokenEndpoint } from '../services/auth/index.js';
+import { addTokenResponse, getTokenForScope, reset as resetTokens } from './consent.js';
 
-import { createStorage, StorageSystem } from "./storage/index.js";
+import { createStorage, StorageSystem } from './storage/index.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 let storage: StorageSystem;
 
 type PKCEConfiguration = {
-  client_id?: IConfig["client_id"];
-  requested_scopes: IConfig["requested_scopes"];
-  redirect_uri: IConfig["redirect_uri"];
+  client_id?: IConfig['client_id'];
+  requested_scopes: IConfig['requested_scopes'];
+  redirect_uri: IConfig['redirect_uri'];
 };
 
 /**
@@ -33,13 +27,15 @@ type PKCEConfiguration = {
  */
 export class PKCEAuthorization {
   #pkce: PKCE;
+
   #configuration: IConfig;
+
   #response: ITokenResponse | undefined;
 
   constructor(configuration: PKCEConfiguration) {
-    storage = createStorage("localStorage");
+    storage = createStorage('localStorage');
     if (!configuration.client_id) {
-      throw new Error("You must provide a `client_id`.");
+      throw new Error('You must provide a `client_id`.');
     }
     this.#configuration = {
       client_id: configuration.client_id,
@@ -54,13 +50,14 @@ export class PKCEAuthorization {
     return new PKCE(this.#configuration);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   #resetPKCE() {
     /**
      * Resets js-pkce state
      * @see https://github.com/bpedroza/js-pkce/blob/master/src/PKCE.ts
      */
-    sessionStorage.removeItem("pkce_state");
-    sessionStorage.removeItem("pkce_code_verifier");
+    sessionStorage.removeItem('pkce_state');
+    sessionStorage.removeItem('pkce_code_verifier');
   }
 
   reset() {
@@ -77,14 +74,14 @@ export class PKCEAuthorization {
     const url = new URL(window.location.href);
     const params = new URLSearchParams(url.search);
 
-    if (!params.get("code")) return;
+    if (!params.get('code')) return;
     const response = await this.#pkce.exchangeForAccessToken(url.toString());
     this.#response = response;
     addTokenResponse(this.#response);
     // Remove PKCE-state from the URL since we have a token.
     if (options.removeStateAndReplaceLocation) {
-      params.delete("code");
-      params.delete("state");
+      params.delete('code');
+      params.delete('state');
       url.search = params.toString();
       window.location.replace(url);
     }
@@ -92,7 +89,7 @@ export class PKCEAuthorization {
 
   hasToken(): boolean {
     return this.#configuration.requested_scopes
-      .split(" ")
+      .split(' ')
       .every((scope) => Boolean(getTokenForScope(scope)));
   }
 

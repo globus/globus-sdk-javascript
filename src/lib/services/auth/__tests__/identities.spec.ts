@@ -1,11 +1,11 @@
-import { identities } from "..";
-import { createStorage } from "../../../core/storage";
+import { identities } from '..';
+import { createStorage } from '../../../core/storage';
 
-import type { MirroredRequest } from "../../../../__mocks__/handlers";
+import type { MirroredRequest } from '../../../../__mocks__/handlers';
 
-test("get", async () => {
-  createStorage("memory");
-  const result = await identities.get("6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9");
+test('get', async () => {
+  createStorage('memory');
+  const result = await identities.get('6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9');
   const {
     req: { url, method, headers },
   } = (await result.json()) as unknown as MirroredRequest;
@@ -29,11 +29,11 @@ test("get", async () => {
 `);
 });
 
-test("getAll", async () => {
-  createStorage("memory");
+test('getAll', async () => {
+  createStorage('memory');
   const result = await identities.getAll({
     query: {
-      ids: "538e096f-0468-4d54-8463-50af72c01f95,1e1cac10-b303-48d8-aa81-3b3a592a2564",
+      ids: '538e096f-0468-4d54-8463-50af72c01f95,1e1cac10-b303-48d8-aa81-3b3a592a2564',
     },
   });
   const {
@@ -60,14 +60,11 @@ test("getAll", async () => {
 });
 
 test("getAll – with 'include'", async () => {
-  createStorage("memory");
+  createStorage('memory');
   const result = await identities.getAll({
     query: {
-      ids: [
-        "538e096f-0468-4d54-8463-50af72c01f95",
-        "1e1cac10-b303-48d8-aa81-3b3a592a2564",
-      ],
-      include: "identity_provider",
+      ids: ['538e096f-0468-4d54-8463-50af72c01f95', '1e1cac10-b303-48d8-aa81-3b3a592a2564'],
+      include: 'identity_provider',
     },
   });
   const {

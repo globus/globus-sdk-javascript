@@ -1,11 +1,11 @@
-import { groups } from "..";
-import { createStorage } from "../../../core/storage";
+import { groups } from '..';
+import { createStorage } from '../../../core/storage';
 
-import type { MirroredRequest } from "../../../../__mocks__/handlers";
+import type { MirroredRequest } from '../../../../__mocks__/handlers';
 
-test("get", async () => {
-  createStorage("memory");
-  const result = await groups.get("6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9");
+test('get', async () => {
+  createStorage('memory');
+  const result = await groups.get('6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9');
   const {
     req: { url, method, headers },
   } = (await result.json()) as unknown as MirroredRequest;
@@ -29,11 +29,11 @@ test("get", async () => {
   `);
 });
 
-test("getMyGroups", async () => {
-  createStorage("memory");
+test('getMyGroups', async () => {
+  createStorage('memory');
   const result = await groups.getMyGroups({
     query: {
-      statuses: ["active", "invited", "pending"],
+      statuses: ['active', 'invited', 'pending'],
     },
   });
   const {

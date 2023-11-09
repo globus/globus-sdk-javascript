@@ -1,15 +1,15 @@
-import * as AUTH from "../services/auth/config.js";
-import * as TRANSFER from "../services/transfer/config.js";
-import * as FLOWS from "../services/flows/config.js";
-import * as GROUPS from "../services/groups/config.js";
-import * as SEARCH from "../services/search/config.js";
-import * as TIMER from "../services/timer/config.js";
+import * as AUTH from '../services/auth/config.js';
+import * as TRANSFER from '../services/transfer/config.js';
+import * as FLOWS from '../services/flows/config.js';
+import * as GROUPS from '../services/groups/config.js';
+import * as SEARCH from '../services/search/config.js';
+import * as TIMER from '../services/timer/config.js';
 
-import { EnvironmentConfigurationError } from "./errors.js";
-import { SDKOptions } from "../services/types.js";
+import { EnvironmentConfigurationError } from './errors.js';
+import { SDKOptions } from '../services/types.js';
 
 function getRuntime() {
-  return typeof window !== "undefined" ? window : process;
+  return typeof window !== 'undefined' ? window : process;
 }
 
 function isBrowser(runtime: Window | NodeJS.Process): runtime is Window {
@@ -34,26 +34,20 @@ function env<T>(key: string, fallback: T): T {
  * Handlers for: GLOBUS_SDK_ENVIRONMENT
  */
 export const ENVIRONMENTS = {
-  PRODUCTION: "production",
-  PREVIEW: "preview",
-  STAGING: "staging",
-  SANDBOX: "sandbox",
-  INTEGRATION: "integration",
-  TEST: "test",
+  PRODUCTION: 'production',
+  PREVIEW: 'preview',
+  STAGING: 'staging',
+  SANDBOX: 'sandbox',
+  INTEGRATION: 'integration',
+  TEST: 'test',
 } as const;
 
 export type Environment = (typeof ENVIRONMENTS)[keyof typeof ENVIRONMENTS];
 
 export function getEnvironment(): Environment {
-  const environment = env<Environment>(
-    "GLOBUS_SDK_ENVIRONMENT",
-    ENVIRONMENTS.PRODUCTION
-  );
+  const environment = env<Environment>('GLOBUS_SDK_ENVIRONMENT', ENVIRONMENTS.PRODUCTION);
   if (!environment || !Object.values(ENVIRONMENTS).includes(environment)) {
-    throw new EnvironmentConfigurationError(
-      "GLOBUS_SDK_ENVIRONMENT",
-      environment
-    );
+    throw new EnvironmentConfigurationError('GLOBUS_SDK_ENVIRONMENT', environment);
   }
   return environment;
 }
@@ -69,10 +63,7 @@ export const SERVICES = {
 
 export type Service = keyof typeof SERVICES;
 
-export const SERVICE_HOSTS: Record<
-  Service,
-  Partial<Record<Environment, string>>
-> = {
+export const SERVICE_HOSTS: Record<Service, Partial<Record<Environment, string>>> = {
   [AUTH.ID]: AUTH.HOSTS,
   [TRANSFER.ID]: TRANSFER.HOSTS,
   [FLOWS.ID]: FLOWS.HOSTS,
@@ -87,8 +78,8 @@ export const SERVICE_HOSTS: Record<
  * methods to ensure we're including any global overrides.
  */
 export function getSDKOptions(options?: SDKOptions) {
-  let globalOptions = env<string | SDKOptions>("GLOBUS_SDK_OPTIONS", {});
-  if (typeof globalOptions === "string") {
+  let globalOptions = env<string | SDKOptions>('GLOBUS_SDK_OPTIONS', {});
+  if (typeof globalOptions === 'string') {
     globalOptions = JSON.parse(globalOptions) as SDKOptions;
   }
   return {
@@ -119,13 +110,10 @@ export function getSDKOptions(options?: SDKOptions) {
  * @see https://github.com/globus/globus-sdk-python/blob/18eced9c12e2ec41745d1be183148845198b999c/src/globus_sdk/config/env_vars.py#L20
  */
 export function getVerifySSL(): boolean {
-  const verifySSLTemp = env<string>(
-    "GLOBUS_SDK_VERIFY_SSL",
-    "true"
-  ).toLowerCase();
-  if (["n", "no", "f", "false", "off", "0"].includes(verifySSLTemp)) {
+  const verifySSLTemp = env<string>('GLOBUS_SDK_VERIFY_SSL', 'true').toLowerCase();
+  if (['n', 'no', 'f', 'false', 'off', '0'].includes(verifySSLTemp)) {
     console.warn(
-      "Setting GLOBUS_SDK_VERIFY_SSL to false is disallowed in the Globus Javascript SDK. It will always true in this context"
+      'Setting GLOBUS_SDK_VERIFY_SSL to false is disallowed in the Globus Javascript SDK. It will always true in this context',
     );
   }
   return true;
@@ -135,7 +123,7 @@ export function getVerifySSL(): boolean {
  * Handlers for: GLOBUS_SDK_HTTP_TIMEOUT
  */
 export function getHttpTimeout() {
-  const timeout = Number(env<string | number>("GLOBUS_SDK_HTTP_TIMEOUT", 60));
+  const timeout = Number(env<string | number>('GLOBUS_SDK_HTTP_TIMEOUT', 60));
   if (timeout === -1) {
     return null;
   }
@@ -146,13 +134,7 @@ function getServiceHost(service: Service, environment: Environment) {
   return SERVICE_HOSTS[service][environment];
 }
 
-export function getServiceBaseUrl(
-  service: Service,
-  environment: Environment = getEnvironment()
-) {
+export function getServiceBaseUrl(service: Service, environment: Environment = getEnvironment()) {
   const host = getServiceHost(service, environment);
-  return env(
-    `GLOBUS_SDK_SERVICE_URL_${service}`,
-    host ? `https://${host}` : undefined
-  );
+  return env(`GLOBUS_SDK_SERVICE_URL_${service}`, host ? `https://${host}` : undefined);
 }

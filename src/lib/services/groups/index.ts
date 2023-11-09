@@ -5,7 +5,7 @@
  * @module
  */
 
-import * as GROUPS from "./config.js";
+import * as GROUPS from './config.js';
 
 /**
  * @private
@@ -16,6 +16,6 @@ export const CONFIG = GROUPS;
 /**
  * Service methods for the Groups API.
  */
-export * as groups from "./service/groups.js";
-export * as policies from "./service/policies.js";
-export * as membership from "./service/membership.js";
+export * as groups from './service/groups.js';
+export * as policies from './service/policies.js';
+export * as membership from './service/membership.js';

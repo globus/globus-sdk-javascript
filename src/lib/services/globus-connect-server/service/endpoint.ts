@@ -1,10 +1,9 @@
-import { getRequiredScopes } from "../index.js";
-import { HTTP_METHODS, serviceRequest } from "../../shared.js";
+import type { operations } from '@globus/types/gcs-manager/api';
+import { getRequiredScopes } from '../index.js';
+import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 
-import type { GCSServiceMethod } from "../index";
-import type { JSONFetchResponse } from "../../types";
-
-import type { operations } from "@globus/types/gcs-manager/api";
+import type { GCSServiceMethod } from '../index';
+import type { JSONFetchResponse } from '../../types';
 
 /**
  * @see https://docs.globus.org/globus-connect-server/v5.4/api/openapi_Endpoint/#getEndpoint
@@ -12,11 +11,9 @@ import type { operations } from "@globus/types/gcs-manager/api";
 export const get = function (
   configuration,
   options?,
-  sdkOptions?
+  sdkOptions?,
 ): Promise<
-  JSONFetchResponse<
-    operations["getEndpoint"]["responses"]["200"]["content"]["application/json"]
-  >
+  JSONFetchResponse<operations['getEndpoint']['responses']['200']['content']['application/json']>
 > {
   return serviceRequest(
     {
@@ -25,7 +22,7 @@ export const get = function (
       path: `/api/endpoint`,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies GCSServiceMethod<{
   query?: never;
@@ -38,11 +35,9 @@ export const get = function (
 export const update = function (
   configuration,
   options?,
-  sdkOptions?
+  sdkOptions?,
 ): Promise<
-  JSONFetchResponse<
-    operations["putEndpoint"]["responses"]["200"]["content"]["application/json"]
-  >
+  JSONFetchResponse<operations['putEndpoint']['responses']['200']['content']['application/json']>
 > {
   return serviceRequest(
     {
@@ -52,10 +47,10 @@ export const update = function (
       method: HTTP_METHODS.PUT,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies GCSServiceMethod<{
-  payload: operations["putEndpoint"]["requestBody"]["content"]["application/json"];
+  payload: operations['putEndpoint']['requestBody']['content']['application/json'];
 }>;
 
 /**
@@ -64,11 +59,9 @@ export const update = function (
 export const patch = function (
   configuration,
   options?,
-  sdkOptions?
+  sdkOptions?,
 ): Promise<
-  JSONFetchResponse<
-    operations["patchEndpoint"]["responses"]["200"]["content"]["application/json"]
-  >
+  JSONFetchResponse<operations['patchEndpoint']['responses']['200']['content']['application/json']>
 > {
   return serviceRequest(
     {
@@ -78,7 +71,7 @@ export const patch = function (
       method: HTTP_METHODS.PATCH,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies GCSServiceMethod<{
   /**
@@ -88,6 +81,6 @@ export const patch = function (
    * when the auotgenerated types are corrected.
    */
   payload:
-    | operations["patchEndpoint"]["requestBody"]["content"]["application/json"]
+    | operations['patchEndpoint']['requestBody']['content']['application/json']
     | Record<string, unknown>;
 }>;

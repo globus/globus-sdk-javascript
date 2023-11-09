@@ -1,16 +1,16 @@
-import { createStorage } from "../../../core/storage";
-import { endpoint } from "..";
+import { createStorage } from '../../../core/storage';
+import { endpoint } from '..';
 
-import type { MirroredRequest } from "../../../../__mocks__/handlers";
+import type { MirroredRequest } from '../../../../__mocks__/handlers';
 
-const GCS_HOST = "https://fa5e.bd7c.data.globus.org";
+const GCS_HOST = 'https://fa5e.bd7c.data.globus.org';
 
-describe("gcs – endpoint", () => {
-  createStorage("memory");
-  test("get", async () => {
+describe('gcs – endpoint', () => {
+  createStorage('memory');
+  test('get', async () => {
     const result = await endpoint.get({
       host: GCS_HOST,
-      endpoint_id: "ac9cb54b-fc48-4824-b801-1388baf0a909",
+      endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
     });
     const {
       req: { url, method, headers },
@@ -34,18 +34,18 @@ describe("gcs – endpoint", () => {
     `);
   });
 
-  test("update", async () => {
+  test('update', async () => {
     const result = await endpoint.update(
       {
         host: GCS_HOST,
-        endpoint_id: "ac9cb54b-fc48-4824-b801-1388baf0a909",
+        endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
       },
       {
         payload: {
-          DATA_TYPE: "endpoint#1.0.0",
-          display_name: "My First Endpoint",
+          DATA_TYPE: 'endpoint#1.0.0',
+          display_name: 'My First Endpoint',
         },
-      }
+      },
     );
     const {
       req: { url, method, headers, json },
@@ -76,17 +76,17 @@ describe("gcs – endpoint", () => {
     `);
   });
 
-  test("patch", async () => {
+  test('patch', async () => {
     const result = await endpoint.patch(
       {
         host: GCS_HOST,
-        endpoint_id: "ac9cb54b-fc48-4824-b801-1388baf0a909",
+        endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
       },
       {
         payload: {
           public: true,
         },
-      }
+      },
     );
     const {
       req: { url, method, headers, json },

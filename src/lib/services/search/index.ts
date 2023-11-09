@@ -4,7 +4,7 @@
  * @see [Globus Search API Documentation](https://docs.globus.org/api/search/reference/)
  * @module
  */
-import * as SEARCH from "./config.js";
+import * as SEARCH from './config.js';
 
 /**
  * @private
@@ -12,4 +12,4 @@ import * as SEARCH from "./config.js";
  */
 export const CONFIG = SEARCH;
 
-export * as query from "./service/query.js";
+export * as query from './service/query.js';

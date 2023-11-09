@@ -1,10 +1,7 @@
-import { serviceRequest } from "../../shared.js";
-import { ID } from "../config.js";
+import { serviceRequest } from '../../shared.js';
+import { ID } from '../config.js';
 
-import type {
-  BaseServiceMethodOptions,
-  SDKOptions,
-} from "../../../services/types.js";
+import type { BaseServiceMethodOptions, SDKOptions } from '../../../services/types.js';
 
 /**
  * Get a list of endpoints matching the search filters in a given search scope.
@@ -20,9 +17,9 @@ export const endpointSearch = function (
      * to `satisfies` `ServiceMethod`.
      */
     query?: Globus.Transfer.EndpointSearchQuery;
-    headers?: BaseServiceMethodOptions["headers"];
+    headers?: BaseServiceMethodOptions['headers'];
   },
-  sdkOptions?: SDKOptions
+  sdkOptions?: SDKOptions,
 ) {
   const serviceRequestOptions = {
     ...options,
@@ -35,11 +32,11 @@ export const endpointSearch = function (
   return serviceRequest(
     {
       service: ID,
-      scope: "urn:globus:auth:scope:transfer.api.globus.org:all",
+      scope: 'urn:globus:auth:scope:transfer.api.globus.org:all',
       path: `/v0.10/endpoint_search`,
     },
     serviceRequestOptions,
-    sdkOptions
+    sdkOptions,
   );
 };
 

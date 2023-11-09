@@ -1,15 +1,15 @@
-import { createStorage } from "../../../core/storage";
-import { getClient } from "../client";
+import { createStorage } from '../../../core/storage';
+import { getClient } from '../client';
 
-import type { MirroredRequest } from "../../../../__mocks__/handlers";
+import type { MirroredRequest } from '../../../../__mocks__/handlers';
 
 const GCS_CONFIGURATION = {
-  host: "https://fa5e.bd7c.data.globus.org",
-  endpoint_id: "ac9cb54b-fc48-4824-b801-1388baf0a909",
+  host: 'https://fa5e.bd7c.data.globus.org',
+  endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
 };
 
-describe("gcs – client", () => {
-  test("can be created WITHOUT storage", async () => {
+describe('gcs – client', () => {
+  test('can be created WITHOUT storage', async () => {
     const client = getClient(GCS_CONFIGURATION);
 
     const result = await client.endpoint.get(undefined, {
@@ -45,10 +45,10 @@ describe("gcs – client", () => {
     `);
 
     const result2 = await client.collections.get(
-      "a-b-c-d",
+      'a-b-c-d',
       {
         query: {
-          include: ["private_policies"],
+          include: ['private_policies'],
         },
       },
       {
@@ -59,7 +59,7 @@ describe("gcs – client", () => {
             },
           },
         },
-      }
+      },
     );
 
     const {
@@ -86,8 +86,8 @@ describe("gcs – client", () => {
     `);
   });
 
-  test("obtain client and call endpoint.get", async () => {
-    createStorage("memory");
+  test('obtain client and call endpoint.get', async () => {
+    createStorage('memory');
     const client = getClient(GCS_CONFIGURATION);
     const result = await client.endpoint.get();
     const {
@@ -112,17 +112,14 @@ describe("gcs – client", () => {
     `);
   });
 
-  test("obtain client and call collections.get", async () => {
-    createStorage("memory");
+  test('obtain client and call collections.get', async () => {
+    createStorage('memory');
     const client = getClient(GCS_CONFIGURATION);
-    const result = await client.collections.get(
-      "5e70cb38-90b4-4939-b5b7-2f502363004bs",
-      {
-        query: {
-          include: ["private_policies"],
-        },
-      }
-    );
+    const result = await client.collections.get('5e70cb38-90b4-4939-b5b7-2f502363004bs', {
+      query: {
+        include: ['private_policies'],
+      },
+    });
     const {
       req: { url, method, headers },
     } = (await result.json()) as unknown as MirroredRequest;

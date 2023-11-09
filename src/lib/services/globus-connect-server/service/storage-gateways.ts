@@ -1,13 +1,10 @@
-import { getRequiredScopes } from "../index.js";
-import { serviceRequest } from "../../../services/shared.js";
+import type { operations } from '@globus/types/gcs-manager/api';
+import { getRequiredScopes } from '../index.js';
+import { serviceRequest } from '../../../services/shared.js';
 
-import type {
-  GCSServiceMethod,
-  GCSServiceMethodDynamicSegments,
-} from "../index";
+import type { GCSServiceMethod, GCSServiceMethodDynamicSegments } from '../index';
 
-import type { JSONFetchResponse } from "../../types";
-import type { operations } from "@globus/types/gcs-manager/api";
+import type { JSONFetchResponse } from '../../types';
 
 /**
  * @see https://docs.globus.org/globus-connect-server/v5.4/api/openapi_Storage_Gateways/#listStorageGateways
@@ -15,10 +12,10 @@ import type { operations } from "@globus/types/gcs-manager/api";
 export const getAll = function (
   configuration,
   options?,
-  sdkOptions?
+  sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations["listStorageGateways"]["responses"]["200"]["content"]["application/json"]
+    operations['listStorageGateways']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -28,10 +25,10 @@ export const getAll = function (
       path: `/api/storage_gateways`,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies GCSServiceMethod<{
-  query?: operations["listStorageGateways"]["parameters"]["query"];
+  query?: operations['listStorageGateways']['parameters']['query'];
 }>;
 
 /**
@@ -41,10 +38,10 @@ export const get = function (
   configuration,
   storage_gateway_id,
   options?,
-  sdkOptions?
+  sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations["getStorageGateway"]["responses"]["200"]["content"]["application/json"]
+    operations['getStorageGateway']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -54,11 +51,11 @@ export const get = function (
       path: `/api/storage_gateways/${storage_gateway_id}`,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations["getStorageGateway"]["parameters"]["path"]["storage_gateway_id"],
+  operations['getStorageGateway']['parameters']['path']['storage_gateway_id'],
   {
-    query?: operations["getStorageGateway"]["parameters"]["query"];
+    query?: operations['getStorageGateway']['parameters']['query'];
   }
 >;

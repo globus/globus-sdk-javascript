@@ -1,24 +1,24 @@
-import { createStorage } from "../../../core/storage";
-import { userCredentials } from "..";
+import { createStorage } from '../../../core/storage';
+import { userCredentials } from '..';
 
-import type { MirroredRequest } from "../../../../__mocks__/handlers";
+import type { MirroredRequest } from '../../../../__mocks__/handlers';
 
-const GCS_HOST = "https://fa5e.bd7c.data.globus.org";
+const GCS_HOST = 'https://fa5e.bd7c.data.globus.org';
 
-describe("gcs – user-credentials", () => {
-  createStorage("memory");
+describe('gcs – user-credentials', () => {
+  createStorage('memory');
 
-  test("getAll", async () => {
+  test('getAll', async () => {
     const result = await userCredentials.getAll(
       {
         host: GCS_HOST,
-        endpoint_id: "ac9cb54b-fc48-4824-b801-1388baf0a909",
+        endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
       },
       {
         query: {
-          include: ["all"],
+          include: ['all'],
         },
-      }
+      },
     );
     const {
       req: { url, method, headers },
@@ -42,13 +42,13 @@ describe("gcs – user-credentials", () => {
     `);
   });
 
-  test("get", async () => {
+  test('get', async () => {
     const result = await userCredentials.get(
       {
         host: GCS_HOST,
-        endpoint_id: "ac9cb54b-fc48-4824-b801-1388baf0a909",
+        endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
       },
-      "some-uuid"
+      'some-uuid',
     );
     const {
       req: { url, method, headers },

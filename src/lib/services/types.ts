@@ -1,7 +1,7 @@
-import { stringifyParameters } from "../core/url.js";
-import { ENVIRONMENTS } from "../core/global.js";
+import { stringifyParameters } from '../core/url.js';
+import { ENVIRONMENTS } from '../core/global.js';
 
-import type { FetchOverrides } from "../core/fetch.js";
+import type { FetchOverrides } from '../core/fetch.js';
 
 export interface JSONFetchResponse<Res> extends Response {
   json(): Promise<Res>;
@@ -62,26 +62,23 @@ export type ServiceMethodOptions = BaseServiceMethodOptions | undefined | never;
 
 export type Segment = string | Record<string, string>;
 
-export type ServiceMethod<
-  O extends ServiceMethodOptions,
-  R extends Response = Response
-> = (
+export type ServiceMethod<O extends ServiceMethodOptions, R extends Response = Response> = (
   methodOptions?: O & {
-    query?: BaseServiceMethodOptions["query"];
-    headers?: BaseServiceMethodOptions["headers"];
+    query?: BaseServiceMethodOptions['query'];
+    headers?: BaseServiceMethodOptions['headers'];
   },
-  sdkOptions?: SDKOptions
+  sdkOptions?: SDKOptions,
 ) => Promise<R>;
 
 export type ServiceMethodDynamicSegments<
   S extends Segment,
   O extends ServiceMethodOptions,
-  R extends Response = Response
+  R extends Response = Response,
 > = (
   segments: S,
   methodOptions?: O & {
-    query?: BaseServiceMethodOptions["query"];
-    headers?: BaseServiceMethodOptions["headers"];
+    query?: BaseServiceMethodOptions['query'];
+    headers?: BaseServiceMethodOptions['headers'];
   },
-  sdkOptions?: SDKOptions
+  sdkOptions?: SDKOptions,
 ) => Promise<R>;

@@ -1,26 +1,26 @@
-import { create } from "../index";
-import { createStorage } from "../../../core/storage";
+import { create } from '../index';
+import { createStorage } from '../../../core/storage';
 
-import type { MirroredRequest } from "../../../../__mocks__/handlers";
+import type { MirroredRequest } from '../../../../__mocks__/handlers';
 
-test("create", async () => {
-  createStorage("memory");
+test('create', async () => {
+  createStorage('memory');
   const result = await create({
     payload: {
       timer: {
-        name: "SDK testing",
+        name: 'SDK testing',
         schedule: {
-          type: "once",
+          type: 'once',
         },
-        timer_type: "transfer",
+        timer_type: 'transfer',
         body: {
-          source_endpoint: "ddb59aef-6d04-11e5-ba46-22000b92c6ec",
-          destination_endpoint: "ddb59af0-6d04-11e5-ba46-22000b92c6ec",
-          DATA_TYPE: "transfer",
+          source_endpoint: 'ddb59aef-6d04-11e5-ba46-22000b92c6ec',
+          destination_endpoint: 'ddb59af0-6d04-11e5-ba46-22000b92c6ec',
+          DATA_TYPE: 'transfer',
           DATA: [
             {
-              source_path: "/share/godata",
-              destination_path: "/~/godata",
+              source_path: '/share/godata',
+              destination_path: '/~/godata',
               recursive: true,
             },
           ],

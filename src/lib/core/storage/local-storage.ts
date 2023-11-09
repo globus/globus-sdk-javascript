@@ -1,4 +1,5 @@
-import { StorageSystem } from "./index.js";
+/* eslint-disable class-methods-use-this */
+import { StorageSystem } from './index.js';
 
 export class LocalStorage implements StorageSystem {
   get<T>(key: string): T | null | unknown {

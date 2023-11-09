@@ -1,36 +1,34 @@
-import serviceTestSuite from "../../../../__utils__/service-test-suite";
-import { fileOperations } from "..";
+import serviceTestSuite from '../../../../__utils__/service-test-suite';
+import { fileOperations } from '..';
 
 /**
  * random endpoint-like identifier (uuid)
  */
-const ENDPOINT = "c591c905-2674-4227-9d31-1ff9485945a7";
+const ENDPOINT = 'c591c905-2674-4227-9d31-1ff9485945a7';
 
-serviceTestSuite("transfer", "file-operations", (fetch) => {
-  test("mkdir", async () => {
+serviceTestSuite('transfer', 'file-operations', (fetch) => {
+  test('mkdir', async () => {
     await fileOperations.mkdir(ENDPOINT, {
       payload: {
-        path: "/~/new-directory",
+        path: '/~/new-directory',
       },
     });
     expect(fetch).toHaveBeenCalled();
     expect(fetch).toHaveBeenCalledWith(
       `https://transfer.api.globusonline.org/v0.10/operation/endpoint/${ENDPOINT}/mkdir`,
       expect.objectContaining({
-        body: expect.stringMatching(
-          '{"DATA_TYPE":"mkdir","path":"/~/new-directory"}'
-        ) as unknown,
-        headers: { "Content-Type": "application/json" },
-        method: "POST",
-      })
+        body: expect.stringMatching('{"DATA_TYPE":"mkdir","path":"/~/new-directory"}') as unknown,
+        headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+      }),
     );
   });
 
-  test("rename", async () => {
+  test('rename', async () => {
     await fileOperations.rename(ENDPOINT, {
       payload: {
-        old_path: "/~/old-directory",
-        new_path: "/new-path",
+        old_path: '/~/old-directory',
+        new_path: '/new-path',
       },
     });
     expect(fetch).toHaveBeenCalled();
@@ -38,21 +36,21 @@ serviceTestSuite("transfer", "file-operations", (fetch) => {
       `https://transfer.api.globusonline.org/v0.10/operation/endpoint/${ENDPOINT}/rename`,
       expect.objectContaining({
         body: expect.stringMatching(
-          '{"DATA_TYPE":"rename","old_path":"/~/old-directory","new_path":"/new-path"}'
+          '{"DATA_TYPE":"rename","old_path":"/~/old-directory","new_path":"/new-path"}',
         ) as unknown,
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        method: "POST",
-      })
+        method: 'POST',
+      }),
     );
   });
 
-  test("symlink", async () => {
+  test('symlink', async () => {
     await fileOperations.symlink(ENDPOINT, {
       payload: {
-        symlink_target: "/~/some/project/myfile.txt",
-        path: "/~/quick_link.txt",
+        symlink_target: '/~/some/project/myfile.txt',
+        path: '/~/quick_link.txt',
       },
     });
     expect(fetch).toHaveBeenCalled();
@@ -60,20 +58,20 @@ serviceTestSuite("transfer", "file-operations", (fetch) => {
       `https://transfer.api.globusonline.org/v0.10/operation/endpoint/${ENDPOINT}/symlink`,
       expect.objectContaining({
         body: expect.stringMatching(
-          '{"DATA_TYPE":"symlink","symlink_target":"/~/some/project/myfile.txt","path":"/~/quick_link.txt"}'
+          '{"DATA_TYPE":"symlink","symlink_target":"/~/some/project/myfile.txt","path":"/~/quick_link.txt"}',
         ) as unknown,
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        method: "POST",
-      })
+        method: 'POST',
+      }),
     );
   });
 
-  test("ls", async () => {
+  test('ls', async () => {
     await fileOperations.ls(ENDPOINT, {
       query: {
-        path: "/~/",
+        path: '/~/',
       },
     });
     expect(fetch).toHaveBeenCalled();
@@ -81,7 +79,7 @@ serviceTestSuite("transfer", "file-operations", (fetch) => {
       `https://transfer.api.globusonline.org/v0.10/operation/endpoint/${ENDPOINT}/ls?path=%2F%7E%2F`,
       {
         headers: {},
-      }
+      },
     );
   });
 });

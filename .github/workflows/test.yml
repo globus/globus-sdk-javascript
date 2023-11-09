@@ -1,4 +1,4 @@
-name: "test"
+name: 'test'
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: ["lts/gallium", "lts/hydrogen", "lts/iron"]
+        node-version: ['lts/gallium', 'lts/hydrogen', 'lts/iron']
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
@@ -20,4 +20,5 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
+      - run: npm run lint
       - run: npm run test

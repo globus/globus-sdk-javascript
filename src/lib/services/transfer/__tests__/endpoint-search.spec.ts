@@ -1,17 +1,17 @@
-import { endpointSearch } from "..";
-import { createStorage } from "../../../../lib/core/storage";
+import { endpointSearch } from '..';
+import { createStorage } from '../../../core/storage';
 
-import type { MirroredRequest } from "../../../../__mocks__/handlers";
+import type { MirroredRequest } from '../../../../__mocks__/handlers';
 
-test("endpointSearch", async () => {
-  createStorage("memory");
+test('endpointSearch', async () => {
+  createStorage('memory');
   const result = await endpointSearch({
     query: {
-      filter_fulltext: "my search string",
+      filter_fulltext: 'my search string',
       limit: 10,
     },
     headers: {
-      Authorization: "Bearer an-example-token",
+      Authorization: 'Bearer an-example-token',
     },
   });
   const {

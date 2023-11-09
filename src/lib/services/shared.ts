@@ -1,16 +1,17 @@
-import { fetchWithScope } from "../core/fetch.js";
-import { build } from "../core/url.js";
-import { getSDKOptions, Service } from "../core/global.js";
+import { fetchWithScope } from '../core/fetch.js';
+import { build } from '../core/url.js';
+import { getSDKOptions, Service } from '../core/global.js';
 
-import type { ServiceMethodOptions, SDKOptions } from "./types.js";
-import type { GCSConfiguration } from "../services/globus-connect-server/index.js";
+import type { ServiceMethodOptions, SDKOptions } from './types.js';
+import type { GCSConfiguration } from '../services/globus-connect-server/index.js';
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export enum HTTP_METHODS {
-  POST = "POST",
-  GET = "GET",
-  DELETE = "DELETE",
-  PUT = "PUT",
-  PATCH = "PATCH",
+  POST = 'POST',
+  GET = 'GET',
+  DELETE = 'DELETE',
+  PUT = 'PUT',
+  PATCH = 'PATCH',
 }
 
 /**
@@ -61,7 +62,7 @@ type ServiceRequestDSL = {
 export function serviceRequest(
   config: ServiceRequestDSL,
   options?: ServiceMethodOptions,
-  passedSdkOptions?: SDKOptions
+  passedSdkOptions?: SDKOptions,
 ) {
   /**
    * Get the SDK options, merging any passed options with the global options.
@@ -75,7 +76,7 @@ export function serviceRequest(
       {
         search: options?.query,
       },
-      sdkOptions
+      sdkOptions,
     ),
     {
       method: config.method,
@@ -92,6 +93,6 @@ export function serviceRequest(
          */
         ...sdkOptions?.fetch?.options?.headers,
       },
-    }
+    },
   );
 }

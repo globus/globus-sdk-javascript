@@ -1,5 +1,6 @@
-import { fetch } from "./internals/fetch.js";
-import { getTokenForScope } from "./consent.js";
+/* eslint-disable no-underscore-dangle */
+import { fetch } from './internals/fetch.js';
+import { getTokenForScope } from './consent.js';
 
 type GlobusScope = string;
 
@@ -8,7 +9,7 @@ type GlobusScope = string;
  * @see https://developer.mozilla.org/en-US/docs/Web/API/fetch#parameters
  */
 export type FetchOverrides =
-  | (Omit<RequestInit, "headers"> & {
+  | (Omit<RequestInit, 'headers'> & {
       headers?: Record<string, string>;
       /**
        * Provide an implementation of `fetch` to be used.
@@ -22,24 +23,24 @@ export type FetchOverrides =
 export function fetchWithScope(
   scope: GlobusScope,
   input: RequestInfo | URL,
-  fetchOverrides: FetchOverrides = {}
+  fetchOverrides: FetchOverrides = {},
 ) {
   const headers = fetchOverrides.headers || {};
   /**
    * If an `Authorization` override header was provided, we skip any
    * sort of lookup and use the provided value.
    */
-  if (!headers?.["Authorization"]) {
+  if (!headers?.['Authorization']) {
     const token = getTokenForScope(scope);
     if (token) {
-      headers["Authorization"] = token;
+      headers['Authorization'] = token;
     }
   }
   /**
    * If `Content-Type` header was not provided, and there is a body, we assume it is JSON.
    */
-  if (!headers?.["Content-Type"] && fetchOverrides?.body) {
-    headers["Content-Type"] = "application/json";
+  if (!headers?.['Content-Type'] && fetchOverrides?.body) {
+    headers['Content-Type'] = 'application/json';
   }
 
   /**

@@ -1,10 +1,9 @@
-import { getRequiredScopes } from "../index.js";
-import { serviceRequest } from "../../../services/shared.js";
+import type { operations } from '@globus/types/gcs-manager/api';
+import { getRequiredScopes } from '../index.js';
+import { serviceRequest } from '../../../services/shared.js';
 
-import type { GCSServiceMethod } from "../index";
-import type { JSONFetchResponse } from "../../types";
-
-import type { operations } from "@globus/types/gcs-manager/api";
+import type { GCSServiceMethod } from '../index';
+import type { JSONFetchResponse } from '../../types';
 
 /**
  *
@@ -13,11 +12,9 @@ import type { operations } from "@globus/types/gcs-manager/api";
 export const info = function (
   configuration,
   options?,
-  sdkOptions?
+  sdkOptions?,
 ): Promise<
-  JSONFetchResponse<
-    operations["getInfo"]["responses"]["200"]["content"]["application/json"]
-  >
+  JSONFetchResponse<operations['getInfo']['responses']['200']['content']['application/json']>
 > {
   return serviceRequest(
     {
@@ -26,7 +23,7 @@ export const info = function (
       path: `/api/info`,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies GCSServiceMethod<{
   query?: never;

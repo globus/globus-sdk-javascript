@@ -1,23 +1,23 @@
-import { ID, SCOPES } from "../config.js";
-import { build } from "../../../core/url.js";
-import { fetchWithScope } from "../../../core/fetch.js";
+import type { operations, components } from '@globus/types/groups';
+import { ID, SCOPES } from '../config.js';
+import { build } from '../../../core/url.js';
+import { fetchWithScope } from '../../../core/fetch.js';
 
-import type { operations, components } from "@globus/types/groups";
 import type {
   JSONFetchResponse,
   ServiceMethod,
   ServiceMethodDynamicSegments,
-} from "../../types.js";
+} from '../../types.js';
 
 /**
  * @see https://groups.api.globus.org/redoc#tag/groups/operation/get_my_groups_and_memberships_v2_groups_my_groups_get
  */
 export const getMyGroups = function (
   options = {},
-  sdkOptions?
+  sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations["get_my_groups_and_memberships_v2_groups_my_groups_get"]["responses"]["200"]["content"]["application/json"]
+    operations['get_my_groups_and_memberships_v2_groups_my_groups_get']['responses']['200']['content']['application/json']
   >
 > {
   return fetchWithScope(
@@ -27,14 +27,14 @@ export const getMyGroups = function (
     }),
     {
       ...sdkOptions?.fetch?.options,
-    }
+    },
   );
 } satisfies ServiceMethod<{
   query?: {
     /**
      * @todo This should probably be replaced with a more specific type for the method's accepted query parameters once available.
      */
-    statuses?: components["schemas"]["StatusEnum"][];
+    statuses?: components['schemas']['StatusEnum'][];
   };
 }>;
 
@@ -44,10 +44,10 @@ export const getMyGroups = function (
 export const get = function (
   group_id,
   options = {},
-  sdkOptions?
+  sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations["get_group_v2_groups__group_id__get"]["responses"]["200"]["content"]["application/json"]
+    operations['get_group_v2_groups__group_id__get']['responses']['200']['content']['application/json']
   >
 > {
   return fetchWithScope(
@@ -57,11 +57,11 @@ export const get = function (
     }),
     {
       ...sdkOptions?.fetch?.options,
-    }
+    },
   );
 } satisfies ServiceMethodDynamicSegments<
-  operations["get_group_v2_groups__group_id__get"]["parameters"]["path"]["group_id"],
+  operations['get_group_v2_groups__group_id__get']['parameters']['path']['group_id'],
   {
-    query?: operations["get_group_v2_groups__group_id__get"]["parameters"]["query"];
+    query?: operations['get_group_v2_groups__group_id__get']['parameters']['query'];
   }
 >;

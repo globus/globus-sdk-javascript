@@ -1,13 +1,10 @@
-import { getRequiredScopes } from "../index.js";
-import { serviceRequest } from "../../../services/shared.js";
+import type { operations } from '@globus/types/gcs-manager/api';
+import { getRequiredScopes } from '../index.js';
+import { serviceRequest } from '../../../services/shared.js';
 
-import type {
-  GCSServiceMethod,
-  GCSServiceMethodDynamicSegments,
-} from "../index";
+import type { GCSServiceMethod, GCSServiceMethodDynamicSegments } from '../index';
 
-import type { JSONFetchResponse } from "../../types";
-import type { operations } from "@globus/types/gcs-manager/api";
+import type { JSONFetchResponse } from '../../types';
 
 /**
  * @see https://docs.globus.org/globus-connect-server/v5.4/api/openapi_User_Credentials/#listUserCredentials
@@ -15,10 +12,10 @@ import type { operations } from "@globus/types/gcs-manager/api";
 export const getAll = function (
   configuration,
   options?,
-  sdkOptions?
+  sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations["listUserCredentials"]["responses"]["200"]["content"]["application/json"]
+    operations['listUserCredentials']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -28,10 +25,10 @@ export const getAll = function (
       path: `/api/user_credentials`,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies GCSServiceMethod<{
-  query?: operations["listUserCredentials"]["parameters"]["query"];
+  query?: operations['listUserCredentials']['parameters']['query'];
 }>;
 
 /**
@@ -41,11 +38,9 @@ export const get = function (
   configuration,
   user_credential_id,
   options?,
-  sdkOptions?
+  sdkOptions?,
 ): Promise<
-  JSONFetchResponse<
-    operations["getCollection"]["responses"]["200"]["content"]["application/json"]
-  >
+  JSONFetchResponse<operations['getCollection']['responses']['200']['content']['application/json']>
 > {
   return serviceRequest(
     {
@@ -54,10 +49,10 @@ export const get = function (
       path: `/api/user_credentials/${user_credential_id}`,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations["getUserCredential"]["parameters"]["path"]["user_credential_id"],
+  operations['getUserCredential']['parameters']['path']['user_credential_id'],
   {
     query?: never;
     payload?: never;

@@ -4,13 +4,13 @@
  * @see [Globus Timer API Documentation](https://timer.automate.globus.org/docs#/)
  * @module
  */
-import * as TIMER from "./config.js";
+import * as TIMER from './config.js';
+
+import { create } from './service/timer.js';
 
 /**
  * @private
  * @internal
  */
 export const CONFIG = TIMER;
-
-import { create } from "./service/timer.js";
 export { create };

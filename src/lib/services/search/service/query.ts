@@ -1,11 +1,8 @@
-import { HTTP_METHODS, serviceRequest } from "../../shared.js";
+import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 
-import type {
-  JSONFetchResponse,
-  ServiceMethodDynamicSegments,
-} from "../../types.js";
+import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../types.js';
 
-import { ID, SCOPES } from "../config.js";
+import { ID, SCOPES } from '../config.js';
 
 /**
  * @param index_id The UUID of the index to query.
@@ -20,7 +17,7 @@ export const get = function (index_id, options?, sdkOptions?) {
       path: `/v1/index/${index_id}/search`,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,
@@ -32,8 +29,8 @@ export const get = function (index_id, options?, sdkOptions?) {
       q: string;
       offset?: `${number}`;
       limit?: `${number}`;
-      advanced?: "true" | "false";
-      bypass_visible_to?: "true" | "false";
+      advanced?: 'true' | 'false';
+      bypass_visible_to?: 'true' | 'false';
       result_format_version?: string;
       filter_principal_sets?: string;
     };
@@ -48,7 +45,7 @@ export const get = function (index_id, options?, sdkOptions?) {
 export const post = function (
   index_id,
   options,
-  sdkOptions?
+  sdkOptions?,
 ): Promise<JSONFetchResponse<Globus.Search.GSearchResult>> {
   return serviceRequest(
     {
@@ -58,7 +55,7 @@ export const post = function (
       method: HTTP_METHODS.POST,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,

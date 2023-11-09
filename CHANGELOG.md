@@ -5,30 +5,26 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [1.15.0](https://github.com/globus/globus-sdk-javascript/compare/v1.14.0...v1.15.0) (2023-11-07)
 
-
 ### Features
 
-* **GCS:** adds collections.remove() support ([#10](https://github.com/globus/globus-sdk-javascript/issues/10)) ([f12e516](https://github.com/globus/globus-sdk-javascript/commit/f12e516fd8754735d9cb694cfb1f9c3df78e287d))
+- **GCS:** adds collections.remove() support ([#10](https://github.com/globus/globus-sdk-javascript/issues/10)) ([f12e516](https://github.com/globus/globus-sdk-javascript/commit/f12e516fd8754735d9cb694cfb1f9c3df78e287d))
 
 ## [1.14.0](https://github.com/globus/globus-sdk-javascript/compare/v1.13.0...v1.14.0) (2023-11-07)
 
-
 ### Features
 
-* adds Node.js lts/iron to test matrix; Node.js 20 is now officially supported. ([#8](https://github.com/globus/globus-sdk-javascript/issues/8)) ([66b4fb2](https://github.com/globus/globus-sdk-javascript/commit/66b4fb2d58194860fd941f02bd0d90de31287d97))
-* **Globus Auth:** adds support for the Identities resources in the Globus Auth API ([#7](https://github.com/globus/globus-sdk-javascript/issues/7)) ([b56667d](https://github.com/globus/globus-sdk-javascript/commit/b56667dbc26f779ddefb55deef4e2676c7591cd0))
+- adds Node.js lts/iron to test matrix; Node.js 20 is now officially supported. ([#8](https://github.com/globus/globus-sdk-javascript/issues/8)) ([66b4fb2](https://github.com/globus/globus-sdk-javascript/commit/66b4fb2d58194860fd941f02bd0d90de31287d97))
+- **Globus Auth:** adds support for the Identities resources in the Globus Auth API ([#7](https://github.com/globus/globus-sdk-javascript/issues/7)) ([b56667d](https://github.com/globus/globus-sdk-javascript/commit/b56667dbc26f779ddefb55deef4e2676c7591cd0))
 
 ## 1.13.0 (2023-11-04)
 
-
 ### Bug Fixes
 
-* updates file paths to include '.js' and directories to use explicit 'index.js' for proper ESM support. ([#3](https://github.com/globusonline/globus-sdk-javascript/issues/3)) ([2b9b3cc](https://github.com/globusonline/globus-sdk-javascript/commit/2b9b3ccfbc10729cddd6d59f35cd944a7a1b4530))
-
+- updates file paths to include '.js' and directories to use explicit 'index.js' for proper ESM support. ([#3](https://github.com/globusonline/globus-sdk-javascript/issues/3)) ([2b9b3cc](https://github.com/globusonline/globus-sdk-javascript/commit/2b9b3ccfbc10729cddd6d59f35cd944a7a1b4530))
 
 ### Miscellaneous Chores
 
-* **internal:** updates release-please configuration ([8641488](https://github.com/globusonline/globus-sdk-javascript/commit/86414886549da7271d445a5cf4d7bc290f3ab789))
+- **internal:** updates release-please configuration ([8641488](https://github.com/globusonline/globus-sdk-javascript/commit/86414886549da7271d445a5cf4d7bc290f3ab789))
 
 ## [1.12.0-alpha](https://github.com/globusonline/globus-js/compare/@globus/sdk@1.11.0-alpha...@globus/sdk@1.12.0-alpha) (2023-10-30)
 

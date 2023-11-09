@@ -1,7 +1,7 @@
-import { ID, SCOPES } from "../config.js";
-import { serviceRequest } from "../../shared.js";
+import { ID, SCOPES } from '../config.js';
+import { serviceRequest } from '../../shared.js';
 
-import type { ServiceMethod } from "../../../services/types.js";
+import type { ServiceMethod } from '../../../services/types.js';
 
 /**
  * @see https://globusonline.github.io/globus-flows/#tag/Runs/paths/~1runs/get
@@ -14,7 +14,7 @@ export const getAll = function (options = {}, sdkOptions?) {
       path: `/runs`,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies ServiceMethod<{
   query?: Record<string, string>;

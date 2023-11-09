@@ -4,7 +4,7 @@ export interface Transfer {
    */
   DirectoryListingQuery: {
     path?: string;
-    show_hidden?: "true" | "false";
+    show_hidden?: 'true' | 'false';
     limit?: `${number}`;
     offset?: `${number}`;
     orderby?: string;
@@ -16,18 +16,18 @@ export interface Transfer {
       path: string;
     };
     Rename: {
-      DATA_TYPE: "mkdir";
+      DATA_TYPE: 'mkdir';
       old_path: string;
       new_path: string;
     };
     Symlink: {
-      DATA_TYPE: "symlink";
+      DATA_TYPE: 'symlink';
       path: string;
       symlink_target: string;
     };
 
     Delete: {
-      DATA_TYPE: "delete";
+      DATA_TYPE: 'delete';
       endpoint: string;
       submission_id: string;
       DATA: { DATA_TYPE: string; path: string }[];
@@ -36,7 +36,7 @@ export interface Transfer {
     };
 
     Transfer: {
-      DATA_TYPE: "transfer";
+      DATA_TYPE: 'transfer';
     };
   };
 }

@@ -13,50 +13,50 @@
  * - Removes `dist/` from paths to entry points (e.g. main, module, types, exports).
  * - Removes unnecessary properties for upstream consumers (e.g. scripts, devDependencies, etc.).
  */
-const fs = require("node:fs");
-const path = require("node:path");
-const package = require("../package.json");
+const fs = require('node:fs');
+const path = require('node:path');
+const pkg = require('../package.json');
 
-const { devDependencies } = package;
+const { devDependencies } = pkg;
 
-package.private = false;
-package.main = package.main.replace("dist/", "");
-package.module = package.module.replace("dist/", "");
-package.types = package.types.replace("dist/", "");
+pkg.private = false;
+pkg.main = pkg.main.replace('dist/', '');
+pkg.module = pkg.module.replace('dist/', '');
+pkg.types = pkg.types.replace('dist/', '');
 
-delete package.scripts;
-delete package.devDependencies;
-delete package.files;
+delete pkg.scripts;
+delete pkg.devDependencies;
+delete pkg.files;
 
 fs.writeFileSync(
-  path.join(__dirname, "../dist/package.json"),
-  JSON.stringify(package, null, 2),
-  "utf-8"
+  path.join(__dirname, '../dist/package.json'),
+  JSON.stringify(pkg, null, 2),
+  'utf-8',
 );
 
 fs.writeFileSync(
-  path.join(__dirname, "../dist/esm/package.json"),
+  path.join(__dirname, '../dist/esm/package.json'),
   JSON.stringify(
     {
-      type: "module",
+      type: 'module',
     },
     null,
-    2
+    2,
   ),
-  "utf-8"
+  'utf-8',
 );
 
 fs.writeFileSync(
-  path.join(__dirname, "../dist/cjs/package.json"),
+  path.join(__dirname, '../dist/cjs/package.json'),
   JSON.stringify(
     {
-      type: "commonjs",
+      type: 'commonjs',
       dependencies: {
         tslib: devDependencies.tslib,
       },
     },
     null,
-    2
+    2,
   ),
-  "utf-8"
+  'utf-8',
 );

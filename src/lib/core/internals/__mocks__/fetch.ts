@@ -1,5 +1,4 @@
-const actual: typeof import("../fetch") =
-  jest.requireActual("../fetch");
+const actual: typeof import('../fetch') = jest.requireActual('../fetch');
 
 module.exports = {
   ...actual,

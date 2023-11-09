@@ -12,29 +12,26 @@ import type {
   ServiceMethod,
   ServiceMethodDynamicSegments,
   BaseServiceMethodOptions,
-} from "../types.js";
+} from '../types.js';
 
 /**
  * Service methods for the Globus Connect Server Manager API.
  */
-export * as collections from "./service/collections.js";
-export * as endpoint from "./service/endpoint.js";
-export * as roles from "./service/roles.js";
-export * as storageGateways from "./service/storage-gateways.js";
-export * as userCredentials from "./service/user-credentials.js";
-export * as versioning from "./service/versioning.js";
+export * as collections from './service/collections.js';
+export * as endpoint from './service/endpoint.js';
+export * as roles from './service/roles.js';
+export * as storageGateways from './service/storage-gateways.js';
+export * as userCredentials from './service/user-credentials.js';
+export * as versioning from './service/versioning.js';
 
 const SCOPES = {
-  HIGH_ASSURANCE: "urn:globus:auth:scope:<ENDPOINT_ID>:manage_collections",
+  HIGH_ASSURANCE: 'urn:globus:auth:scope:<ENDPOINT_ID>:manage_collections',
   NON_HIGH_ASSURANCE:
-    "urn:globus:auth:scope:<ENDPOINT_ID>:manage_collections[*https://auth.globus.org/scopes/<MAPPED_COLLECTION_ID>/data_access]",
+    'urn:globus:auth:scope:<ENDPOINT_ID>:manage_collections[*https://auth.globus.org/scopes/<MAPPED_COLLECTION_ID>/data_access]',
 };
 
 export function getRequiredScopes(configuration: GCSConfiguration) {
-  return SCOPES.HIGH_ASSURANCE.replace(
-    "<ENDPOINT_ID>",
-    configuration.endpoint_id
-  );
+  return SCOPES.HIGH_ASSURANCE.replace('<ENDPOINT_ID>', configuration.endpoint_id);
 }
 
 /**
@@ -56,16 +53,13 @@ export type GCSConfiguration = {
  * The GCSServiceMethod type is similar to the core ServiceMethod type, but
  * the first parameter is always a GCSConfiguration object.
  */
-export type GCSServiceMethod<
-  O extends ServiceMethodOptions,
-  R extends Response = Response
-> = (
+export type GCSServiceMethod<O extends ServiceMethodOptions, R extends Response = Response> = (
   configuration: GCSConfiguration,
   methodOptions?: O & {
-    query?: BaseServiceMethodOptions["query"];
-    headers?: BaseServiceMethodOptions["headers"];
+    query?: BaseServiceMethodOptions['query'];
+    headers?: BaseServiceMethodOptions['headers'];
   },
-  sdkOptions?: SDKOptions
+  sdkOptions?: SDKOptions,
 ) => ReturnType<ServiceMethod<O, R>>;
 
 /**
@@ -75,13 +69,13 @@ export type GCSServiceMethod<
 export type GCSServiceMethodDynamicSegments<
   S extends Segment,
   O extends ServiceMethodOptions,
-  R extends Response = Response
+  R extends Response = Response,
 > = (
   configuration: GCSConfiguration,
   segments: S,
   methodOptions?: O & {
-    query?: BaseServiceMethodOptions["query"];
-    headers?: BaseServiceMethodOptions["headers"];
+    query?: BaseServiceMethodOptions['query'];
+    headers?: BaseServiceMethodOptions['headers'];
   },
-  sdkOptions?: SDKOptions
+  sdkOptions?: SDKOptions,
 ) => ReturnType<ServiceMethodDynamicSegments<S, O, R>>;

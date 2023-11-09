@@ -1,27 +1,27 @@
-import { createStorage } from "../../../core/storage";
-import { collections } from "..";
+import { createStorage } from '../../../core/storage';
+import { collections } from '..';
 
-import type { MirroredRequest } from "../../../../__mocks__/handlers";
+import type { MirroredRequest } from '../../../../__mocks__/handlers';
 
 const GCS_CONFIGURATION = {
-  host: "https://fa5e.bd7c.data.globus.org",
-  endpoint_id: "ac9cb54b-fc48-4824-b801-1388baf0a909",
+  host: 'https://fa5e.bd7c.data.globus.org',
+  endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
 };
 
-describe("gcs – collection", () => {
-  createStorage("memory");
-  test("get", async () => {
+describe('gcs – collection', () => {
+  createStorage('memory');
+  test('get', async () => {
     const result = await collections.get(
       GCS_CONFIGURATION,
-      "5e70cb38-90b4-4939-b5b7-2f502363004bs",
+      '5e70cb38-90b4-4939-b5b7-2f502363004bs',
       {
         query: {
-          include: ["private_policies"],
+          include: ['private_policies'],
         },
         headers: {
-          Authorization: "Bearer an-example-token",
+          Authorization: 'Bearer an-example-token',
         },
-      }
+      },
     );
     const {
       req: { url, method, headers },
@@ -46,11 +46,11 @@ describe("gcs – collection", () => {
     `);
   });
 
-  test("getAll", async () => {
+  test('getAll', async () => {
     const result = await collections.getAll(GCS_CONFIGURATION, {
       query: {
-        include: ["private_policies"],
-        mapped_collection_id: "2b6072ed-41d9-4082-83ea-c9ea6e00a107",
+        include: ['private_policies'],
+        mapped_collection_id: '2b6072ed-41d9-4082-83ea-c9ea6e00a107',
       },
     });
     const {
@@ -75,11 +75,8 @@ describe("gcs – collection", () => {
     `);
   });
 
-  test("remove", async () => {
-    const result = await collections.remove(
-      GCS_CONFIGURATION,
-      "some-uuid"
-    );
+  test('remove', async () => {
+    const result = await collections.remove(GCS_CONFIGURATION, 'some-uuid');
     const {
       req: { url, method, headers },
     } = (await result.json()) as unknown as MirroredRequest;
@@ -102,16 +99,12 @@ describe("gcs – collection", () => {
     `);
   });
 
-  test("remove – with headers", async () => {
-    const result = await collections.remove(
-      GCS_CONFIGURATION,
-      "some-uuid",
-      {
-        headers: {
-          Authorization: "some-token",
-        },
-      }
-    );
+  test('remove – with headers', async () => {
+    const result = await collections.remove(GCS_CONFIGURATION, 'some-uuid', {
+      headers: {
+        Authorization: 'some-token',
+      },
+    });
     const {
       req: { url, method, headers },
     } = (await result.json()) as unknown as MirroredRequest;

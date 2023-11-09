@@ -1,13 +1,10 @@
-import { getRequiredScopes } from "../index.js";
-import { HTTP_METHODS, serviceRequest } from "../../shared.js";
+import type { operations } from '@globus/types/gcs-manager/api';
+import { getRequiredScopes } from '../index.js';
+import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 
-import type {
-  GCSServiceMethod,
-  GCSServiceMethodDynamicSegments,
-} from "../index";
+import type { GCSServiceMethod, GCSServiceMethodDynamicSegments } from '../index';
 
-import type { JSONFetchResponse } from "../../types";
-import type { operations } from "@globus/types/gcs-manager/api";
+import type { JSONFetchResponse } from '../../types';
 
 /**
  * @see https://docs.globus.org/globus-connect-server/v5.4/api/openapi_Collections/#listCollections
@@ -15,10 +12,10 @@ import type { operations } from "@globus/types/gcs-manager/api";
 export const getAll = function (
   configuration,
   options?,
-  sdkOptions?
+  sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations["listCollections"]["responses"]["200"]["content"]["application/json"]
+    operations['listCollections']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -28,10 +25,10 @@ export const getAll = function (
       path: `/api/collections`,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies GCSServiceMethod<{
-  query?: operations["listCollections"]["parameters"]["query"];
+  query?: operations['listCollections']['parameters']['query'];
 }>;
 
 /**
@@ -41,11 +38,9 @@ export const get = function (
   configuration,
   collection_id,
   options?,
-  sdkOptions?
+  sdkOptions?,
 ): Promise<
-  JSONFetchResponse<
-    operations["getCollection"]["responses"]["200"]["content"]["application/json"]
-  >
+  JSONFetchResponse<operations['getCollection']['responses']['200']['content']['application/json']>
 > {
   return serviceRequest(
     {
@@ -54,12 +49,12 @@ export const get = function (
       path: `/api/collections/${collection_id}`,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations["getCollection"]["parameters"]["path"]["collection_id"],
+  operations['getCollection']['parameters']['path']['collection_id'],
   {
-    query?: operations["getCollection"]["parameters"]["query"];
+    query?: operations['getCollection']['parameters']['query'];
   }
 >;
 
@@ -70,10 +65,10 @@ export const remove = function (
   configuration,
   collection_id,
   options?,
-  sdkOptions?
+  sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations["deleteCollection"]["responses"]["200"]["content"]["application/json"]
+    operations['deleteCollection']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -84,10 +79,10 @@ export const remove = function (
       method: HTTP_METHODS.DELETE,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations["deleteCollection"]["parameters"]["path"]["collection_id"],
+  operations['deleteCollection']['parameters']['path']['collection_id'],
   {
     query?: never;
     payload?: never;

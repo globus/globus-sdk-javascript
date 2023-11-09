@@ -4,9 +4,10 @@
  * @see [Globus Auth API Documentation](https://docs.globus.org/api/auth/)
  * @module
  */
-import { build } from "../../core/url.js";
+import type ITokenResponse from 'js-pkce/dist/ITokenResponse';
+import { build } from '../../core/url.js';
 
-import * as AUTH from "./config.js";
+import * as AUTH from './config.js';
 
 /**
  * @private
@@ -14,17 +15,15 @@ import * as AUTH from "./config.js";
  */
 export const CONFIG = AUTH;
 
-import type ITokenResponse from "js-pkce/dist/ITokenResponse";
-
 export function getAuthorizationEndpoint() {
-  return build(AUTH.ID, "/v2/oauth2/authorize");
+  return build(AUTH.ID, '/v2/oauth2/authorize');
 }
 
 export function getTokenEndpoint() {
-  return build(AUTH.ID, "/v2/oauth2/token");
+  return build(AUTH.ID, '/v2/oauth2/token');
 }
 
-export * as identities from "./service/identities.js";
+export * as identities from './service/identities.js';
 
 export type Token = ITokenResponse & {
   resource_server: string;

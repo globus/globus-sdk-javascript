@@ -1,10 +1,10 @@
-import { HTTP_METHODS, serviceRequest } from "../../shared.js";
+import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 
-import { getHeadersForService } from "../shared.js";
-import { ID } from "../config.js";
+import { getHeadersForService } from '../shared.js';
+import { ID } from '../config.js';
 
-import type { Transfer } from "../types.js";
-import type { ServiceMethodDynamicSegments } from "../../types.js";
+import type { Transfer } from '../types.js';
+import type { ServiceMethodDynamicSegments } from '../../types.js';
 
 /**
  * List the contents of the directory at the specified path on an endpoint’s filesystem.
@@ -16,16 +16,16 @@ export const ls = function (endpoint_xid, options?, sdkOptions?) {
   return serviceRequest(
     {
       service: ID,
-      scope: "urn:globus:auth:scope:transfer.api.globus.org:all",
+      scope: 'urn:globus:auth:scope:transfer.api.globus.org:all',
       path: `/v0.10/operation/endpoint/${endpoint_xid}/ls`,
     },
     options,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Transfer["DirectoryListingQuery"];
+    query?: Transfer['DirectoryListingQuery'];
   }
 >;
 
@@ -38,7 +38,7 @@ export const ls = function (endpoint_xid, options?, sdkOptions?) {
 export const mkdir = function (endpoint_xid, options, sdkOptions?) {
   const serviceRequestOptions = {
     payload: {
-      DATA_TYPE: "mkdir",
+      DATA_TYPE: 'mkdir',
       ...options?.payload,
     },
     headers: {
@@ -49,17 +49,17 @@ export const mkdir = function (endpoint_xid, options, sdkOptions?) {
   return serviceRequest(
     {
       service: ID,
-      scope: "urn:globus:auth:scope:transfer.api.globus.org:all",
+      scope: 'urn:globus:auth:scope:transfer.api.globus.org:all',
       path: `/v0.10/operation/endpoint/${endpoint_xid}/mkdir`,
       method: HTTP_METHODS.POST,
     },
     serviceRequestOptions,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    payload: Omit<Transfer["Request"]["Mkdir"], "DATA_TYPE">;
+    payload: Omit<Transfer['Request']['Mkdir'], 'DATA_TYPE'>;
   }
 >;
 
@@ -74,7 +74,7 @@ export const mkdir = function (endpoint_xid, options, sdkOptions?) {
 export const rename = function (endpoint_xid, options, sdkOptions?) {
   const serviceRequestOptions = {
     payload: {
-      DATA_TYPE: "rename",
+      DATA_TYPE: 'rename',
       ...options?.payload,
     },
     headers: {
@@ -85,17 +85,17 @@ export const rename = function (endpoint_xid, options, sdkOptions?) {
   return serviceRequest(
     {
       service: ID,
-      scope: "urn:globus:auth:scope:transfer.api.globus.org:all",
+      scope: 'urn:globus:auth:scope:transfer.api.globus.org:all',
       path: `/v0.10/operation/endpoint/${endpoint_xid}/rename`,
       method: HTTP_METHODS.POST,
     },
     serviceRequestOptions,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    payload: Omit<Transfer["Request"]["Rename"], "DATA_TYPE">;
+    payload: Omit<Transfer['Request']['Rename'], 'DATA_TYPE'>;
   }
 >;
 
@@ -108,7 +108,7 @@ export const rename = function (endpoint_xid, options, sdkOptions?) {
 export const symlink = function (endpoint_xid, options, sdkOptions?) {
   const serviceRequestOptions = {
     payload: {
-      DATA_TYPE: "symlink",
+      DATA_TYPE: 'symlink',
       ...options?.payload,
     },
     headers: {
@@ -119,16 +119,16 @@ export const symlink = function (endpoint_xid, options, sdkOptions?) {
   return serviceRequest(
     {
       service: ID,
-      scope: "urn:globus:auth:scope:transfer.api.globus.org:all",
+      scope: 'urn:globus:auth:scope:transfer.api.globus.org:all',
       path: `/v0.10/operation/endpoint/${endpoint_xid}/symlink`,
       method: HTTP_METHODS.POST,
     },
     serviceRequestOptions,
-    sdkOptions
+    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    payload: Omit<Transfer["Request"]["Symlink"], "DATA_TYPE">;
+    payload: Omit<Transfer['Request']['Symlink'], 'DATA_TYPE'>;
   }
 >;

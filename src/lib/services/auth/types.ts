@@ -1,4 +1,4 @@
-import ITokenResponse from "js-pkce/dist/ITokenResponse";
+import ITokenResponse from 'js-pkce/dist/ITokenResponse';
 
 export namespace Globus.Auth {
   export type Token = ITokenResponse & {

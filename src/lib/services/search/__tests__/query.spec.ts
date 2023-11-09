@@ -1,14 +1,14 @@
-import { createStorage } from "../../../../lib/core/storage";
-import { query } from "..";
+import { createStorage } from '../../../core/storage';
+import { query } from '..';
 
-import type { MirroredRequest } from "../../../../__mocks__/handlers";
+import type { MirroredRequest } from '../../../../__mocks__/handlers';
 
-describe("search – query", () => {
-  test("get", async () => {
-    createStorage("memory");
-    const result = await query.get("524de2f6-d1a6-4b49-9286-d8dccb4196ae", {
+describe('search – query', () => {
+  test('get', async () => {
+    createStorage('memory');
+    const result = await query.get('524de2f6-d1a6-4b49-9286-d8dccb4196ae', {
       query: {
-        q: "test",
+        q: 'test',
       },
     });
     const {
@@ -32,10 +32,10 @@ describe("search – query", () => {
       }
     `);
   });
-  test("post", async () => {
-    createStorage("memory");
-    const result = await query.post("524de2f6-d1a6-4b49-9286-d8dccb4196ae", {
-      payload: { q: "test" },
+  test('post', async () => {
+    createStorage('memory');
+    const result = await query.post('524de2f6-d1a6-4b49-9286-d8dccb4196ae', {
+      payload: { q: 'test' },
     });
     const {
       req: { url, method, headers, json },
@@ -44,7 +44,7 @@ describe("search – query", () => {
       url,
       method,
       headers,
-      json
+      json,
     }).toMatchInlineSnapshot(`
       {
         "headers": {

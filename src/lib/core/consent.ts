@@ -1,7 +1,6 @@
-import { getStorage } from "./storage/index.js";
-import type { Token, TokenResponse } from "../services/auth/index.js";
-
-import ITokenResponse from "js-pkce/dist/ITokenResponse";
+import ITokenResponse from 'js-pkce/dist/ITokenResponse';
+import { getStorage } from './storage/index.js';
+import type { Token, TokenResponse } from '../services/auth/index.js';
 
 function isValidToken(check: unknown): check is Token {
   const maybe = check as Token;
@@ -9,14 +8,14 @@ function isValidToken(check: unknown): check is Token {
 }
 
 function store(token: ITokenResponse) {
-  token.scope.split(" ").forEach((scope) => {
+  token.scope.split(' ').forEach((scope) => {
     getStorage().set(scope, token);
   });
 }
 
 export function addTokenResponse(token: ITokenResponse | TokenResponse) {
   store(token);
-  if ("other_tokens" in token) {
+  if ('other_tokens' in token) {
     token.other_tokens.forEach(store);
   }
 }

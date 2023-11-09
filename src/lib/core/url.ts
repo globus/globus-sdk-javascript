@@ -1,11 +1,32 @@
-import {
-  getServiceBaseUrl,
-  getEnvironment,
-  Environment,
-  Service,
-} from "./global.js";
-import type { GCSConfiguration } from "../services/globus-connect-server/index.js";
-import { SDKOptions } from "../services/types.js";
+import { getServiceBaseUrl, getEnvironment, Environment, Service } from './global.js';
+import type { GCSConfiguration } from '../services/globus-connect-server/index.js';
+import { SDKOptions } from '../services/types.js';
+
+/**
+ * An extremely simplified parameter serializer based on our current needs.
+ *
+ * **This is intended for internal @globus/sdk use only.**
+ *
+ * @private
+ */
+export function stringifyParameters(parameters: {
+  [key: string]: string | number | Array<string | number | null | undefined> | null | undefined;
+}) {
+  const search = new URLSearchParams();
+
+  Array.from(Object.entries(parameters)).forEach(([key, value]) => {
+    if (Array.isArray(value)) {
+      /**
+       * Arrays are converted to comma-separated strings.
+       */
+      search.set(key, value.join(','));
+    } else if (value !== undefined) {
+      search.set(key, String(value));
+    }
+  });
+
+  return search.toString();
+}
 
 /**
  * Return the base URL for a service (based on the environment).
@@ -15,8 +36,8 @@ import { SDKOptions } from "../services/types.js";
  */
 export function getServiceURL(
   service: Service,
-  path = "",
-  environment: Environment = getEnvironment()
+  path = '',
+  environment: Environment = getEnvironment(),
 ): URL {
   const base = getServiceBaseUrl(service, environment);
   return new URL(path, base);
@@ -35,10 +56,10 @@ export function build(
   options?: {
     search?: Parameters<typeof stringifyParameters>[0];
   },
-  sdkOptions?: SDKOptions
+  sdkOptions?: SDKOptions,
 ) {
   let url;
-  if (typeof serviceOrConfiguration === "object") {
+  if (typeof serviceOrConfiguration === 'object') {
     url = new URL(path, serviceOrConfiguration.host);
   } else {
     url = getServiceURL(serviceOrConfiguration, path, sdkOptions?.environment);
@@ -47,33 +68,4 @@ export function build(
     url.search = stringifyParameters(options.search);
   }
   return url.toString();
-}
-
-/**
- * An extremely simplified parameter serializer based on our current needs.
- *
- * **This is intended for internal @globus/sdk use only.**
- *
- * @private
- */
-export function stringifyParameters(parameters: {
-  [key: string]:
-    | string
-    | number
-    | Array<string | number | null | undefined>
-    | null
-    | undefined;
-}) {
-  const search = new URLSearchParams();
-  for (const [key, value] of Object.entries(parameters)) {
-    if (Array.isArray(value)) {
-      /**
-       * Arrays are converted to comma-separated strings.
-       */
-      search.set(key, value.join(","));
-    } else if (value !== undefined) {
-      search.set(key, String(value));
-    }
-  }
-  return search.toString();
 }
