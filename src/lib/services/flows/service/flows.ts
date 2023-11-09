@@ -38,7 +38,7 @@ export const get = function (flow_id, options?, sdkOptions?) {
 /**
  * @see https://globusonline.github.io/globus-flows/#tag/Flows/paths/~1flows~1{flow_id}/delete
  */
-export const destroy = function (flow_id, options?, sdkOptions?) {
+export const remove = function (flow_id, options?, sdkOptions?) {
   return serviceRequest(
     {
       scope: SCOPES.MANAGE_FLOWS,
@@ -56,3 +56,9 @@ export const destroy = function (flow_id, options?, sdkOptions?) {
     payload?: never;
   }
 >;
+
+/**
+ * @deprecated `destroy` is deprecated in favor of `remove`. This method will be removed in a future release.
+ * @since 1.15.0
+ */
+export const destroy = remove;
