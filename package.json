@@ -10,7 +10,6 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint .",
-    "coverage": "jest --coverage",
     "build": "rm -rf ./dist && tsc --build tsconfig.package.json && tsc --build tsconfig.cjs.json && webpack && node ./scripts/generate-package-json.js",
     "watch": "tsc --watch tsconfig.package.json",
     "generate:docs": "npx typedoc --tsconfig tsconfig.package.json",
