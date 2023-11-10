@@ -1,4 +1,5 @@
-[![npm](https://img.shields.io/npm/v/@globus/sdk?style=flat-square&logo=npm&color=000&label)](https://www.npmjs.com/package/@globus/sdk)
+[![npm](https://img.shields.io/npm/v/@globus/sdk?style=flat-square&logo=npm&color=000&label)](https://www.npmjs.com/package/@globus/sdk) [![Codecov](https://img.shields.io/codecov/c/gh/globus/globus-sdk-javascript?style=flat-square&logo=codecov)](https://app.codecov.io/gh/globus/globus-sdk-javascript)
+
 
 The Globus SDK for JavaScript provides first class TypeScript support and makes it easy to call Globus services using idiomatic JavaScript APIs to build Node.js and web applications.
 
