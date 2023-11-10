@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.1](https://github.com/globus/globus-sdk-javascript/compare/v1.15.0...v1.15.1) (2023-11-10)
+
+
+### Bug Fixes
+
+* **Flows:** flows.destory has been replaced by flows.remove ([#15](https://github.com/globus/globus-sdk-javascript/issues/15)) ([9498076](https://github.com/globus/globus-sdk-javascript/commit/9498076501dc80fc78db4dd9fc0878846e7d54ac))
+
 ## [1.15.0](https://github.com/globus/globus-sdk-javascript/compare/v1.14.0...v1.15.0) (2023-11-07)
 
 ### Features
