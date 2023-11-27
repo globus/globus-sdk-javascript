@@ -13,7 +13,9 @@ import { endpointSearch } from './service/endpoint-search.js';
  * @internal
  */
 export const CONFIG = TRANSFER;
+
 export { endpointSearch };
 export * as fileOperations from './service/file-operations.js';
 export * as taskSubmission from './service/task-submission.js';
 export * as endpoint from './service/endpoint.js';
+export * as task from './service/task.js';

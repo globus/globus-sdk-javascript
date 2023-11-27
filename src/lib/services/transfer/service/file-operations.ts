@@ -1,7 +1,7 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 
 import { getHeadersForService } from '../shared.js';
-import { ID } from '../config.js';
+import { ID, SCOPES } from '../config.js';
 
 import type { Transfer } from '../types.js';
 import type { ServiceMethodDynamicSegments } from '../../types.js';
@@ -16,7 +16,7 @@ export const ls = function (endpoint_xid, options?, sdkOptions?) {
   return serviceRequest(
     {
       service: ID,
-      scope: 'urn:globus:auth:scope:transfer.api.globus.org:all',
+      scope: SCOPES.ALL,
       path: `/v0.10/operation/endpoint/${endpoint_xid}/ls`,
     },
     options,
@@ -49,7 +49,7 @@ export const mkdir = function (endpoint_xid, options, sdkOptions?) {
   return serviceRequest(
     {
       service: ID,
-      scope: 'urn:globus:auth:scope:transfer.api.globus.org:all',
+      scope: SCOPES.ALL,
       path: `/v0.10/operation/endpoint/${endpoint_xid}/mkdir`,
       method: HTTP_METHODS.POST,
     },
@@ -85,7 +85,7 @@ export const rename = function (endpoint_xid, options, sdkOptions?) {
   return serviceRequest(
     {
       service: ID,
-      scope: 'urn:globus:auth:scope:transfer.api.globus.org:all',
+      scope: SCOPES.ALL,
       path: `/v0.10/operation/endpoint/${endpoint_xid}/rename`,
       method: HTTP_METHODS.POST,
     },
@@ -119,7 +119,7 @@ export const symlink = function (endpoint_xid, options, sdkOptions?) {
   return serviceRequest(
     {
       service: ID,
-      scope: 'urn:globus:auth:scope:transfer.api.globus.org:all',
+      scope: SCOPES.ALL,
       path: `/v0.10/operation/endpoint/${endpoint_xid}/symlink`,
       method: HTTP_METHODS.POST,
     },

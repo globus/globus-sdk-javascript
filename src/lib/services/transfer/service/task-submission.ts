@@ -1,7 +1,7 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 
 import { getHeadersForService } from '../shared.js';
-import { ID } from '../config.js';
+import { ID, SCOPES } from '../config.js';
 
 import type { Transfer } from '../types.js';
 import type { SDKOptions, ServiceMethod } from '../../types.js';
@@ -26,7 +26,7 @@ export const submitDelete = function (options, sdkOptions?: SDKOptions) {
   return serviceRequest(
     {
       service: ID,
-      scope: 'urn:globus:auth:scope:transfer.api.globus.org:all',
+      scope: SCOPES.ALL,
       path: `/v0.10/delete`,
       method: HTTP_METHODS.POST,
     },
@@ -51,7 +51,7 @@ export const submitTransfer = function (options, sdkOptions?: SDKOptions) {
   return serviceRequest(
     {
       service: ID,
-      scope: 'urn:globus:auth:scope:transfer.api.globus.org:all',
+      scope: SCOPES.ALL,
       path: `/v0.10/transfer`,
       method: HTTP_METHODS.POST,
     },
@@ -72,7 +72,7 @@ export const submissionId = function (options?, sdkOptions?) {
   return serviceRequest(
     {
       service: ID,
-      scope: 'urn:globus:auth:scope:transfer.api.globus.org:all',
+      scope: SCOPES.ALL,
       path: `/v0.10/submission_id`,
     },
     options,

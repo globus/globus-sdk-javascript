@@ -1,6 +1,6 @@
 import { serviceRequest } from '../../shared.js';
 
-import { ID } from '../config.js';
+import { ID, SCOPES } from '../config.js';
 
 import type { ServiceMethodDynamicSegments, JSONFetchResponse } from '../../../services/types.js';
 
@@ -11,7 +11,7 @@ export const get = function (endpoint_xid, options?, sdkOptions?) {
   return serviceRequest(
     {
       service: ID,
-      scope: 'urn:globus:auth:scope:transfer.api.globus.org:all',
+      scope: SCOPES.ALL,
       path: `/v0.10/endpoint/${endpoint_xid}`,
     },
     options,
