@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.16.0](https://github.com/globus/globus-sdk-javascript/compare/v1.15.1...v1.16.0) (2023-12-05)
+
+
+### Features
+
+* **GCS:** adds collections.create, update, patch, and {reset,update}OwnerString ([#37](https://github.com/globus/globus-sdk-javascript/issues/37)) ([5b10343](https://github.com/globus/globus-sdk-javascript/commit/5b103430a71641e229865c1b6a5dddbfdff70231))
+
 ## [1.15.1](https://github.com/globus/globus-sdk-javascript/compare/v1.15.0...v1.15.1) (2023-11-10)
 
 
