@@ -127,4 +127,207 @@ describe('gcs – collection', () => {
       }
     `);
   });
+
+  test('create', async () => {
+    const result = await collections.create(GCS_CONFIGURATION, {
+      headers: {
+        Authorization: 'Bearer an-example-token',
+      },
+      payload: {
+        DATA_TYPE: 'collection#1.8.0',
+        collection_base_path: '/',
+        collection_type: 'guest',
+        display_name: 'some name',
+        mapped_collection_id: '476a00e0-0255-4397-91cb-87d054aa494a',
+        public: true,
+      },
+    });
+    const {
+      req: { url, method, headers, json },
+    } = (await result.json()) as unknown as MirroredRequest;
+    expect({
+      url,
+      method,
+      headers,
+      json,
+    }).toMatchInlineSnapshot(`
+      {
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "gzip,deflate",
+          "authorization": "Bearer an-example-token",
+          "connection": "close",
+          "content-length": "188",
+          "content-type": "application/json",
+          "host": "fa5e.bd7c.data.globus.org",
+          "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+        },
+        "json": {
+          "DATA_TYPE": "collection#1.8.0",
+          "collection_base_path": "/",
+          "collection_type": "guest",
+          "display_name": "some name",
+          "mapped_collection_id": "476a00e0-0255-4397-91cb-87d054aa494a",
+          "public": true,
+        },
+        "method": "POST",
+        "url": "https://fa5e.bd7c.data.globus.org/api/collections",
+      }
+    `);
+  });
+
+  test('update', async () => {
+    const result = await collections.update(GCS_CONFIGURATION, 'some-uuid', {
+      headers: {
+        Authorization: 'Bearer an-example-token',
+      },
+      payload: {
+        DATA_TYPE: 'collection#1.8.0',
+        collection_base_path: '/',
+        collection_type: 'guest',
+        display_name: 'some other name',
+        mapped_collection_id: '476a00e0-0255-4397-91cb-87d054aa494a',
+        public: true,
+      },
+    });
+    const {
+      req: { url, method, headers, json },
+    } = (await result.json()) as unknown as MirroredRequest;
+    expect({
+      url,
+      method,
+      headers,
+      json,
+    }).toMatchInlineSnapshot(`
+      {
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "gzip,deflate",
+          "authorization": "Bearer an-example-token",
+          "connection": "close",
+          "content-length": "194",
+          "content-type": "application/json",
+          "host": "fa5e.bd7c.data.globus.org",
+          "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+        },
+        "json": {
+          "DATA_TYPE": "collection#1.8.0",
+          "collection_base_path": "/",
+          "collection_type": "guest",
+          "display_name": "some other name",
+          "mapped_collection_id": "476a00e0-0255-4397-91cb-87d054aa494a",
+          "public": true,
+        },
+        "method": "PUT",
+        "url": "https://fa5e.bd7c.data.globus.org/api/collections/some-uuid",
+      }
+    `);
+  });
+
+  test('patch', async () => {
+    const result = await collections.patch(GCS_CONFIGURATION, 'some-uuid', {
+      headers: {
+        Authorization: 'Bearer an-example-token',
+      },
+      payload: {
+        display_name: 'some patched name',
+      },
+    });
+    const {
+      req: { url, method, headers, json },
+    } = (await result.json()) as unknown as MirroredRequest;
+    expect({
+      url,
+      method,
+      headers,
+      json,
+    }).toMatchInlineSnapshot(`
+      {
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "gzip,deflate",
+          "authorization": "Bearer an-example-token",
+          "connection": "close",
+          "content-length": "36",
+          "content-type": "application/json",
+          "host": "fa5e.bd7c.data.globus.org",
+          "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+        },
+        "json": {
+          "display_name": "some patched name",
+        },
+        "method": "PATCH",
+        "url": "https://fa5e.bd7c.data.globus.org/api/collections/some-uuid",
+      }
+    `);
+  });
+
+  test('updateOwnerString', async () => {
+    const result = await collections.updateOwnerString(GCS_CONFIGURATION, 'some-uuid', {
+      headers: {
+        Authorization: 'Bearer an-example-token',
+      },
+      payload: {
+        DATA_TYPE: 'owner_string#1.0.0',
+        identity_id: 'some-identity-id',
+      },
+    });
+    const {
+      req: { url, method, headers, json },
+    } = (await result.json()) as unknown as MirroredRequest;
+    expect({
+      url,
+      method,
+      headers,
+      json,
+    }).toMatchInlineSnapshot(`
+      {
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "gzip,deflate",
+          "authorization": "Bearer an-example-token",
+          "connection": "close",
+          "content-length": "67",
+          "content-type": "application/json",
+          "host": "fa5e.bd7c.data.globus.org",
+          "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+        },
+        "json": {
+          "DATA_TYPE": "owner_string#1.0.0",
+          "identity_id": "some-identity-id",
+        },
+        "method": "PUT",
+        "url": "https://fa5e.bd7c.data.globus.org/api/collections/some-uuid/owner_string",
+      }
+    `);
+  });
+
+  test('resetOwnerString', async () => {
+    const result = await collections.resetOwnerString(GCS_CONFIGURATION, 'some-uuid', {
+      headers: {
+        Authorization: 'Bearer an-example-token',
+      },
+    });
+    const {
+      req: { url, method, headers },
+    } = (await result.json()) as unknown as MirroredRequest;
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchInlineSnapshot(`
+      {
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "gzip,deflate",
+          "authorization": "Bearer an-example-token",
+          "connection": "close",
+          "host": "fa5e.bd7c.data.globus.org",
+          "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+        },
+        "method": "DELETE",
+        "url": "https://fa5e.bd7c.data.globus.org/api/collections/some-uuid/owner_string",
+      }
+    `);
+  });
 });
