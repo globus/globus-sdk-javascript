@@ -59,7 +59,12 @@ export function getClient(configuration: GCSConfiguration) {
     collections: {
       get: bind(collections.get, configuration),
       getAll: bind(collections.getAll, configuration),
+      create: bind(collections.create, configuration),
       remove: bind(collections.remove, configuration),
+      update: bind(collections.update, configuration),
+      patch: bind(collections.patch, configuration),
+      updateOwnerString: bind(collections.updateOwnerString, configuration),
+      resetOwnerString: bind(collections.resetOwnerString, configuration),
     },
     userCredentials: {
       get: bind(userCredentials.get, configuration),
