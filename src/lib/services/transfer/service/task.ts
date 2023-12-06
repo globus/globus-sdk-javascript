@@ -28,7 +28,7 @@ export const getAll = function (options = {}, sdkOptions?) {
 }>;
 
 /**
- * Fetch an task by its UUID.
+ * Fetch a task by its UUID.
  * @see https://docs.globus.org/api/transfer/task/#get_task_by_id
  */
 export const get = function (task_id, options?, sdkOptions?) {
