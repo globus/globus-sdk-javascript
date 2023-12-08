@@ -1,6 +1,11 @@
 import type { Environment } from '../../core/global.js';
 
 export const ID = 'TRANSFER';
+
+export const SCOPES = {
+  ALL: 'urn:globus:auth:scope:transfer.api.globus.org:all',
+};
+
 export const HOSTS: Partial<Record<Environment, string>> = {
   sandbox: 'transfer.sandbox.globuscs.info',
   production: 'transfer.api.globusonline.org',

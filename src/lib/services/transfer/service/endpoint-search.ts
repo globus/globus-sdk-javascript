@@ -1,5 +1,5 @@
 import { serviceRequest } from '../../shared.js';
-import { ID } from '../config.js';
+import { ID, SCOPES } from '../config.js';
 
 import type { BaseServiceMethodOptions, SDKOptions } from '../../../services/types.js';
 
@@ -32,7 +32,7 @@ export const endpointSearch = function (
   return serviceRequest(
     {
       service: ID,
-      scope: 'urn:globus:auth:scope:transfer.api.globus.org:all',
+      scope: SCOPES.ALL,
       path: `/v0.10/endpoint_search`,
     },
     serviceRequestOptions,

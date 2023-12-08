@@ -1,6 +1,6 @@
-import { serviceRequest } from '../../shared.js';
+import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 
-import { ID } from '../config.js';
+import { ID, SCOPES } from '../config.js';
 
 import type { ServiceMethodDynamicSegments, JSONFetchResponse } from '../../../services/types.js';
 
@@ -11,7 +11,7 @@ export const get = function (endpoint_xid, options?, sdkOptions?) {
   return serviceRequest(
     {
       service: ID,
-      scope: 'urn:globus:auth:scope:transfer.api.globus.org:all',
+      scope: SCOPES.ALL,
       path: `/v0.10/endpoint/${endpoint_xid}`,
     },
     options,
@@ -24,4 +24,34 @@ export const get = function (endpoint_xid, options?, sdkOptions?) {
     payload?: never;
   },
   JSONFetchResponse<Globus.Transfer.EndpointDocument>
+>;
+
+/**
+ * Delete an endpoint by its UUID.
+ * @see https://docs.globus.org/api/transfer/endpoint/#delete_endpoint_by_id
+ */
+export const remove = function (endpoint_xid, options?, sdkOptions?) {
+  return serviceRequest(
+    {
+      service: ID,
+      scope: SCOPES.ALL,
+      path: `/v0.10/endpoint/${endpoint_xid}`,
+      method: HTTP_METHODS.DELETE,
+    },
+    options,
+    sdkOptions,
+  );
+} satisfies ServiceMethodDynamicSegments<
+  string,
+  {
+    query?: never;
+    payload?: never;
+  },
+  JSONFetchResponse<{
+    DATA_TYPE: 'result';
+    code: 'Deleted';
+    message: string;
+    request_id: string;
+    resource: `/endpoint/${string}`;
+  }>
 >;
