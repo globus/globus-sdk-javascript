@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.17.0](https://github.com/globus/globus-sdk-javascript/compare/v1.16.0...v1.17.0) (2023-12-08)
+
+
+### Features
+
+* **GCS:** added create, delete, update, and patch methods for User Credentials. ([#41](https://github.com/globus/globus-sdk-javascript/issues/41)) ([966efb5](https://github.com/globus/globus-sdk-javascript/commit/966efb5e0954c651ad72f93615c8ee2c75229099))
+* **GCS:** added create, remove, update and patch methods for Storage Gateways ([#42](https://github.com/globus/globus-sdk-javascript/issues/42)) ([bf25771](https://github.com/globus/globus-sdk-javascript/commit/bf2577130bf7271d363640f9a02be165a575376a))
+* **Transfer:** adds Task-related service methods, endpoint.remove, and updates to shared scope constant. ([#32](https://github.com/globus/globus-sdk-javascript/issues/32)) ([d4c7c3c](https://github.com/globus/globus-sdk-javascript/commit/d4c7c3c60d81eb1ec53f07613da6a06cbce4d600))
+
 ## [1.16.0](https://github.com/globus/globus-sdk-javascript/compare/v1.15.1...v1.16.0) (2023-12-05)
 
 
