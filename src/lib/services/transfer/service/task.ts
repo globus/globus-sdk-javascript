@@ -26,7 +26,7 @@ export const getAll = function (options = {}, sdkOptions?) {
   );
 } satisfies ServiceMethod<
   {
-    query?: Record<string, string>;
+    query?: Transfer['Paging']['Offset']['Query'] & Record<string, string>;
     headers?: Record<string, string>;
     payload?: never;
   },
