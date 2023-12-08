@@ -8,7 +8,10 @@ import type {
   JSONFetchResponse,
 } from '../../../services/types.js';
 
+import type { Transfer } from '../types.js';
+
 /**
+ * Get a list of tasks submitted by the current user.
  * @see https://docs.globus.org/api/transfer/task/#get_task_list
  */
 export const getAll = function (options = {}, sdkOptions?) {
@@ -21,11 +24,19 @@ export const getAll = function (options = {}, sdkOptions?) {
     options,
     sdkOptions,
   );
-} satisfies ServiceMethod<{
-  query?: Record<string, string>;
-  headers?: Record<string, string>;
-  payload?: never;
-}>;
+} satisfies ServiceMethod<
+  {
+    query?: Record<string, string>;
+    headers?: Record<string, string>;
+    payload?: never;
+  },
+  JSONFetchResponse<
+    {
+      DATA_TYPE: 'task_list';
+      DATA: Globus.Transfer.TaskDocument[];
+    } & Transfer['Paging']['Offset']['Response']
+  >
+>;
 
 /**
  * Fetch a task by its UUID.

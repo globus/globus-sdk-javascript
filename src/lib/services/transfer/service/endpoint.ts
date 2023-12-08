@@ -46,5 +46,12 @@ export const remove = function (endpoint_xid, options?, sdkOptions?) {
   {
     query?: never;
     payload?: never;
-  }
+  },
+  JSONFetchResponse<{
+    DATA_TYPE: 'result';
+    code: 'Deleted';
+    message: string;
+    request_id: string;
+    resource: `/endpoint/${string}`;
+  }>
 >;
