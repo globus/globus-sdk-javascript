@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`oauth2 introspect 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "0",
+    "host": "auth.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "POST",
+  "url": "https://auth.globus.org/v2/oauth/token/introspect?token=abc-def-ghi&include=session_info%2Cidentity_set",
+}
+`;
+
+exports[`oauth2 revoke 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "0",
+    "host": "auth.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "POST",
+  "url": "https://auth.globus.org/v2/oauth/token/revoke?token=abc-def-ghi",
+}
+`;
+
+exports[`oauth2 validate 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "0",
+    "host": "auth.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "POST",
+  "url": "https://auth.globus.org/v2/oauth/token/validate?token=abc-def-ghi&client_id=my-client-id&token_type_hint=access_token",
+}
+`;
