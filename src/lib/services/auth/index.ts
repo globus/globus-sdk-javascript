@@ -24,6 +24,7 @@ export function getTokenEndpoint() {
 }
 
 export * as identities from './service/identities.js';
+export * as oauth2 from './service/oauth2/index.js';
 
 export type Token = ITokenResponse & {
   resource_server: string;
