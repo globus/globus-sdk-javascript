@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.0](https://github.com/globus/globus-sdk-javascript/compare/v1.17.0...v1.18.0) (2023-12-12)
+
+
+### Features
+
+* **Auth:** adds oauth2.token resources to Globus Auth service. ([#47](https://github.com/globus/globus-sdk-javascript/issues/47)) ([401526d](https://github.com/globus/globus-sdk-javascript/commit/401526d4ff812b80b1cd976d4a51d3949e5c3618))
+
 ## [1.17.0](https://github.com/globus/globus-sdk-javascript/compare/v1.16.0...v1.17.0) (2023-12-08)
 
 
