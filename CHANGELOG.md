@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.1](https://github.com/globus/globus-sdk-javascript/compare/v1.18.0...v1.18.1) (2023-12-13)
+
+
+### Bug Fixes
+
+* **Transfer:** fix incorrect API hostname for sandbox environment ([#50](https://github.com/globus/globus-sdk-javascript/issues/50)) ([edb11eb](https://github.com/globus/globus-sdk-javascript/commit/edb11eb859b7135328d649de791dece5c24cd08f))
+
 ## [1.18.0](https://github.com/globus/globus-sdk-javascript/compare/v1.17.0...v1.18.0) (2023-12-12)
 
 
