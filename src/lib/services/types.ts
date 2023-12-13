@@ -1,11 +1,25 @@
 import { stringifyParameters } from '../core/url.js';
 import { ENVIRONMENTS } from '../core/global.js';
 
-import type { FetchOverrides } from '../core/fetch.js';
-
 export interface JSONFetchResponse<Res> extends Response {
   json(): Promise<Res>;
 }
+
+/**
+ * Properties that will be passed to underlying `fetch` calls to override behavior.
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/fetch#parameters
+ */
+type FetchOverrides =
+  | (Omit<RequestInit, 'headers'> & {
+      headers?: Record<string, string>;
+      /**
+       * Provide an implementation of `fetch` to be used.
+       * This is currently **not** advertised since we do not dynamically import `cross-fetch` yet.
+       * @private
+       */
+      __callable?: typeof fetch;
+    })
+  | undefined;
 
 export type SDKOptions = {
   environment?: (typeof ENVIRONMENTS)[keyof typeof ENVIRONMENTS];
@@ -46,9 +60,13 @@ export type BaseServiceMethodOptions = {
    */
   query?: UnknownQueryParameters;
   /**
-   * The body of the request.
+   * The payload of the request that will be serialized to the body.
    */
   payload?: Record<string, unknown>;
+  /**
+   * Used to send an unmodified body as part of the request.
+   */
+  body?: any;
   /**
    * The headers to send with the request.
    */

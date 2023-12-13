@@ -1,7 +1,6 @@
 import type { operations } from '@globus/types/groups';
 import { ID, SCOPES } from '../config.js';
-import { build } from '../../../core/url.js';
-import { fetchWithScope } from '../../../core/fetch.js';
+import { serviceRequest } from '../../shared.js';
 
 import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../types.js';
 
@@ -10,16 +9,22 @@ import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../type
  */
 export const get = function (
   group_id,
-  _options?,
+  options?,
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
     operations['get_policies_v2_groups__group_id__policies_get']['responses']['200']['content']['application/json']
   >
 > {
-  return fetchWithScope(SCOPES.ALL, build(ID, `/v2/groups/${group_id}/policies`), {
-    ...sdkOptions?.fetch?.options,
-  });
+  return serviceRequest(
+    {
+      scope: SCOPES.ALL,
+      path: `/v2/groups/${group_id}/policies`,
+      service: ID,
+    },
+    options,
+    sdkOptions,
+  );
 } satisfies ServiceMethodDynamicSegments<
   operations['get_policies_v2_groups__group_id__policies_get']['parameters']['path']['group_id'],
   {

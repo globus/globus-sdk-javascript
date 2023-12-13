@@ -1,7 +1,6 @@
 import type { operations, components } from '@globus/types/groups';
 import { ID, SCOPES } from '../config.js';
-import { build } from '../../../core/url.js';
-import { fetchWithScope } from '../../../core/fetch.js';
+import { serviceRequest } from '../../shared.js';
 
 import type {
   JSONFetchResponse,
@@ -13,21 +12,21 @@ import type {
  * @see https://groups.api.globus.org/redoc#tag/groups/operation/get_my_groups_and_memberships_v2_groups_my_groups_get
  */
 export const getMyGroups = function (
-  options = {},
+  options?,
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
     operations['get_my_groups_and_memberships_v2_groups_my_groups_get']['responses']['200']['content']['application/json']
   >
 > {
-  return fetchWithScope(
-    SCOPES.ALL,
-    build(ID, `/v2/groups/my_groups`, {
-      search: options.query,
-    }),
+  return serviceRequest(
     {
-      ...sdkOptions?.fetch?.options,
+      scope: SCOPES.ALL,
+      path: `/v2/groups/my_groups`,
+      service: ID,
     },
+    options,
+    sdkOptions,
   );
 } satisfies ServiceMethod<{
   query?: {
@@ -43,21 +42,21 @@ export const getMyGroups = function (
  */
 export const get = function (
   group_id,
-  options = {},
+  options?,
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
     operations['get_group_v2_groups__group_id__get']['responses']['200']['content']['application/json']
   >
 > {
-  return fetchWithScope(
-    SCOPES.ALL,
-    build(ID, `/v2/groups/${group_id}`, {
-      search: options.query,
-    }),
+  return serviceRequest(
     {
-      ...sdkOptions?.fetch?.options,
+      service: ID,
+      scope: SCOPES.ALL,
+      path: `/v2/groups/${group_id}`,
     },
+    options,
+    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   operations['get_group_v2_groups__group_id__get']['parameters']['path']['group_id'],

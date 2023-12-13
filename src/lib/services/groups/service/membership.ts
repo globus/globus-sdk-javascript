@@ -1,7 +1,6 @@
 import type { operations } from '@globus/types/groups';
 import { ID, SCOPES } from '../config.js';
-import { build } from '../../../core/url.js';
-import { fetchWithScope } from '../../../core/fetch.js';
+import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 
 import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../types.js';
 
@@ -19,11 +18,16 @@ export const act = function (
   >
 > {
   if (!options?.payload) throw new Error('payload is required.');
-  return fetchWithScope(SCOPES.ALL, build(ID, `/v2/groups/${group_id}/policies`), {
-    method: 'POST',
-    body: JSON.stringify(options.payload),
-    ...sdkOptions?.fetch?.options,
-  });
+  return serviceRequest(
+    {
+      service: ID,
+      scope: SCOPES.ALL,
+      path: `/v2/groups/${group_id}`,
+      method: HTTP_METHODS.POST,
+    },
+    options,
+    sdkOptions,
+  );
 } satisfies ServiceMethodDynamicSegments<
   operations['update_group_v2_groups__group_id__put']['parameters']['path']['group_id'],
   {

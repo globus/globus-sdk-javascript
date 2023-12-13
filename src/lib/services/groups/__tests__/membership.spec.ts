@@ -58,7 +58,7 @@ test('membership - act', async () => {
         ],
       },
       "method": "POST",
-      "url": "https://groups.api.globus.org/v2/groups/6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9/policies",
+      "url": "https://groups.api.globus.org/v2/groups/6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9",
     }
   `);
 });

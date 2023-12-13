@@ -1,16 +1,21 @@
-import serviceTestSuite from '../../../../__utils__/service-test-suite';
+import { createStorage } from '../../../core/storage';
+import { mirror } from '../../../../__mocks__/handlers';
 import { taskSubmission } from '..';
 
-serviceTestSuite('transfer', 'task-submission', (fetch) => {
+describe('transfer.task-submission', () => {
+  beforeEach(() => {
+    createStorage('memory');
+  });
+
   test('submissionId', async () => {
-    await taskSubmission.submissionId();
-    expect(fetch).toHaveBeenCalled();
-    expect(fetch).toHaveBeenCalledWith(
-      `https://transfer.api.globusonline.org/v0.10/submission_id`,
-      {
-        headers: {},
-      },
-    );
+    const {
+      req: { url, method, headers },
+    } = await mirror(await taskSubmission.submissionId());
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchSnapshot();
   });
 
   test('submitDelete', async () => {
@@ -20,36 +25,42 @@ serviceTestSuite('transfer', 'task-submission', (fetch) => {
       DATA: [{ DATA_TYPE: 'delete_item', path: '/' }],
     };
 
-    await taskSubmission.submitDelete({
-      payload,
-    });
-    expect(fetch).toHaveBeenCalled();
-    expect(fetch).toHaveBeenCalledWith(
-      `https://transfer.api.globusonline.org/v0.10/delete`,
-      expect.objectContaining({
-        body: expect.stringContaining(`"DATA_TYPE":"delete"`) as unknown,
-        headers: expect.objectContaining({
-          'Content-Type': 'application/json',
-        }) as unknown,
-        method: 'POST',
+    const {
+      req: { url, method, headers, json },
+    } = await mirror(
+      await taskSubmission.submitDelete({
+        payload,
       }),
     );
+
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchSnapshot();
+
+    expect(json).toMatchObject({
+      DATA_TYPE: 'delete',
+    });
   });
 
   test('submitTransfer', async () => {
-    await taskSubmission.submitTransfer({
-      payload: {},
-    });
-    expect(fetch).toHaveBeenCalled();
-    expect(fetch).toHaveBeenCalledWith(
-      `https://transfer.api.globusonline.org/v0.10/transfer`,
-      expect.objectContaining({
-        body: expect.stringContaining(`"DATA_TYPE":"transfer"`) as unknown,
-        headers: expect.objectContaining({
-          'Content-Type': 'application/json',
-        }) as unknown,
-        method: 'POST',
+    const {
+      req: { url, method, headers, json },
+    } = await mirror(
+      await taskSubmission.submitTransfer({
+        payload: {},
       }),
     );
+
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchSnapshot();
+
+    expect(json).toMatchObject({
+      DATA_TYPE: 'transfer',
+    });
   });
 });

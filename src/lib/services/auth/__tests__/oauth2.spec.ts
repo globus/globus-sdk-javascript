@@ -9,12 +9,12 @@ describe('oauth2', () => {
 
   test('introspect', async () => {
     const {
-      req: { url, method, headers },
+      req: { url, method, headers, json },
     } = await mirror(
       await oauth2.token.introspect({
-        query: {
+        payload: {
           token: 'abc-def-ghi',
-          include: ['session_info', 'identity_set'],
+          include: 'session_info,identity_set',
         },
       }),
     );
@@ -22,15 +22,16 @@ describe('oauth2', () => {
       url,
       method,
       headers,
+      json,
     }).toMatchSnapshot();
   });
 
   test('revoke', async () => {
     const {
-      req: { url, method, headers },
+      req: { url, method, headers, json },
     } = await mirror(
       await oauth2.token.revoke({
-        query: {
+        payload: {
           token: 'abc-def-ghi',
         },
       }),
@@ -39,18 +40,18 @@ describe('oauth2', () => {
       url,
       method,
       headers,
+      json,
     }).toMatchSnapshot();
   });
 
   test('validate', async () => {
     const {
-      req: { url, method, headers },
+      req: { url, method, headers, json },
     } = await mirror(
       await oauth2.token.validate({
-        query: {
+        payload: {
           token: 'abc-def-ghi',
           client_id: 'my-client-id',
-          token_type_hint: 'access_token',
         },
       }),
     );
@@ -58,6 +59,7 @@ describe('oauth2', () => {
       url,
       method,
       headers,
+      json,
     }).toMatchSnapshot();
   });
 });
