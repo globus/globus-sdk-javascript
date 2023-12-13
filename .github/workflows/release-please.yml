@@ -43,14 +43,30 @@ jobs:
           channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
           payload: |
             {
-              "text": "@globus/sdk@${{ steps.release.outputs.tag_name }} has been released!",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "[View the release details on GitHub](${{ steps.release.outputs.html_url }})"
+                    "text": "`@globus/sdk@${{ steps.release.outputs.tag_name }}` has been released!"
                   }
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "View Release Details on GitHub",
+                        "emoji": true
+                      },
+                      "url": "${{ steps.release.outputs.html_url }}"
+                    }
+                  ]
                 }
               ]
             }
