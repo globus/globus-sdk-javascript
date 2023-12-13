@@ -1,7 +1,12 @@
 import { serviceRequest } from '../shared';
 import { mirror } from '../../../__mocks__/handlers';
+import { createStorage, getStorage } from '../../core/storage';
 
 describe('serviceRequest', () => {
+  afterEach(() => {
+    delete process.env['GLOBUS_SDK_OPTIONS'];
+  });
+
   it('generates a service request', async () => {
     const request = await serviceRequest(
       {
@@ -149,5 +154,78 @@ describe('serviceRequest', () => {
         "url": "https://auth.test.globuscs.info/some-path",
       }
     `);
+  });
+
+  it('supports fetch.options.__callable', async () => {
+    const fetch = jest.fn().mockResolvedValue({});
+
+    const request = await serviceRequest(
+      {
+        service: 'AUTH',
+        scope: 'a:required:scope',
+        path: '/some-path',
+      },
+      {
+        query: {
+          foo: 'bar',
+        },
+      },
+      {
+        environment: 'test',
+        fetch: {
+          options: {
+            __callable: fetch,
+            headers: {
+              Authorization: 'Bearer example-token',
+            },
+          },
+        },
+      },
+    );
+
+    await request;
+
+    expect(fetch).toHaveBeenCalled();
+    expect(fetch).toHaveBeenCalledWith('https://auth.test.globuscs.info/some-path?foo=bar', {
+      body: undefined,
+      headers: {
+        Authorization: 'Bearer example-token',
+      },
+      method: undefined,
+    });
+  });
+
+  it('reads tokens from storage', async () => {
+    /**
+     * Bootstrap and setup a token in storage.
+     */
+    createStorage('memory');
+    const scope = 'a:required:scope';
+    const token = {
+      token_type: 'Bearer',
+      access_token: 'EXAMPLE',
+    };
+    getStorage().set(scope, token);
+    /**
+     * Create a request that requires the scope.
+     */
+    const request = await serviceRequest(
+      {
+        service: 'AUTH',
+        scope,
+        path: '/some-path',
+      },
+      {
+        query: {
+          foo: 'bar',
+        },
+      },
+    );
+
+    const {
+      req: { headers },
+    } = await mirror(request);
+
+    expect(headers['authorization']).toEqual('Bearer EXAMPLE');
   });
 });

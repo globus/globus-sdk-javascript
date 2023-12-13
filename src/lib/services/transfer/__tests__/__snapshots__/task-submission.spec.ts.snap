@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`transfer.task-submission submissionId 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globusonline.org/v0.10/submission_id",
+}
+`;
+
+exports[`transfer.task-submission submitDelete 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "175",
+    "content-type": "application/json",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "POST",
+  "url": "https://transfer.api.globusonline.org/v0.10/delete",
+}
+`;
+
+exports[`transfer.task-submission submitTransfer 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "24",
+    "content-type": "application/json",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "POST",
+  "url": "https://transfer.api.globusonline.org/v0.10/transfer",
+}
+`;

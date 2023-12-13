@@ -1,52 +1,69 @@
-import serviceTestSuite from '../../../../__utils__/service-test-suite';
+import { createStorage } from '../../../core/storage';
+import { mirror } from '../../../../__mocks__/handlers';
 import { flows } from '..';
 
-serviceTestSuite('flows', 'flows', (fetch) => {
+describe('flows.flow', () => {
+  beforeEach(() => {
+    createStorage('memory');
+  });
+
   test('getAll', async () => {
-    await flows.getAll();
-    expect(fetch).toHaveBeenCalled();
-    expect(fetch).toHaveBeenCalledWith(`https://flows.globus.org/flows`, {
-      headers: {},
-    });
+    const {
+      req: { url, method, headers },
+    } = await mirror(await flows.getAll());
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchSnapshot();
   });
 
   test('getAll - with headers', async () => {
-    await flows.getAll({
-      headers: {
-        Authorization: 'Bearer this-is-an-example-token',
-      },
-    });
-    expect(fetch).toHaveBeenCalled();
-    expect(fetch).toHaveBeenCalledWith(`https://flows.globus.org/flows`, {
-      headers: {
-        Authorization: 'Bearer this-is-an-example-token',
-      },
-    });
-  });
-
-  test('getAll - with headers and fetch overriders', async () => {
-    await flows.getAll(
-      {
+    const {
+      req: { url, method, headers },
+    } = await mirror(
+      await flows.getAll({
         headers: {
           Authorization: 'Bearer this-is-an-example-token',
         },
-      },
-      {
-        fetch: {
-          options: {
-            headers: {
-              'X-Test-Header': 'test',
+      }),
+    );
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchSnapshot();
+  });
+
+  test('getAll - with headers and fetch overriders', async () => {
+    const {
+      req: { url, method, headers },
+    } = await mirror(
+      await flows.getAll(
+        {
+          headers: {
+            Authorization: 'Bearer this-is-an-example-token',
+          },
+        },
+        {
+          fetch: {
+            options: {
+              headers: {
+                'X-Test-Header': 'test',
+              },
             },
           },
         },
-      },
+      ),
     );
-    expect(fetch).toHaveBeenCalled();
-    expect(fetch).toHaveBeenCalledWith(`https://flows.globus.org/flows`, {
-      headers: {
-        Authorization: 'Bearer this-is-an-example-token',
-        'X-Test-Header': 'test',
-      },
-    });
+
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchSnapshot();
+
+    expect(headers['authorization']).toEqual('Bearer this-is-an-example-token');
+    expect(headers['x-test-header']).toEqual('test');
   });
 });

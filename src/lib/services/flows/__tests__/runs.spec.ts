@@ -1,12 +1,20 @@
-import serviceTestSuite from '../../../../__utils__/service-test-suite';
+import { createStorage } from '../../../core/storage';
+import { mirror } from '../../../../__mocks__/handlers';
 import { runs } from '..';
 
-serviceTestSuite('flows', 'runs', (fetch) => {
+describe('flows.runs', () => {
+  beforeEach(() => {
+    createStorage('memory');
+  });
+
   test('getAll', async () => {
-    await runs.getAll();
-    expect(fetch).toHaveBeenCalled();
-    expect(fetch).toHaveBeenCalledWith(`https://flows.globus.org/runs`, {
-      headers: {},
-    });
+    const {
+      req: { url, method, headers },
+    } = await mirror(await runs.getAll());
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchSnapshot();
   });
 });
