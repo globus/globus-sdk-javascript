@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.0](https://github.com/globus/globus-sdk-javascript/compare/v1.18.1...v2.0.0) (2024-01-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* updates @globus/types requirement to 0.0.6 ([#61](https://github.com/globus/globus-sdk-javascript/issues/61))
+* **Flows:** Removes `flows.destroy` alias, replaced by `flows.remove` in 1.15.0 ([#60](https://github.com/globus/globus-sdk-javascript/issues/60))
+* Drops support for Node.js 16 (Gallium) ([#58](https://github.com/globus/globus-sdk-javascript/issues/58))
+
+### Features
+
+* Drops support for Node.js 16 (Gallium) ([#58](https://github.com/globus/globus-sdk-javascript/issues/58)) ([4c7e062](https://github.com/globus/globus-sdk-javascript/commit/4c7e062e80c9ed4f78ec0158aa4751dc95a74b23)), closes [#14](https://github.com/globus/globus-sdk-javascript/issues/14)
+
+
+### Bug Fixes
+
+* **Auth:** Improves auth.oauth.token Typescript types and payload/body serialization ([#62](https://github.com/globus/globus-sdk-javascript/issues/62)) ([8b430d9](https://github.com/globus/globus-sdk-javascript/commit/8b430d94cfe51f1e1b35994cfc313af3b2e4ccd1))
+
+
+### Miscellaneous Chores
+
+* **Flows:** Removes `flows.destroy` alias, replaced by `flows.remove` in 1.15.0 ([#60](https://github.com/globus/globus-sdk-javascript/issues/60)) ([fe3ca8a](https://github.com/globus/globus-sdk-javascript/commit/fe3ca8a57e605ce48642bff27227693fb4120a94)), closes [#16](https://github.com/globus/globus-sdk-javascript/issues/16)
+* updates @globus/types requirement to 0.0.6 ([#61](https://github.com/globus/globus-sdk-javascript/issues/61)) ([d01581b](https://github.com/globus/globus-sdk-javascript/commit/d01581ba4a666a95a9e6968d665cd46fe9c8f876))
+
 ## [1.18.1](https://github.com/globus/globus-sdk-javascript/compare/v1.18.0...v1.18.1) (2023-12-13)
 
 
