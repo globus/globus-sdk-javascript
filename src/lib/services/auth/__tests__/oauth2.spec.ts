@@ -8,6 +8,11 @@ describe('oauth2', () => {
   });
 
   test('introspect', async () => {
+    expect(() => {
+      // @ts-expect-error This intentionally does not have a payload to test the error case.
+      oauth2.token.introspect();
+    }).toThrow();
+
     const {
       req: { url, method, headers, formData },
     } = await mirror(
@@ -27,6 +32,11 @@ describe('oauth2', () => {
   });
 
   test('revoke', async () => {
+    expect(() => {
+      // @ts-expect-error This intentionally does not have a payload to test the error case.
+      oauth2.token.revoke();
+    }).toThrow();
+
     const {
       req: { url, method, headers, formData },
     } = await mirror(
@@ -45,6 +55,11 @@ describe('oauth2', () => {
   });
 
   test('validate', async () => {
+    expect(() => {
+      // @ts-expect-error This intentionally does not have a payload to test the error case.
+      oauth2.token.validate();
+    }).toThrow();
+
     const {
       req: { url, method, headers, formData },
     } = await mirror(
