@@ -3,16 +3,50 @@ import { HTTP_METHODS, serviceRequest } from '../../../../services/shared.js';
 
 import type { ServiceMethod, ServiceMethodOptions } from '../../../types.js';
 
+type IntrospectPayload = {
+  token: string;
+  include?: string;
+};
+
+type RevokePayload = {
+  token: string;
+  token_type_hint?: 'access_token';
+};
+
+type ValidatePayload = {
+  token: string;
+  client_id: string;
+};
+
+type SupportedPayloads = IntrospectPayload | RevokePayload | ValidatePayload;
+
+function serialize(payload?: SupportedPayloads) {
+  return new URLSearchParams(payload);
+}
+
 /**
  * Format and inject properties that are specific to the `/token` resources.
  */
-function injectServiceOptions(options: ServiceMethodOptions): ServiceMethodOptions {
+function injectServiceOptions(
+  options:
+    | (ServiceMethodOptions & {
+        payload?: SupportedPayloads;
+      })
+    | undefined,
+): ServiceMethodOptions {
   return {
     ...options,
-    body: new URLSearchParams(options?.payload as Record<string, string>).toString(),
+    /**
+     * The `token` service methods always expect a form-encoded body. We still allow
+     * end-consumers to pass a raw body, but if `payload` is provided it is serialized.
+     */
+    body: options?.body ?? options?.payload ? serialize(options?.payload) : undefined,
     headers: {
       ...(options?.headers || {}),
-      'Content-Type': 'application/x-www-form-urlencoded',
+      /**
+       * Force the `Content-Type` header to be `application/x-www-form-urlencoded` and `charset=UTF-8`.
+       */
+      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
     },
   };
 }
@@ -33,10 +67,7 @@ export const introspect = function (options, sdkOptions?) {
     sdkOptions,
   );
 } satisfies ServiceMethod<{
-  payload: {
-    token: string;
-    include?: string;
-  };
+  payload: IntrospectPayload;
 }>;
 
 /**
@@ -55,10 +86,7 @@ export const revoke = function (options, sdkOptions?) {
     sdkOptions,
   );
 } satisfies ServiceMethod<{
-  payload: {
-    token: string;
-    token_type_hint?: 'access_token';
-  };
+  payload: RevokePayload;
 }>;
 
 /**
@@ -77,8 +105,5 @@ export const validate = function (options, sdkOptions?) {
     sdkOptions,
   );
 } satisfies ServiceMethod<{
-  payload: {
-    token: string;
-    client_id: string;
-  };
+  payload: ValidatePayload;
 }>;

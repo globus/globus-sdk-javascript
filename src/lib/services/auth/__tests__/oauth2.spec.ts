@@ -55,6 +55,7 @@ describe('oauth2', () => {
         },
       }),
     );
+
     expect({
       url,
       method,
