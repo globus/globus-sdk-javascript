@@ -1,4 +1,4 @@
-import { type RestContext, type RestRequest, rest } from 'msw';
+import { HttpResponse, http } from 'msw';
 
 /**
  * A mirrored request from MSW. This can be used to easilty validate the shape
@@ -8,7 +8,7 @@ import { type RestContext, type RestRequest, rest } from 'msw';
  */
 export type MirroredRequest = {
   __msw: 'FALLBACK';
-  req: Pick<RestRequest, 'url' | 'method'> & {
+  req: Pick<Request, 'url' | 'method'> & {
     /**
      * MSW returns a `Headers` object, which is not JSON serializable. We
      * mirror as a plain object.
@@ -19,7 +19,6 @@ export type MirroredRequest = {
      */
     json?: unknown;
   };
-  ctx: RestContext;
 };
 
 export const handlers = [
@@ -28,7 +27,7 @@ export const handlers = [
    * request object that was dispatched to the server. By returning the request
    * object, here, assertions can be run against it in individual tests.
    */
-  rest.all('*', async (request, res, ctx) => {
+  http.all('*', async ({ request }) => {
     const headers: MirroredRequest['req']['headers'] = {};
 
     Array.from(request.headers.entries()).forEach(([key, value]) => {
@@ -42,7 +41,6 @@ export const handlers = [
         method: request.method,
         headers,
       },
-      ctx,
     };
 
     try {
@@ -51,7 +49,7 @@ export const handlers = [
       // ignore error
     }
 
-    return res(ctx.json(mirroredRequest));
+    return HttpResponse.json(mirroredRequest);
   }),
 ];
 
