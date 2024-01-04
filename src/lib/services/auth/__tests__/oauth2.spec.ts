@@ -9,7 +9,7 @@ describe('oauth2', () => {
 
   test('introspect', async () => {
     const {
-      req: { url, method, headers, json },
+      req: { url, method, headers, formData },
     } = await mirror(
       await oauth2.token.introspect({
         payload: {
@@ -22,13 +22,13 @@ describe('oauth2', () => {
       url,
       method,
       headers,
-      json,
+      formData,
     }).toMatchSnapshot();
   });
 
   test('revoke', async () => {
     const {
-      req: { url, method, headers, json },
+      req: { url, method, headers, formData },
     } = await mirror(
       await oauth2.token.revoke({
         payload: {
@@ -40,13 +40,13 @@ describe('oauth2', () => {
       url,
       method,
       headers,
-      json,
+      formData,
     }).toMatchSnapshot();
   });
 
   test('validate', async () => {
     const {
-      req: { url, method, headers, json },
+      req: { url, method, headers, formData },
     } = await mirror(
       await oauth2.token.validate({
         payload: {
@@ -55,12 +55,11 @@ describe('oauth2', () => {
         },
       }),
     );
-
     expect({
       url,
       method,
       headers,
-      json,
+      formData,
     }).toMatchSnapshot();
   });
 });

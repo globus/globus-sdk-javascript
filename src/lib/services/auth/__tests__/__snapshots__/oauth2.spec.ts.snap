@@ -2,59 +2,59 @@
 
 exports[`oauth2 introspect 1`] = `
 {
+  "formData": {
+    "include": "session_info,identity_set",
+    "token": "abc-def-ghi",
+  },
   "headers": {
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "content-length": "61",
-    "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+    "content-length": "53",
+    "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
     "host": "auth.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
-  "json": {
-    "include": "session_info,identity_set",
-    "token": "abc-def-ghi",
-  },
   "method": "POST",
-  "url": "https://auth.globus.org/v2/oauth/token/introspect",
+  "url": "https://auth.globus.org/v2/oauth2/token/introspect",
 }
 `;
 
 exports[`oauth2 revoke 1`] = `
 {
+  "formData": {
+    "token": "abc-def-ghi",
+  },
   "headers": {
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "content-length": "23",
-    "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+    "content-length": "17",
+    "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
     "host": "auth.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
-  "json": {
-    "token": "abc-def-ghi",
-  },
   "method": "POST",
-  "url": "https://auth.globus.org/v2/oauth/token/revoke",
+  "url": "https://auth.globus.org/v2/oauth2/token/revoke",
 }
 `;
 
 exports[`oauth2 validate 1`] = `
 {
+  "formData": {
+    "client_id": "my-client-id",
+    "token": "abc-def-ghi",
+  },
   "headers": {
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "content-length": "50",
-    "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+    "content-length": "40",
+    "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
     "host": "auth.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
-  "json": {
-    "client_id": "my-client-id",
-    "token": "abc-def-ghi",
-  },
   "method": "POST",
-  "url": "https://auth.globus.org/v2/oauth/token/validate",
+  "url": "https://auth.globus.org/v2/oauth2/token/validate",
 }
 `;

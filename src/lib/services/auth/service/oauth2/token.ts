@@ -28,11 +28,9 @@ function serialize(payload?: SupportedPayloads) {
  * Format and inject properties that are specific to the `/token` resources.
  */
 function injectServiceOptions(
-  options:
-    | (ServiceMethodOptions & {
-        payload?: SupportedPayloads;
-      })
-    | undefined,
+  options: ServiceMethodOptions & {
+    payload: SupportedPayloads;
+  },
 ): ServiceMethodOptions {
   return {
     ...options,
@@ -40,13 +38,13 @@ function injectServiceOptions(
      * The `token` service methods always expect a form-encoded body. We still allow
      * end-consumers to pass a raw body, but if `payload` is provided it is serialized.
      */
-    body: options?.body ?? options?.payload ? serialize(options?.payload) : undefined,
+    body: serialize(options.payload),
     headers: {
       ...(options?.headers || {}),
       /**
        * Force the `Content-Type` header to be `application/x-www-form-urlencoded` and `charset=UTF-8`.
        */
-      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
     },
   };
 }
@@ -56,11 +54,14 @@ function injectServiceOptions(
  * @see https://docs.globus.org/api/auth/reference/#token-introspect
  */
 export const introspect = function (options, sdkOptions?) {
+  if (!options?.payload) {
+    throw new Error(`'payload' is required for introspect`);
+  }
   return serviceRequest(
     {
       service: ID,
       scope: undefined,
-      path: `/v2/oauth/token/introspect`,
+      path: `/v2/oauth2/token/introspect`,
       method: HTTP_METHODS.POST,
     },
     injectServiceOptions(options),
@@ -75,11 +76,14 @@ export const introspect = function (options, sdkOptions?) {
  * @see https://docs.globus.org/api/auth/reference/#token-revoke
  */
 export const revoke = function (options, sdkOptions?) {
+  if (!options?.payload) {
+    throw new Error(`'payload' is required for revoke`);
+  }
   return serviceRequest(
     {
       service: ID,
       scope: undefined,
-      path: `/v2/oauth/token/revoke`,
+      path: `/v2/oauth2/token/revoke`,
       method: HTTP_METHODS.POST,
     },
     injectServiceOptions(options),
@@ -94,11 +98,14 @@ export const revoke = function (options, sdkOptions?) {
  * @deprecated Rather than using `validate` to check if a token is valid, it is recommended to make a request to the resource server with the token and handle the error response.
  */
 export const validate = function (options, sdkOptions?) {
+  if (!options?.payload) {
+    throw new Error(`'payload' is required for validate`);
+  }
   return serviceRequest(
     {
       service: ID,
       scope: undefined,
-      path: `/v2/oauth/token/validate`,
+      path: `/v2/oauth2/token/validate`,
       method: HTTP_METHODS.POST,
     },
     injectServiceOptions(options),
