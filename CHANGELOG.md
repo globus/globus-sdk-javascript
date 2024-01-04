@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/globus/globus-sdk-javascript/compare/v2.0.0...v2.0.1) (2024-01-04)
+
+
+### Bug Fixes
+
+* **Auth:** addresses an issue causing auth.oauth2 methods from making proper requests. ([#63](https://github.com/globus/globus-sdk-javascript/issues/63)) ([ab64d8a](https://github.com/globus/globus-sdk-javascript/commit/ab64d8a2834b17c4c2debf119b234a054f2bc9ef))
+
 ## [2.0.0](https://github.com/globus/globus-sdk-javascript/compare/v1.18.1...v2.0.0) (2024-01-04)
 
 
