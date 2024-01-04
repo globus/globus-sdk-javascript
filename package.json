@@ -21,7 +21,7 @@
   },
   "license": "Apache-2.0",
   "devDependencies": {
-    "@globus/types": "0.0.5",
+    "@globus/types": "0.0.6",
     "@tsconfig/recommended": "^1.0.3",
     "@types/jest": "29.5.11",
     "eslint": "^8.56.0",
@@ -48,7 +48,7 @@
     "js-pkce": "^1.2.1"
   },
   "peerDependencies": {
-    "@globus/types": "^0.0.5"
+    "@globus/types": "^0.0.6"
   },
   "peerDependenciesMeta": {
     "@globus/types": {
