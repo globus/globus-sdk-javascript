@@ -18,6 +18,10 @@ export type MirroredRequest = {
      * JSON payload provided with the request, if any.
      */
     json?: unknown;
+    /**
+     * Form data provided with the request, if any.
+     */
+    formData?: object;
   };
 };
 
@@ -34,12 +38,21 @@ export const handlers = [
       headers[key] = value;
     });
 
+    const formData: Record<any, any> = {};
+    if (request.headers.get('content-type')?.includes('application/x-www-form-urlencoded')) {
+      const rawFormData = await request.formData();
+      rawFormData.forEach((value, key) => {
+        formData[key] = value;
+      });
+    }
+
     const mirroredRequest: MirroredRequest = {
       __msw: 'FALLBACK',
       req: {
         url: request.url,
         method: request.method,
         headers,
+        formData,
       },
     };
 

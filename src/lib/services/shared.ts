@@ -94,7 +94,10 @@ export function serviceRequest(
   /**
    * If a raw body was provided, use that. Otherwise, if a payload was provided, serialize it.
    */
-  const body = options?.body ?? options?.payload ? JSON.stringify(options.payload) : undefined;
+  let body = options?.body;
+  if (!body && options?.payload) {
+    body = JSON.stringify(options.payload);
+  }
 
   /**
    * If `Content-Type` header was not provided, and there is a body, we assume it is JSON.

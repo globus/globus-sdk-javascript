@@ -8,8 +8,13 @@ describe('oauth2', () => {
   });
 
   test('introspect', async () => {
+    expect(() => {
+      // @ts-expect-error This intentionally does not have a payload to test the error case.
+      oauth2.token.introspect();
+    }).toThrow();
+
     const {
-      req: { url, method, headers, json },
+      req: { url, method, headers, formData },
     } = await mirror(
       await oauth2.token.introspect({
         payload: {
@@ -22,13 +27,18 @@ describe('oauth2', () => {
       url,
       method,
       headers,
-      json,
+      formData,
     }).toMatchSnapshot();
   });
 
   test('revoke', async () => {
+    expect(() => {
+      // @ts-expect-error This intentionally does not have a payload to test the error case.
+      oauth2.token.revoke();
+    }).toThrow();
+
     const {
-      req: { url, method, headers, json },
+      req: { url, method, headers, formData },
     } = await mirror(
       await oauth2.token.revoke({
         payload: {
@@ -40,13 +50,18 @@ describe('oauth2', () => {
       url,
       method,
       headers,
-      json,
+      formData,
     }).toMatchSnapshot();
   });
 
   test('validate', async () => {
+    expect(() => {
+      // @ts-expect-error This intentionally does not have a payload to test the error case.
+      oauth2.token.validate();
+    }).toThrow();
+
     const {
-      req: { url, method, headers, json },
+      req: { url, method, headers, formData },
     } = await mirror(
       await oauth2.token.validate({
         payload: {
@@ -55,12 +70,11 @@ describe('oauth2', () => {
         },
       }),
     );
-
     expect({
       url,
       method,
       headers,
-      json,
+      formData,
     }).toMatchSnapshot();
   });
 });
