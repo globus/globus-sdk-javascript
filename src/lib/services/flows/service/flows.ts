@@ -56,9 +56,3 @@ export const remove = function (flow_id, options?, sdkOptions?) {
     payload?: never;
   }
 >;
-
-/**
- * @deprecated `destroy` is deprecated in favor of `remove`. This method will be removed in a future release.
- * @since 1.15.0
- */
-export const destroy = remove;
