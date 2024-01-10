@@ -77,10 +77,11 @@ export interface Transfer {
 
   Request: {
     Mkdir: {
+      DATA_TYPE: 'mkdir';
       path: string;
     };
     Rename: {
-      DATA_TYPE: 'mkdir';
+      DATA_TYPE: 'rename';
       old_path: string;
       new_path: string;
     };
