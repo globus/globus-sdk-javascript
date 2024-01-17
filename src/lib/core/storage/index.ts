@@ -10,7 +10,7 @@ export interface StorageSystem {
   clear(): void;
 }
 
-let storage: undefined | StorageSystem;
+let storage: StorageSystem | undefined;
 type StorageOptions =
   | 'localStorage'
   | 'memory'
@@ -33,18 +33,19 @@ export function createStorage(storageType: StorageOptions = 'memory'): StorageSy
     }
     storage = new Factory();
   }
-  return storage;
+  /**
+   * This cast is required based our use of resetting the storage system during testing.
+   * @see __reset
+   */
+  return storage as StorageSystem;
 }
 
 export default createStorage;
 
-export function getStorage() {
-  if (!storage) {
-    throw Error('You must create a storage system.');
-  }
-  return storage;
-}
-
+/**
+ * Returns the active storage system.
+ */
+export const getStorage = createStorage;
 /**
  * A private method for resetting the storage system. This is primarily used to reset
  * the storage system during testing.

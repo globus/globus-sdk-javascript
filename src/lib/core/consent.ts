@@ -7,6 +7,9 @@ function isValidToken(check: unknown): check is Token {
   return Boolean(maybe.token_type && maybe.access_token);
 }
 
+/**
+ * Store a token in the active storage system.
+ */
 function store(token: ITokenResponse) {
   token.scope.split(' ').forEach((scope) => {
     getStorage().set(scope, token);
@@ -20,6 +23,11 @@ export function addTokenResponse(token: ITokenResponse | TokenResponse) {
   }
 }
 
+/**
+ * Obtain the token string for the given scope.
+ * @param scope The scope string that will be used to look up the token.
+ * @returns The token string for the given scope or null if no token is found.
+ */
 export function getTokenForScope(scope: string) {
   const token = getStorage().get(scope);
   if (!token || !isValidToken(token)) {
