@@ -13,3 +13,5 @@ import * as SEARCH from './config.js';
 export const CONFIG = SEARCH;
 
 export * as query from './service/query.js';
+export * as subject from './service/subject.js';
+export * as entry from './service/entry.js';
