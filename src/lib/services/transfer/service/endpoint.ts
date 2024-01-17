@@ -27,8 +27,12 @@ export const get = function (endpoint_xid, options?, sdkOptions?) {
 >;
 
 /**
- * Delete an endpoint by its UUID.
- * @see https://docs.globus.org/api/transfer/endpoint/#delete_endpoint_by_id
+ * Delete a Globus Connect Personal entity by its UUID.
+ * As of 2024-01-08, this method (and the Transfer API) only supports deleting Globus Connect Personal entities.
+ *
+ * All GCSv5 endpoints and collections should be deleted (and managed) using Globus Connect Server (i.e. {@link "@globus/sdk".gcs.collections.remove | `gcs.collections.remove`}).
+ *
+ * @see https://docs.globus.org/api/transfer/gcp_management/#delete_endpoint_by_id
  */
 export const remove = function (endpoint_xid, options?, sdkOptions?) {
   return serviceRequest(
