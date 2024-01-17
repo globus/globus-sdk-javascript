@@ -5,8 +5,8 @@ import type { ServiceMethodDynamicSegments } from '../../types.js';
 import type { ResultFormatVersion } from '../types.js';
 
 /**
- * Lookup a single Entry in a Search Index.
- * @param index_id The UUID of the index to query.
+ * Lookup a single Subject in a Search Index.
+ * @param index_id The UUID of the Search index where the lookup will be performed.
  *
  * @see https://docs.globus.org/api/search/reference/get_subject/
  */
@@ -26,7 +26,7 @@ export const get = function (index_id, options?, sdkOptions?) {
     /**
      * @see https://docs.globus.org/api/search/reference/get_subject/#parameters
      */
-    query?: {
+    query: {
       subject: string;
       result_format_version?: ResultFormatVersion | string;
       bypass_visible_to?: 'true' | 'false';
