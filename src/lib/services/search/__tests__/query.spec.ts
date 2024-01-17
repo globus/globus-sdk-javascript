@@ -1,7 +1,7 @@
 import { createStorage } from '../../../core/storage';
 import { query } from '..';
 
-import type { MirroredRequest } from '../../../../__mocks__/handlers';
+import { MirroredRequest, mirror } from '../../../../__mocks__/handlers';
 
 describe('search – query', () => {
   test('get', async () => {
@@ -32,6 +32,34 @@ describe('search – query', () => {
       }
     `);
   });
+
+  /**
+   * @see https://github.com/globus/globus-sdk-javascript/issues/76
+   */
+  test('allows get without Authorization header', async () => {
+    expect(() => {
+      query.get('foobar', {
+        query: {
+          q: 'test',
+        },
+      });
+    }).not.toThrow();
+    const {
+      req: { url, method, headers },
+    } = await mirror(
+      await query.get('524de2f6-d1a6-4b49-9286-d8dccb4196ae', {
+        query: {
+          q: 'hello+world',
+        },
+      }),
+    );
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchSnapshot();
+  });
+
   test('post', async () => {
     createStorage('memory');
     const result = await query.post('524de2f6-d1a6-4b49-9286-d8dccb4196ae', {
