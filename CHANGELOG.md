@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.0](https://github.com/globus/globus-sdk-javascript/compare/v2.0.1...v2.1.0) (2024-01-18)
+
+
+### Features
+
+* **Search:** adds support for Get Entry and Get Subject resources ([#78](https://github.com/globus/globus-sdk-javascript/issues/78)) ([6ea1d55](https://github.com/globus/globus-sdk-javascript/commit/6ea1d55d0c0825aa12ee9920dcab3388e9208dbe))
+
+
+### Bug Fixes
+
+* **Authorization:** attempting to access storage ("getStorage") before instantiation no longer throws an error, instead a default storage system is created. ([#77](https://github.com/globus/globus-sdk-javascript/issues/77)) ([7e468db](https://github.com/globus/globus-sdk-javascript/commit/7e468db7ddab2629a4a91a721a83f312af151d38)), closes [#76](https://github.com/globus/globus-sdk-javascript/issues/76)
+* **Typescript, Transfer:** fix improper DATA_TYPE type references for transfer.fileOperations.mkdir and transfer.fileOperations.rename ([#69](https://github.com/globus/globus-sdk-javascript/issues/69)) ([78578f1](https://github.com/globus/globus-sdk-javascript/commit/78578f1015845e96cc2492b3a72f6958a678fffd))
+
 ## [2.0.1](https://github.com/globus/globus-sdk-javascript/compare/v2.0.0...v2.0.1) (2024-01-04)
 
 
