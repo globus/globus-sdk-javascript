@@ -37,6 +37,7 @@ describe('transfer.task-submission', () => {
       url,
       method,
       headers,
+      json,
     }).toMatchSnapshot();
 
     expect(json).toMatchObject({
@@ -49,7 +50,18 @@ describe('transfer.task-submission', () => {
       req: { url, method, headers, json },
     } = await mirror(
       await taskSubmission.submitTransfer({
-        payload: {},
+        payload: {
+          submission_id: 'abc',
+          source_endpoint: 'e434fe90-591f-40d9-8d34-3016b6237046',
+          destination_endpoint: 'e434fe90-591f-40d9-8d34-3016b6237046',
+          DATA: [
+            {
+              DATA_TYPE: 'transfer_item',
+              source_path: '/',
+              destination_path: '/destination',
+            },
+          ],
+        },
       }),
     );
 
@@ -57,6 +69,7 @@ describe('transfer.task-submission', () => {
       url,
       method,
       headers,
+      json,
     }).toMatchSnapshot();
 
     expect(json).toMatchObject({
