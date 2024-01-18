@@ -81,10 +81,7 @@ export type ServiceMethodOptions = BaseServiceMethodOptions | undefined | never;
 export type Segment = string | Record<string, string>;
 
 export type ServiceMethod<O extends ServiceMethodOptions, R extends Response = Response> = (
-  methodOptions?: O & {
-    query?: BaseServiceMethodOptions['query'];
-    headers?: BaseServiceMethodOptions['headers'];
-  },
+  methodOptions?: O & BaseServiceMethodOptions,
   sdkOptions?: SDKOptions,
 ) => Promise<R>;
 

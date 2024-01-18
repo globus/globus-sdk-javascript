@@ -25,6 +25,17 @@ exports[`transfer.task-submission submitDelete 1`] = `
     "host": "transfer.api.globusonline.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
+  "json": {
+    "DATA": [
+      {
+        "DATA_TYPE": "delete_item",
+        "path": "/",
+      },
+    ],
+    "DATA_TYPE": "delete",
+    "endpoint": "e434fe90-591f-40d9-8d34-3016b6237046",
+    "submission_id": "65d1dc8c-5ebb-487e-8990-e5a25e3cf1d4",
+  },
   "method": "POST",
   "url": "https://transfer.api.globusonline.org/v0.10/delete",
 }
@@ -36,10 +47,23 @@ exports[`transfer.task-submission submitTransfer 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "content-length": "24",
+    "content-length": "256",
     "content-type": "application/json",
     "host": "transfer.api.globusonline.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "DATA": [
+      {
+        "DATA_TYPE": "transfer_item",
+        "destination_path": "/destination",
+        "source_path": "/",
+      },
+    ],
+    "DATA_TYPE": "transfer",
+    "destination_endpoint": "e434fe90-591f-40d9-8d34-3016b6237046",
+    "source_endpoint": "e434fe90-591f-40d9-8d34-3016b6237046",
+    "submission_id": "abc",
   },
   "method": "POST",
   "url": "https://transfer.api.globusonline.org/v0.10/transfer",
