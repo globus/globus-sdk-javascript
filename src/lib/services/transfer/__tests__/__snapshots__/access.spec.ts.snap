@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`task get 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint/example-task-id/access/example-access-rule-id",
+}
+`;
+
+exports[`task getAll 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint/example-endpoint-id/access_list",
+}
+`;
+
+exports[`task remove 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": undefined,
+  "method": "DELETE",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint/example-task-id/access/example-access-rule-id",
+}
+`;
+
+exports[`task update 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "20",
+    "content-type": "application/json",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "permissions": "rw",
+  },
+  "method": "PUT",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint/example-task-id/access/example-access-rule-id",
+}
+`;

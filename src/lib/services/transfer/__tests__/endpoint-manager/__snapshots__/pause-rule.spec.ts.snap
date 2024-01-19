@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`endpointManager.pauseRule create 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "413",
+    "content-type": "application/json",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "DATA_TYPE": "pause_rule",
+    "created_by_host_manager": true,
+    "editable": true,
+    "endpoint_display_name": "example-endpoint-display-name",
+    "endpoint_id": "example-endpoint-id",
+    "identity_id": "example-identity-id",
+    "message": "a test message",
+    "pause_ls": true,
+    "pause_mkdir": true,
+    "pause_rename": true,
+    "pause_symlink": true,
+    "pause_task_delete": true,
+    "pause_task_transfer_delete": true,
+    "pause_task_transfer_read": true,
+    "start_time": null,
+  },
+  "method": "POST",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/pause_rule",
+}
+`;
+
+exports[`endpointManager.pauseRule get 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/pause_rule/example-task-id",
+}
+`;
+
+exports[`endpointManager.pauseRule getAll 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/pause_rule_list",
+}
+`;
+
+exports[`endpointManager.pauseRule remove 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": undefined,
+  "method": "DELETE",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/pause_rule/example-task-id",
+}
+`;
+
+exports[`endpointManager.pauseRule update 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "32",
+    "content-type": "application/json",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "message": "an example message",
+  },
+  "method": "PUT",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/pause_rule/example-pause-rule-id",
+}
+`;

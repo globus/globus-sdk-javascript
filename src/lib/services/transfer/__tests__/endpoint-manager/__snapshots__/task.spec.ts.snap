@@ -1,0 +1,170 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`endpointManager.task cancel 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "63",
+    "content-type": "application/json",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "message": "a test message",
+    "task_id_list": [
+      "example-task-id",
+    ],
+  },
+  "method": "POST",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/admin_cancel",
+}
+`;
+
+exports[`endpointManager.task get 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/task/example-task-id",
+}
+`;
+
+exports[`endpointManager.task getAdminCancel 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "0",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": undefined,
+  "method": "POST",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/admin_cancel/example-admin-cancel-id",
+}
+`;
+
+exports[`endpointManager.task getAll 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globusonline.org/v0.10/task_list",
+}
+`;
+
+exports[`endpointManager.task getEventList 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": undefined,
+  "method": "GET",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/task/example-task-id/event_list?filters=iserror%3A1",
+}
+`;
+
+exports[`endpointManager.task getPauseInfo 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": undefined,
+  "method": "GET",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/task/example-task-id/pause_info",
+}
+`;
+
+exports[`endpointManager.task getSkippedErrors 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": undefined,
+  "method": "GET",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/task/example-task-id/skipped_errors?marker=10",
+}
+`;
+
+exports[`endpointManager.task getSuccessfulTransfers 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": undefined,
+  "method": "GET",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/task/example-task-id/successful_transfers?marker=1",
+}
+`;
+
+exports[`endpointManager.task pause 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "63",
+    "content-type": "application/json",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "message": "a test message",
+    "task_id_list": [
+      "example-task-id",
+    ],
+  },
+  "method": "POST",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/admin_pause",
+}
+`;
+
+exports[`endpointManager.task resume 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "36",
+    "content-type": "application/json",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "task_id_list": [
+      "example-task-id",
+    ],
+  },
+  "method": "POST",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/admin_resume",
+}
+`;
