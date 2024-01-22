@@ -14,7 +14,17 @@ import type { Transfer } from '../types.js';
  * Get a list of tasks submitted by the current user.
  * @see https://docs.globus.org/api/transfer/task/#get_task_list
  */
-export const getAll = function (options = {}, sdkOptions?) {
+export const getAll = function (
+  options = {},
+  sdkOptions?,
+): Promise<
+  JSONFetchResponse<
+    {
+      DATA_TYPE: 'task_list';
+      DATA: Globus.Transfer.TaskDocument[];
+    } & Transfer['Paging']['Offset']['Response']
+  >
+> {
   return serviceRequest(
     {
       service: ID,
@@ -24,25 +34,21 @@ export const getAll = function (options = {}, sdkOptions?) {
     options,
     sdkOptions,
   );
-} satisfies ServiceMethod<
-  {
-    query?: Transfer['Paging']['Offset']['Query'] & Record<string, string>;
-    headers?: Record<string, string>;
-    payload?: never;
-  },
-  JSONFetchResponse<
-    {
-      DATA_TYPE: 'task_list';
-      DATA: Globus.Transfer.TaskDocument[];
-    } & Transfer['Paging']['Offset']['Response']
-  >
->;
+} satisfies ServiceMethod<{
+  query?: Transfer['Paging']['Offset']['Query'] & Record<string, string>;
+  headers?: Record<string, string>;
+  payload?: never;
+}>;
 
 /**
  * Fetch a task by its UUID.
  * @see https://docs.globus.org/api/transfer/task/#get_task_by_id
  */
-export const get = function (task_id, options?, sdkOptions?) {
+export const get = function (
+  task_id,
+  options?,
+  sdkOptions?,
+): Promise<JSONFetchResponse<Globus.Transfer.TaskDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -57,14 +63,25 @@ export const get = function (task_id, options?, sdkOptions?) {
   {
     query?: never;
     payload?: never;
-  },
-  JSONFetchResponse<Globus.Transfer.TaskDocument>
+  }
 >;
 
 /**
  * @see https://docs.globus.org/api/transfer/task/#update_task_by_id
  */
-export const update = function (task_id, options?, sdkOptions?) {
+export const update = function (
+  task_id,
+  options?,
+  sdkOptions?,
+): Promise<
+  JSONFetchResponse<{
+    DATA_TYPE: 'result';
+    code: 'Udpated';
+    message: string;
+    request_id: string;
+    resource: `/task/${string}/cancel`;
+  }>
+> {
   return serviceRequest(
     {
       service: ID,
@@ -86,7 +103,11 @@ export const update = function (task_id, options?, sdkOptions?) {
 /**
  * @see https://docs.globus.org/api/transfer/task/#cancel_task_by_id
  */
-export const cancel = function (task_id, options?, sdkOptions?) {
+export const cancel = function (
+  task_id,
+  options?,
+  sdkOptions?,
+): Promise<JSONFetchResponse<Globus.Transfer.TaskDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -102,14 +123,17 @@ export const cancel = function (task_id, options?, sdkOptions?) {
   {
     query?: never;
     payload?: never;
-  },
-  JSONFetchResponse<Globus.Transfer.TaskDocument>
+  }
 >;
 
 /**
  * @see https://docs.globus.org/api/transfer/task/#remove_task_by_id
  */
-export const remove = function (task_id, options?, sdkOptions?) {
+export const remove = function (
+  task_id,
+  options?,
+  sdkOptions?,
+): Promise<JSONFetchResponse<Globus.Transfer.TaskDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -125,14 +149,17 @@ export const remove = function (task_id, options?, sdkOptions?) {
   {
     query?: never;
     payload?: never;
-  },
-  JSONFetchResponse<Globus.Transfer.TaskDocument>
+  }
 >;
 
 /**
  * @see https://docs.globus.org/api/transfer/task/#get_event_list
  */
-export const getEventList = function (task_id, options?, sdkOptions?) {
+export const getEventList = function (
+  task_id,
+  options?,
+  sdkOptions?,
+): Promise<JSONFetchResponse<Globus.Transfer.TaskEventListDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -154,7 +181,11 @@ export const getEventList = function (task_id, options?, sdkOptions?) {
 /**
  * @see https://docs.globus.org/api/transfer/task/#get_task_successful_transfers
  */
-export const getSuccessfulTransfers = function (task_id, options?, sdkOptions?) {
+export const getSuccessfulTransfers = function (
+  task_id,
+  options?,
+  sdkOptions?,
+): Promise<JSONFetchResponse<Globus.Transfer.SuccessfulTransfersListDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -176,7 +207,11 @@ export const getSuccessfulTransfers = function (task_id, options?, sdkOptions?) 
 /**
  * @see https://docs.globus.org/api/transfer/task/#get_task_skipped_errors
  */
-export const getSkippedErrors = function (task_id, options?, sdkOptions?) {
+export const getSkippedErrors = function (
+  task_id,
+  options?,
+  sdkOptions?,
+): Promise<JSONFetchResponse<Globus.Transfer.SkippedErrorsListDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -198,7 +233,11 @@ export const getSkippedErrors = function (task_id, options?, sdkOptions?) {
 /**
  * @see https://docs.globus.org/api/transfer/task/#get_task_pause_info
  */
-export const getPauseInfo = function (task_id, options?, sdkOptions?) {
+export const getPauseInfo = function (
+  task_id,
+  options?,
+  sdkOptions?,
+): Promise<JSONFetchResponse<Globus.Transfer.PauseInfoLimitedDocument>> {
   return serviceRequest(
     {
       service: ID,

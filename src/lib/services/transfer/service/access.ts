@@ -1,14 +1,17 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
-
 import { ID, SCOPES } from '../config.js';
+import { Transfer } from '../types.js';
 
 import type { ServiceMethodDynamicSegments, JSONFetchResponse } from '../../../services/types.js';
-import { Transfer } from '../types.js';
 
 /**
  * @see https://docs.globus.org/api/transfer/acl/#rest_access_get_list
  */
-export const getAll = function (endpoint_xid, options?, sdkOptions?) {
+export const getAll = function (
+  endpoint_xid,
+  options?,
+  sdkOptions?,
+): Promise<JSONFetchResponse<Globus.Transfer.AccessListDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -23,17 +26,17 @@ export const getAll = function (endpoint_xid, options?, sdkOptions?) {
   {
     query?: Transfer['Paging']['Offset']['Query'];
     payload?: never;
-  },
-  JSONFetchResponse<{
-    DATA_TYPE: 'access_list';
-    DATA: Globus.Transfer.AccessDocument[];
-  }>
+  }
 >;
 
 /**
  * @see https://docs.globus.org/api/transfer/acl/#rest_access_create
  */
-export const create = function (endpoint_xid, options, sdkOptions?) {
+export const create = function (
+  endpoint_xid,
+  options,
+  sdkOptions?,
+): Promise<JSONFetchResponse<Globus.Transfer.AccessDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -48,14 +51,17 @@ export const create = function (endpoint_xid, options, sdkOptions?) {
   string,
   {
     payload: Partial<Globus.Transfer.AccessDocument>;
-  },
-  JSONFetchResponse<Globus.Transfer.AccessDocument>
+  }
 >;
 
 /**
  * @see https://docs.globus.org/api/transfer/acl/#get_access_rule_by_id
  */
-export const get = function ({ endpoint_xid, id }, options?, sdkOptions?) {
+export const get = function (
+  { endpoint_xid, id },
+  options?,
+  sdkOptions?,
+): Promise<JSONFetchResponse<Globus.Transfer.AccessDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -70,14 +76,25 @@ export const get = function ({ endpoint_xid, id }, options?, sdkOptions?) {
   {
     query?: never;
     payload?: never;
-  },
-  JSONFetchResponse<Globus.Transfer.AccessDocument>
+  }
 >;
 
 /**
  * @see https://docs.globus.org/api/transfer/acl/#update_access_rule
  */
-export const update = function ({ endpoint_xid, id }, options, sdkOptions?) {
+export const update = function (
+  { endpoint_xid, id },
+  options,
+  sdkOptions?,
+): Promise<
+  JSONFetchResponse<{
+    DATA_TYPE: 'result';
+    code: 'Updated';
+    message: string;
+    request_id: string;
+    resource: `/endpoint/${string}/access/${string}`;
+  }>
+> {
   return serviceRequest(
     {
       service: ID,
@@ -93,20 +110,25 @@ export const update = function ({ endpoint_xid, id }, options, sdkOptions?) {
   {
     query?: never;
     payload: Partial<Globus.Transfer.AccessDocument>;
-  },
-  JSONFetchResponse<{
-    DATA_TYPE: 'result';
-    code: 'Updated';
-    message: string;
-    request_id: string;
-    resource: `/endpoint/${string}/access/${string}`;
-  }>
+  }
 >;
 
 /**
  * @see https://docs.globus.org/api/transfer/acl/#delete_access_rule
  */
-export const remove = function ({ endpoint_xid, id }, options?, sdkOptions?) {
+export const remove = function (
+  { endpoint_xid, id },
+  options?,
+  sdkOptions?,
+): Promise<
+  JSONFetchResponse<{
+    DATA_TYPE: 'result';
+    code: 'Deleted';
+    message: string;
+    request_id: string;
+    resource: `/endpoint/${string}/access/${string}`;
+  }>
+> {
   return serviceRequest(
     {
       service: ID,
@@ -122,12 +144,5 @@ export const remove = function ({ endpoint_xid, id }, options?, sdkOptions?) {
   {
     query?: never;
     payload?: never;
-  },
-  JSONFetchResponse<{
-    DATA_TYPE: 'result';
-    code: 'Deleted';
-    message: string;
-    request_id: string;
-    resource: `/endpoint/${string}/access${string}`;
-  }>
+  }
 >;

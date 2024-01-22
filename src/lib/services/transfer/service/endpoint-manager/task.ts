@@ -1,5 +1,4 @@
 import { HTTP_METHODS, serviceRequest } from '../../../shared.js';
-
 import { ID, SCOPES } from '../../config.js';
 
 import type {
@@ -13,7 +12,17 @@ import type { Transfer } from '../../types.js';
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_tasks
  */
-export const getAll = function (options = {}, sdkOptions?) {
+export const getAll = function (
+  options = {},
+  sdkOptions?,
+): Promise<
+  JSONFetchResponse<
+    {
+      DATA_TYPE: 'task_list';
+      DATA: Globus.Transfer.EndpointManagerTaskDocument[];
+    } & Transfer['Paging']['LastKey']['Response']
+  >
+> {
   return serviceRequest(
     {
       service: ID,
@@ -23,23 +32,19 @@ export const getAll = function (options = {}, sdkOptions?) {
     options,
     sdkOptions,
   );
-} satisfies ServiceMethod<
-  {
-    query?: Globus.Transfer.AdminTaskQuery;
-    payload?: never;
-  },
-  JSONFetchResponse<
-    {
-      DATA_TYPE: 'task_list';
-      DATA: Globus.Transfer.EndpointManagerTaskDocument[];
-    } & Transfer['Paging']['LastKey']['Response']
-  >
->;
+} satisfies ServiceMethod<{
+  query?: Globus.Transfer.AdminTaskQuery;
+  payload?: never;
+}>;
 
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_task
  */
-export const get = function (task_id, options?, sdkOptions?) {
+export const get = function (
+  task_id,
+  options?,
+  sdkOptions?,
+): Promise<JSONFetchResponse<Globus.Transfer.EndpointManagerTaskDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -54,14 +59,16 @@ export const get = function (task_id, options?, sdkOptions?) {
   {
     query?: never;
     payload?: never;
-  },
-  JSONFetchResponse<Globus.Transfer.EndpointManagerTaskDocument>
+  }
 >;
 
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#admin_cancel
  */
-export const cancel = function (options, sdkOptions?) {
+export const cancel = function (
+  options,
+  sdkOptions?,
+): Promise<JSONFetchResponse<Globus.Transfer.AdminCancelDocumentResponse>> {
   return serviceRequest(
     {
       service: ID,
@@ -72,18 +79,19 @@ export const cancel = function (options, sdkOptions?) {
     options,
     sdkOptions,
   );
-} satisfies ServiceMethod<
-  {
-    query?: never;
-    payload: Globus.Transfer.AdminCancelDocument;
-  },
-  JSONFetchResponse<Globus.Transfer.AdminCancelDocumentResponse>
->;
+} satisfies ServiceMethod<{
+  query?: never;
+  payload: Globus.Transfer.AdminCancelDocument;
+}>;
 
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_cancel_status_by_id
  */
-export const getAdminCancel = function (admin_cancel_id, options?, sdkOptions?) {
+export const getAdminCancel = function (
+  admin_cancel_id,
+  options?,
+  sdkOptions?,
+): Promise<JSONFetchResponse<Globus.Transfer.AdminCancelDocumentResponse>> {
   return serviceRequest(
     {
       service: ID,
@@ -99,14 +107,17 @@ export const getAdminCancel = function (admin_cancel_id, options?, sdkOptions?) 
   {
     query?: never;
     payload?: never;
-  },
-  JSONFetchResponse<Globus.Transfer.AdminCancelDocumentResponse>
+  }
 >;
 
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_task_events
  */
-export const getEventList = function (task_id, options?, sdkOptions?) {
+export const getEventList = function (
+  task_id,
+  options?,
+  sdkOptions?,
+): Promise<JSONFetchResponse<Globus.Transfer.TaskEventListDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -121,14 +132,17 @@ export const getEventList = function (task_id, options?, sdkOptions?) {
   {
     query?: Transfer['Paging']['Offset']['Query'] & { filter_is_error?: 1 };
     payload?: never;
-  },
-  JSONFetchResponse<Globus.Transfer.TaskEventListDocument>
+  }
 >;
 
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_task_successful_transfers_as_admin
  */
-export const getSuccessfulTransfers = function (task_id, options?, sdkOptions?) {
+export const getSuccessfulTransfers = function (
+  task_id,
+  options?,
+  sdkOptions?,
+): Promise<JSONFetchResponse<Globus.Transfer.SuccessfulTransfersDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -143,14 +157,17 @@ export const getSuccessfulTransfers = function (task_id, options?, sdkOptions?) 
   {
     query?: Transfer['Paging']['Marker']['Query'];
     payload?: never;
-  },
-  JSONFetchResponse<Globus.Transfer.SuccessfulTransfersDocument>
+  }
 >;
 
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_task_skipped_errors_transfers_as_admin
  */
-export const getSkippedErrors = function (task_id, options?, sdkOptions?) {
+export const getSkippedErrors = function (
+  task_id,
+  options?,
+  sdkOptions?,
+): Promise<JSONFetchResponse<Globus.Transfer.SkippedErrorsDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -165,14 +182,16 @@ export const getSkippedErrors = function (task_id, options?, sdkOptions?) {
   {
     query?: Transfer['Paging']['Marker']['Query'];
     payload?: never;
-  },
-  JSONFetchResponse<Globus.Transfer.SkippedErrorsDocument>
+  }
 >;
 
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#pause_tasks_as_admin
  */
-export const pause = function (options, sdkOptions?) {
+export const pause = function (
+  options,
+  sdkOptions?,
+): Promise<JSONFetchResponse<Globus.Transfer.AdminPauseDocumentResponse>> {
   return serviceRequest(
     {
       service: ID,
@@ -183,18 +202,18 @@ export const pause = function (options, sdkOptions?) {
     options,
     sdkOptions,
   );
-} satisfies ServiceMethod<
-  {
-    query?: never;
-    payload?: Globus.Transfer.AdminPauseDocument;
-  },
-  JSONFetchResponse<Globus.Transfer.AdminPauseDocumentResponse>
->;
+} satisfies ServiceMethod<{
+  query?: never;
+  payload?: Globus.Transfer.AdminPauseDocument;
+}>;
 
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#resume_tasks_as_admin
  */
-export const resume = function (options = {}, sdkOptions?) {
+export const resume = function (
+  options,
+  sdkOptions?,
+): Promise<JSONFetchResponse<Globus.Transfer.AdminResumeDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -205,18 +224,19 @@ export const resume = function (options = {}, sdkOptions?) {
     options,
     sdkOptions,
   );
-} satisfies ServiceMethod<
-  {
-    query?: never;
-    payload?: Globus.Transfer.AdminResumeDocument;
-  },
-  JSONFetchResponse<Globus.Transfer.AdminResumeDocument>
->;
+} satisfies ServiceMethod<{
+  query?: never;
+  payload?: Globus.Transfer.AdminResumeDocument;
+}>;
 
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_task_pause_info_as_admin
  */
-export const getPauseInfo = function (task_id, options?, sdkOptions?) {
+export const getPauseInfo = function (
+  task_id,
+  options?,
+  sdkOptions?,
+): Promise<JSONFetchResponse<Globus.Transfer.AdminPauseDocumentResponse>> {
   return serviceRequest(
     {
       service: ID,
@@ -231,6 +251,5 @@ export const getPauseInfo = function (task_id, options?, sdkOptions?) {
   {
     query?: never;
     payload?: never;
-  },
-  JSONFetchResponse<Globus.Transfer.AdminPauseDocumentResponse>
+  }
 >;

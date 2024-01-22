@@ -12,7 +12,15 @@ import type {
  * Get a list of pause rules on endpoints that the current user has the "activity_monitor" role on.
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_pause_rules
  */
-export const getAll = function (options?, sdkOptions?) {
+export const getAll = function (
+  options?,
+  sdkOptions?,
+): Promise<
+  JSONFetchResponse<{
+    DATA_TYPE: 'pause_rule_list';
+    DATA: Globus.Transfer.PauseRuleDocument[];
+  }>
+> {
   return serviceRequest(
     {
       service: ID,
@@ -22,21 +30,18 @@ export const getAll = function (options?, sdkOptions?) {
     options,
     sdkOptions,
   );
-} satisfies ServiceMethod<
-  {
-    query?: { filter_endpoint?: string; filter_host_endpoint?: string };
-    payload?: never;
-  },
-  JSONFetchResponse<{
-    DATA_TYPE: 'pause_rule_list';
-    DATA: Globus.Transfer.PauseRuleDocument[];
-  }>
->;
+} satisfies ServiceMethod<{
+  query?: { filter_endpoint?: string; filter_host_endpoint?: string };
+  payload?: never;
+}>;
 
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#create_pause_rule
  */
-export const create = function (options, sdkOptions?) {
+export const create = function (
+  options,
+  sdkOptions?,
+): Promise<JSONFetchResponse<Globus.Transfer.PauseRuleDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -47,18 +52,19 @@ export const create = function (options, sdkOptions?) {
     options,
     sdkOptions,
   );
-} satisfies ServiceMethod<
-  {
-    payload: Partial<Globus.Transfer.PauseRuleDocument>;
-  },
-  JSONFetchResponse<Globus.Transfer.PauseRuleDocument>
->;
+} satisfies ServiceMethod<{
+  payload: Partial<Globus.Transfer.PauseRuleDocument>;
+}>;
 
 /**
  * Fetch a pause_rule by its UUID.
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_pause_rule
  */
-export const get = function (pause_rule_id, options?, sdkOptions?) {
+export const get = function (
+  pause_rule_id,
+  options?,
+  sdkOptions?,
+): Promise<JSONFetchResponse<Globus.Transfer.PauseRuleDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -73,14 +79,17 @@ export const get = function (pause_rule_id, options?, sdkOptions?) {
   {
     query?: never;
     payload?: never;
-  },
-  JSONFetchResponse<Globus.Transfer.PauseRuleDocument>
+  }
 >;
 
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#update_pause_rule
  */
-export const update = function (pause_rule_id, options, sdkOptions?) {
+export const update = function (
+  pause_rule_id,
+  options,
+  sdkOptions?,
+): Promise<JSONFetchResponse<Globus.Transfer.PauseRuleDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -96,14 +105,25 @@ export const update = function (pause_rule_id, options, sdkOptions?) {
   {
     query?: never;
     payload: Partial<Globus.Transfer.PauseRuleDocument>;
-  },
-  JSONFetchResponse<Globus.Transfer.PauseRuleDocument>
+  }
 >;
 
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#delete_pause_rule
  */
-export const remove = function (pause_rule_id, options?, sdkOptions?) {
+export const remove = function (
+  pause_rule_id,
+  options?,
+  sdkOptions?,
+): Promise<
+  JSONFetchResponse<{
+    DATA_TYPE: 'result';
+    code: 'Deleted';
+    message: string;
+    request_id: string;
+    resource: string;
+  }>
+> {
   return serviceRequest(
     {
       service: ID,
@@ -119,12 +139,5 @@ export const remove = function (pause_rule_id, options?, sdkOptions?) {
   {
     query?: never;
     payload?: never;
-  },
-  JSONFetchResponse<{
-    DATA_TYPE: 'result';
-    code: 'Deleted';
-    message: string;
-    request_id: string;
-    resource: string;
-  }>
+  }
 >;

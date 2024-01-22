@@ -1,5 +1,4 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
-
 import { ID, SCOPES } from '../config.js';
 
 import type { ServiceMethodDynamicSegments, JSONFetchResponse } from '../../../services/types.js';
@@ -7,7 +6,11 @@ import type { ServiceMethodDynamicSegments, JSONFetchResponse } from '../../../s
 /**
  * Fetch an endpoint by its UUID.
  */
-export const get = function (endpoint_xid, options?, sdkOptions?) {
+export const get = function (
+  endpoint_xid,
+  options?,
+  sdkOptions?,
+): Promise<JSONFetchResponse<Globus.Transfer.EndpointDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -22,8 +25,7 @@ export const get = function (endpoint_xid, options?, sdkOptions?) {
   {
     query?: never;
     payload?: never;
-  },
-  JSONFetchResponse<Globus.Transfer.EndpointDocument>
+  }
 >;
 
 /**
@@ -34,7 +36,19 @@ export const get = function (endpoint_xid, options?, sdkOptions?) {
  *
  * @see https://docs.globus.org/api/transfer/gcp_management/#delete_endpoint_by_id
  */
-export const remove = function (endpoint_xid, options?, sdkOptions?) {
+export const remove = function (
+  endpoint_xid,
+  options?,
+  sdkOptions?,
+): Promise<
+  JSONFetchResponse<{
+    DATA_TYPE: 'result';
+    code: 'Deleted';
+    message: string;
+    request_id: string;
+    resource: `/endpoint/${string}`;
+  }>
+> {
   return serviceRequest(
     {
       service: ID,
@@ -50,12 +64,5 @@ export const remove = function (endpoint_xid, options?, sdkOptions?) {
   {
     query?: never;
     payload?: never;
-  },
-  JSONFetchResponse<{
-    DATA_TYPE: 'result';
-    code: 'Deleted';
-    message: string;
-    request_id: string;
-    resource: `/endpoint/${string}`;
-  }>
+  }
 >;
