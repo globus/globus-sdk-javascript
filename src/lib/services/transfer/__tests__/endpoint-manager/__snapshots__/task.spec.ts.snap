@@ -77,7 +77,7 @@ exports[`endpointManager.task getEventList 1`] = `
   },
   "json": undefined,
   "method": "GET",
-  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/task/example-task-id/event_list?filters=iserror%3A1",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/task/example-task-id/event_list?filter_is_error=1",
 }
 `;
 

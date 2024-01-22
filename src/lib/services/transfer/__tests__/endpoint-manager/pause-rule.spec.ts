@@ -18,7 +18,7 @@ describe('endpointManager.pauseRule', () => {
   test('get', async () => {
     const {
       req: { url, method, headers },
-    } = await mirror(await pauseRule.get('example-task-id'));
+    } = await mirror(await pauseRule.get('example-pause-rule-id'));
     expect({
       url,
       method,
@@ -77,7 +77,7 @@ describe('endpointManager.pauseRule', () => {
   test('remove', async () => {
     const {
       req: { url, method, headers, json },
-    } = await mirror(await pauseRule.remove('example-task-id'));
+    } = await mirror(await pauseRule.remove('example-pause-rule-id'));
     expect({
       url,
       method,

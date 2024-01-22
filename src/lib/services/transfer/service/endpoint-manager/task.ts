@@ -119,7 +119,7 @@ export const getEventList = function (task_id, options?, sdkOptions?) {
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Transfer['Paging']['Offset']['Query'] & { filter_is_error?: '1' };
+    query?: Transfer['Paging']['Offset']['Query'] & { filter_is_error?: 1 };
     payload?: never;
   },
   JSONFetchResponse<Globus.Transfer.TaskEventListDocument>
@@ -192,7 +192,7 @@ export const pause = function (options, sdkOptions?) {
 >;
 
 /**
- * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#pause_tasks_as_admin
+ * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#resume_tasks_as_admin
  */
 export const resume = function (options = {}, sdkOptions?) {
   return serviceRequest(

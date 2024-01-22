@@ -43,7 +43,7 @@ exports[`endpointManager.pauseRule get 1`] = `
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
-  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/pause_rule/example-task-id",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/pause_rule/example-pause-rule-id",
 }
 `;
 
@@ -72,7 +72,7 @@ exports[`endpointManager.pauseRule remove 1`] = `
   },
   "json": undefined,
   "method": "DELETE",
-  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/pause_rule/example-task-id",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/pause_rule/example-pause-rule-id",
 }
 `;
 

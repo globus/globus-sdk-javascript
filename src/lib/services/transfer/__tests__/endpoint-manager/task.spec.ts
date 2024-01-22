@@ -63,7 +63,7 @@ describe('endpointManager.task', () => {
     } = await mirror(
       await task.getEventList('example-task-id', {
         query: {
-          filters: 'iserror:1',
+          filter_is_error: 1,
         },
       }),
     );

@@ -56,7 +56,7 @@ export const getHostedEndpoints = function (endpoint_xid, options?, sdkOptions?)
 >;
 
 /**
- * @see https://docs.globus.org/api/transfer/task/#get_event_list
+ * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_task_events
  */
 export const getAccessList = function (endpoint_xid, options?, sdkOptions?) {
   return serviceRequest(
