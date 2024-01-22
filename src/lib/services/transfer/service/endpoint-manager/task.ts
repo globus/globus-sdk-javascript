@@ -10,18 +10,6 @@ import type {
 
 import type { Transfer } from '../../types.js';
 
-type GetAllFilter =
-  | 'filter_status'
-  | 'filter_task_id'
-  | 'filter_owner_id'
-  | 'filter_username'
-  | 'filter_endpoint'
-  | 'filter_is_paused'
-  | 'filter_completion_time'
-  | 'filter_min_faults'
-  | 'filter_local_user'
-  | 'filter_endpoint_use';
-
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_tasks
  */
@@ -37,8 +25,7 @@ export const getAll = function (options = {}, sdkOptions?) {
   );
 } satisfies ServiceMethod<
   {
-    query?: Transfer['Paging']['LastKey']['Query'] & Record<GetAllFilter, string>;
-    headers?: Record<string, string>;
+    query?: Globus.Transfer.AdminTaskQuery;
     payload?: never;
   },
   JSONFetchResponse<
@@ -74,7 +61,7 @@ export const get = function (task_id, options?, sdkOptions?) {
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#admin_cancel
  */
-export const cancel = function (options = {}, sdkOptions?) {
+export const cancel = function (options, sdkOptions?) {
   return serviceRequest(
     {
       service: ID,
@@ -88,7 +75,7 @@ export const cancel = function (options = {}, sdkOptions?) {
 } satisfies ServiceMethod<
   {
     query?: never;
-    payload?: Globus.Transfer.AdminCancelDocument;
+    payload: Globus.Transfer.AdminCancelDocument;
   },
   JSONFetchResponse<Globus.Transfer.AdminCancelDocumentResponse>
 >;
@@ -132,11 +119,7 @@ export const getEventList = function (task_id, options?, sdkOptions?) {
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Transfer['Paging']['Offset']['Query'] & { filter_is_error?: '1' } & Record<
-        string,
-        string
-      >;
-    headers?: Record<string, string>;
+    query?: Transfer['Paging']['Offset']['Query'] & { filter_is_error?: '1' };
     payload?: never;
   },
   JSONFetchResponse<Globus.Transfer.TaskEventListDocument>
@@ -158,8 +141,7 @@ export const getSuccessfulTransfers = function (task_id, options?, sdkOptions?) 
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Transfer['Paging']['Marker']['Query'] & Record<string, string>;
-    headers?: Record<string, string>;
+    query?: Transfer['Paging']['Marker']['Query'];
     payload?: never;
   },
   JSONFetchResponse<Globus.Transfer.SuccessfulTransfersDocument>
@@ -181,8 +163,7 @@ export const getSkippedErrors = function (task_id, options?, sdkOptions?) {
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Transfer['Paging']['Marker']['Query'] & Record<string, string>;
-    headers?: Record<string, string>;
+    query?: Transfer['Paging']['Marker']['Query'];
     payload?: never;
   },
   JSONFetchResponse<Globus.Transfer.SkippedErrorsDocument>
@@ -248,8 +229,7 @@ export const getPauseInfo = function (task_id, options?, sdkOptions?) {
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Record<string, string>;
-    headers?: Record<string, string>;
+    query?: never;
     payload?: never;
   },
   JSONFetchResponse<Globus.Transfer.AdminPauseDocumentResponse>

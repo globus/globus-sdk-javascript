@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`endpoint get 1`] = `
+exports[`endpointManager.endpoint get 1`] = `
 {
   "headers": {
     "accept": "*/*",
@@ -14,7 +14,7 @@ exports[`endpoint get 1`] = `
 }
 `;
 
-exports[`endpoint getAccessList 1`] = `
+exports[`endpointManager.endpoint getAccessList 1`] = `
 {
   "headers": {
     "accept": "*/*",
@@ -28,7 +28,7 @@ exports[`endpoint getAccessList 1`] = `
 }
 `;
 
-exports[`endpoint getHostedEndpoints 1`] = `
+exports[`endpointManager.endpoint getHostedEndpoints 1`] = `
 {
   "headers": {
     "accept": "*/*",
@@ -42,7 +42,7 @@ exports[`endpoint getHostedEndpoints 1`] = `
 }
 `;
 
-exports[`endpoint getMonitoredEndpoints 1`] = `
+exports[`endpointManager.endpoint getMonitoredEndpoints 1`] = `
 {
   "headers": {
     "accept": "*/*",

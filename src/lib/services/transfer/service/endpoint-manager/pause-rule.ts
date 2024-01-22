@@ -24,8 +24,7 @@ export const getAll = function (options?, sdkOptions?) {
   );
 } satisfies ServiceMethod<
   {
-    query?: { filter_endpoint?: string; filter_host_endpoint?: string } & Record<string, string>;
-    headers?: Record<string, string>;
+    query?: { filter_endpoint?: string; filter_host_endpoint?: string };
     payload?: never;
   },
   JSONFetchResponse<{
@@ -96,7 +95,7 @@ export const update = function (pause_rule_id, options, sdkOptions?) {
   string,
   {
     query?: never;
-    payload: Partial<Globus.Transfer.PauseRuleDocument> & Record<string, string>;
+    payload: Partial<Globus.Transfer.PauseRuleDocument>;
   },
   JSONFetchResponse<Globus.Transfer.PauseRuleDocument>
 >;

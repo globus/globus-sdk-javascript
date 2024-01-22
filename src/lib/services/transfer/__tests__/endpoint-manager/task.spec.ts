@@ -1,15 +1,9 @@
 import { endpointManager } from '../../index';
-import { createStorage } from '../../../../core/storage';
-
 import { mirror } from '../../../../../__mocks__/handlers';
 
 const { task } = endpointManager;
 
 describe('endpointManager.task', () => {
-  beforeEach(() => {
-    createStorage('memory');
-  });
-
   test('getAll', async () => {
     const {
       req: { url, method, headers },

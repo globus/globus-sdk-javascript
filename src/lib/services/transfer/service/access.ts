@@ -21,8 +21,7 @@ export const getAll = function (endpoint_xid, options?, sdkOptions?) {
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Transfer['Paging']['Offset']['Query'] & Record<string, string>;
-    headers?: Record<string, string>;
+    query?: Transfer['Paging']['Offset']['Query'];
     payload?: never;
   },
   JSONFetchResponse<{
@@ -34,7 +33,7 @@ export const getAll = function (endpoint_xid, options?, sdkOptions?) {
 /**
  * @see https://docs.globus.org/api/transfer/acl/#rest_access_create
  */
-export const create = function (endpoint_xid, options?, sdkOptions?) {
+export const create = function (endpoint_xid, options, sdkOptions?) {
   return serviceRequest(
     {
       service: ID,
@@ -48,7 +47,7 @@ export const create = function (endpoint_xid, options?, sdkOptions?) {
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    payload: Partial<Globus.Transfer.AccessDocument> & Record<string, string>;
+    payload: Partial<Globus.Transfer.AccessDocument>;
   },
   JSONFetchResponse<Globus.Transfer.AccessDocument>
 >;
@@ -78,7 +77,7 @@ export const get = function ({ endpoint_xid, id }, options?, sdkOptions?) {
 /**
  * @see https://docs.globus.org/api/transfer/acl/#update_access_rule
  */
-export const update = function ({ endpoint_xid, id }, options?, sdkOptions?) {
+export const update = function ({ endpoint_xid, id }, options, sdkOptions?) {
   return serviceRequest(
     {
       service: ID,
