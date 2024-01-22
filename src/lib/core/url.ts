@@ -10,7 +10,13 @@ import { SDKOptions } from '../services/types.js';
  * @private
  */
 export function stringifyParameters(parameters: {
-  [key: string]: string | number | Array<string | number | null | undefined> | null | undefined;
+  [key: string]:
+    | string
+    | number
+    | boolean
+    | Array<string | number | null | undefined>
+    | null
+    | undefined;
 }) {
   const search = new URLSearchParams();
 
