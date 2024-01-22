@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.0](https://github.com/globus/globus-sdk-javascript/compare/v2.1.0...v2.2.0) (2024-01-22)
+
+
+### Features
+
+* **Transfer:** adds support for Endpoint ACL Management (access) and Advanced Endpoint Management (endpointManager) resources. ([#82](https://github.com/globus/globus-sdk-javascript/issues/82)) ([fabc088](https://github.com/globus/globus-sdk-javascript/commit/fabc08867f9ef45d89a640350e7770f49bb30b7b))
+
 ## [2.1.0](https://github.com/globus/globus-sdk-javascript/compare/v2.0.1...v2.1.0) (2024-01-18)
 
 
