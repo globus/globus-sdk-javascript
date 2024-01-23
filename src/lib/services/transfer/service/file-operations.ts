@@ -1,5 +1,4 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
-
 import { getHeadersForService } from '../shared.js';
 import { ID, SCOPES } from '../config.js';
 
