@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.0](https://github.com/globus/globus-sdk-javascript/compare/v2.2.0...v2.3.0) (2024-01-29)
+
+
+### Features
+
+* **GCS:** adds resource support for setting endpoint subscription_id ([#90](https://github.com/globus/globus-sdk-javascript/issues/90)) ([aeb1c3c](https://github.com/globus/globus-sdk-javascript/commit/aeb1c3cc4199e04d13fb497e9f40824a502f5965))
+
 ## [2.2.0](https://github.com/globus/globus-sdk-javascript/compare/v2.1.0...v2.2.0) (2024-01-22)
 
 
