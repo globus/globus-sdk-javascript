@@ -115,4 +115,46 @@ describe('gcs – endpoint', () => {
       }
     `);
   });
+
+  test('updateSubscriptionId', async () => {
+    const result = await endpoint.updateSubscriptionId(
+      {
+        host: GCS_HOST,
+        endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
+      },
+      {
+        payload: {
+          DATA_TYPE: 'endpoint_subscription#1.0.0',
+          subscription_id: 'example-subscription-id',
+        },
+      },
+    );
+    const {
+      req: { url, method, headers, json },
+    } = (await result.json()) as unknown as MirroredRequest;
+    expect({
+      url,
+      method,
+      headers,
+      json,
+    }).toMatchInlineSnapshot(`
+      {
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "gzip,deflate",
+          "connection": "close",
+          "content-length": "87",
+          "content-type": "application/json",
+          "host": "fa5e.bd7c.data.globus.org",
+          "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+        },
+        "json": {
+          "DATA_TYPE": "endpoint_subscription#1.0.0",
+          "subscription_id": "example-subscription-id",
+        },
+        "method": "PUT",
+        "url": "https://fa5e.bd7c.data.globus.org/api/endpoint/subscription_id",
+      }
+    `);
+  });
 });
