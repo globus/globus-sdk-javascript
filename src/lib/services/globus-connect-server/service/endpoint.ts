@@ -84,3 +84,29 @@ export const patch = function (
     | operations['patchEndpoint']['requestBody']['content']['application/json']
     | Record<string, unknown>;
 }>;
+
+/**
+ * @see https://docs.globus.org/globus-connect-server/v5.4/api/openapi_Endpoint/#putEndpointSubscriptionId
+ */
+export const updateSubscriptionId = function (
+  configuration,
+  options?,
+  sdkOptions?,
+): Promise<
+  JSONFetchResponse<
+    operations['putEndpointSubscriptionId']['responses']['200']['content']['application/json']
+  >
+> {
+  return serviceRequest(
+    {
+      service: configuration,
+      scope: getRequiredScopes(configuration),
+      path: `/api/endpoint/subscription_id`,
+      method: HTTP_METHODS.PUT,
+    },
+    options,
+    sdkOptions,
+  );
+} satisfies GCSServiceMethod<{
+  payload: operations['putEndpointSubscriptionId']['requestBody']['content']['application/json'];
+}>;
