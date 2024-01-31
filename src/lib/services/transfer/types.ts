@@ -15,13 +15,13 @@ export interface Transfer {
      */
     Offset: {
       Query: {
-        limit?: `${number}`;
-        offset?: `${number}`;
+        limit?: `${number}` | number;
+        offset?: `${number}` | number;
       };
       Response: {
         limit: number;
         offset: number;
-        has_next_page: `${boolean}`;
+        has_next_page: `${boolean}` | boolean;
       };
     };
     /**
@@ -40,11 +40,11 @@ export interface Transfer {
      */
     LastKey: {
       Query: {
-        limit?: `${number}`;
+        limit?: `${number}` | number;
         last_key: string;
       };
       Response: {
-        has_next_page: `${boolean}`;
+        has_next_page: `${boolean}` | boolean;
         last_key: string | null;
         limit: number;
       };
@@ -55,7 +55,7 @@ export interface Transfer {
     NextToken: {
       Query: {
         next_token?: string;
-        max_results?: `${number}`;
+        max_results?: `${number}` | number;
       };
       Response: {
         next_token: string | null;
@@ -69,8 +69,8 @@ export interface Transfer {
   DirectoryListingQuery: {
     path?: string;
     show_hidden?: 'true' | 'false';
-    limit?: `${number}`;
-    offset?: `${number}`;
+    limit?: `${number}` | number;
+    offset?: `${number}` | number;
     orderby?: string;
     filter?: string;
   };

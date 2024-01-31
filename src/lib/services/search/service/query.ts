@@ -27,8 +27,8 @@ export const get = function (index_id, options?, sdkOptions?) {
      */
     query?: {
       q: string;
-      offset?: `${number}`;
-      limit?: `${number}`;
+      offset?: `${number}` | number;
+      limit?: `${number}` | number;
       advanced?: 'true' | 'false';
       bypass_visible_to?: 'true' | 'false';
       result_format_version?: string;
