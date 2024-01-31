@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.1](https://github.com/globus/globus-sdk-javascript/compare/v2.3.0...v2.3.1) (2024-01-31)
+
+
+### Bug Fixes
+
+* **Transfer, Typescript:** specify query types for Transfer task methods ([#92](https://github.com/globus/globus-sdk-javascript/issues/92)) ([e762271](https://github.com/globus/globus-sdk-javascript/commit/e762271939b730a8389fca27b1c58b925172c106))
+
 ## [2.3.0](https://github.com/globus/globus-sdk-javascript/compare/v2.2.0...v2.3.0) (2024-01-29)
 
 
