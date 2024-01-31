@@ -35,7 +35,7 @@ export const getAll = function (
     sdkOptions,
   );
 } satisfies ServiceMethod<{
-  query?: Transfer['Paging']['Offset']['Query'] & Record<string, string>;
+  query?: Transfer['Paging']['Offset']['Query'];
   headers?: Record<string, string>;
   payload?: never;
 }>;
@@ -172,7 +172,7 @@ export const getEventList = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Record<string, string>;
+    query?: Transfer['Paging']['Offset']['Query'];
     headers?: Record<string, string>;
     payload?: never;
   }
@@ -198,7 +198,7 @@ export const getSuccessfulTransfers = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Record<string, string>;
+    query?: Transfer['Paging']['Marker']['Query'];
     headers?: Record<string, string>;
     payload?: never;
   }
@@ -224,7 +224,7 @@ export const getSkippedErrors = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Record<string, string>;
+    query?: Transfer['Paging']['Marker']['Query'];
     headers?: Record<string, string>;
     payload?: never;
   }
@@ -250,7 +250,7 @@ export const getPauseInfo = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Record<string, string>;
+    query?: never;
     headers?: Record<string, string>;
     payload?: never;
   }
