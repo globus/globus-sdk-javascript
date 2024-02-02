@@ -29,10 +29,10 @@ export interface Transfer {
      */
     Marker: {
       Query: {
-        marker?: string;
+        marker?: `${number}` | number;
       };
       Response: {
-        next_marker: string | null;
+        next_marker: number | null;
       };
     };
     /**
