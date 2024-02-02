@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.2](https://github.com/globus/globus-sdk-javascript/compare/v2.3.1...v2.3.2) (2024-02-02)
+
+
+### Bug Fixes
+
+* **Transfer, Typescript:** updates Transfer marker pagination Query and Response type to number. ([#96](https://github.com/globus/globus-sdk-javascript/issues/96)) ([492cd28](https://github.com/globus/globus-sdk-javascript/commit/492cd2834a9d4a58e2e292bdff54856dd681b73e))
+* **Typescript:** allow non-string types for query properties ([#94](https://github.com/globus/globus-sdk-javascript/issues/94)) ([7bf9e9b](https://github.com/globus/globus-sdk-javascript/commit/7bf9e9be1179e6602dbbf670440eb08bee1b03b7))
+
 ## [2.3.1](https://github.com/globus/globus-sdk-javascript/compare/v2.3.0...v2.3.1) (2024-01-31)
 
 
