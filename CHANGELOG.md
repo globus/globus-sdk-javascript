@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.3](https://github.com/globus/globus-sdk-javascript/compare/v2.3.2...v2.3.3) (2024-02-06)
+
+
+### Bug Fixes
+
+* **GCS:** ensure all Globus Connect Server service resource methods are available on `getClient` ([#101](https://github.com/globus/globus-sdk-javascript/issues/101)) ([8bdd5a8](https://github.com/globus/globus-sdk-javascript/commit/8bdd5a86b6663de0e6c2209c30a583b5f1d39757))
+
 ## [2.3.2](https://github.com/globus/globus-sdk-javascript/compare/v2.3.1...v2.3.2) (2024-02-02)
 
 
