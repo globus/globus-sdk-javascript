@@ -52,6 +52,7 @@ export function getClient(configuration: GCSConfiguration) {
       get: bind(endpoint.get, configuration),
       update: bind(endpoint.update, configuration),
       patch: bind(endpoint.patch, configuration),
+      updateSubscriptionId: bind(endpoint.updateSubscriptionId, configuration),
     },
     versioning: {
       info: bind(versioning.info, configuration),
@@ -69,10 +70,18 @@ export function getClient(configuration: GCSConfiguration) {
     userCredentials: {
       get: bind(userCredentials.get, configuration),
       getAll: bind(userCredentials.getAll, configuration),
+      create: bind(userCredentials.create, configuration),
+      remove: bind(userCredentials.remove, configuration),
+      update: bind(userCredentials.update, configuration),
+      patch: bind(userCredentials.patch, configuration),
     },
     storageGateways: {
       get: bind(storageGateways.get, configuration),
       getAll: bind(storageGateways.getAll, configuration),
+      create: bind(storageGateways.create, configuration),
+      remove: bind(storageGateways.remove, configuration),
+      update: bind(storageGateways.update, configuration),
+      patch: bind(storageGateways.patch, configuration),
     },
     roles: {
       get: bind(roles.get, configuration),
