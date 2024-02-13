@@ -1,6 +1,6 @@
 {
   "name": "@globus/sdk",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "private": true,
   "description": "The Globus SDK for Javascript",
   "main": "dist/cjs/index.js",

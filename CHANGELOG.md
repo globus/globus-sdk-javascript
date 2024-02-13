@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.4](https://github.com/globus/globus-sdk-javascript/compare/v2.3.3...v2.3.4) (2024-02-13)
+
+
+### Bug Fixes
+
+* **core:** ensure proper context when a fetch __callable is used ([#106](https://github.com/globus/globus-sdk-javascript/issues/106)) ([098e924](https://github.com/globus/globus-sdk-javascript/commit/098e924399761b10ebaf4d9f9784d068f754a7b1))
+
 ## [2.3.3](https://github.com/globus/globus-sdk-javascript/compare/v2.3.2...v2.3.3) (2024-02-06)
 
 
