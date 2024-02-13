@@ -15,6 +15,7 @@ type FetchOverrides =
       /**
        * Provide an implementation of `fetch` to be used.
        * This is currently **not** advertised since we do not dynamically import `cross-fetch` yet.
+       * @experimental
        * @private
        */
       __callable?: typeof fetch;

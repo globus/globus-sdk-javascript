@@ -61,6 +61,7 @@ type ServiceRequestDSL = {
  * @returns
  */
 export function serviceRequest(
+  this: unknown,
   config: ServiceRequestDSL,
   options?: ServiceMethodOptions,
   passedSdkOptions?: SDKOptions,
@@ -127,8 +128,11 @@ export function serviceRequest(
 
   /* eslint-disable no-underscore-dangle */
   if (injectedFetchOptions?.__callable) {
+    /**
+     * Remove the `__callable` property from the `fetch` options before passing the options along.
+     */
     delete init.__callable;
-    return injectedFetchOptions.__callable(url, init);
+    return injectedFetchOptions.__callable.call(this, url, init);
   }
   /* eslint-enable no-underscore-dangle */
 
