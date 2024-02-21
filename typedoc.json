@@ -1,7 +1,11 @@
 {
   "$schema": "https://typedoc.org/schema.json",
   "name": "Globus SDK for Javascript",
-  "entryPoints": ["./src/index.ts", "./src/lib/services/globus-connect-server/client.ts"],
+  "entryPoints": [
+    "./src/index.ts",
+    "./src/constants.ts",
+    "./src/lib/services/globus-connect-server/client.ts"
+  ],
   "entryPointStrategy": "expand",
   "out": "docs"
 }
