@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.0](https://github.com/globus/globus-sdk-javascript/compare/v2.3.4...v2.4.0) (2024-02-21)
+
+
+### Features
+
+* **GCS:** adds `CONNECTORS` constant ([#108](https://github.com/globus/globus-sdk-javascript/issues/108)) ([8eea7b8](https://github.com/globus/globus-sdk-javascript/commit/8eea7b845c507deefb7af82d646e0a462b843933))
+
 ## [2.3.4](https://github.com/globus/globus-sdk-javascript/compare/v2.3.3...v2.3.4) (2024-02-13)
 
 
