@@ -142,7 +142,7 @@ export const getSuccessfulTransfers = function (
   task_id,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.SuccessfulTransfersDocument>> {
+): Promise<JSONFetchResponse<Globus.Transfer.SuccessfulTransfersListDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -167,7 +167,7 @@ export const getSkippedErrors = function (
   task_id,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.SkippedErrorsDocument>> {
+): Promise<JSONFetchResponse<Globus.Transfer.SkippedErrorsListDocument>> {
   return serviceRequest(
     {
       service: ID,
