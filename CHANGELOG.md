@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.1](https://github.com/globus/globus-sdk-javascript/compare/v2.4.0...v2.4.1) (2024-02-22)
+
+
+### Bug Fixes
+
+* **Typescript, Endpoint Manager, Transfer:** updates the types returned by endpointManager.task.getSuccessfulTransfers and getSkippedErrors ([#113](https://github.com/globus/globus-sdk-javascript/issues/113)) ([63fc263](https://github.com/globus/globus-sdk-javascript/commit/63fc263a132e64f202fa2ef1c114dfd09f930736))
+
 ## [2.4.0](https://github.com/globus/globus-sdk-javascript/compare/v2.3.4...v2.4.0) (2024-02-21)
 
 
