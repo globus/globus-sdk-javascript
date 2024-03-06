@@ -4,7 +4,7 @@ import { LocalStorage } from './local-storage.js';
  * Acts as a basic wrapper for storage layers to make their surface APIs consistent.
  */
 export interface StorageSystem {
-  get(key: string): unknown | undefined;
+  get(key: string): string | null;
   set(key: string, value: unknown): void;
   remove(key: string): void;
   clear(): void;
@@ -23,7 +23,7 @@ type StorageOptions =
  */
 export function createStorage(storageType: StorageOptions = 'memory'): StorageSystem {
   if (!storage) {
-    let Factory;
+    let Factory: new () => StorageSystem;
     if (storageType === 'localStorage') {
       Factory = LocalStorage;
     } else if (storageType === 'memory') {
@@ -33,11 +33,7 @@ export function createStorage(storageType: StorageOptions = 'memory'): StorageSy
     }
     storage = new Factory();
   }
-  /**
-   * This cast is required based our use of resetting the storage system during testing.
-   * @see __reset
-   */
-  return storage as StorageSystem;
+  return storage;
 }
 
 export default createStorage;
@@ -46,6 +42,7 @@ export default createStorage;
  * Returns the active storage system.
  */
 export const getStorage = createStorage;
+
 /**
  * A private method for resetting the storage system. This is primarily used to reset
  * the storage system during testing.

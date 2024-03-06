@@ -37,3 +37,9 @@ export type TokenResponse = Token & {
   state: string;
   other_tokens: Token[];
 };
+
+export function isGlobusAuthTokenResponse(check: unknown): check is TokenResponse {
+  return (
+    typeof check === 'object' && check !== null && 'resource_server' in check && 'state' in check
+  );
+}
