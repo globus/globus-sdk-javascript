@@ -1,11 +1,9 @@
 /**
- * @description Session and authorization management via PKCE.
+ * @description Session and authorization management.
  * @group Core
  * @module
  * @experimental
  */
-import PKCE from 'js-pkce';
-
 import type IConfig from 'js-pkce/dist/IConfig';
 import {
   Token,
@@ -19,24 +17,54 @@ import { Event } from './Event.js';
 
 import { createStorage, getStorage } from '../storage/index.js';
 import { Logger } from './Logger.js';
+import { Service } from '../global.js';
+import { RESOURCE_SERVERS } from '../../services/auth/config.js';
+import { RedirectTransport } from './RedirectTransport.js';
 
-type PKCEConfiguration = {
+type Configuration = {
   client_id?: IConfig['client_id'];
   requested_scopes: IConfig['requested_scopes'];
   redirect_uri: IConfig['redirect_uri'];
 };
 
+function isValidToken(check: unknown): check is Token {
+  const maybe = check as Token;
+  return Boolean(maybe.token_type && maybe.access_token);
+}
+
+/**
+ * Obtain the token string for the given scope.
+ * @param scope The scope string that will be used to look up the token.
+ * @returns The token string for the given scope or null if no token is found.
+ */
+export function getTokenForScope(scope: string) {
+  const token = getStorage().get(scope);
+  if (!token || !isValidToken(token)) {
+    return null;
+  }
+  return `${token.token_type} ${token.access_token}`;
+}
+
 /**
  * @experimental
  */
-export class GlobusAuthorizationManager {
-  #pkce: PKCE;
+export class AuthorizationManager {
+  #transport!: RedirectTransport;
 
   #logger: Logger;
 
   #configuration: IConfig;
 
   authenticated = false;
+
+  getTokenForService(service: Extract<Service, 'AUTH' | 'TRANSFER' | 'FLOWS'>) {
+    const resourceServer = RESOURCE_SERVERS?.[service];
+    if (!resourceServer) {
+      throw new Error(`No resource server found for service: ${service}`);
+    }
+    const raw = getStorage().get(`${this.#configuration.client_id}:${resourceServer}`) || '{}';
+    return JSON.parse(raw).access_token;
+  }
 
   events = {
     authenticated: new Event<
@@ -49,7 +77,7 @@ export class GlobusAuthorizationManager {
     revoke: new Event('revoke'),
   };
 
-  constructor(configuration: PKCEConfiguration) {
+  constructor(configuration: Configuration) {
     this.#logger = new Logger();
 
     createStorage('localStorage');
@@ -62,16 +90,13 @@ export class GlobusAuthorizationManager {
       token_endpoint: getTokenEndpoint(),
       ...configuration,
     };
-
     this.startSilentRenew();
-
-    this.#pkce = new PKCE(this.#configuration);
   }
 
   startSilentRenew() {
     this.#logger.log('debug', 'startSilentRenew');
-    // @todo
     this.#bootstrapFromStorageState();
+    // @todo Iterate through all tokens and refresh them.
   }
 
   hasGlobusAuthToken() {
@@ -95,7 +120,6 @@ export class GlobusAuthorizationManager {
   async #emitAuthenticatedState() {
     const isAuthenticated = this.authenticated;
     const token = this.getGlobusAuthToken() ?? undefined;
-    console.log('emitting authenticated state', { isAuthenticated, token });
     await this.events.authenticated.dispatch({
       isAuthenticated,
       token,
@@ -104,38 +128,43 @@ export class GlobusAuthorizationManager {
 
   reset() {
     this.authenticated = false;
-    /**
-     * Resets js-pkce state
-     * @see https://github.com/bpedroza/js-pkce/blob/master/src/PKCE.ts
-     */
-    sessionStorage.removeItem('pkce_state');
-    sessionStorage.removeItem('pkce_code_verifier');
     getStorage().clear();
+  }
+
+  #buildTransport() {
+    return new RedirectTransport({
+      client_id: this.#configuration.client_id,
+      authorization_endpoint: getAuthorizationEndpoint(),
+      token_endpoint: getTokenEndpoint(),
+      redirect_uri: this.#configuration.redirect_uri,
+      requested_scopes: this.#configuration.requested_scopes,
+    });
   }
 
   redirect() {
     this.reset();
-    window.location.replace(this.#pkce.authorizeUrl());
+    const transport = this.#buildTransport();
+    transport.send();
   }
 
-  async handleCodeRedirect(options = { removeStateAndReplaceLocation: true }) {
-    const url = new URL(window.location.href);
-    const params = new URLSearchParams(url.search);
-
-    if (!params.get('code')) return;
-    const response = await this.#pkce.exchangeForAccessToken(url.toString());
+  async handleCodeRedirect() {
+    const response = await this.#buildTransport().getToken();
     if (isGlobusAuthTokenResponse(response)) {
       this.addTokenResponse(response);
       this.authenticated = true;
       await this.#emitAuthenticatedState();
     }
-    // Remove PKCE-state from the URL since we have a token.
-    if (options.removeStateAndReplaceLocation) {
-      params.delete('code');
-      params.delete('state');
-      url.search = params.toString();
-      window.location.replace(url);
-    }
+  }
+
+  handleConsentRequiredError(response: { code: 'ConsentRequired'; required_scopes: string[] }) {
+    this.#transport = new RedirectTransport({
+      client_id: this.#configuration.client_id,
+      authorization_endpoint: getAuthorizationEndpoint(),
+      token_endpoint: getTokenEndpoint(),
+      redirect_uri: this.#configuration.redirect_uri,
+      requested_scopes: response.required_scopes.join(' '),
+    });
+    this.#transport.send();
   }
 
   addTokenResponse = (token: Token | TokenResponse) => {
@@ -154,6 +183,6 @@ export class GlobusAuthorizationManager {
 /**
  * @experimental
  */
-export function pkce(configuration: PKCEConfiguration) {
-  return new GlobusAuthorizationManager(configuration);
+export function create(configuration: Configuration) {
+  return new AuthorizationManager(configuration);
 }

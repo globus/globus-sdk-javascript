@@ -133,7 +133,7 @@ export function getHttpTimeout() {
   return timeout;
 }
 
-function getServiceHost(service: Service, environment: Environment) {
+export function getServiceHost(service: Service, environment: Environment = getEnvironment()) {
   return SERVICE_HOSTS[service][environment];
 }
 

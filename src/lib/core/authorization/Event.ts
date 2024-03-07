@@ -1,20 +1,20 @@
-type Callback<T> = (payload: unknown, event: T) => Promise<void> | void;
+type ListenerCallback<P> = (payload: P | undefined) => Promise<void> | void;
 
 export class Event<EventName extends string, Payload extends unknown> {
-  #callbacks: Callback<EventName>[] = [];
+  #callbacks: ListenerCallback<Payload>[] = [];
 
-  public constructor(protected readonly name: EventName) {}
+  constructor(readonly name: EventName) {}
 
-  addListener(callback: Callback<EventName>) {
+  addListener(callback: ListenerCallback<Payload>) {
     this.#callbacks.push(callback);
     return () => this.removeListener(callback);
   }
 
-  removeListener(callback: Callback<EventName>) {
+  removeListener(callback: ListenerCallback<Payload>) {
     this.#callbacks = this.#callbacks.filter((cb) => cb !== callback);
   }
 
   async dispatch(payload?: Payload) {
-    await Promise.all(this.#callbacks.map((callback) => callback(payload, this.name)));
+    await Promise.all(this.#callbacks.map((callback) => callback(payload)));
   }
 }
