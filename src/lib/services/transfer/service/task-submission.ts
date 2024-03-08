@@ -31,12 +31,12 @@ interface TaskSubmissionResult {
   task_link: TaskLink;
 }
 
-type TransferResult = TaskSubmissionResult & {
+export type TransferResult = TaskSubmissionResult & {
   DATA_TYPE: 'transfer_result';
   resource: '/transfer';
 };
 
-type DeleteResult = {
+export type DeleteResult = {
   DATA_TYPE: 'delete_result';
   resource: '/delete';
 } & TaskSubmissionResult;
@@ -65,11 +65,11 @@ type TaskSubmissionError = {
   resource: string;
 };
 
-type TransferError = TaskSubmissionError & {
+export type TransferError = TaskSubmissionError & {
   resource: '/transfer';
 };
 
-type DeleteError = TaskSubmissionError & {
+export type DeleteError = TaskSubmissionError & {
   resource: '/delete';
 };
 

@@ -57,6 +57,8 @@
 /// <reference types="@globus/types/transfer" />
 /// <reference types="@globus/types/search" />
 
+export * as logger from './lib/core/logger.js';
+
 export * as authorization from './lib/core/authorization/index.js';
 export * as auth from './lib/services/auth/index.js';
 export * as transfer from './lib/services/transfer/index.js';

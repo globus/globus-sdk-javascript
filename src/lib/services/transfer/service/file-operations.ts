@@ -8,7 +8,7 @@ import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../type
 /**
  * @see https://docs.globus.org/api/transfer/file_operations/#file_document
  */
-type FileDocument = {
+export type FileDocument = {
   readonly DATA_TYPE: 'file';
   readonly name: string;
   readonly type: 'dir' | 'file' | 'invalid_symlink' | 'chr' | 'blk' | 'pipe' | 'other';
@@ -27,7 +27,7 @@ type FileDocument = {
 /**
  * @see https://docs.globus.org/api/transfer/file_operations/#file_list_document
  */
-type FileListDocument = {
+export type FileListDocument = {
   readonly DATA_TYPE: 'file_list';
   readonly endpoint: string;
   readonly path: string;
@@ -45,7 +45,7 @@ type FileListDocument = {
   readonly total: number;
 };
 
-type DirectoryListingError = {
+export type DirectoryListingError = {
   /**
    * @see https://docs.globus.org/api/transfer/file_operations/#errors
    */

@@ -1,9 +1,3 @@
-/**
- * @description Session and authorization management.
- * @group Core
- * @module
- * @experimental
- */
 import type IConfig from 'js-pkce/dist/IConfig';
 import {
   Token,
@@ -16,13 +10,13 @@ import {
 import { Event } from './Event.js';
 
 import { createStorage, getStorage } from '../storage/index.js';
-import { Logger } from './Logger.js';
+import { log } from '../logger.js';
 import { Service } from '../global.js';
 import { RESOURCE_SERVERS } from '../../services/auth/config.js';
 import { RedirectTransport } from './RedirectTransport.js';
 
 type Configuration = {
-  client_id?: IConfig['client_id'];
+  client_id: IConfig['client_id'];
   requested_scopes: IConfig['requested_scopes'];
   redirect_uri: IConfig['redirect_uri'];
 };
@@ -51,9 +45,7 @@ export function getTokenForScope(scope: string) {
 export class AuthorizationManager {
   #transport!: RedirectTransport;
 
-  #logger: Logger;
-
-  #configuration: IConfig;
+  #configuration: Configuration;
 
   authenticated = false;
 
@@ -67,6 +59,9 @@ export class AuthorizationManager {
   }
 
   events = {
+    /**
+     * Emitted when the authenticated state changes.
+     */
     authenticated: new Event<
       'authenticated',
       {
@@ -74,27 +69,28 @@ export class AuthorizationManager {
         token?: TokenResponse;
       }
     >('authenticated'),
+    /**
+     * Emitted when the user revokes their authentication.
+     */
     revoke: new Event('revoke'),
   };
 
   constructor(configuration: Configuration) {
-    this.#logger = new Logger();
-
+    /**
+     * @todo Add support for passing in an alternative storage mechanism.
+     */
     createStorage('localStorage');
     if (!configuration.client_id) {
       throw new Error('You must provide a `client_id` for your application.');
     }
     this.#configuration = {
-      client_id: configuration.client_id,
-      authorization_endpoint: getAuthorizationEndpoint(),
-      token_endpoint: getTokenEndpoint(),
       ...configuration,
     };
     this.startSilentRenew();
   }
 
   startSilentRenew() {
-    this.#logger.log('debug', 'startSilentRenew');
+    log('debug', 'AuthorizationManager.startSilentRenew');
     this.#bootstrapFromStorageState();
     // @todo Iterate through all tokens and refresh them.
   }
@@ -109,9 +105,9 @@ export class AuthorizationManager {
   }
 
   async #bootstrapFromStorageState() {
-    this.#logger.log('debug', 'bootstrapFromStorageState');
+    log('debug', 'AuthorizationManager.bootstrapFromStorageState');
     if (this.hasGlobusAuthToken()) {
-      this.#logger.log('debug', 'bootstrapFromStorageState: hasGlobusAuthToken');
+      log('debug', 'AuthorizationManager.bootstrapFromStorageState: hasGlobusAuthToken');
       this.authenticated = true;
       await this.#emitAuthenticatedState();
     }
@@ -131,13 +127,14 @@ export class AuthorizationManager {
     getStorage().clear();
   }
 
-  #buildTransport() {
+  #buildTransport(overrides?) {
     return new RedirectTransport({
       client_id: this.#configuration.client_id,
       authorization_endpoint: getAuthorizationEndpoint(),
       token_endpoint: getTokenEndpoint(),
       redirect_uri: this.#configuration.redirect_uri,
       requested_scopes: this.#configuration.requested_scopes,
+      ...overrides,
     });
   }
 
@@ -157,11 +154,7 @@ export class AuthorizationManager {
   }
 
   handleConsentRequiredError(response: { code: 'ConsentRequired'; required_scopes: string[] }) {
-    this.#transport = new RedirectTransport({
-      client_id: this.#configuration.client_id,
-      authorization_endpoint: getAuthorizationEndpoint(),
-      token_endpoint: getTokenEndpoint(),
-      redirect_uri: this.#configuration.redirect_uri,
+    this.#transport = this.#buildTransport({
       requested_scopes: response.required_scopes.join(' '),
     });
     this.#transport.send();
