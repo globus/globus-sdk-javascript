@@ -29,10 +29,9 @@ the only supported transport is the `RedirectTransport`, which will redirect the
 
 The abstraction exists to support additional transports in the future, i.e., `PopupTransport,` `ServiceWorkerTransport,` etc.
 
-### Token Lookups
+### Token Lookup
 
-- `getToken` - Get a token for a resource server and client ID.
-- `getTokenForScope` - Get a token for a given resource server and client ID with the requested scope.
+An instance of `TokenLookup` is used to retrieve tokens from the token store. The token store is an instance of `Storage` (e.g., `localStorage`). An instance of `TokenLookup` is made available on the `AuthorizationManager.tokens`.
 
 ## Implementation Notes
 
