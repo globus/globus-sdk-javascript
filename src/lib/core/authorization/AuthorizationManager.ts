@@ -136,6 +136,18 @@ export class AuthorizationManager {
     }
   }
 
+  /**
+   * @todo
+   */
+  // handleErrorResponse(response: { code: string }) {
+  //   if (response.code === 'ConsentRequired') {
+  //     this.handleConsentRequiredError(response);
+  //   }
+  //   if (response.code === 'AuthenticationFailed') {
+  //     this.revoke();
+  //   }
+  // }
+
   handleConsentRequiredError(response: { code: 'ConsentRequired'; required_scopes: string[] }) {
     this.#transport = this.#buildTransport({
       requested_scopes: response.required_scopes.join(' '),
