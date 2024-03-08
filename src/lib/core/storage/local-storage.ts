@@ -1,7 +1,7 @@
 import { StorageSystem } from './index.js';
 
 export class LocalStorage implements StorageSystem {
-  #storage = localStorage;
+  #storage = global.localStorage;
 
   get(key: string) {
     return this.#storage.getItem(key);

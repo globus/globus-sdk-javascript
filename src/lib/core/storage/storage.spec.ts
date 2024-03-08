@@ -6,7 +6,9 @@ import { LocalStorage } from './local-storage.js';
 
 /* eslint-disable @typescript-eslint/no-unused-vars, class-methods-use-this */
 class CustomStorage implements StorageSystem {
-  get(key: string) {}
+  get(key: string) {
+    return null;
+  }
 
   set(key: string, value: any): void {}
 
