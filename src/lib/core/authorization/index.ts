@@ -127,7 +127,7 @@ export class AuthorizationManager {
     getStorage().clear();
   }
 
-  #buildTransport(overrides?) {
+  #buildTransport(overrides?: Partial<IConfig>) {
     return new RedirectTransport({
       client_id: this.#configuration.client_id,
       authorization_endpoint: getAuthorizationEndpoint(),
