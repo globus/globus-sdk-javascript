@@ -1,17 +1,31 @@
 import PKCE from 'js-pkce';
 import type IConfig from 'js-pkce/dist/IConfig';
+import IObject from 'js-pkce/dist/IObject';
 
 export class RedirectTransport {
   #pkce: PKCE;
 
-  constructor(options: IConfig) {
+  #params: IObject = {};
+
+  constructor(
+    options: IConfig & {
+      /**
+       * Additional parameters to be included in the query string of the authorization request.
+       */
+      params?: IObject;
+    },
+  ) {
+    const { params, ...config } = options;
     this.#pkce = new PKCE({
-      ...options,
+      ...config,
     });
+    this.#params = {
+      ...params,
+    };
   }
 
   send() {
-    window.location.replace(this.#pkce.authorizeUrl());
+    window.location.replace(this.#pkce.authorizeUrl(this.#params));
   }
 
   async getToken() {
