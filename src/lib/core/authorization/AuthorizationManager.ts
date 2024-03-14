@@ -15,46 +15,18 @@ import { Event } from './Event.js';
 import { RedirectTransport } from './RedirectTransport.js';
 import { TokenLookup } from './TokenLookup.js';
 
+import {
+  isConsentRequiredError,
+  isAuthorizationRequirementsError,
+  AuthorizationRequirementsError,
+  ConsentRequiredError,
+} from '../errors.js';
+
 export type AuthorizationManagerConfiguration = {
   client_id: IConfig['client_id'];
   requested_scopes: IConfig['requested_scopes'];
   redirect_uri: IConfig['redirect_uri'];
 };
-
-export type WellFormedError = {
-  code: string;
-  message: string;
-};
-
-export function isErrorWellFormed(error: unknown): error is WellFormedError {
-  return typeof error === 'object' && error !== null && 'code' in error && 'message' in error;
-}
-
-export type ConsentRequiredError = {
-  code: 'ConsentRequired';
-  required_scopes: string[];
-  [key: string]: unknown;
-};
-
-export function isConsentRequiredError(error: unknown): error is ConsentRequiredError {
-  return isErrorWellFormed(error) && error.code === 'ConsentRequired' && 'required_scopes' in error;
-}
-
-type AuthorizationRequirementsError = {
-  authorization_parameters: {
-    session_message: string;
-    session_required_identities: string[];
-    session_required_mfa: boolean;
-    session_required_single_domain: string[];
-  };
-  [key: string]: unknown;
-};
-
-export function isAuthorizationRequirementsError(
-  error: unknown,
-): error is AuthorizationRequirementsError {
-  return isErrorWellFormed(error) && 'authorization_parameters' in error;
-}
 
 /**
  * @experimental
