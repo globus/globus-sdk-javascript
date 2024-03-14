@@ -1,5 +1,5 @@
 import { getStorage } from '../storage';
-import { Token, CONFIG } from '../../services/auth';
+import { Token, CONFIG } from '../../services/auth/index.js';
 
 import type { Service } from '../global.js';
 import { AuthorizationManager } from './AuthorizationManager.js';
