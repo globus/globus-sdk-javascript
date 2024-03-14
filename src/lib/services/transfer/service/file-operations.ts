@@ -49,7 +49,13 @@ export type DirectoryListingError = {
   /**
    * @see https://docs.globus.org/api/transfer/file_operations/#errors
    */
-  code: 'NotSupported' | 'ClientError.NotFound' | 'EndpointError' | string;
+  code:
+    | 'NotSupported'
+    | 'ClientError.NotFound'
+    | 'EndpointError'
+    // Encountered Errors (not documented)
+    | 'ExternalError.DirListingFailed.LoginFailed'
+    | string;
   message: string;
   request_id: string;
   resource: string;

@@ -21,6 +21,41 @@ export type AuthorizationManagerConfiguration = {
   redirect_uri: IConfig['redirect_uri'];
 };
 
+export type WellFormedError = {
+  code: string;
+  message: string;
+};
+
+export function isErrorWellFormed(error: unknown): error is WellFormedError {
+  return typeof error === 'object' && error !== null && 'code' in error && 'message' in error;
+}
+
+export type ConsentRequiredError = {
+  code: 'ConsentRequired';
+  required_scopes: string[];
+  [key: string]: unknown;
+};
+
+export function isConsentRequiredError(error: unknown): error is ConsentRequiredError {
+  return isErrorWellFormed(error) && error.code === 'ConsentRequired' && 'required_scopes' in error;
+}
+
+type AuthorizationRequirementsError = {
+  authorization_parameters: {
+    session_message: string;
+    session_required_identities: string[];
+    session_required_mfa: boolean;
+    session_required_single_domain: string[];
+  };
+  [key: string]: unknown;
+};
+
+export function isAuthorizationRequirementsError(
+  error: unknown,
+): error is AuthorizationRequirementsError {
+  return isErrorWellFormed(error) && 'authorization_parameters' in error;
+}
+
 /**
  * @experimental
  */
@@ -131,7 +166,7 @@ export class AuthorizationManager {
     getStorage().clear();
   }
 
-  #buildTransport(overrides?: Partial<IConfig>) {
+  #buildTransport(overrides?: Partial<ConstructorParameters<typeof RedirectTransport>[0]>) {
     return new RedirectTransport({
       client_id: this.configuration.client_id,
       authorization_endpoint: getAuthorizationEndpoint(),
@@ -165,16 +200,39 @@ export class AuthorizationManager {
   /**
    * @todo
    */
-  // handleErrorResponse(response: { code: string }) {
-  //   if (response.code === 'ConsentRequired') {
-  //     this.handleConsentRequiredError(response);
-  //   }
-  //   if (response.code === 'AuthenticationFailed') {
-  //     this.revoke();
-  //   }
-  // }
+  handleErrorResponse(response: { code: unknown; required_scopes?: unknown }, execute = true) {
+    let handler = () => {};
 
-  handleConsentRequiredError(response: { code: 'ConsentRequired'; required_scopes: string[] }) {
+    if (isAuthorizationRequirementsError(response)) {
+      handler = () => this.handleAuthorizationRequirementsError(response);
+    }
+
+    if (isConsentRequiredError(response)) {
+      handler = () => this.handleConsentRequiredError(response);
+    }
+
+    if (response.code === 'AuthenticationFailed') {
+      this.revoke();
+    }
+    return execute ? handler() : handler;
+  }
+
+  handleAuthorizationRequirementsError(response: AuthorizationRequirementsError) {
+    this.#transport = this.#buildTransport({
+      params: {
+        session_message: response.authorization_parameters.session_message,
+        session_required_identities:
+          response.authorization_parameters.session_required_identities.join(','),
+        session_required_mfa: response.authorization_parameters.session_required_mfa,
+        session_required_single_domain:
+          response.authorization_parameters.session_required_single_domain.join(','),
+        prompt: 'login',
+      },
+    });
+    this.#transport.send();
+  }
+
+  handleConsentRequiredError(response: ConsentRequiredError) {
     this.#transport = this.#buildTransport({
       requested_scopes: response.required_scopes.join(' '),
     });
