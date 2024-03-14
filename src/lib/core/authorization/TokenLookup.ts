@@ -1,4 +1,4 @@
-import { getStorage } from '../storage';
+import { getStorage } from '../storage/index.js';
 import { Token, CONFIG } from '../../services/auth/index.js';
 
 import type { Service } from '../global.js';
