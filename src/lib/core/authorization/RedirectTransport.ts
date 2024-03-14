@@ -1,6 +1,6 @@
 import PKCE from 'js-pkce';
 import type IConfig from 'js-pkce/dist/IConfig';
-import IObject from 'js-pkce/dist/IObject';
+import type IObject from 'js-pkce/dist/IObject';
 
 export class RedirectTransport {
   #pkce: PKCE;
