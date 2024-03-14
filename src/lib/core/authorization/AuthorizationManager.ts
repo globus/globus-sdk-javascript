@@ -87,6 +87,10 @@ export class AuthorizationManager {
     }
     this.configuration = {
       ...configuration,
+      /**
+       * Inject the `openid`, `profile`, `email`, and `offline_access` scopes by default.
+       */
+      requested_scopes: `${configuration.requested_scopes} openid profile email offline_access`,
     };
 
     this.tokens = new TokenLookup({
@@ -110,12 +114,16 @@ export class AuthorizationManager {
     return entry ? JSON.parse(entry) : null;
   }
 
-  async #bootstrapFromStorageState() {
-    log('debug', 'AuthorizationManager.bootstrapFromStorageState');
+  #checkAuthorizationState() {
+    log('debug', 'AuthorizationManager.#checkAuthorizationState');
     if (this.hasGlobusAuthToken()) {
-      log('debug', 'AuthorizationManager.bootstrapFromStorageState: hasGlobusAuthToken');
       this.authenticated = true;
     }
+  }
+
+  async #bootstrapFromStorageState() {
+    log('debug', 'AuthorizationManager.bootstrapFromStorageState');
+    this.#checkAuthorizationState();
   }
 
   async #emitAuthenticatedState() {
@@ -221,6 +229,7 @@ export class AuthorizationManager {
     if ('other_tokens' in token) {
       token.other_tokens.forEach(this.addTokenResponse);
     }
+    this.#checkAuthorizationState();
   };
 
   async revoke() {
