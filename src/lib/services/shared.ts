@@ -1,7 +1,7 @@
 import _fetch from 'cross-fetch';
 import { build } from '../core/url.js';
 import { getSDKOptions, Service } from '../core/global.js';
-import { getTokenForScope } from '../core/consent.js';
+import { getTokenForScope } from '../core/authorization/index.js';
 
 import type { ServiceMethodOptions, SDKOptions } from './types.js';
 import type { GCSConfiguration } from '../services/globus-connect-server/index.js';

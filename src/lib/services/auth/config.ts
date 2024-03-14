@@ -1,3 +1,6 @@
+import { ID as TRANSFER } from '../transfer/config.js';
+import { ID as FLOWS } from '../flows/config.js';
+
 import type { Environment } from '../../core/global.js';
 
 export const ID = 'AUTH';
@@ -12,4 +15,10 @@ export const HOSTS: Partial<Record<Environment, string>> = {
 
 export const SCOPES = {
   VIEW_IDENTITIES: 'urn:globus:auth:scope:auth.globus.org:view_identities',
+};
+
+export const RESOURCE_SERVERS = {
+  [ID]: 'auth.globus.org',
+  [TRANSFER]: 'transfer.api.globus.org',
+  [FLOWS]: 'flows.api.globus.org',
 };
