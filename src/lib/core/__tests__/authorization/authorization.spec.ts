@@ -1,6 +1,5 @@
+import '../../../../__mocks__/localStorage';
 import { create } from '../../authorization';
-
-import { setup } from './AuthorizationManager.spec';
 
 describe('authorization', () => {
   it('should expose the create function', () => {
@@ -8,7 +7,6 @@ describe('authorization', () => {
   });
 
   it('should create an instance of the AuthorizationManager', () => {
-    setup();
     const instance = create({
       client_id: 'client_id',
       redirect_uri: 'redirect_uri',

@@ -3,7 +3,7 @@ import { LocalStorage } from './local-storage';
 
 describe('LocalStorage', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.restoreAllMocks();
   });
 
   it('should set and get a string value', () => {

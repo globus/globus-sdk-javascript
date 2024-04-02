@@ -23,11 +23,9 @@ const MOCK_TOKEN = {
   token_type: 'Bearer',
 };
 
-jest.spyOn(PKCE.prototype, 'exchangeForAccessToken').mockImplementation(async () => MOCK_TOKEN);
-
 describe('RedirectTransport', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
     Object.defineProperty(globalThis, 'window', {
       value: { location: LOCATION_MOCK },
       writable: true,
@@ -54,6 +52,10 @@ describe('RedirectTransport', () => {
     });
 
     it('removes code and state from location after processing', async () => {
+      jest
+        .spyOn(PKCE.prototype, 'exchangeForAccessToken')
+        .mockImplementation(async () => MOCK_TOKEN);
+
       const transport = new RedirectTransport(MOCK_CONFIG);
       window.location.href = `${MOCK_CONFIG.redirect_uri}?code=CODE&state=SOME_STATE`;
       const response = await transport.getToken();

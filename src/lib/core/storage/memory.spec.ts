@@ -2,7 +2,7 @@ import { MemoryStorage } from './memory';
 
 describe('LocalStorage', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.restoreAllMocks();
   });
 
   it('should set and get a string value', () => {

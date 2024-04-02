@@ -18,3 +18,12 @@
     writable: true,
   });
 })();
+
+/**
+ * Provide an object to set in (the mocked) `localStorage`
+ */
+export function setup(state: Record<string, string> = {}) {
+  Object.keys(state).forEach((key) => {
+    globalThis.localStorage.setItem(key, state[key]);
+  });
+}
