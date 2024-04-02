@@ -179,7 +179,6 @@ export class AuthorizationManager {
     const response = await this.#buildTransport().getToken();
     if (isGlobusAuthTokenResponse(response)) {
       this.addTokenResponse(response);
-      this.authenticated = true;
     }
   }
 

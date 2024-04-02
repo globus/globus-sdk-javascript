@@ -1,8 +1,8 @@
+import PKCE from 'js-pkce';
 import { setup } from '../../../../__mocks__/localStorage';
 import '../../../../__mocks__/sessionStorage';
 import '../../../../__mocks__/window-location';
 import { AuthorizationManager } from '../../authorization/AuthorizationManager';
-
 import { Event } from '../../authorization/Event';
 
 describe('AuthorizationManager', () => {
@@ -67,7 +67,7 @@ describe('AuthorizationManager', () => {
     expect(instance.authenticated).toBe(true);
   });
 
-  it('login', () => {
+  it('supports login', () => {
     const instance = new AuthorizationManager({
       client_id: 'client_id',
       redirect_uri: 'https://redirect_uri',
@@ -80,6 +80,38 @@ describe('AuthorizationManager', () => {
         'https://auth.globus.org/v2/oauth2/authorize?response_type=code&client_id=client_id&state=&scope=foobar+baz+openid+profile+email+offline_access&redirect_uri=https%3A%2F%2Fredirect_uri',
       ),
     );
+  });
+
+  it('supports handleCodeRedirect', async () => {
+    const MOCK_TOKEN = {
+      access_token: 'ACCESS_TOKEN',
+      expires_in: 12000,
+      refresh_expires_in: 12000,
+      refresh_token: 'REFRESH_TOKEN',
+      scope: 'openid profile email offline_access',
+      token_type: 'Bearer',
+      resource_server: 'auth.globus.org',
+      state: 'STATE',
+    };
+
+    const CONFIG = {
+      client_id: 'client_id',
+      redirect_uri: 'https://redirect_uri',
+      requested_scopes: '',
+    };
+    jest.spyOn(PKCE.prototype, 'exchangeForAccessToken').mockImplementation(async () => MOCK_TOKEN);
+
+    const instance = new AuthorizationManager(CONFIG);
+    const spy = jest.spyOn(instance.events.authenticated, 'dispatch');
+
+    window.location.href = 'https://redirect_uri?code=CODE';
+    await instance.handleCodeRedirect();
+    expect(instance.authenticated).toBe(true);
+    expect(spy).toHaveBeenCalledWith({
+      isAuthenticated: true,
+      token: MOCK_TOKEN,
+    });
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 
   it('supports reset', () => {
