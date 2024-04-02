@@ -176,8 +176,10 @@ export class AuthorizationManager {
   }
 
   async handleCodeRedirect() {
+    log('debug', 'AuthorizationManager.handleCodeRedirect');
     const response = await this.#buildTransport().getToken();
     if (isGlobusAuthTokenResponse(response)) {
+      log('debug', `AuthorizationManager.handleCodeRedirect | response=${response}`);
       this.addTokenResponse(response);
     }
   }
@@ -192,16 +194,25 @@ export class AuthorizationManager {
   handleErrorResponse(response: Record<string, unknown>, execute?: true): void;
   handleErrorResponse(response: Record<string, unknown>, execute?: false): () => void;
   handleErrorResponse(response: Record<string, unknown>, execute = true) {
+    log(
+      'debug',
+      `AuthorizationManager.handleErrorResponse | response=${response} execute=${execute}`,
+    );
     let handler = () => {};
-
     if (isAuthorizationRequirementsError(response)) {
+      log(
+        'debug',
+        'AuthorizationManager.handleErrorResponse | error=AuthorizationRequirementsError',
+      );
       handler = () => this.handleAuthorizationRequirementsError(response);
     }
     if (isConsentRequiredError(response)) {
+      log('debug', 'AuthorizationManager.handleErrorResponse | error=ConsentRequiredError');
       handler = () => this.handleConsentRequiredError(response);
     }
     if ('code' in response && response['code'] === 'AuthenticationFailed') {
-      this.revoke();
+      log('debug', 'AuthorizationManager.handleErrorResponse | error=AuthenticationFailed');
+      handler = () => this.revoke();
     }
     return execute === true ? handler() : handler;
   }
