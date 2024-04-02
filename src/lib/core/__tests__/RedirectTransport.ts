@@ -1,0 +1,72 @@
+import PKCE from 'js-pkce';
+import { RedirectTransport } from '../authorization/RedirectTransport';
+
+const MOCK_CONFIG = {
+  client_id: 'CLIENT_ID',
+  redirect_uri: 'https://redirect_uri/my-page',
+  authorization_endpoint: 'AUTHORIZATION_ENDPOINT',
+  token_endpoint: 'TOKEN_ENDPOINT',
+  requested_scopes: 'REQUIRED_SCOPES',
+};
+
+const LOCATION_MOCK = {
+  replace: jest.fn(),
+};
+
+const MOCK_TOKEN = {
+  access_token: 'ACCESS_TOKEN',
+  expires_in: 12000,
+  refresh_expires_in: 12000,
+  refresh_token: 'REFRESH_TOKEN',
+  scope: MOCK_CONFIG.requested_scopes,
+  token_type: 'Bearer',
+};
+
+jest.spyOn(PKCE.prototype, 'exchangeForAccessToken').mockImplementation(async () => MOCK_TOKEN);
+
+describe('RedirectTransport', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    Object.defineProperty(globalThis, 'window', {
+      value: { location: LOCATION_MOCK },
+      writable: true,
+    });
+    Object.defineProperty(globalThis, 'sessionStorage', {
+      value: {
+        getItem: jest.fn(),
+        setItem: jest.fn(),
+        removeItem: jest.fn(),
+      },
+      writable: true,
+    });
+  });
+
+  it('should authorize using the window.location.replace method', async () => {
+    const transport = new RedirectTransport(MOCK_CONFIG);
+    transport.send();
+    expect(LOCATION_MOCK.replace).toHaveBeenCalled();
+    expect(LOCATION_MOCK.replace).toHaveBeenCalledWith(
+      expect.stringContaining(
+        'AUTHORIZATION_ENDPOINT?response_type=code&client_id=CLIENT_ID&state=&scope=REQUIRED_SCOPES&redirect_uri=https%3A%2F%2Fredirect_uri%2Fmy-page',
+      ),
+    );
+  });
+
+  describe('getToken', () => {
+    it('returns `undefined` when called on location with missing required parameters (code)', async () => {
+      window.location.href = MOCK_CONFIG.redirect_uri;
+      const transport = new RedirectTransport(MOCK_CONFIG);
+      const response = await transport.getToken();
+      expect(response).toBeUndefined();
+    });
+
+    it('removes code and state from location after processing', async () => {
+      const transport = new RedirectTransport(MOCK_CONFIG);
+      window.location.href = `${MOCK_CONFIG.redirect_uri}?code=CODE&state=SOME_STATE`;
+      const response = await transport.getToken();
+      expect(response).toBe(MOCK_TOKEN);
+      expect(LOCATION_MOCK.replace).toHaveBeenCalled();
+      expect(LOCATION_MOCK.replace).toHaveBeenCalledWith(new URL(MOCK_CONFIG.redirect_uri));
+    });
+  });
+});
