@@ -183,7 +183,11 @@ export class AuthorizationManager {
   }
 
   /**
-   * @todo
+   * Handle an error response from a Globus service in the context of this `AuthorizationManager`.
+   * This method will introspect the response and attempt to handle any errors that should result
+   * in some additional Globus Auth interaction.
+   * @param response - The error response from a Globus service.
+   * @param execute - Whether to execute the handler immediately or return a function that can be executed later.
    */
   handleErrorResponse(response: Record<string, unknown>, execute?: true): void;
   handleErrorResponse(response: Record<string, unknown>, execute?: false): () => void;
@@ -202,6 +206,10 @@ export class AuthorizationManager {
     return execute === true ? handler() : handler;
   }
 
+  /**
+   * Process a well-formed Authorization Requirements error response from a Globus service
+   * and redirect the user to the Globus Auth login page with the necessary parameters.
+   */
   handleAuthorizationRequirementsError(response: AuthorizationRequirementsError) {
     this.#transport = this.#buildTransport({
       params: {
@@ -217,6 +225,10 @@ export class AuthorizationManager {
     this.#transport.send();
   }
 
+  /**
+   * Process a well-formed `ConsentRequired` error response from a Globus service
+   * and redirect the user to the Globus Auth login page with the necessary parameters.
+   */
   handleConsentRequiredError(response: ConsentRequiredError) {
     this.#transport = this.#buildTransport({
       requested_scopes: response.required_scopes.join(' '),
