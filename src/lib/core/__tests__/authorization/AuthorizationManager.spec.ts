@@ -1,4 +1,6 @@
 import { setup } from '../../../../__mocks__/localStorage';
+import '../../../../__mocks__/sessionStorage';
+import '../../../../__mocks__/window-location';
 import { AuthorizationManager } from '../../authorization/AuthorizationManager';
 
 import { Event } from '../../authorization/Event';
@@ -20,6 +22,17 @@ describe('AuthorizationManager', () => {
     });
     expect(instance).toBeDefined();
     expect(instance.authenticated).toBe(false);
+  });
+
+  it('throws if no "client_id" is provided', () => {
+    expect(() => {
+      // @ts-ignore – For end-users using Typescript, this will be caught at compile time...
+      const instance = new AuthorizationManager({
+        redirect_uri: 'https://redirect_uri',
+        requested_scopes: 'foobar baz',
+      });
+      expect(instance).toBeUndefined();
+    }).toThrow();
   });
 
   it('should startSilentRenew on creation', () => {
@@ -52,6 +65,21 @@ describe('AuthorizationManager', () => {
       token: { resource_server: 'auth.globus.org' },
     });
     expect(instance.authenticated).toBe(true);
+  });
+
+  it('login', () => {
+    const instance = new AuthorizationManager({
+      client_id: 'client_id',
+      redirect_uri: 'https://redirect_uri',
+      requested_scopes: 'foobar baz',
+    });
+    instance.login();
+    expect(window.location.replace).toHaveBeenCalledTimes(1);
+    expect(window.location.replace).toHaveBeenCalledWith(
+      expect.stringContaining(
+        'https://auth.globus.org/v2/oauth2/authorize?response_type=code&client_id=client_id&state=&scope=foobar+baz+openid+profile+email+offline_access&redirect_uri=https%3A%2F%2Fredirect_uri',
+      ),
+    );
   });
 
   it('supports reset', () => {

@@ -1,4 +1,5 @@
 import '../../../../__mocks__/sessionStorage';
+import '../../../../__mocks__/window-location';
 import PKCE from 'js-pkce';
 import { RedirectTransport } from '../../authorization/RedirectTransport';
 
@@ -8,10 +9,6 @@ const MOCK_CONFIG = {
   authorization_endpoint: 'AUTHORIZATION_ENDPOINT',
   token_endpoint: 'TOKEN_ENDPOINT',
   requested_scopes: 'REQUIRED_SCOPES',
-};
-
-const LOCATION_MOCK = {
-  replace: jest.fn(),
 };
 
 const MOCK_TOKEN = {
@@ -26,17 +23,13 @@ const MOCK_TOKEN = {
 describe('RedirectTransport', () => {
   beforeEach(() => {
     jest.resetAllMocks();
-    Object.defineProperty(globalThis, 'window', {
-      value: { location: LOCATION_MOCK },
-      writable: true,
-    });
   });
 
   it('should authorize using the window.location.replace method', async () => {
     const transport = new RedirectTransport(MOCK_CONFIG);
     transport.send();
-    expect(LOCATION_MOCK.replace).toHaveBeenCalled();
-    expect(LOCATION_MOCK.replace).toHaveBeenCalledWith(
+    expect(window.location.replace).toHaveBeenCalled();
+    expect(window.location.replace).toHaveBeenCalledWith(
       expect.stringContaining(
         'AUTHORIZATION_ENDPOINT?response_type=code&client_id=CLIENT_ID&state=&scope=REQUIRED_SCOPES&redirect_uri=https%3A%2F%2Fredirect_uri%2Fmy-page',
       ),
@@ -60,8 +53,8 @@ describe('RedirectTransport', () => {
       window.location.href = `${MOCK_CONFIG.redirect_uri}?code=CODE&state=SOME_STATE`;
       const response = await transport.getToken();
       expect(response).toBe(MOCK_TOKEN);
-      expect(LOCATION_MOCK.replace).toHaveBeenCalled();
-      expect(LOCATION_MOCK.replace).toHaveBeenCalledWith(new URL(MOCK_CONFIG.redirect_uri));
+      expect(window.location.replace).toHaveBeenCalled();
+      expect(window.location.replace).toHaveBeenCalledWith(new URL(MOCK_CONFIG.redirect_uri));
     });
   });
 });
