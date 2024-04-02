@@ -37,4 +37,19 @@ describe('Event', () => {
     await event.dispatch();
     expect(listener1).toHaveBeenCalledTimes(1);
   });
+
+  it('clears all listeners', async () => {
+    const event = new Event('test');
+    const listener1 = jest.fn();
+    const listener2 = jest.fn();
+    event.addListener(listener1);
+    event.addListener(listener2);
+
+    await event.dispatch();
+    event.clearListeners();
+    await event.dispatch();
+
+    expect(listener1).toHaveBeenCalledTimes(1);
+    expect(listener2).toHaveBeenCalledTimes(1);
+  });
 });
