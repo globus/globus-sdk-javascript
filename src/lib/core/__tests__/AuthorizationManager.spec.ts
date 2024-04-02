@@ -102,6 +102,27 @@ describe('AuthorizationManager', () => {
     expect(instance.authenticated).toBe(false);
   });
 
+  it.only('supports revoke', () => {
+    setup({
+      'client_id:auth.globus.org': JSON.stringify({ resource_server: 'auth.globus.org' }),
+      'client_id:foobar': JSON.stringify({ resource_server: 'foobar' }),
+      'client_id:baz': JSON.stringify({ resource_server: 'baz' }),
+    });
+
+    const instance = new AuthorizationManager({
+      client_id: 'client_id',
+      redirect_uri: 'https://redirect_uri',
+      requested_scopes: 'foobar baz',
+    });
+
+    const spy = jest.spyOn(instance.events.revoke, 'dispatch');
+
+    expect(instance.authenticated).toBe(true);
+
+    instance.revoke();
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
   it('supports adding an existing token', () => {
     const AUTH_TOKEN_FIXTURE = {
       access_token:

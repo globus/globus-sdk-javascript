@@ -14,6 +14,23 @@ describe('Event', () => {
     expect(listener2).toHaveBeenCalled();
   });
 
+  it('dispatch with payload', async () => {
+    const event = new Event('payload');
+    const cb = jest.fn();
+    event.addListener(cb);
+    await event.dispatch({ foo: 'bar' });
+    expect(cb).toHaveBeenCalled();
+    expect(cb).toHaveBeenCalledWith({ foo: 'bar' });
+  });
+
+  it('dispatch without payload (event name only)', async () => {
+    const event = new Event('name-only');
+    const cb = jest.fn();
+    event.addListener(cb);
+    await event.dispatch();
+    expect(cb).toHaveBeenCalledWith(undefined);
+  });
+
   it('removing listeners', async () => {
     const event = new Event('test');
     const listener1 = jest.fn();

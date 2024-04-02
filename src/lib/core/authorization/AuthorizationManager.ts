@@ -59,6 +59,10 @@ export class AuthorizationManager {
   events = {
     /**
      * Emitted when the authenticated state changes.
+     * @event AuthorizationManager.events#authenticated
+     * @type {object}
+     * @property {boolean} isAuthenticated - Whether the `AuthorizationManager` is authenticated.
+     * @property {TokenResponse} [token] - The token response if the `AuthorizationManager` is authenticated.
      */
     authenticated: new Event<
       'authenticated',
@@ -73,6 +77,7 @@ export class AuthorizationManager {
     >('authenticated'),
     /**
      * Emitted when the user revokes their authentication.
+     * @event AuthorizationManager.events#revoke
      */
     revoke: new Event('revoke'),
   };
@@ -137,6 +142,7 @@ export class AuthorizationManager {
 
   /**
    * Reset the authenticated state and clear all tokens from storage.
+   * This method **does not** emit the `revoke` event. If you need to emit the `revoke` event, use the `AuthorizationManager.revoke` method.
    */
   reset() {
     /**
@@ -232,6 +238,11 @@ export class AuthorizationManager {
     this.#checkAuthorizationState();
   };
 
+  /**
+   * Call `AuthroizationManager.reset` and emit the `revoke` event.
+   * @emits AuthorizationManager.events#revoke
+   * @see AuthorizationManager.reset
+   */
   async revoke() {
     this.reset();
     await this.events.revoke.dispatch();
