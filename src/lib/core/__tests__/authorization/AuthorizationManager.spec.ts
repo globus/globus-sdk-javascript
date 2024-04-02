@@ -1,7 +1,8 @@
-import { AuthorizationManager } from '../authorization/AuthorizationManager';
+import '../../../../__mocks__/localStorage';
+import { AuthorizationManager } from '../../authorization/AuthorizationManager';
 
-import { LocalStorage } from '../storage/local-storage';
-import { Event } from '../authorization/Event';
+import { LocalStorage } from '../../storage/local-storage';
+import { Event } from '../../authorization/Event';
 
 /**
  * Setup the local storage state for the tests.

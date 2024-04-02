@@ -1,4 +1,4 @@
-import { Event } from '../authorization/Event';
+import { Event } from '../../authorization/Event';
 
 describe('Event', () => {
   it('should dispatch an event to all listeners', async () => {

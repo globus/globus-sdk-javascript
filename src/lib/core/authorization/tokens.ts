@@ -13,7 +13,8 @@ function isValidToken(check: unknown): check is Token {
  * @returns The token string for the given scope or null if no token is found.
  */
 export function getTokenForScope(scope: string) {
-  const token = getStorage().get(scope);
+  const storageValue = getStorage().get(scope);
+  const token = storageValue ? JSON.parse(storageValue) : null;
   if (!token || !isValidToken(token)) {
     return null;
   }

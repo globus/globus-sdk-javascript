@@ -8,7 +8,7 @@ export class LocalStorage implements StorageSystem {
   }
 
   set(key: string, value: unknown) {
-    this.#storage.setItem(key, JSON.stringify(value));
+    this.#storage.setItem(key, typeof value !== 'string' ? JSON.stringify(value) : value);
   }
 
   remove(key: string) {

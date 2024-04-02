@@ -1,4 +1,4 @@
-import { create } from '../authorization';
+import { create } from '../../authorization';
 
 import { setup } from './AuthorizationManager.spec';
 

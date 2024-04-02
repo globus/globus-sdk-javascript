@@ -24,7 +24,12 @@ export type ConsentRequiredError = {
 };
 
 export function isConsentRequiredError(test: unknown): test is ConsentRequiredError {
-  return isErrorWellFormed(test) && test.code === 'ConsentRequired' && 'required_scopes' in test;
+  return (
+    isErrorWellFormed(test) &&
+    test.code === 'ConsentRequired' &&
+    'required_scopes' in test &&
+    Array.isArray(test.required_scopes)
+  );
 }
 
 export type AuthorizationRequirementsError = {
@@ -40,5 +45,10 @@ export type AuthorizationRequirementsError = {
 export function isAuthorizationRequirementsError(
   test: unknown,
 ): test is AuthorizationRequirementsError {
-  return isErrorWellFormed(test) && 'authorization_parameters' in test;
+  return (
+    isErrorWellFormed(test) &&
+    'authorization_parameters' in test &&
+    typeof test.authorization_parameters === 'object' &&
+    test.authorization_parameters !== null
+  );
 }

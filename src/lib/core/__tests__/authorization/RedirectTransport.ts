@@ -1,5 +1,6 @@
+import '../../../../__mocks__/sessionStorage';
 import PKCE from 'js-pkce';
-import { RedirectTransport } from '../authorization/RedirectTransport';
+import { RedirectTransport } from '../../authorization/RedirectTransport';
 
 const MOCK_CONFIG = {
   client_id: 'CLIENT_ID',
@@ -29,14 +30,6 @@ describe('RedirectTransport', () => {
     jest.clearAllMocks();
     Object.defineProperty(globalThis, 'window', {
       value: { location: LOCATION_MOCK },
-      writable: true,
-    });
-    Object.defineProperty(globalThis, 'sessionStorage', {
-      value: {
-        getItem: jest.fn(),
-        setItem: jest.fn(),
-        removeItem: jest.fn(),
-      },
       writable: true,
     });
   });
