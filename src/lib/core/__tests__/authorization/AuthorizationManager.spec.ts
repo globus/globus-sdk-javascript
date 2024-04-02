@@ -4,6 +4,11 @@ import '../../../../__mocks__/sessionStorage';
 import '../../../../__mocks__/window-location';
 import { AuthorizationManager } from '../../authorization/AuthorizationManager';
 import { Event } from '../../authorization/Event';
+import {
+  TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR,
+  TRANSFER_CONSENT_REQUIRED_ERROR,
+  TRANSFER_GENERIC_ERROR,
+} from '../errors.spec';
 
 describe('AuthorizationManager', () => {
   beforeEach(() => {
@@ -82,7 +87,7 @@ describe('AuthorizationManager', () => {
     );
   });
 
-  it('supports handleCodeRedirect', async () => {
+  it('handleCodeRedirect', async () => {
     const MOCK_TOKEN = {
       access_token: 'ACCESS_TOKEN',
       expires_in: 12000,
@@ -114,7 +119,7 @@ describe('AuthorizationManager', () => {
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
-  it('supports reset', () => {
+  it('reset', () => {
     setup({
       'client_id:auth.globus.org': JSON.stringify({ resource_server: 'auth.globus.org' }),
       'client_id:foobar': JSON.stringify({ resource_server: 'foobar' }),
@@ -147,7 +152,7 @@ describe('AuthorizationManager', () => {
     expect(instance.authenticated).toBe(false);
   });
 
-  it('supports revoke', () => {
+  it('revoke', () => {
     setup({
       'client_id:auth.globus.org': JSON.stringify({ resource_server: 'auth.globus.org' }),
       'client_id:foobar': JSON.stringify({ resource_server: 'foobar' }),
@@ -198,5 +203,81 @@ describe('AuthorizationManager', () => {
     expect(instance.authenticated).toBe(true);
     expect(instance.tokens.auth?.access_token).toBeDefined();
     expect(instance.tokens.transfer?.access_token).toBeDefined();
+  });
+});
+
+describe('AuthorizationManager - Error Utilities', () => {
+  let instance: AuthorizationManager;
+
+  beforeEach(() => {
+    jest.restoreAllMocks();
+    instance = new AuthorizationManager({
+      client_id: 'CLIENT_ID',
+      redirect_uri: 'https://globus.github.io/example-data-portal/authenticate',
+      requested_scopes: 'urn:globus:auth:scope:transfer.api.globus.org:all',
+    });
+  });
+
+  describe('handleErrorResponse', () => {
+    it('should no-op on an unknown error', () => {
+      const location = window.location.href;
+      instance.handleErrorResponse(TRANSFER_GENERIC_ERROR);
+      expect(window.location.href).toBe(location);
+    });
+
+    it('should handle Authorization Requirements errors', () => {
+      instance.handleErrorResponse(TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR);
+      const url = new URL(window.location.href);
+      expect(url.searchParams.get('session_message')).toBe(
+        TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR.authorization_parameters.session_message,
+      );
+      expect(url.searchParams.get('session_required_identities')).toBe('');
+      expect(url.searchParams.get('session_required_mfa')).toBe('false');
+      expect(url.searchParams.get('session_required_single_domain')).toBe('globus.org');
+      expect(url.searchParams.get('prompt')).toBe('login');
+    });
+    it('should handle Consent Required errors', () => {
+      instance.handleErrorResponse(TRANSFER_CONSENT_REQUIRED_ERROR);
+      const url = new URL(window.location.href);
+      expect(url.searchParams.get('scope')).toBe(
+        TRANSFER_CONSENT_REQUIRED_ERROR.required_scopes.join(' '),
+      );
+    });
+    it('should handle AuthenticationFailed errors', () => {
+      const spy = jest.spyOn(instance, 'revoke');
+      instance.handleErrorResponse({
+        code: 'AuthenticationFailed',
+        message: '...',
+      });
+      expect(spy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return the handler when told not to execute', () => {
+      const location = window.location.href;
+      const handler = instance.handleErrorResponse(
+        {
+          code: 'SomethingHappend',
+          message: '...',
+          authorization_parameters: {
+            session_message: 'This is a session message',
+            session_required_identities: [],
+            session_required_mfa: false,
+            session_required_single_domain: [],
+          },
+        },
+        false,
+      );
+      expect(window.location.href).toBe(location);
+      expect(handler).toBeDefined();
+      expect(handler).toBeInstanceOf(Function);
+      handler();
+
+      const url = new URL(window.location.href);
+      expect(url.searchParams.get('session_message')).toBe('This is a session message');
+      expect(url.searchParams.get('session_required_identities')).toBe('');
+      expect(url.searchParams.get('session_required_mfa')).toBe('false');
+      expect(url.searchParams.get('session_required_single_domain')).toBe('');
+      expect(url.searchParams.get('prompt')).toBe('login');
+    });
   });
 });

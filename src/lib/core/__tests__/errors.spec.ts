@@ -4,7 +4,7 @@ import {
   isAuthorizationRequirementsError,
 } from '../errors';
 
-const TRANSFER_GENERIC_ERROR = {
+export const TRANSFER_GENERIC_ERROR = {
   code: 'NotSupported',
   message: 'GCSv4 is no longer supported. Contact your sysadmin.',
   request_id: 'eHcbiFRv5',
@@ -33,7 +33,7 @@ describe('isErrorWellFormed', () => {
   });
 });
 
-const TRANSFER_CONSENT_REQUIRED_ERROR = {
+export const TRANSFER_CONSENT_REQUIRED_ERROR = {
   code: 'ConsentRequired',
   message: 'Missing required data_access consent',
   request_id: 'HARVa82zp',
@@ -61,7 +61,7 @@ describe('isConsentRequiredError', () => {
   });
 });
 
-const TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR = {
+export const TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR = {
   authorization_parameters: {
     session_message: 'Session reauthentication required (Globus Transfer)',
     session_required_identities: [],

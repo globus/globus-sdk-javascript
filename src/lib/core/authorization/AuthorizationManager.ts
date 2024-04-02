@@ -185,21 +185,21 @@ export class AuthorizationManager {
   /**
    * @todo
    */
-  handleErrorResponse(response: { code: unknown; required_scopes?: unknown }, execute = true) {
+  handleErrorResponse(response: Record<string, unknown>, execute?: true): void;
+  handleErrorResponse(response: Record<string, unknown>, execute?: false): () => void;
+  handleErrorResponse(response: Record<string, unknown>, execute = true) {
     let handler = () => {};
 
     if (isAuthorizationRequirementsError(response)) {
       handler = () => this.handleAuthorizationRequirementsError(response);
     }
-
     if (isConsentRequiredError(response)) {
       handler = () => this.handleConsentRequiredError(response);
     }
-
-    if (response.code === 'AuthenticationFailed') {
+    if ('code' in response && response['code'] === 'AuthenticationFailed') {
       this.revoke();
     }
-    return execute ? handler() : handler;
+    return execute === true ? handler() : handler;
   }
 
   handleAuthorizationRequirementsError(response: AuthorizationRequirementsError) {
