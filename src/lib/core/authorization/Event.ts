@@ -1,4 +1,8 @@
-type ListenerCallback<P> = (payload: P | undefined) => Promise<void> | void;
+/**
+ * @todo It would be nice to not `| any` here, but ideally callers do not need to
+ * fully type the payload to attach listeners.
+ */
+type ListenerCallback<P> = (payload?: P | any) => Promise<void> | void;
 
 export class Event<EventName extends string, Payload extends unknown> {
   #callbacks: ListenerCallback<Payload>[] = [];

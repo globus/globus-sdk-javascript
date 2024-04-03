@@ -179,7 +179,10 @@ export class AuthorizationManager {
     log('debug', 'AuthorizationManager.handleCodeRedirect');
     const response = await this.#buildTransport().getToken();
     if (isGlobusAuthTokenResponse(response)) {
-      log('debug', `AuthorizationManager.handleCodeRedirect | response=${response}`);
+      log(
+        'debug',
+        `AuthorizationManager.handleCodeRedirect | response=${JSON.stringify(response)}`,
+      );
       this.addTokenResponse(response);
     }
   }
@@ -196,7 +199,7 @@ export class AuthorizationManager {
   handleErrorResponse(response: Record<string, unknown>, execute = true) {
     log(
       'debug',
-      `AuthorizationManager.handleErrorResponse | response=${response} execute=${execute}`,
+      `AuthorizationManager.handleErrorResponse | response=${JSON.stringify(response)} execute=${execute}`,
     );
     let handler = () => {};
     if (isAuthorizationRequirementsError(response)) {
