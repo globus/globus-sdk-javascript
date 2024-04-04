@@ -65,3 +65,4 @@ export * as groups from './lib/services/groups/index.js';
 export * as flows from './lib/services/flows/index.js';
 export * as gcs from './lib/services/globus-connect-server/index.js';
 export * as timer from './lib/services/timer/index.js';
+export * as compute from './lib/services/compute/index.js';

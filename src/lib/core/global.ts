@@ -4,6 +4,7 @@ import * as FLOWS from '../services/flows/config.js';
 import * as GROUPS from '../services/groups/config.js';
 import * as SEARCH from '../services/search/config.js';
 import * as TIMER from '../services/timer/config.js';
+import * as COMPUTE from '../services/compute/config.js';
 
 import { EnvironmentConfigurationError } from './errors.js';
 import { SDKOptions } from '../services/types.js';
@@ -59,6 +60,7 @@ export const SERVICES = {
   [GROUPS.ID]: GROUPS.ID,
   [SEARCH.ID]: SEARCH.ID,
   [TIMER.ID]: TIMER.ID,
+  [COMPUTE.ID]: COMPUTE.ID,
 };
 
 export type Service = keyof typeof SERVICES;
@@ -70,6 +72,7 @@ export const SERVICE_HOSTS: Record<Service, Partial<Record<Environment, string>>
   [GROUPS.ID]: GROUPS.HOSTS,
   [SEARCH.ID]: SEARCH.HOSTS,
   [TIMER.ID]: TIMER.HOSTS,
+  [COMPUTE.ID]: COMPUTE.HOSTS,
 };
 
 /**
