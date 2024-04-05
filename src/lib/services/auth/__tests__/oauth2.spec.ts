@@ -43,6 +43,7 @@ describe('oauth2', () => {
       await oauth2.token.revoke({
         payload: {
           token: 'abc-def-ghi',
+          client_id: 'some-client-id',
         },
       }),
     );

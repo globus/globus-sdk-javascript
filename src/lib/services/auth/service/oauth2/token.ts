@@ -10,7 +10,10 @@ type IntrospectPayload = {
 
 type RevokePayload = {
   token: string;
-  token_type_hint?: 'access_token';
+  /**
+   * This is an undocumented property that is required for the request to be successful.
+   */
+  client_id: string;
 };
 
 type ValidatePayload = {

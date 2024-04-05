@@ -40,8 +40,8 @@ describe('TokenLookup', () => {
 
   it('should return all tokens when in storage', () => {
     const TOKENS = [
-      { resource_server: RESOURCE_SERVERS.AUTH },
-      { resource_server: RESOURCE_SERVERS.COMPUTE },
+      { resource_server: RESOURCE_SERVERS.AUTH, access_token: 'TOKEN-1' },
+      { resource_server: RESOURCE_SERVERS.COMPUTE, access_token: 'TOKEN-2' },
     ];
     setup({
       [`CLIENT_ID:${RESOURCE_SERVERS.AUTH}`]: JSON.stringify(TOKENS[0]),

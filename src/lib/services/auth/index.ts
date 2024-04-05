@@ -32,6 +32,7 @@ export type Token = {
   token_type: string;
   resource_server: string;
   refresh_token?: string;
+  refresh_expires_in?: number;
 };
 /**
  * @see https://docs.globus.org/api/auth/reference/#authorization_code_grant_preferred
@@ -42,6 +43,13 @@ export type TokenResponse = Token & {
   other_tokens?: Token[];
 };
 
+export function isToken(check: unknown): check is Token {
+  return typeof check === 'object' && check !== null && 'access_token' in check;
+}
+
 export function isGlobusAuthTokenResponse(check: unknown): check is TokenResponse {
-  return typeof check === 'object' && check !== null && 'resource_server' in check;
+  /**
+   * @todo This could be made more robust by checking whether the `resource_server` is a well-known value.
+   */
+  return isToken(check) && check !== null && 'resource_server' in check;
 }

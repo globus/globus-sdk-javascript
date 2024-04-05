@@ -1,5 +1,5 @@
 import { getStorage } from '../storage/index.js';
-import { Token, CONFIG } from '../../services/auth/index.js';
+import { Token, CONFIG, isToken } from '../../services/auth/index.js';
 
 import { SERVICES, type Service } from '../global.js';
 import { AuthorizationManager } from './AuthorizationManager.js';
@@ -46,8 +46,8 @@ export class TokenLookup {
     return this.#getTokenForService(SERVICES.COMPUTE);
   }
 
-  getAll() {
-    return [
+  getAll(): Token[] {
+    const tokens = [
       this.auth,
       this.transfer,
       this.flows,
@@ -55,6 +55,7 @@ export class TokenLookup {
       this.search,
       this.timer,
       this.compute,
-    ].filter((token) => token !== null);
+    ];
+    return tokens.filter(isToken);
   }
 }

@@ -6,14 +6,14 @@ describe('auth', () => {
 
     expect(
       isGlobusAuthTokenResponse({
-        state: 'state',
+        access_token: 'some-token',
       }),
     ).toBe(false);
 
     expect(
       isGlobusAuthTokenResponse({
+        access_token: 'some-token',
         resource_server: 'auth.globus.org',
-        state: 'state',
       }),
     ).toBe(true);
   });

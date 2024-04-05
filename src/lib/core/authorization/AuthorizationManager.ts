@@ -174,11 +174,18 @@ export class AuthorizationManager {
     this.authenticated = false;
   }
 
+  /**
+   * A private utility method to add the `offline_access` scope to a scope string if the `useRefreshTokens` configuration is set to `true`.
+   * @param scopes The scope string to modify.
+   */
+  #withOfflineAccess(scopes: string) {
+    return `${scopes}${this.configuration.useRefreshTokens ? ' offline_access' : ''}`;
+  }
+
   #buildTransport(overrides?: Partial<ConstructorParameters<typeof RedirectTransport>[0]>) {
-    /**
-     * Inject the `offline_access` scope to any requested scop the `useRefreshTokens` configuration is set to `true`.
-     */
-    const scopes = `${overrides?.requested_scopes ?? this.configuration.scopes}${this.configuration.useRefreshTokens ? ' offline_access' : ''}`;
+    const scopes = this.#withOfflineAccess(
+      overrides?.requested_scopes ?? this.configuration.scopes,
+    );
 
     return new RedirectTransport({
       client_id: this.configuration.client,
@@ -199,6 +206,7 @@ export class AuthorizationManager {
    * Initiate the login process by redirecting to the Globus Auth login page.
    */
   login() {
+    log('debug', 'AuthorizationManager.login');
     this.reset();
     /**
      * In the future, it's possible that we may want to support different types of transports.
@@ -277,7 +285,7 @@ export class AuthorizationManager {
    */
   handleConsentRequiredError(response: ConsentRequiredError) {
     this.#transport = this.#buildTransport({
-      requested_scopes: response.required_scopes.join(' '),
+      requested_scopes: this.#withOfflineAccess(response.required_scopes.join(' ')),
     });
     this.#transport.send();
   }
@@ -301,17 +309,19 @@ export class AuthorizationManager {
    * @see AuthorizationManager.reset
    */
   async revoke() {
-    this.reset();
+    log('debug', 'AuthorizationManager.revoke');
     const revocation = Promise.all(
       this.tokens.getAll().map((token) => {
-        if (!token) return Promise.resolve();
+        log('debug', `AuthorizationManager.revoke | resource_server=${token.resource_server}`);
         return oauth2.token.revoke({
           payload: {
+            client_id: this.configuration.client,
             token: token.access_token,
           },
         });
       }),
     );
+    this.reset();
     await revocation;
     await this.events.revoke.dispatch();
   }
