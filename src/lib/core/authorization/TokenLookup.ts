@@ -14,7 +14,7 @@ export class TokenLookup {
   #getTokenForService(service: Service) {
     const resourceServer = CONFIG.RESOURCE_SERVERS?.[service];
     const raw =
-      getStorage().get(`${this.#manager.configuration.client_id}:${resourceServer}`) || 'null';
+      getStorage().get(`${this.#manager.configuration.client}:${resourceServer}`) || 'null';
     return JSON.parse(raw);
   }
 

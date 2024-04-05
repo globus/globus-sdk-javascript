@@ -4,9 +4,9 @@ import { TokenLookup } from '../../authorization/TokenLookup';
 
 describe('TokenLookup', () => {
   const manager = new AuthorizationManager({
-    client_id: 'CLIENT_ID',
-    redirect_uri: 'REDIRECT_URI',
-    requested_scopes: 'REQUIRED_SCOPES',
+    client: 'CLIENT_ID',
+    redirect: 'REDIRECT_URI',
+    scopes: 'REQUIRED_SCOPES',
   });
 
   const lookup = new TokenLookup({ manager });

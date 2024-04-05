@@ -12,6 +12,7 @@ import {
 
 describe('AuthorizationManager', () => {
   beforeEach(() => {
+    jest.clearAllMocks();
     jest.restoreAllMocks();
   });
 
@@ -21,9 +22,9 @@ describe('AuthorizationManager', () => {
 
   it('should create an instance of the AuthorizationManager', () => {
     const instance = new AuthorizationManager({
-      client_id: 'client_id',
-      redirect_uri: 'https://redirect_uri',
-      requested_scopes: 'foobar baz',
+      client: 'client_id',
+      redirect: 'https://redirect_uri',
+      scopes: 'foobar baz',
     });
     expect(instance).toBeDefined();
     expect(instance.authenticated).toBe(false);
@@ -33,8 +34,8 @@ describe('AuthorizationManager', () => {
     expect(() => {
       // @ts-ignore – For end-users using Typescript, this will be caught at compile time...
       const instance = new AuthorizationManager({
-        redirect_uri: 'https://redirect_uri',
-        requested_scopes: 'foobar baz',
+        redirect: 'https://redirect_uri',
+        scopes: 'foobar baz',
       });
       expect(instance).toBeUndefined();
     }).toThrow();
@@ -43,9 +44,9 @@ describe('AuthorizationManager', () => {
   it('should startSilentRenew on creation', () => {
     const spy = jest.spyOn(AuthorizationManager.prototype, 'startSilentRenew');
     const instance = new AuthorizationManager({
-      client_id: 'client_id',
-      redirect_uri: 'https://redirect_uri',
-      requested_scopes: 'foobar baz',
+      client: 'client_id',
+      redirect: 'https://redirect_uri',
+      scopes: 'foobar baz',
     });
     expect(instance).toBeDefined();
     expect(spy).toHaveBeenCalledTimes(1);
@@ -59,9 +60,9 @@ describe('AuthorizationManager', () => {
     });
     const spy = jest.spyOn(Event.prototype, 'dispatch');
     const instance = new AuthorizationManager({
-      client_id: 'client_id',
-      redirect_uri: 'https://redirect_uri',
-      requested_scopes: 'foobar baz',
+      client: 'client_id',
+      redirect: 'https://redirect_uri',
+      scopes: 'foobar baz',
     });
 
     expect(spy).toHaveBeenCalledTimes(1);
@@ -74,9 +75,41 @@ describe('AuthorizationManager', () => {
 
   it('supports login', () => {
     const instance = new AuthorizationManager({
-      client_id: 'client_id',
-      redirect_uri: 'https://redirect_uri',
-      requested_scopes: 'foobar baz',
+      client: 'client_id',
+      redirect: 'https://redirect_uri',
+      scopes: 'foobar baz',
+    });
+    instance.login();
+    expect(window.location.replace).toHaveBeenCalledTimes(1);
+    expect(window.location.replace).toHaveBeenCalledWith(
+      expect.stringContaining(
+        'https://auth.globus.org/v2/oauth2/authorize?response_type=code&client_id=client_id&state=&scope=foobar+baz+openid+profile+email&redirect_uri=https%3A%2F%2Fredirect_uri',
+      ),
+    );
+  });
+
+  it('supports defaultScopes', () => {
+    const instance = new AuthorizationManager({
+      client: 'client_id',
+      redirect: 'https://redirect_uri',
+      scopes: 'foobar baz',
+      defaultScopes: 'openid',
+    });
+    instance.login();
+    expect(window.location.replace).toHaveBeenCalledTimes(1);
+    expect(window.location.replace).toHaveBeenCalledWith(
+      expect.stringContaining(
+        'https://auth.globus.org/v2/oauth2/authorize?response_type=code&client_id=client_id&state=&scope=foobar+baz+openid&redirect_uri=https%3A%2F%2Fredirect_uri',
+      ),
+    );
+  });
+
+  it('requests "offline_access" with useRefreshTokens', () => {
+    const instance = new AuthorizationManager({
+      client: 'client_id',
+      redirect: 'https://redirect_uri',
+      scopes: 'foobar baz',
+      useRefreshTokens: true,
     });
     instance.login();
     expect(window.location.replace).toHaveBeenCalledTimes(1);
@@ -91,18 +124,23 @@ describe('AuthorizationManager', () => {
     const MOCK_TOKEN = {
       access_token: 'ACCESS_TOKEN',
       expires_in: 12000,
-      refresh_expires_in: 12000,
-      refresh_token: 'REFRESH_TOKEN',
-      scope: 'openid profile email offline_access',
       token_type: 'Bearer',
       resource_server: 'auth.globus.org',
       state: 'STATE',
+      scope: 'openid profile email',
+      /**
+       * @todo These are actually NOT part of the token response, unless requesting `offline_access`, but
+       * js-pkce enforces the presence of these properties.
+       * @see https://github.com/bpedroza/js-pkce/pull/48
+       */
+      refresh_expires_in: 0,
+      refresh_token: 'REFRESH_TOKEN',
     };
 
     const CONFIG = {
-      client_id: 'client_id',
-      redirect_uri: 'https://redirect_uri',
-      requested_scopes: '',
+      client: 'client_id',
+      redirect: 'https://redirect_uri',
+      scopes: '',
     };
     jest.spyOn(PKCE.prototype, 'exchangeForAccessToken').mockImplementation(async () => MOCK_TOKEN);
 
@@ -129,9 +167,9 @@ describe('AuthorizationManager', () => {
     const spy = jest.spyOn(Event.prototype, 'dispatch');
 
     const instance = new AuthorizationManager({
-      client_id: 'client_id',
-      redirect_uri: 'https://redirect_uri',
-      requested_scopes: 'foobar baz',
+      client: 'client_id',
+      redirect: 'https://redirect_uri',
+      scopes: 'foobar baz',
     });
 
     expect(instance.authenticated).toBe(true);
@@ -152,7 +190,7 @@ describe('AuthorizationManager', () => {
     expect(instance.authenticated).toBe(false);
   });
 
-  it('revoke', () => {
+  it('revoke', async () => {
     setup({
       'client_id:auth.globus.org': JSON.stringify({ resource_server: 'auth.globus.org' }),
       'client_id:foobar': JSON.stringify({ resource_server: 'foobar' }),
@@ -160,17 +198,13 @@ describe('AuthorizationManager', () => {
     });
 
     const instance = new AuthorizationManager({
-      client_id: 'client_id',
-      redirect_uri: 'https://redirect_uri',
-      requested_scopes: 'foobar baz',
+      client: 'client_id',
+      redirect: 'https://redirect_uri',
+      scopes: 'foobar baz',
     });
-
     const spy = jest.spyOn(instance.events.revoke, 'dispatch');
-
     expect(instance.authenticated).toBe(true);
-
-    instance.revoke();
-
+    await instance.revoke();
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
@@ -195,9 +229,9 @@ describe('AuthorizationManager', () => {
       id_token: 'ID.TOKEN',
     };
     const instance = new AuthorizationManager({
-      client_id: 'client_id',
-      redirect_uri: 'https://redirect_uri',
-      requested_scopes: 'transfer.api.globus.org',
+      client: 'client_id',
+      redirect: 'https://redirect_uri',
+      scopes: 'transfer.api.globus.org',
     });
     instance.addTokenResponse(AUTH_TOKEN_FIXTURE);
     expect(instance.authenticated).toBe(true);
@@ -212,9 +246,9 @@ describe('AuthorizationManager - Error Utilities', () => {
   beforeEach(() => {
     jest.restoreAllMocks();
     instance = new AuthorizationManager({
-      client_id: 'CLIENT_ID',
-      redirect_uri: 'https://globus.github.io/example-data-portal/authenticate',
-      requested_scopes: 'urn:globus:auth:scope:transfer.api.globus.org:all',
+      client: 'CLIENT_ID',
+      redirect: 'https://globus.github.io/example-data-portal/authenticate',
+      scopes: 'urn:globus:auth:scope:transfer.api.globus.org:all',
     });
   });
 

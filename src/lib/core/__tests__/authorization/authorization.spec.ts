@@ -8,9 +8,9 @@ describe('authorization', () => {
 
   it('should create an instance of the AuthorizationManager', () => {
     const instance = create({
-      client_id: 'client_id',
-      redirect_uri: 'redirect_uri',
-      requested_scopes: 'foobar baz',
+      client: 'client_id',
+      redirect: 'redirect_uri',
+      scopes: 'foobar baz',
     });
     expect(instance).toBeDefined();
   });

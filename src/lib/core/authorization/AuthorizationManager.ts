@@ -23,9 +23,24 @@ import {
 } from '../errors.js';
 
 export type AuthorizationManagerConfiguration = {
-  client_id: IConfig['client_id'];
-  requested_scopes: IConfig['requested_scopes'];
-  redirect_uri: IConfig['redirect_uri'];
+  client: IConfig['client_id'];
+  scopes: IConfig['requested_scopes'];
+  redirect: IConfig['redirect_uri'];
+  /**
+   * @private
+   * @default DEFAULT_CONFIGURATION.useRefreshTokens
+   */
+  useRefreshTokens?: boolean;
+  /**
+   * @private
+   * @default DEFAULT_CONFIGURATION.defaultScopes
+   */
+  defaultScopes?: string | false;
+};
+
+const DEFAULT_CONFIGURATION = {
+  useRefreshTokens: false,
+  defaultScopes: 'openid profile email',
 };
 
 /**
@@ -82,34 +97,26 @@ export class AuthorizationManager {
     revoke: new Event('revoke'),
   };
 
-  constructor(
-    configuration: AuthorizationManagerConfiguration & {
-      /**
-       * @todo Decide if this should be officially supported. If so, it is probably worth re-typing the `configuration` parameter here
-       * and make it a superset of what winds up being passed to the transports.
-       * @private
-       */
-      DISABLE_DEFAULT_SCOPES?: boolean;
-    },
-  ) {
+  constructor(configuration: AuthorizationManagerConfiguration) {
     /**
      * @todo Add support for passing in an alternative storage mechanism.
      */
     createStorage('localStorage');
-    if (!configuration.client_id) {
-      throw new Error('You must provide a `client_id` for your application.');
+    if (!configuration.client) {
+      throw new Error('You must provide a `client` for your application.');
     }
     /**
      * Inject the `openid`, `profile`, `email`, and `offline_access` scopes by default unless
      * explicitly opted out of.
      */
-    const scopes = configuration.DISABLE_DEFAULT_SCOPES
-      ? ''
-      : 'openid profile email offline_access';
+    const scopes =
+      configuration.defaultScopes === false
+        ? ''
+        : configuration.defaultScopes ?? DEFAULT_CONFIGURATION.defaultScopes;
 
     this.configuration = {
       ...configuration,
-      requested_scopes: `${configuration.requested_scopes} ${scopes}`,
+      scopes: `${configuration.scopes} ${scopes}`,
     };
 
     this.tokens = new TokenLookup({
@@ -129,7 +136,7 @@ export class AuthorizationManager {
   }
 
   getGlobusAuthToken() {
-    const entry = getStorage().get(`${this.configuration.client_id}:auth.globus.org`);
+    const entry = getStorage().get(`${this.configuration.client}:auth.globus.org`);
     return entry ? JSON.parse(entry) : null;
   }
 
@@ -167,12 +174,17 @@ export class AuthorizationManager {
   }
 
   #buildTransport(overrides?: Partial<ConstructorParameters<typeof RedirectTransport>[0]>) {
+    /**
+     * Inject the `offline_access` scope to any requested scop the `useRefreshTokens` configuration is set to `true`.
+     */
+    const scopes = `${overrides?.requested_scopes ?? this.configuration.scopes}${this.configuration.useRefreshTokens ? ' offline_access' : ''}`;
+
     return new RedirectTransport({
-      client_id: this.configuration.client_id,
+      client_id: this.configuration.client,
       authorization_endpoint: getAuthorizationEndpoint(),
       token_endpoint: getTokenEndpoint(),
-      redirect_uri: this.configuration.redirect_uri,
-      requested_scopes: this.configuration.requested_scopes,
+      redirect_uri: this.configuration.redirect,
+      requested_scopes: scopes,
       ...overrides,
       // @todo Decide if we want to include the `include_consented_scopes` parameter by default.
       // params: {
@@ -275,7 +287,7 @@ export class AuthorizationManager {
    * consumers to add tokens to storage if necessary.
    */
   addTokenResponse = (token: Token | TokenResponse) => {
-    getStorage().set(`${this.configuration.client_id}:${token.resource_server}`, token);
+    getStorage().set(`${this.configuration.client}:${token.resource_server}`, token);
     if ('other_tokens' in token) {
       token.other_tokens?.forEach(this.addTokenResponse);
     }
