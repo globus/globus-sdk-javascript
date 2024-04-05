@@ -7,7 +7,7 @@ import { ID as COMPUTE } from '../compute/config.js';
 
 import type { Environment } from '../../core/global.js';
 
-export const ID = 'AUTH';
+export const ID = 'AUTH' as const;
 export const HOSTS: Partial<Record<Environment, string>> = {
   integration: 'auth.integration.globuscs.info',
   sandbox: 'auth.sandbox.globuscs.info',

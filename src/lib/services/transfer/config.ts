@@ -1,6 +1,6 @@
 import type { Environment } from '../../core/global.js';
 
-export const ID = 'TRANSFER';
+export const ID = 'TRANSFER' as const;
 
 export const SCOPES = {
   ALL: 'urn:globus:auth:scope:transfer.api.globus.org:all',

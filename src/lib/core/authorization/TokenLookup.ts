@@ -1,7 +1,7 @@
 import { getStorage } from '../storage/index.js';
 import { Token, CONFIG } from '../../services/auth/index.js';
 
-import type { Service } from '../global.js';
+import { SERVICES, type Service } from '../global.js';
 import { AuthorizationManager } from './AuthorizationManager.js';
 
 export class TokenLookup {
@@ -19,31 +19,31 @@ export class TokenLookup {
   }
 
   get auth(): Token | null {
-    return this.#getTokenForService('AUTH');
+    return this.#getTokenForService(SERVICES.AUTH);
   }
 
   get transfer(): Token | null {
-    return this.#getTokenForService('TRANSFER');
+    return this.#getTokenForService(SERVICES.TRANSFER);
   }
 
   get flows(): Token | null {
-    return this.#getTokenForService('FLOWS');
+    return this.#getTokenForService(SERVICES.FLOWS);
   }
 
   get groups(): Token | null {
-    return this.#getTokenForService('GROUPS');
+    return this.#getTokenForService(SERVICES.GROUPS);
   }
 
   get search(): Token | null {
-    return this.#getTokenForService('SEARCH');
+    return this.#getTokenForService(SERVICES.SEARCH);
   }
 
   get timer(): Token | null {
-    return this.#getTokenForService('TIMER');
+    return this.#getTokenForService(SERVICES.TIMER);
   }
 
   get compute(): Token | null {
-    return this.#getTokenForService('COMPUTE');
+    return this.#getTokenForService(SERVICES.COMPUTE);
   }
 
   getAll() {
