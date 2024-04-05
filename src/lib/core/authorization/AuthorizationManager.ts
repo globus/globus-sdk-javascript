@@ -6,6 +6,7 @@ import {
   getAuthorizationEndpoint,
   getTokenEndpoint,
   isGlobusAuthTokenResponse,
+  oauth2,
 } from '../../services/auth/index.js';
 
 import { createStorage, getStorage } from '../storage/index.js';
@@ -295,12 +296,23 @@ export class AuthorizationManager {
   };
 
   /**
-   * Call `AuthroizationManager.reset` and emit the `revoke` event.
+   * Call `AuthroizationManager.reset`, revoke all of the available tokns, and emit the `revoke` event.
    * @emits AuthorizationManager.events#revoke
    * @see AuthorizationManager.reset
    */
   async revoke() {
     this.reset();
+    const revocation = Promise.all(
+      this.tokens.getAll().map((token) => {
+        if (!token) return Promise.resolve();
+        return oauth2.token.revoke({
+          payload: {
+            token: token.access_token,
+          },
+        });
+      }),
+    );
+    await revocation;
     await this.events.revoke.dispatch();
   }
 }
