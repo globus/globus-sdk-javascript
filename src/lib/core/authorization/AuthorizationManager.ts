@@ -116,7 +116,7 @@ export class AuthorizationManager {
 
     this.configuration = {
       ...configuration,
-      scopes: `${configuration.scopes} ${scopes}`,
+      scopes: `${configuration.scopes}${scopes ? ` ${scopes}` : ''}`,
     };
 
     this.tokens = new TokenLookup({

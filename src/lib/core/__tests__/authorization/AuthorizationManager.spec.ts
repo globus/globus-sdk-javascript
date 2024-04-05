@@ -88,20 +88,38 @@ describe('AuthorizationManager', () => {
     );
   });
 
-  it('supports defaultScopes', () => {
-    const instance = new AuthorizationManager({
-      client: 'client_id',
-      redirect: 'https://redirect_uri',
-      scopes: 'foobar baz',
-      defaultScopes: 'openid',
+  describe('defaultScopes', () => {
+    it('supports custom value', () => {
+      const instance = new AuthorizationManager({
+        client: 'client_id',
+        redirect: 'https://redirect_uri',
+        scopes: 'foobar baz',
+        defaultScopes: 'openid',
+      });
+      instance.login();
+      expect(window.location.replace).toHaveBeenCalledTimes(1);
+      expect(window.location.replace).toHaveBeenCalledWith(
+        expect.stringContaining(
+          'https://auth.globus.org/v2/oauth2/authorize?response_type=code&client_id=client_id&state=&scope=foobar+baz+openid&redirect_uri=https%3A%2F%2Fredirect_uri',
+        ),
+      );
     });
-    instance.login();
-    expect(window.location.replace).toHaveBeenCalledTimes(1);
-    expect(window.location.replace).toHaveBeenCalledWith(
-      expect.stringContaining(
-        'https://auth.globus.org/v2/oauth2/authorize?response_type=code&client_id=client_id&state=&scope=foobar+baz+openid&redirect_uri=https%3A%2F%2Fredirect_uri',
-      ),
-    );
+
+    it('can be disabled', () => {
+      const instance = new AuthorizationManager({
+        client: 'client_id',
+        redirect: 'https://redirect_uri',
+        scopes: 'foobar baz',
+        defaultScopes: false,
+      });
+      instance.login();
+      expect(window.location.replace).toHaveBeenCalledTimes(1);
+      expect(window.location.replace).toHaveBeenCalledWith(
+        expect.stringContaining(
+          'https://auth.globus.org/v2/oauth2/authorize?response_type=code&client_id=client_id&state=&scope=foobar+baz&redirect_uri=https%3A%2F%2Fredirect_uri',
+        ),
+      );
+    });
   });
 
   it('requests "offline_access" with useRefreshTokens', () => {
