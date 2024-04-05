@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.0](https://github.com/globus/globus-sdk-javascript/compare/v2.4.1...v2.5.0) (2024-04-05)
+
+
+### Features
+
+* **Compute:** adds initial support for Globus Compute ([#135](https://github.com/globus/globus-sdk-javascript/issues/135)) ([1923674](https://github.com/globus/globus-sdk-javascript/commit/1923674ecf9beccbb29ef45ceb30dd23ea7bc65e))
+
 ## [2.4.1](https://github.com/globus/globus-sdk-javascript/compare/v2.4.0...v2.4.1) (2024-02-22)
 
 
