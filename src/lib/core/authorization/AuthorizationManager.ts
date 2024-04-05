@@ -82,7 +82,16 @@ export class AuthorizationManager {
     revoke: new Event('revoke'),
   };
 
-  constructor(configuration: AuthorizationManagerConfiguration) {
+  constructor(
+    configuration: AuthorizationManagerConfiguration & {
+      /**
+       * @todo Decide if this should be officially supported. If so, it is probably worth re-typing the `configuration` parameter here
+       * and make it a superset of what winds up being passed to the transports.
+       * @private
+       */
+      DISABLE_DEFAULT_SCOPES?: boolean;
+    },
+  ) {
     /**
      * @todo Add support for passing in an alternative storage mechanism.
      */
@@ -90,12 +99,17 @@ export class AuthorizationManager {
     if (!configuration.client_id) {
       throw new Error('You must provide a `client_id` for your application.');
     }
+    /**
+     * Inject the `openid`, `profile`, `email`, and `offline_access` scopes by default unless
+     * explicitly opted out of.
+     */
+    const scopes = configuration.DISABLE_DEFAULT_SCOPES
+      ? ''
+      : 'openid profile email offline_access';
+
     this.configuration = {
       ...configuration,
-      /**
-       * Inject the `openid`, `profile`, `email`, and `offline_access` scopes by default.
-       */
-      requested_scopes: `${configuration.requested_scopes} openid profile email offline_access`,
+      requested_scopes: `${configuration.requested_scopes} ${scopes}`,
     };
 
     this.tokens = new TokenLookup({
@@ -160,6 +174,11 @@ export class AuthorizationManager {
       redirect_uri: this.configuration.redirect_uri,
       requested_scopes: this.configuration.requested_scopes,
       ...overrides,
+      // @todo Decide if we want to include the `include_consented_scopes` parameter by default.
+      // params: {
+      //   include_consented_scopes: true,
+      //   ...overrides?.params,
+      // },
     });
   }
 
@@ -258,7 +277,7 @@ export class AuthorizationManager {
   addTokenResponse = (token: Token | TokenResponse) => {
     getStorage().set(`${this.configuration.client_id}:${token.resource_server}`, token);
     if ('other_tokens' in token) {
-      token.other_tokens.forEach(this.addTokenResponse);
+      token.other_tokens?.forEach(this.addTokenResponse);
     }
     this.#checkAuthorizationState();
   };

@@ -39,7 +39,7 @@ export type Token = {
 export type TokenResponse = Token & {
   state: string;
   id_token?: string;
-  other_tokens: Token[];
+  other_tokens?: Token[];
 };
 
 export function isGlobusAuthTokenResponse(check: unknown): check is TokenResponse {

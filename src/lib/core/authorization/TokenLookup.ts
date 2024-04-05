@@ -11,7 +11,7 @@ export class TokenLookup {
     this.#manager = options.manager;
   }
 
-  #getTokenForService(service: Extract<Service, 'AUTH' | 'TRANSFER' | 'FLOWS'>) {
+  #getTokenForService(service: Service) {
     const resourceServer = CONFIG.RESOURCE_SERVERS?.[service];
     const raw =
       getStorage().get(`${this.#manager.configuration.client_id}:${resourceServer}`) || 'null';
@@ -28,5 +28,33 @@ export class TokenLookup {
 
   get flows(): Token | null {
     return this.#getTokenForService('FLOWS');
+  }
+
+  get groups(): Token | null {
+    return this.#getTokenForService('GROUPS');
+  }
+
+  get search(): Token | null {
+    return this.#getTokenForService('SEARCH');
+  }
+
+  get timer(): Token | null {
+    return this.#getTokenForService('TIMER');
+  }
+
+  get compute(): Token | null {
+    return this.#getTokenForService('COMPUTE');
+  }
+
+  getAll() {
+    return [
+      this.auth,
+      this.transfer,
+      this.flows,
+      this.groups,
+      this.search,
+      this.timer,
+      this.compute,
+    ].filter((token) => token !== null);
   }
 }
