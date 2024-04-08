@@ -29,4 +29,15 @@ describe('compute.endpoints', () => {
       headers,
     }).toMatchSnapshot();
   });
+
+  test('getStatus', async () => {
+    const {
+      req: { url, method, headers },
+    } = await mirror(await endpoints.getStatus('some-uuid'));
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchSnapshot();
+  });
 });

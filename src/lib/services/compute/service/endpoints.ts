@@ -56,3 +56,29 @@ export const get = function (
     payload?: never;
   }
 >;
+
+export const getStatus = function (
+  endpoint_uuid,
+  options?,
+  sdkOptions?,
+): Promise<
+  JSONFetchResponse<
+    operations['get_endpoint_status_v2_endpoints__endpoint_uuid__status_get']['responses']['200']['content']['application/json']
+  >
+> {
+  return serviceRequest(
+    {
+      service: ID,
+      scope: SCOPES.ALL,
+      path: `/v2/endpoints/${endpoint_uuid}/status`,
+    },
+    options,
+    sdkOptions,
+  );
+} satisfies ServiceMethodDynamicSegments<
+  operations['get_endpoint_status_v2_endpoints__endpoint_uuid__status_get']['parameters']['path']['endpoint_uuid'],
+  {
+    query?: never;
+    payload?: never;
+  }
+>;
