@@ -22,7 +22,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@globus/types": "^0.0.7",
-    "@tsconfig/recommended": "^1.0.5",
+    "@tsconfig/recommended": "^1.0.6",
     "@types/jest": "29.5.12",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
