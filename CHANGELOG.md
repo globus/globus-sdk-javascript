@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.6.0](https://github.com/globus/globus-sdk-javascript/compare/v2.5.0...v2.6.0) (2024-04-08)
+
+
+### Features
+
+* **Compute:** adds endpoint.getStatus function to Compute service. ([#139](https://github.com/globus/globus-sdk-javascript/issues/139)) ([998bb21](https://github.com/globus/globus-sdk-javascript/commit/998bb21e8773c252820074b6bf690f9dbdc0070f))
+
 ## [2.5.0](https://github.com/globus/globus-sdk-javascript/compare/v2.4.1...v2.5.0) (2024-04-05)
 
 
