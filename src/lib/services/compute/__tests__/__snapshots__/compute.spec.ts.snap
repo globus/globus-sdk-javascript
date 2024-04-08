@@ -14,6 +14,20 @@ exports[`compute.endpoints get 1`] = `
 }
 `;
 
+exports[`compute.endpoints getStatus 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "compute.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://compute.api.globus.org/v2/endpoints/some-uuid/status",
+}
+`;
+
 exports[`compute.endpoints getAll 1`] = `
 {
   "headers": {
