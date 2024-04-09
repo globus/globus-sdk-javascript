@@ -1,5 +1,7 @@
 import PKCE from 'js-pkce';
+import { HttpResponse, http } from 'msw';
 import { setup } from '../../../../__mocks__/localStorage';
+import server from '../../../../__mocks__/server';
 import '../../../../__mocks__/sessionStorage';
 import '../../../../__mocks__/window-location';
 import { AuthorizationManager } from '../../authorization/AuthorizationManager';
@@ -50,6 +52,54 @@ describe('AuthorizationManager', () => {
     });
     expect(instance).toBeDefined();
     expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should refresh existing tokens on bootstrap', async () => {
+    const TOKEN = {
+      access_token: 'access-token',
+      scope: 'profile email openid',
+      expires_in: 172800,
+      token_type: 'Bearer',
+      resource_server: 'auth.globus.org',
+      refresh_token: 'refresh-token',
+      other_tokens: [],
+    };
+
+    setup({
+      'client_id:auth.globus.org': JSON.stringify(TOKEN),
+    });
+
+    server.use(
+      http.post('https://auth.globus.org/v2/oauth2/token', async () =>
+        HttpResponse.json({
+          ...TOKEN,
+          access_token: `new-token`,
+          refresh_token: `new-refresh-token`,
+        }),
+      ),
+    );
+
+    const spy = jest.spyOn(AuthorizationManager.prototype, 'refreshToken');
+
+    const instance = new AuthorizationManager({
+      client: 'client_id',
+      redirect: 'https://redirect_uri',
+      scopes: 'profile email openid',
+      useRefreshTokens: true,
+    });
+
+    expect(instance.authenticated).toBe(true);
+    expect(instance.tokens.auth?.access_token).toBe('access-token');
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    /**
+     * This effectively waits for the next tick to allow the refresh promise to resolve.
+     */
+    await new Promise((resolve) => {
+      setTimeout(resolve, 0);
+    });
+    expect(instance.tokens.auth?.access_token).toBe('new-token');
+    expect(instance.tokens.auth?.refresh_token).toBe('new-refresh-token');
   });
 
   it('should bootstrap from an existing token', () => {

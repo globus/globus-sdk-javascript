@@ -32,8 +32,12 @@ export type Token = {
   token_type: string;
   resource_server: string;
   refresh_token?: string;
-  refresh_expires_in?: number;
 };
+
+export type TokenWithRefresh = Token & {
+  refresh_token: string;
+};
+
 /**
  * @see https://docs.globus.org/api/auth/reference/#authorization_code_grant_preferred
  */
@@ -45,6 +49,10 @@ export type TokenResponse = Token & {
 
 export function isToken(check: unknown): check is Token {
   return typeof check === 'object' && check !== null && 'access_token' in check;
+}
+
+export function isRefreshToken(check: unknown): check is TokenWithRefresh {
+  return isToken(check) && check !== null && 'refresh_token' in check;
 }
 
 export function isGlobusAuthTokenResponse(check: unknown): check is TokenResponse {

@@ -11,6 +11,7 @@ function isValidToken(check: unknown): check is Token {
  * Obtain the token string for the given scope.
  * @param scope The scope string that will be used to look up the token.
  * @returns The token string for the given scope or null if no token is found.
+ * @deprecated Use an `AuthorizationManager` instance to manage tokens.
  */
 export function getTokenForScope(scope: string) {
   const storageValue = getStorage().get(scope);

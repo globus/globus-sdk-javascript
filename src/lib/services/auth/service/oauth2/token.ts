@@ -21,7 +21,16 @@ type ValidatePayload = {
   client_id: string;
 };
 
-type SupportedPayloads = IntrospectPayload | RevokePayload | ValidatePayload;
+type RefreshPayload = {
+  refresh_token: string;
+  grant_type: 'refresh_token';
+  /**
+   * This is an undocumented property that is required for the request to be successful.
+   */
+  client_id: string;
+};
+
+type SupportedPayloads = IntrospectPayload | RevokePayload | ValidatePayload | RefreshPayload;
 
 function serialize(payload?: SupportedPayloads) {
   return new URLSearchParams(payload);
@@ -94,6 +103,28 @@ export const revoke = function (options, sdkOptions?) {
   );
 } satisfies ServiceMethod<{
   payload: RevokePayload;
+}>;
+
+/**
+ * Token Refresh
+ * @see https://docs.globus.org/api/auth/reference/#refresh_token_grant
+ */
+export const refresh = function (options, sdkOptions?) {
+  if (!options?.payload) {
+    throw new Error(`'payload' is required for revoke`);
+  }
+  return serviceRequest(
+    {
+      service: ID,
+      scope: undefined,
+      path: `/v2/oauth2/token`,
+      method: HTTP_METHODS.POST,
+    },
+    injectServiceOptions(options),
+    sdkOptions,
+  );
+} satisfies ServiceMethod<{
+  payload: RefreshPayload;
 }>;
 
 /**

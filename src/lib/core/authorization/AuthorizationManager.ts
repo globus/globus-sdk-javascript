@@ -3,9 +3,11 @@ import type IConfig from 'js-pkce/dist/IConfig';
 import {
   Token,
   TokenResponse,
+  TokenWithRefresh,
   getAuthorizationEndpoint,
   getTokenEndpoint,
   isGlobusAuthTokenResponse,
+  isRefreshToken,
   oauth2,
 } from '../../services/auth/index.js';
 
@@ -123,13 +125,55 @@ export class AuthorizationManager {
     this.tokens = new TokenLookup({
       manager: this,
     });
+    this.#bootstrapFromStorageState();
     this.startSilentRenew();
   }
 
+  /**
+   * Start the silent renew process for the instance.
+   * @todo Add interval support for the silent renew.
+   */
   startSilentRenew() {
     log('debug', 'AuthorizationManager.startSilentRenew');
-    this.#bootstrapFromStorageState();
-    // @todo Iterate through all tokens and refresh them.
+    /**
+     * Silent renewal is only supported when using refresh tokens.
+     */
+    if (this.configuration.useRefreshTokens) {
+      this.#silentRenewRefreshTokens();
+    }
+  }
+
+  #silentRenewRefreshTokens() {
+    log('debug', 'AuthorizationManager.#silentRenewRefreshTokens');
+    this.tokens.getAll().forEach((token) => {
+      if (isRefreshToken(token)) {
+        this.refreshToken(token);
+      }
+    });
+  }
+
+  /**
+   * Use the `refresh_token` attribute of a token to obtain a new access token.
+   * @param token The well-formed token with a `refresh_token` attribute.
+   */
+  async refreshToken(token: TokenWithRefresh) {
+    log('debug', `AuthorizationManager.refreshToken | resource_server=${token.resource_server}`);
+    try {
+      const response = await (
+        await oauth2.token.refresh({
+          payload: {
+            client_id: this.configuration.client,
+            refresh_token: token.refresh_token,
+            grant_type: 'refresh_token',
+          },
+        })
+      ).json();
+      if (isGlobusAuthTokenResponse(response)) {
+        this.addTokenResponse(response);
+      }
+    } catch (error) {
+      log('error', `AuthorizationManager.refreshToken | resource_server=${token.resource_server}`);
+    }
   }
 
   hasGlobusAuthToken() {
@@ -310,19 +354,22 @@ export class AuthorizationManager {
    */
   async revoke() {
     log('debug', 'AuthorizationManager.revoke');
-    const revocation = Promise.all(
-      this.tokens.getAll().map((token) => {
-        log('debug', `AuthorizationManager.revoke | resource_server=${token.resource_server}`);
-        return oauth2.token.revoke({
-          payload: {
-            client_id: this.configuration.client,
-            token: token.access_token,
-          },
-        });
-      }),
-    );
+    const revocation = Promise.all(this.tokens.getAll().map((token) => this.#revokeToken(token)));
     this.reset();
     await revocation;
     await this.events.revoke.dispatch();
+  }
+
+  /**
+   * Revoke a token from a resource server.
+   */
+  #revokeToken(token: Token) {
+    log('debug', `AuthorizationManager.revokeToken | resource_server=${token.resource_server}`);
+    return oauth2.token.revoke({
+      payload: {
+        client_id: this.configuration.client,
+        token: token.access_token,
+      },
+    });
   }
 }
