@@ -23,6 +23,8 @@ describe('logger', () => {
     setLogger(mockLogger);
     log('info', 'never');
     expect(mockLogger.info).not.toHaveBeenCalledWith('never');
+    log('error', 'always');
+    expect(mockLogger.error).toHaveBeenCalledWith('always');
   });
 
   it('falls back to "log" method', () => {

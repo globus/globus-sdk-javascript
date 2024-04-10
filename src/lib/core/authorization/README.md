@@ -10,7 +10,7 @@ The general approach and architecture of our authorization utility is derived fr
 
 ## Key Concepts
 
-### Authorizatoin Manager (`index.ts`)
+### Authorization Manager (`index.ts`)
 
 The `AuthorizationManager` class is responsible for managing the authorization process for an application.
 

@@ -21,11 +21,11 @@ let logger: Logger | undefined;
 let level: number = LOG_LEVELS.indexOf('error');
 /**
  * Set the global logger for the SDK.
- * @param logMechnism The logger to use.
+ * @param logMechanism The logger to use.
  * @example `log.setLogger(console)`
  */
-export function setLogger(logMechnism: Logger) {
-  logger = logMechnism;
+export function setLogger(logMechanism: Logger) {
+  logger = logMechanism;
 }
 /**
  * Set the global log level for the logger.

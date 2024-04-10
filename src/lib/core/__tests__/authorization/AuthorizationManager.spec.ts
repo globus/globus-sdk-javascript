@@ -43,8 +43,8 @@ describe('AuthorizationManager', () => {
     }).toThrow();
   });
 
-  it('should startSilentRenew on creation', () => {
-    const spy = jest.spyOn(AuthorizationManager.prototype, 'startSilentRenew');
+  it('should startSilentRefresh on creation', () => {
+    const spy = jest.spyOn(AuthorizationManager.prototype, 'startSilentRefresh');
     const instance = new AuthorizationManager({
       client: 'client_id',
       redirect: 'https://redirect_uri',

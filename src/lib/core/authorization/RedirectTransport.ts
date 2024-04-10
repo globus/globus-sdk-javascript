@@ -28,13 +28,26 @@ export class RedirectTransport {
     window.location.replace(this.#pkce.authorizeUrl(this.#params));
   }
 
+  /**
+   * Parse the current URL for the authorization code (`?code=...`) and exchange it for an access token when available.
+   * - When the URL is processed and exchanged for an access token, the page is redirected to the current URL without the `?code=...&state=...` parameters.
+   */
   async getToken() {
     const url = new URL(window.location.href);
     const params = new URLSearchParams(url.search);
+    /**
+     * If we don't have a `code` parameter, we can't exchange it for an access token.
+     */
     if (!params.get('code')) return undefined;
     const response = await this.#pkce.exchangeForAccessToken(url.toString());
+    /**
+     * Remove the `code` and `state` parameters from the URL.
+     */
     params.delete('code');
     params.delete('state');
+    /**
+     * Update the URL with the new query string.
+     */
     url.search = params.toString();
     /**
      * Resets js-pkce state
@@ -42,6 +55,9 @@ export class RedirectTransport {
      */
     sessionStorage.removeItem('pkce_state');
     sessionStorage.removeItem('pkce_code_verifier');
+    /**
+     * Redirect the page to the new URL (without the `code` and `state` parameters)/
+     */
     window.location.replace(url);
     return response;
   }

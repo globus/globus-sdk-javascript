@@ -57,7 +57,7 @@ export class AuthorizationManager {
   #authenticated = false;
 
   /**
-   * The `AuthorizationManager` is consdiered `authenticated` if it has a valid Globus Auth token.
+   * The `AuthorizationManager` is considered `authenticated` if it has a valid Globus Auth token.
    * It does not necessarily mean that it has a valid token for a specific resource server.
    */
   get authenticated() {
@@ -126,25 +126,28 @@ export class AuthorizationManager {
       manager: this,
     });
     this.#bootstrapFromStorageState();
-    this.startSilentRenew();
+    this.startSilentRefresh();
   }
 
   /**
-   * Start the silent renew process for the instance.
-   * @todo Add interval support for the silent renew.
+   * Start the silent refresh process for the instance.
+   * @todo Add interval support for the silent refresh.
    */
-  startSilentRenew() {
-    log('debug', 'AuthorizationManager.startSilentRenew');
+  startSilentRefresh() {
+    log(
+      'debug',
+      `AuthorizationManager.startSilentRefresh | useRefreshTokens=${this.configuration.useRefreshTokens}`,
+    );
     /**
-     * Silent renewal is only supported when using refresh tokens.
+     * Silent refresh is only supported when using refresh tokens.
      */
     if (this.configuration.useRefreshTokens) {
-      this.#silentRenewRefreshTokens();
+      this.#silentRefreshTokens();
     }
   }
 
-  #silentRenewRefreshTokens() {
-    log('debug', 'AuthorizationManager.#silentRenewRefreshTokens');
+  #silentRefreshTokens() {
+    log('debug', 'AuthorizationManager.#silentRefreshTokens');
     this.tokens.getAll().forEach((token) => {
       if (isRefreshToken(token)) {
         this.refreshToken(token);
@@ -354,7 +357,7 @@ export class AuthorizationManager {
    */
   async revoke() {
     log('debug', 'AuthorizationManager.revoke');
-    const revocation = Promise.all(this.tokens.getAll().map((token) => this.#revokeToken(token)));
+    const revocation = Promise.all(this.tokens.getAll().map(this.#revokeToken.bind(this)));
     this.reset();
     await revocation;
     await this.events.revoke.dispatch();
