@@ -261,19 +261,30 @@ describe('AuthorizationManager', () => {
   it('revoke', async () => {
     setup({
       'client_id:auth.globus.org': JSON.stringify({ resource_server: 'auth.globus.org' }),
-      'client_id:foobar': JSON.stringify({ resource_server: 'foobar' }),
-      'client_id:baz': JSON.stringify({ resource_server: 'baz' }),
+      'client_id:transfer.api.globus.org': JSON.stringify({
+        resource_server: 'transfer.api.globus.org',
+      }),
+      'client_id:groups.api.globus.org': JSON.stringify({
+        resource_server: 'groups.api.globus.org',
+      }),
     });
-
     const instance = new AuthorizationManager({
       client: 'client_id',
       redirect: 'https://redirect_uri',
-      scopes: 'foobar baz',
+      scopes:
+        'urn:globus:auth:scope:transfer.api.globus.org:all urn:globus:auth:scope:groups.api.globus.org:all',
     });
     const spy = jest.spyOn(instance.events.revoke, 'dispatch');
     expect(instance.authenticated).toBe(true);
+    expect(instance.tokens.auth).not.toBe(null);
+    expect(instance.tokens.transfer).not.toBe(null);
+    expect(instance.tokens.groups).not.toBe(null);
     await instance.revoke();
     expect(spy).toHaveBeenCalledTimes(1);
+    expect(instance.authenticated).toBe(false);
+    expect(instance.tokens.auth).toBe(null);
+    expect(instance.tokens.transfer).toBe(null);
+    expect(instance.tokens.groups).toBe(null);
   });
 
   it('supports adding an existing token', () => {
