@@ -46,7 +46,8 @@
   },
   "dependencies": {
     "cross-fetch": "^4.0.0",
-    "js-pkce": "^1.2.1"
+    "js-pkce": "^1.2.1",
+    "jwt-decode": "^4.0.0"
   },
   "peerDependencies": {
     "@globus/types": "^0.0.7"

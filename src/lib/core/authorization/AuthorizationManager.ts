@@ -1,9 +1,8 @@
+import { jwtDecode } from 'jwt-decode';
+
 import type IConfig from 'js-pkce/dist/IConfig';
 
 import {
-  Token,
-  TokenResponse,
-  TokenWithRefresh,
   getAuthorizationEndpoint,
   getTokenEndpoint,
   isGlobusAuthTokenResponse,
@@ -24,6 +23,13 @@ import {
   AuthorizationRequirementsError,
   ConsentRequiredError,
 } from '../errors.js';
+
+import type {
+  JwtUserInfo,
+  Token,
+  TokenResponse,
+  TokenWithRefresh,
+} from '../../services/auth/types.js';
 
 export type AuthorizationManagerConfiguration = {
   client: IConfig['client_id'];
@@ -127,6 +133,21 @@ export class AuthorizationManager {
     });
     this.#bootstrapFromStorageState();
     this.startSilentRefresh();
+  }
+
+  /**
+   * The user information decoded from the `id_token` (JWT) of the current Globus Auth token.
+   * This method can be used instead of `auth.oauth2.userinfo` to get the user information without an additional request.
+   *
+   * **IMPORTANT**: The `id_token` can only be processed if the `openid` scope is requested during the authorization process.
+   *
+   * Additionally, the `profile` and `email` scopes are required to get the full user information.
+   *
+   * @see {@link https://docs.globus.org/api/auth/reference/#oidc_userinfo_endpoint}
+   */
+  get user() {
+    const token = this.getGlobusAuthToken();
+    return token && token.id_token ? jwtDecode<JwtUserInfo>(token.id_token) : null;
   }
 
   /**

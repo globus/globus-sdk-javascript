@@ -61,6 +61,21 @@ exports[`oauth2 revoke 1`] = `
 }
 `;
 
+exports[`oauth2 userinfo 1`] = `
+{
+  "formData": {},
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "auth.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://auth.globus.org/v2/oauth2/userinfo",
+}
+`;
+
 exports[`oauth2 validate 1`] = `
 {
   "formData": {

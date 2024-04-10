@@ -1,6 +1,6 @@
-import { Token } from '../../services/auth/index.js';
-
 import { getStorage } from '../storage/index.js';
+
+import type { Token } from '../../services/auth/types.js';
 
 function isValidToken(check: unknown): check is Token {
   const maybe = check as Token;

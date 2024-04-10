@@ -1,8 +1,10 @@
 import { getStorage } from '../storage/index.js';
-import { Token, CONFIG, isToken } from '../../services/auth/index.js';
+import { CONFIG, isToken } from '../../services/auth/index.js';
 
 import { SERVICES, type Service } from '../global.js';
 import { AuthorizationManager } from './AuthorizationManager.js';
+
+import type { Token } from '../../services/auth/types.js';
 
 export class TokenLookup {
   #manager: AuthorizationManager;

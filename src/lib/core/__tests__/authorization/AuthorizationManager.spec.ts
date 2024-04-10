@@ -169,6 +169,42 @@ describe('AuthorizationManager', () => {
     );
   });
 
+  describe('user', () => {
+    it('returns null when no Globus Auth token is present', () => {
+      const instance = new AuthorizationManager({
+        client: 'client_id',
+        redirect: 'https://redirect_uri',
+        scopes: 'foobar baz',
+      });
+      expect(instance.user).toBeNull();
+    });
+    it('parses the id_token', () => {
+      const AUTH_TOKEN_FIXTURE = {
+        access_token: 'AUTH_TOKEN',
+        scope: 'email profile openid',
+        expires_in: 172800,
+        token_type: 'Bearer',
+        resource_server: 'auth.globus.org',
+        state: 'SOME_STATE',
+        id_token:
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+      };
+      setup({
+        'client_id:auth.globus.org': JSON.stringify(AUTH_TOKEN_FIXTURE),
+      });
+      const instance = new AuthorizationManager({
+        client: 'client_id',
+        redirect: 'https://redirect_uri',
+        scopes: 'foobar baz',
+      });
+      expect(instance.user).toMatchObject({
+        sub: '1234567890',
+        name: 'John Doe',
+        iat: 1516239022,
+      });
+    });
+  });
+
   describe('defaultScopes', () => {
     it('supports custom value', () => {
       const instance = new AuthorizationManager({

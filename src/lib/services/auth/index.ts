@@ -8,6 +8,8 @@ import { build } from '../../core/url.js';
 
 import * as AUTH from './config.js';
 
+import type { Token, TokenWithRefresh, TokenResponse } from './types.js';
+
 /**
  * @private
  * @internal
@@ -24,28 +26,6 @@ export function getTokenEndpoint() {
 
 export * as identities from './service/identities.js';
 export * as oauth2 from './service/oauth2/index.js';
-
-export type Token = {
-  access_token: string;
-  scope: string;
-  expires_in: number;
-  token_type: string;
-  resource_server: string;
-  refresh_token?: string;
-};
-
-export type TokenWithRefresh = Token & {
-  refresh_token: string;
-};
-
-/**
- * @see https://docs.globus.org/api/auth/reference/#authorization_code_grant_preferred
- */
-export type TokenResponse = Token & {
-  state: string;
-  id_token?: string;
-  other_tokens?: Token[];
-};
 
 export function isToken(check: unknown): check is Token {
   return typeof check === 'object' && check !== null && 'access_token' in check;

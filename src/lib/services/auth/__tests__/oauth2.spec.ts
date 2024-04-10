@@ -7,6 +7,17 @@ describe('oauth2', () => {
     createStorage('memory');
   });
 
+  test('userinfo', async () => {
+    const {
+      req: { url, method, headers, formData },
+    } = await mirror(await oauth2.userinfo());
+    expect({
+      url,
+      method,
+      headers,
+      formData,
+    }).toMatchSnapshot();
+  });
   test('introspect', async () => {
     expect(() => {
       // @ts-expect-error This intentionally does not have a payload to test the error case.
