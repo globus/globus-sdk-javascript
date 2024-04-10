@@ -67,16 +67,42 @@ describe('AuthorizationManager', () => {
 
     setup({
       'client_id:auth.globus.org': JSON.stringify(TOKEN),
+      'client_id:transfer.api.globus.org': JSON.stringify({
+        ...TOKEN,
+        resource_server: 'transfer.api.globus.org',
+        refresh_token: 'throw',
+      }),
     });
 
     server.use(
-      http.post('https://auth.globus.org/v2/oauth2/token', async () =>
-        HttpResponse.json({
+      http.post('https://auth.globus.org/v2/oauth2/token', async ({ request }) => {
+        const refresh = (await request.formData()).get('refresh_token');
+
+        if (refresh === 'throw') {
+          return HttpResponse.json(
+            {
+              errors: [
+                {
+                  title: 'An unexpected error occurred.',
+                  detail: null,
+                  id: 'aa0b3877-4c86-468b-8dd5-c076e9dd3cc1',
+                  code: 'UNEXPECTED_ERROR',
+                  status: '500',
+                },
+              ],
+              error: 'unexpected_error',
+              error_description: 'An unexpected error occurred.',
+            },
+            { status: 500 },
+          );
+        }
+
+        return HttpResponse.json({
           ...TOKEN,
           access_token: `new-token`,
           refresh_token: `new-refresh-token`,
-        }),
-      ),
+        });
+      }),
     );
 
     const spy = jest.spyOn(AuthorizationManager.prototype, 'refreshToken');
@@ -90,8 +116,9 @@ describe('AuthorizationManager', () => {
 
     expect(instance.authenticated).toBe(true);
     expect(instance.tokens.auth?.access_token).toBe('access-token');
+    expect(instance.tokens.transfer?.access_token).toBe('access-token');
 
-    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledTimes(2);
     /**
      * This effectively waits for the next tick to allow the refresh promise to resolve.
      */
@@ -100,6 +127,10 @@ describe('AuthorizationManager', () => {
     });
     expect(instance.tokens.auth?.access_token).toBe('new-token');
     expect(instance.tokens.auth?.refresh_token).toBe('new-refresh-token');
+    /**
+     * The transfer token should not be refreshed due to the thrown error.
+     */
+    expect(instance.tokens.transfer?.access_token).toBe('access-token');
   });
 
   it('should bootstrap from an existing token', () => {
