@@ -24,7 +24,7 @@ describe('TokenLookup', () => {
   });
 
   it('should return tokens for services when in storage', () => {
-    const TOKEN = { resource_server: RESOURCE_SERVERS.AUTH };
+    const TOKEN = { resource_server: RESOURCE_SERVERS.AUTH, access_token: 'AUTH' };
     setup({
       'CLIENT_ID:auth.globus.org': JSON.stringify(TOKEN),
     });

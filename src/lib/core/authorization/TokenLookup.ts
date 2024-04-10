@@ -15,7 +15,16 @@ export class TokenLookup {
     const resourceServer = CONFIG.RESOURCE_SERVERS?.[service];
     const raw =
       getStorage().get(`${this.#manager.configuration.client}:${resourceServer}`) || 'null';
-    return JSON.parse(raw);
+    let token: Token | null = null;
+    try {
+      const parsed = JSON.parse(raw);
+      if (isToken(parsed)) {
+        token = parsed;
+      }
+    } catch (e) {
+      // no-op
+    }
+    return token;
   }
 
   get auth(): Token | null {

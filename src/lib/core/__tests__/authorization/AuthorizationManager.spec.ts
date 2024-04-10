@@ -260,11 +260,16 @@ describe('AuthorizationManager', () => {
 
   it('revoke', async () => {
     setup({
-      'client_id:auth.globus.org': JSON.stringify({ resource_server: 'auth.globus.org' }),
+      'client_id:auth.globus.org': JSON.stringify({
+        resource_server: 'auth.globus.org',
+        access_token: 'AUTH',
+      }),
       'client_id:transfer.api.globus.org': JSON.stringify({
+        access_token: 'TRANSFER',
         resource_server: 'transfer.api.globus.org',
       }),
       'client_id:groups.api.globus.org': JSON.stringify({
+        access_token: 'GROUPS',
         resource_server: 'groups.api.globus.org',
       }),
     });
