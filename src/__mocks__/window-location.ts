@@ -9,7 +9,7 @@ Object.defineProperty(globalThis, 'window', {
         URL_BAR = new URL(url);
       },
       get href() {
-        return URL_BAR;
+        return URL_BAR.toString();
       },
     },
   },

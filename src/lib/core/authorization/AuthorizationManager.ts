@@ -14,7 +14,7 @@ import { createStorage, getStorage } from '../storage/index.js';
 import { log } from '../logger.js';
 
 import { Event } from './Event.js';
-import { RedirectTransport } from './RedirectTransport.js';
+import { GetTokenOptions, RedirectTransport } from './RedirectTransport.js';
 import { TokenLookup } from './TokenLookup.js';
 
 import {
@@ -283,9 +283,15 @@ export class AuthorizationManager {
     transport.send();
   }
 
-  async handleCodeRedirect() {
+  async handleCodeRedirect(
+    options: {
+      shouldReplace: GetTokenOptions['shouldReplace'];
+    } = { shouldReplace: true },
+  ) {
     log('debug', 'AuthorizationManager.handleCodeRedirect');
-    const response = await this.#buildTransport().getToken();
+    const response = await this.#buildTransport().getToken({
+      shouldReplace: options?.shouldReplace,
+    });
     if (isGlobusAuthTokenResponse(response)) {
       log(
         'debug',

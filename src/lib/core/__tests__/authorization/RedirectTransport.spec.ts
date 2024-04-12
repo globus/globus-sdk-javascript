@@ -44,7 +44,7 @@ describe('RedirectTransport', () => {
       expect(response).toBeUndefined();
     });
 
-    it('removes code and state from location after processing', async () => {
+    it('removes code and state from location after processing (by default)', async () => {
       jest
         .spyOn(PKCE.prototype, 'exchangeForAccessToken')
         .mockImplementation(async () => MOCK_TOKEN);
@@ -55,6 +55,20 @@ describe('RedirectTransport', () => {
       expect(response).toBe(MOCK_TOKEN);
       expect(window.location.replace).toHaveBeenCalled();
       expect(window.location.replace).toHaveBeenCalledWith(new URL(MOCK_CONFIG.redirect_uri));
+    });
+
+    it('it does not alter the URL if shouldReplace: true is passed', async () => {
+      jest
+        .spyOn(PKCE.prototype, 'exchangeForAccessToken')
+        .mockImplementation(async () => MOCK_TOKEN);
+      const url = `${MOCK_CONFIG.redirect_uri}?code=CODE&state=SOME_STATE`;
+      const transport = new RedirectTransport(MOCK_CONFIG);
+      window.location.href = `${MOCK_CONFIG.redirect_uri}?code=CODE&state=SOME_STATE`;
+      const response = await transport.getToken({ shouldReplace: false });
+      expect(response).toBe(MOCK_TOKEN);
+      expect(window.location.replace).not.toHaveBeenCalled();
+      expect(window.location.replace).not.toHaveBeenCalledWith(new URL(MOCK_CONFIG.redirect_uri));
+      expect(window.location.href).toEqual(url);
     });
   });
 });
