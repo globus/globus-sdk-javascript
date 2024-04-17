@@ -20,6 +20,44 @@ describe('endpoint', () => {
     }).toMatchSnapshot();
   });
 
+  test('create', async () => {
+    const {
+      req: { url, method, headers, json },
+    } = await mirror(
+      await endpoint.create({
+        payload: {
+          display_name: 'my GCP guest collection',
+          host_endpoint_id: ENDPOINT,
+          host_path: '/',
+        },
+      }),
+    );
+    expect({
+      url,
+      method,
+      headers,
+      json,
+    }).toMatchSnapshot();
+  });
+
+  test('update', async () => {
+    const {
+      req: { url, method, headers, json },
+    } = await mirror(
+      await endpoint.update(ENDPOINT, {
+        payload: {
+          description: 'This is my GCP collection.',
+        },
+      }),
+    );
+    expect({
+      url,
+      method,
+      headers,
+      json,
+    }).toMatchSnapshot();
+  });
+
   test('delete', async () => {
     const {
       req: { url, method, headers },

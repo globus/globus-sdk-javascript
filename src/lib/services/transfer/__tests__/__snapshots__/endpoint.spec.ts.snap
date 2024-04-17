@@ -1,5 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`endpoint create 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "116",
+    "content-type": "application/json",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "display_name": "my GCP guest collection",
+    "host_endpoint_id": "c591c905-2674-4227-9d31-1ff9485945a7",
+    "host_path": "/",
+  },
+  "method": "POST",
+  "url": "https://transfer.api.globusonline.org/v0.10/shared_endpoint",
+}
+`;
+
 exports[`endpoint delete 1`] = `
 {
   "headers": {
@@ -24,6 +45,25 @@ exports[`endpoint get 1`] = `
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint/c591c905-2674-4227-9d31-1ff9485945a7",
+}
+`;
+
+exports[`endpoint update 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "44",
+    "content-type": "application/json",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "description": "This is my GCP collection.",
+  },
+  "method": "PUT",
   "url": "https://transfer.api.globusonline.org/v0.10/endpoint/c591c905-2674-4227-9d31-1ff9485945a7",
 }
 `;

@@ -76,7 +76,7 @@ export const update = function (
 ): Promise<
   JSONFetchResponse<{
     DATA_TYPE: 'result';
-    code: 'Udpated';
+    code: 'Updated';
     message: string;
     request_id: string;
     resource: `/task/${string}/cancel`;
