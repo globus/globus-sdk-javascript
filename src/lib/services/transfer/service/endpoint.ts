@@ -6,7 +6,9 @@ import type {
   JSONFetchResponse,
   ServiceMethod,
 } from '../../../services/types.js';
+import type { Operations } from '../types.js';
 
+export type GetResponse = Operations['GetEndpoint']['response'];
 /**
  * Fetch an endpoint by its UUID.
  */
@@ -14,7 +16,7 @@ export const get = function (
   endpoint_xid,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.EndpointDocument>> {
+): Promise<JSONFetchResponse<GetResponse>> {
   return serviceRequest(
     {
       service: ID,
@@ -32,6 +34,8 @@ export const get = function (
   }
 >;
 
+export type CreatePayload = Operations['CreateEndpoint']['payload'];
+export type CreateResponse = Operations['CreateEndpoint']['response'];
 /**
  * Create a Globus Connect Personal guest collection.
  * As of 2024-04-17, this method (and the Transfer API) only supports creating Globus Connect Personal guest collections.
@@ -41,20 +45,11 @@ export const get = function (
  *
  * @see https://docs.globus.org/api/transfer/gcp_management/#create_guest_collection
  */
-export const create = function (
-  options?,
-  sdkOptions?,
-): Promise<
-  JSONFetchResponse<{
-    DATA_TYPE: 'endpoint_create_result';
-    code: 'Created';
-    globus_connect_setup_key: string | null;
-    id: string;
-    message: string;
-    request_id: string;
-    resource: '/shared_endpoint';
-  }>
-> {
+export const create = function (options?, sdkOptions?): Promise<JSONFetchResponse<CreateResponse>> {
+  if (options?.payload) {
+    Object.assign(options.payload, { DATA_TYPE: 'shared_endpoint' });
+  }
+
   return serviceRequest(
     {
       service: ID,
@@ -66,9 +61,11 @@ export const create = function (
     sdkOptions,
   );
 } satisfies ServiceMethod<{
-  payload?: Globus.Transfer.GuestCollectionDocument;
+  payload?: CreatePayload;
 }>;
 
+export type UpdatePayload = Operations['UpdateEndpoint']['payload'];
+export type UpdateResponse = Operations['UpdateEndpoint']['response'];
 /**
  * Update a Globus Connect Personal collection.
  * As of 2024-04-17, this method (and the Transfer API) only supports updating Globus Connect Personal collections.
@@ -81,15 +78,11 @@ export const update = function (
   endpoint_xid,
   options?,
   sdkOptions?,
-): Promise<
-  JSONFetchResponse<{
-    DATA_TYPE: 'result';
-    code: 'Updated';
-    message: string;
-    request_id: string;
-    resource: `/endpoint/${string}`;
-  }>
-> {
+): Promise<JSONFetchResponse<UpdateResponse>> {
+  if (options?.payload) {
+    Object.assign(options.payload, { DATA_TYPE: 'endpoint' });
+  }
+
   return serviceRequest(
     {
       service: ID,
@@ -103,10 +96,12 @@ export const update = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    payload: Partial<Globus.Transfer.EndpointDocument>;
+    payload: UpdatePayload;
+    query?: never;
   }
 >;
 
+export type RemoveResponse = Operations['RemoveEndpoint']['response'];
 /**
  * Delete a Globus Connect Personal entity by its UUID.
  * As of 2024-01-08, this method (and the Transfer API) only supports deleting Globus Connect Personal entities.
@@ -119,15 +114,7 @@ export const remove = function (
   endpoint_xid,
   options?,
   sdkOptions?,
-): Promise<
-  JSONFetchResponse<{
-    DATA_TYPE: 'result';
-    code: 'Deleted';
-    message: string;
-    request_id: string;
-    resource: `/endpoint/${string}`;
-  }>
-> {
+): Promise<JSONFetchResponse<RemoveResponse>> {
   return serviceRequest(
     {
       service: ID,
