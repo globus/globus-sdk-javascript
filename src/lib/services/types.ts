@@ -98,3 +98,8 @@ export type ServiceMethodDynamicSegments<
   },
   sdkOptions?: SDKOptions,
 ) => Promise<R>;
+
+/**
+ * Provides a type-safe union of a subset of object keys.
+ */
+export type ExtractKeys<O extends object, K extends keyof O> = K;
