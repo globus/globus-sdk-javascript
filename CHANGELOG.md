@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.0](https://github.com/globus/globus-sdk-javascript/compare/v2.6.0...v2.7.0) (2024-04-19)
+
+
+### Features
+
+* **Transfer:** Add support for collection bookmark methods. ([#146](https://github.com/globus/globus-sdk-javascript/issues/146)) ([a5567d1](https://github.com/globus/globus-sdk-javascript/commit/a5567d1f2e6577ed1435d7464a35f814e4e39517))
+* **Transfer:** adds resource support for creation and update of GCP collections ([#144](https://github.com/globus/globus-sdk-javascript/issues/144)) ([d3ef97a](https://github.com/globus/globus-sdk-javascript/commit/d3ef97a0d464c8b9c3f544dd856211b7d5724389))
+
 ## [2.6.0](https://github.com/globus/globus-sdk-javascript/compare/v2.5.0...v2.6.0) (2024-04-08)
 
 
