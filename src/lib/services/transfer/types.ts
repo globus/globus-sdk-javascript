@@ -165,6 +165,7 @@ export interface Components {
       local_user_info_available: boolean | null;
       https_server: string | null;
       gcs_manager_url: `${string}://${string}` | null;
+      tlsftp_server: `tlsftp://${string}:${string}` | null;
       high_assurance: boolean;
       acl_max_expiration_period_mins: number | null;
       authentication_timeout_mins: number | null;
@@ -177,6 +178,7 @@ export interface Components {
       non_functional_endpoint_display_name: string | null;
       mapped_collection_id: string | null;
       mapped_collection_display_name: string | null;
+      last_accessed_time: string | null;
     };
 
     Server: {
