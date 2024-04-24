@@ -1,4 +1,4 @@
-import { Segment } from '../types';
+import { ExtractKeys, Segment } from '../types';
 
 type EntityType =
   | 'GCSv5_endpoint'
@@ -10,8 +10,9 @@ type EntityType =
 /**
  * @see https://docs.globus.org/api/transfer/gcp_management/#update_collection_by_id
  */
-type GuestCollectionUpdatableField = Extract<
-  keyof Components['schemas']['Endpoint'],
+type GuestCollectionUpdatableField = ExtractKeys<
+  Components['schemas']['Endpoint'],
+  | 'acl_max_expiration_period_mins'
   | 'display_name'
   | 'organization'
   | 'department'
@@ -29,19 +30,21 @@ type GuestCollectionUpdatableField = Extract<
 /**
  * @see https://docs.globus.org/api/transfer/gcp_management/#update_collection_by_id
  */
-type MappedCollectionUpdatableField =
+type MappedCollectionUpdatableField = ExtractKeys<
+  Components['schemas']['Endpoint'],
   | GuestCollectionUpdatableField
-  | Extract<
-      keyof Components['schemas']['Endpoint'],
-      | 'subscription_id'
-      | 'public'
-      | 'location'
-      | 'network_use'
-      | 'max_concurrency'
-      | 'preferred_concurrency'
-      | 'max_parallelism'
-      | 'preferred_parallelism'
-    >;
+  | 'authentication_timeout_mins'
+  | 'subscription_id'
+  | 'public'
+  | 'location'
+  | 'network_use'
+  | 'max_concurrency'
+  | 'preferred_concurrency'
+  | 'max_parallelism'
+  | 'preferred_parallelism'
+  | 'user_message'
+  | 'user_message_link'
+>;
 
 /**
  * @see https://docs.globus.org/api/transfer/endpoint_roles/
@@ -162,7 +165,9 @@ export interface Components {
       local_user_info_available: boolean | null;
       https_server: string | null;
       gcs_manager_url: `${string}://${string}` | null;
+      tlsftp_server: `tlsftp://${string}:${string}` | null;
       high_assurance: boolean;
+      acl_max_expiration_period_mins: number | null;
       authentication_timeout_mins: number | null;
       /**
        * @deprecated use `high_assurance` and `authentication_timeout_mins` instead.
@@ -173,6 +178,7 @@ export interface Components {
       non_functional_endpoint_display_name: string | null;
       mapped_collection_id: string | null;
       mapped_collection_display_name: string | null;
+      last_accessed_time: string | null;
     };
 
     Server: {
