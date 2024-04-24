@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.0](https://github.com/globus/globus-sdk-javascript/compare/v2.7.1...v3.0.0) (2024-04-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* adds support for Authorization and Globus (Auth) token management ([#120](https://github.com/globus/globus-sdk-javascript/issues/120))
+
+### Features
+
+* adds support for Authorization and Globus (Auth) token management ([#120](https://github.com/globus/globus-sdk-javascript/issues/120)) ([202e416](https://github.com/globus/globus-sdk-javascript/commit/202e416aa79d5bbeac23e00c1271f255789c8761))
+
 ## [2.7.1](https://github.com/globus/globus-sdk-javascript/compare/v2.7.0...v2.7.1) (2024-04-24)
 
 
