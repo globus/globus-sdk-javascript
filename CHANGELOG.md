@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.1](https://github.com/globus/globus-sdk-javascript/compare/v2.7.0...v2.7.1) (2024-04-24)
+
+
+### Bug Fixes
+
+* **Types:** adds missing endpoint record fields ([#148](https://github.com/globus/globus-sdk-javascript/issues/148)) ([eed68af](https://github.com/globus/globus-sdk-javascript/commit/eed68afbe267187847b2609e34489c5ee45be703))
+
 ## [2.7.0](https://github.com/globus/globus-sdk-javascript/compare/v2.6.0...v2.7.0) (2024-04-19)
 
 
