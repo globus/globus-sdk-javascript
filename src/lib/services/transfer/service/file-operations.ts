@@ -3,7 +3,63 @@ import { getHeadersForService } from '../shared.js';
 import { ID, SCOPES } from '../config.js';
 
 import type { Transfer } from '../types.js';
-import type { ServiceMethodDynamicSegments } from '../../types.js';
+import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../types.js';
+
+/**
+ * @see https://docs.globus.org/api/transfer/file_operations/#file_document
+ */
+export type FileDocument = {
+  readonly DATA_TYPE: 'file';
+  readonly name: string;
+  readonly type: 'dir' | 'file' | 'invalid_symlink' | 'chr' | 'blk' | 'pipe' | 'other';
+  readonly link_target?: string | null;
+  readonly size?: number;
+  readonly last_modified?: string;
+  readonly permissions?: string;
+  readonly user?: string | null;
+  readonly group?: string | null;
+  readonly link_size?: number | null;
+  readonly link_user?: string | null;
+  readonly link_group?: string | null;
+  readonly link_last_modified?: string | null;
+};
+
+/**
+ * @see https://docs.globus.org/api/transfer/file_operations/#file_list_document
+ */
+export type FileListDocument = {
+  readonly DATA_TYPE: 'file_list';
+  readonly endpoint: string;
+  readonly path: string;
+  readonly absolute_path: string | null;
+  readonly rename_supported: boolean;
+  readonly symlink_supported: boolean;
+  readonly DATA: FileDocument[];
+  /**
+   * n.b. This is currently included in responses, but undocumented; use with care.
+   */
+  readonly length: number;
+  /**
+   * n.b. This is currently included in responses, but undocumented; use with care.
+   */
+  readonly total: number;
+};
+
+export type DirectoryListingError = {
+  /**
+   * @see https://docs.globus.org/api/transfer/file_operations/#errors
+   */
+  code:
+    | 'NotSupported'
+    | 'ClientError.NotFound'
+    | 'EndpointError'
+    // Encountered Errors (not documented)
+    | 'ExternalError.DirListingFailed.LoginFailed'
+    | string;
+  message: string;
+  request_id: string;
+  resource: string;
+};
 
 /**
  * List the contents of the directory at the specified path on an endpoint’s filesystem.
@@ -11,7 +67,11 @@ import type { ServiceMethodDynamicSegments } from '../../types.js';
  *
  * @see https://docs.globus.org/api/transfer/file_operations/#list_directory_contents
  */
-export const ls = function (endpoint_xid, options?, sdkOptions?) {
+export const ls = function (
+  endpoint_xid,
+  options?,
+  sdkOptions?,
+): Promise<JSONFetchResponse<FileListDocument | DirectoryListingError>> {
   return serviceRequest(
     {
       service: ID,

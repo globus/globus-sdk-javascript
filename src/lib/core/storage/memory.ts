@@ -1,21 +1,21 @@
-import type { StorageSystem } from './index.js';
+import { StorageSystem } from './index.js';
 
 export class MemoryStorage implements StorageSystem {
-  #cache: Record<string, unknown> = {};
+  #storage: Record<string, string | null> = {};
 
   get(key: string) {
-    return this.#cache[key];
+    return this.#storage[key] !== undefined ? this.#storage[key] : null;
   }
 
   set(key: string, value: unknown) {
-    this.#cache[key] = value;
+    this.#storage[key] = typeof value !== 'string' ? JSON.stringify(value) : value;
   }
 
   remove(key: string) {
-    delete this.#cache[key];
+    delete this.#storage[key];
   }
 
   clear() {
-    this.#cache = {};
+    this.#storage = {};
   }
 }

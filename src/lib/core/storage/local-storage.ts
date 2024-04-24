@@ -1,21 +1,21 @@
-/* eslint-disable class-methods-use-this */
 import { StorageSystem } from './index.js';
 
 export class LocalStorage implements StorageSystem {
-  get<T>(key: string): T | null | unknown {
-    const value = localStorage.getItem(key);
-    return value !== null ? JSON.parse(value) : null;
+  #storage = globalThis.localStorage;
+
+  get(key: string) {
+    return this.#storage.getItem(key);
   }
 
   set(key: string, value: unknown) {
-    localStorage.setItem(key, JSON.stringify(value));
+    this.#storage.setItem(key, typeof value !== 'string' ? JSON.stringify(value) : value);
   }
 
   remove(key: string) {
-    localStorage.removeItem(key);
+    this.#storage.removeItem(key);
   }
 
   clear() {
-    localStorage.clear();
+    this.#storage.clear();
   }
 }

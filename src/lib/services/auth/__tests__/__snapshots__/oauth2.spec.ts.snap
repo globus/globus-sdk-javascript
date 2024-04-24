@@ -20,22 +20,59 @@ exports[`oauth2 introspect 1`] = `
 }
 `;
 
+exports[`oauth2 refresh 1`] = `
+{
+  "formData": {
+    "client_id": "some-client-id",
+    "grant_type": "refresh_token",
+    "refresh_token": "abc-def-ghi",
+  },
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "75",
+    "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+    "host": "auth.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "POST",
+  "url": "https://auth.globus.org/v2/oauth2/token",
+}
+`;
+
 exports[`oauth2 revoke 1`] = `
 {
   "formData": {
+    "client_id": "some-client-id",
     "token": "abc-def-ghi",
   },
   "headers": {
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "content-length": "17",
+    "content-length": "42",
     "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
     "host": "auth.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "POST",
   "url": "https://auth.globus.org/v2/oauth2/token/revoke",
+}
+`;
+
+exports[`oauth2 userinfo 1`] = `
+{
+  "formData": {},
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "auth.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://auth.globus.org/v2/oauth2/userinfo",
 }
 `;
 

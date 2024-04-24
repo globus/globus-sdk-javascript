@@ -1,6 +1,6 @@
 import type { Environment } from '../../core/global.js';
 
-export const ID = 'FLOWS';
+export const ID = 'FLOWS' as const;
 export const HOSTS: Partial<Record<Environment, string>> = {
   sandbox: 'sandbox.flows.automate.globus.org',
   production: 'flows.globus.org',
