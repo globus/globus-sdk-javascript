@@ -57,9 +57,17 @@
 /// <reference types="@globus/types/transfer" />
 /// <reference types="@globus/types/search" />
 
-export * as logger from './lib/core/logger.js';
+/**
+ * Core
+ */
 
+export * as logger from './lib/core/logger.js';
 export * as authorization from './lib/core/authorization/index.js';
+
+/**
+ * Services
+ */
+
 export * as auth from './lib/services/auth/index.js';
 export * as transfer from './lib/services/transfer/index.js';
 export * as search from './lib/services/search/index.js';
@@ -68,3 +76,9 @@ export * as flows from './lib/services/flows/index.js';
 export * as gcs from './lib/services/globus-connect-server/index.js';
 export * as timer from './lib/services/timer/index.js';
 export * as compute from './lib/services/compute/index.js';
+
+/**
+ * Applications
+ */
+
+export * as webapp from './lib/apps/web.js';
