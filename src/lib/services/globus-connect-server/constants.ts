@@ -62,7 +62,7 @@ export const CONNECTORS: Record<string, Connector> = {
   ACTIVE_SCALE: {
     ID: '7251f6c8-93c9-11eb-95ba-12704e0d6a4d',
     VALUE: 'active-scale',
-    DISPLAY_NAME: 'ActiveScale',
+    DISPLAY_NAME: 'Quantum ActiveScale',
   },
   S3: {
     ID: '7643e831-5f6c-4b47-a07f-8ee90f401d23',
