@@ -32,11 +32,10 @@ export function url(path?: string, sdkOptions?: SDKOptions) {
   return new URL(path || '', `https://${host(sdkOptions?.environment)}`);
 }
 
-type WebAppURLIdentifier = 'TASK' | 'FILE_MANAGER' | 'COLLECTION' | 'ENDPOINT';
+type WebAppURLIdentifier = 'TASK' | 'COLLECTION' | 'ENDPOINT';
 
 const WEBAPP_URLS: Record<WebAppURLIdentifier, string> = {
   TASK: '/activity/%s/overview',
-  FILE_MANAGER: '/file-manager',
   COLLECTION: '/file-manager/collections/%s/overview',
   ENDPOINT: '/file-manager/collections/%s/overview',
 };

@@ -51,8 +51,10 @@ describe('web', () => {
     it('supports GLOBUS_SDK_ENVIRONMENT environment configuration', () => {
       const ENV = process.env;
       process.env['GLOBUS_SDK_ENVIRONMENT'] = 'test';
-      expect(webapp.urlFor('FILE_MANAGER')).toEqual(
-        new URL('https://app.test.globuscs.info/file-manager'),
+      expect(webapp.urlFor('ENDPOINT', ['my-endpoint-uuid'])).toEqual(
+        new URL(
+          'https://app.test.globuscs.info/file-manager/collections/my-endpoint-uuid/overview',
+        ),
       );
       process.env = ENV;
     });
