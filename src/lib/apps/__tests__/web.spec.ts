@@ -32,4 +32,29 @@ describe('web', () => {
       process.env = ENV;
     });
   });
+
+  describe('urlFor', () => {
+    it('TASK', () => {
+      expect(webapp.urlFor('TASK', ['my-task-uuid'])).toEqual(
+        new URL('https://app.test.globuscs.info/activity/my-task-uuid/overview'),
+      );
+    });
+    it('COLLECTION', () => {
+      expect(
+        webapp.urlFor('COLLECTION', ['my-collection-uuid'], { environment: 'sandbox' }),
+      ).toEqual(
+        new URL(
+          'https://app.sandbox.globuscs.info/file-manager/collections/my-collection-uuid/overview',
+        ),
+      );
+    });
+    it('supports GLOBUS_SDK_ENVIRONMENT environment configuration', () => {
+      const ENV = process.env;
+      process.env['GLOBUS_SDK_ENVIRONMENT'] = 'test';
+      expect(webapp.urlFor('FILE_MANAGER')).toEqual(
+        new URL('https://app.test.globuscs.info/file-manager'),
+      );
+      process.env = ENV;
+    });
+  });
 });
