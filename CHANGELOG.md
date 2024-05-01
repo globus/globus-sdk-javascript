@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.0](https://github.com/globus/globus-sdk-javascript/compare/v3.0.0...v3.1.0) (2024-05-01)
+
+
+### Features
+
+* adds application-based utilities structure; adds support for obtaining Globus Web App URLs (`sdk.webapp.host()`, `sdk.webapp.url()`, `sdk.webapp.urlFor()`) ([#152](https://github.com/globus/globus-sdk-javascript/issues/152)) ([1be5481](https://github.com/globus/globus-sdk-javascript/commit/1be5481ccbabc3ecaa01a1b7d13ae0aafb953545))
+
 ## [3.0.0](https://github.com/globus/globus-sdk-javascript/compare/v2.7.1...v3.0.0) (2024-04-24)
 
 
