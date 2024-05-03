@@ -14,6 +14,10 @@ class CustomStorage implements StorageSystem {
 
   remove(key: string): void {}
 
+  keys() {
+    return [];
+  }
+
   clear(): void {}
 }
 

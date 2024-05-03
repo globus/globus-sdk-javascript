@@ -292,37 +292,69 @@ describe('AuthorizationManager', () => {
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
-  it('reset', () => {
-    setup({
-      'client_id:auth.globus.org': JSON.stringify({ resource_server: 'auth.globus.org' }),
-      'client_id:foobar': JSON.stringify({ resource_server: 'foobar' }),
-      'client_id:baz': JSON.stringify({ resource_server: 'baz' }),
+  describe('reset', () => {
+    it('resets the AuthenticationManager dispatching expected events', () => {
+      setup({
+        'client_id:auth.globus.org': JSON.stringify({ resource_server: 'auth.globus.org' }),
+        'client_id:foobar': JSON.stringify({ resource_server: 'foobar' }),
+        'client_id:baz': JSON.stringify({ resource_server: 'baz' }),
+      });
+
+      const spy = jest.spyOn(Event.prototype, 'dispatch');
+
+      const instance = new AuthorizationManager({
+        client: 'client_id',
+        redirect: 'https://redirect_uri',
+        scopes: 'foobar baz',
+      });
+
+      expect(instance.authenticated).toBe(true);
+
+      instance.reset();
+      /**
+       * `authenticated` should dispatch once with the initial state and again after reset.
+       */
+      expect(spy).toHaveBeenCalledTimes(2);
+      expect(spy).toHaveBeenNthCalledWith(1, {
+        isAuthenticated: true,
+        token: { resource_server: 'auth.globus.org' },
+      });
+      expect(spy).toHaveBeenNthCalledWith(2, {
+        isAuthenticated: false,
+        token: undefined,
+      });
+      expect(instance.authenticated).toBe(false);
     });
 
-    const spy = jest.spyOn(Event.prototype, 'dispatch');
+    it('does not interfere (clear) items in storage it did not set', () => {
+      const store = {
+        'some-entry': 'some-value',
+        'client_id:auth.globus.org': JSON.stringify({ resource_server: 'auth.globus.org' }),
+        'client_id:foobar': JSON.stringify({ resource_server: 'foobar' }),
+        'client_id:baz': JSON.stringify({ resource_server: 'baz' }),
+      };
 
-    const instance = new AuthorizationManager({
-      client: 'client_id',
-      redirect: 'https://redirect_uri',
-      scopes: 'foobar baz',
-    });
+      setup(store);
 
-    expect(instance.authenticated).toBe(true);
-
-    instance.reset();
-    /**
-     * `authenticated` should dispatch once with the initial state and again after reset.
-     */
-    expect(spy).toHaveBeenCalledTimes(2);
-    expect(spy).toHaveBeenNthCalledWith(1, {
-      isAuthenticated: true,
-      token: { resource_server: 'auth.globus.org' },
+      const instance = new AuthorizationManager({
+        client: 'client_id',
+        redirect: 'https://redirect_uri',
+        scopes: 'foobar baz',
+      });
+      /**
+       * Check values before `reset` to ensure they are present.
+       */
+      expect(localStorage.getItem('some-entry')).toBe(store['some-entry']);
+      expect(localStorage.getItem('client_id:foobar')).toBe(store['client_id:foobar']);
+      expect(localStorage.getItem('client_id:baz')).toBe(store['client_id:baz']);
+      instance.reset();
+      /**
+       * Check values after `reset`...
+       */
+      expect(localStorage.getItem('some-entry')).toBe(store['some-entry']);
+      expect(localStorage.getItem('client_id:foobar')).toBe(null);
+      expect(localStorage.getItem('client_id:baz')).toBe(null);
     });
-    expect(spy).toHaveBeenNthCalledWith(2, {
-      isAuthenticated: false,
-      token: undefined,
-    });
-    expect(instance.authenticated).toBe(false);
   });
 
   it('revoke', async () => {

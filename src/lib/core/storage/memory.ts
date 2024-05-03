@@ -15,6 +15,10 @@ export class MemoryStorage implements StorageSystem {
     delete this.#storage[key];
   }
 
+  keys() {
+    return Object.keys(this.#storage);
+  }
+
   clear() {
     this.#storage = {};
   }
