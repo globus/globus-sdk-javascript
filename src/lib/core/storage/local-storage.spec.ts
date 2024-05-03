@@ -29,6 +29,13 @@ describe('LocalStorage', () => {
     expect(storage.get('key')).toBeNull();
   });
 
+  it('keys', () => {
+    const storage = new LocalStorage();
+    storage.set('key', 'value');
+    storage.set('one', 1);
+    expect(storage.keys()).toEqual(['key', 'one']);
+  });
+
   it('clear', () => {
     const storage = new LocalStorage();
     storage.set('key', 'value');
