@@ -32,6 +32,20 @@ describe('AuthorizationManager', () => {
     expect(instance.authenticated).toBe(false);
   });
 
+  it('can be created without providing scopes', () => {
+    const instance = new AuthorizationManager({
+      client: 'client_id',
+      redirect: 'https://redirect_uri',
+    });
+    expect(instance).toBeDefined();
+    expect(instance.authenticated).toBe(false);
+    instance.login();
+    expect(window.location.replace).toHaveBeenCalledTimes(1);
+    expect(window.location.replace).toHaveBeenCalledWith(
+      expect.stringContaining('scope=openid+profile+email&'),
+    );
+  });
+
   it('throws if no "client_id" is provided', () => {
     expect(() => {
       // @ts-ignore – For end-users using Typescript, this will be caught at compile time...

@@ -33,7 +33,7 @@ import type {
 
 export type AuthorizationManagerConfiguration = {
   client: IConfig['client_id'];
-  scopes: IConfig['requested_scopes'];
+  scopes?: IConfig['requested_scopes'];
   redirect: IConfig['redirect_uri'];
   /**
    * @private
@@ -125,7 +125,9 @@ export class AuthorizationManager {
 
     this.configuration = {
       ...configuration,
-      scopes: `${configuration.scopes}${scopes ? ` ${scopes}` : ''}`,
+      scopes: [configuration.scopes ? configuration.scopes : '', scopes]
+        .filter((s) => s.length)
+        .join(' '),
     };
 
     this.tokens = new TokenLookup({
@@ -255,7 +257,7 @@ export class AuthorizationManager {
 
   #buildTransport(overrides?: Partial<ConstructorParameters<typeof RedirectTransport>[0]>) {
     const scopes = this.#withOfflineAccess(
-      overrides?.requested_scopes ?? this.configuration.scopes,
+      overrides?.requested_scopes ?? (this.configuration.scopes || ''),
     );
 
     return new RedirectTransport({
