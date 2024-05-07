@@ -16,27 +16,26 @@ jobs:
       - uses: google-github-actions/release-please-action@v4
         id: release
         with:
-          release-type: node
-          package-name: '@globus/sdk'
-          pull-request-title-pattern: 'chore: release ${version}'
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
       # Publish to NPM
       - uses: actions/checkout@v4
         # Only run if a release was created
-        if: ${{ steps.release.outputs.releases_created }}
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
       - uses: actions/setup-node@v4
         with:
           node-version: lts/hydrogen
           registry-url: 'https://registry.npmjs.org'
           scope: '@globus'
-        if: ${{ steps.release.outputs.releases_created }}
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
       - run: npm ci
-        if: ${{ steps.release.outputs.releases_created }}
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
       - run: npm run publish-to-npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        if: ${{ steps.release.outputs.releases_created }}
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
       - name: Notify Slack
-        if: ${{ steps.release.outputs.releases_created }}
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
         id: slack
         uses: slackapi/slack-github-action@v1.26.0
         with:
