@@ -28,7 +28,7 @@ export class TokenLookup {
   }
 
   #getClientStorageEntry(identifier: string) {
-    return getTokenFromStorage(`${this.#manager.configuration.client}:${identifier}`);
+    return getTokenFromStorage(`${this.#manager.storageKeyPrefix}${identifier}`);
   }
 
   #getTokenForService(service: Service) {
@@ -65,14 +65,18 @@ export class TokenLookup {
   }
 
   gcs(endpoint: string): Token | null {
-    return this.#getClientStorageEntry(endpoint);
+    return this.getByResourceServer(endpoint);
+  }
+
+  getByResourceServer(resourceServer: string): Token | null {
+    return this.#getClientStorageEntry(resourceServer);
   }
 
   getAll(): Token[] {
     const entries = getStorage()
       .keys()
       .reduce((acc: (Token | null)[], key) => {
-        if (key.startsWith(`${this.#manager.configuration.client}:`)) {
+        if (key.startsWith(this.#manager.storageKeyPrefix)) {
           acc.push(getTokenFromStorage(key));
         }
         return acc;
