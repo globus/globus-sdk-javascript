@@ -6,6 +6,20 @@ import { AuthorizationManager } from './AuthorizationManager.js';
 
 import type { Token } from '../../services/auth/types.js';
 
+function getTokenFromStorage(key: string) {
+  const raw = getStorage().get(key) || 'null';
+  let token: Token | null = null;
+  try {
+    const parsed = JSON.parse(raw);
+    if (isToken(parsed)) {
+      token = parsed;
+    }
+  } catch (e) {
+    // no-op
+  }
+  return token;
+}
+
 export class TokenLookup {
   #manager: AuthorizationManager;
 
@@ -13,20 +27,13 @@ export class TokenLookup {
     this.#manager = options.manager;
   }
 
+  #getClientStorageEntry(identifier: string) {
+    return getTokenFromStorage(`${this.#manager.storageKeyPrefix}${identifier}`);
+  }
+
   #getTokenForService(service: Service) {
     const resourceServer = CONFIG.RESOURCE_SERVERS?.[service];
-    const raw =
-      getStorage().get(`${this.#manager.configuration.client}:${resourceServer}`) || 'null';
-    let token: Token | null = null;
-    try {
-      const parsed = JSON.parse(raw);
-      if (isToken(parsed)) {
-        token = parsed;
-      }
-    } catch (e) {
-      // no-op
-    }
-    return token;
+    return this.#getClientStorageEntry(resourceServer);
   }
 
   get auth(): Token | null {
@@ -57,16 +64,23 @@ export class TokenLookup {
     return this.#getTokenForService(SERVICES.COMPUTE);
   }
 
+  gcs(endpoint: string): Token | null {
+    return this.getByResourceServer(endpoint);
+  }
+
+  getByResourceServer(resourceServer: string): Token | null {
+    return this.#getClientStorageEntry(resourceServer);
+  }
+
   getAll(): Token[] {
-    const tokens = [
-      this.auth,
-      this.transfer,
-      this.flows,
-      this.groups,
-      this.search,
-      this.timer,
-      this.compute,
-    ];
-    return tokens.filter(isToken);
+    const entries = getStorage()
+      .keys()
+      .reduce((acc: (Token | null)[], key) => {
+        if (key.startsWith(this.#manager.storageKeyPrefix)) {
+          acc.push(getTokenFromStorage(key));
+        }
+        return acc;
+      }, []);
+    return entries.filter(isToken);
   }
 }

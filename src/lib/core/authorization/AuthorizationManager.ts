@@ -137,6 +137,10 @@ export class AuthorizationManager {
     this.startSilentRefresh();
   }
 
+  get storageKeyPrefix() {
+    return `${this.configuration.client}:`;
+  }
+
   /**
    * The user information decoded from the `id_token` (JWT) of the current Globus Auth token.
    * This method can be used instead of `auth.oauth2.userinfo` to get the user information without an additional request.
@@ -207,7 +211,7 @@ export class AuthorizationManager {
   }
 
   getGlobusAuthToken() {
-    const entry = getStorage().get(`${this.configuration.client}:auth.globus.org`);
+    const entry = getStorage().get(`${this.storageKeyPrefix}auth.globus.org`);
     return entry ? JSON.parse(entry) : null;
   }
 
@@ -240,7 +244,7 @@ export class AuthorizationManager {
     getStorage()
       .keys()
       .forEach((key) => {
-        if (key.startsWith(`${this.configuration.client}:`)) {
+        if (key.startsWith(this.storageKeyPrefix)) {
           getStorage().remove(key);
         }
       });
