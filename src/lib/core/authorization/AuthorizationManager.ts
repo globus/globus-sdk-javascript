@@ -1,3 +1,7 @@
+/**
+ * @module Authorization
+ * @group Core
+ */
 import { jwtDecode } from 'jwt-decode';
 
 import type IConfig from 'js-pkce/dist/IConfig';
