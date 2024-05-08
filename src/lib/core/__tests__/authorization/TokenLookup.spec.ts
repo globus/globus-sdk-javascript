@@ -38,15 +38,56 @@ describe('TokenLookup', () => {
     expect(lookup.compute).toBeNull();
   });
 
-  it('should return all tokens when in storage', () => {
+  describe('getAll', () => {
+    it('should return all tokens when in storage', () => {
+      const TOKENS = [
+        { resource_server: RESOURCE_SERVERS.AUTH, access_token: 'TOKEN-1' },
+        { resource_server: RESOURCE_SERVERS.COMPUTE, access_token: 'TOKEN-2' },
+      ];
+      setup({
+        [`CLIENT_ID:${RESOURCE_SERVERS.AUTH}`]: JSON.stringify(TOKENS[0]),
+        [`CLIENT_ID:${RESOURCE_SERVERS.COMPUTE}`]: JSON.stringify(TOKENS[1]),
+      });
+      expect(lookup.getAll()).toEqual([TOKENS[0], TOKENS[1]]);
+    });
+
+    it('should return all tokens for the client regardless of association with a service (e.g., GCS)', () => {
+      const GCS_ENDPOINT_UUID = '385d3079-5121-40bc-a52f-055296497631';
+      const TOKENS = [
+        { resource_server: RESOURCE_SERVERS.AUTH, access_token: 'TOKEN-1' },
+        { resource_server: RESOURCE_SERVERS.COMPUTE, access_token: 'TOKEN-2' },
+        { resource_server: GCS_ENDPOINT_UUID, access_token: 'GCS-TOKEN' },
+        { resource_server: 'arbitrary', access_token: 'arbitrary' },
+      ];
+      setup({
+        [`CLIENT_ID:${RESOURCE_SERVERS.AUTH}`]: JSON.stringify(TOKENS[0]),
+        [`CLIENT_ID:${RESOURCE_SERVERS.COMPUTE}`]: JSON.stringify(TOKENS[1]),
+        [`CLIENT_ID:${GCS_ENDPOINT_UUID}`]: JSON.stringify(TOKENS[2]),
+        'some-storage-key': 'NOT-A-TOKEN',
+        [`CLIENT_ID:arbitrary`]: JSON.stringify(TOKENS[3]),
+      });
+      expect(lookup.getAll()).toEqual([TOKENS[0], TOKENS[1], TOKENS[2], TOKENS[3]]);
+      expect(lookup.getAll()).not.toContain('NOT-A-TOKEN');
+    });
+  });
+
+  it('should provide access to GCS tokens', () => {
+    const GCS_ENDPOINT_UUID = '385d3079-5121-40bc-a52f-055296497631';
     const TOKENS = [
-      { resource_server: RESOURCE_SERVERS.AUTH, access_token: 'TOKEN-1' },
-      { resource_server: RESOURCE_SERVERS.COMPUTE, access_token: 'TOKEN-2' },
+      {
+        access_token: 'GCS-TOKEN',
+        scope: `https://auth.globus.org/scopes/${GCS_ENDPOINT_UUID}/https`,
+        expires_in: 172800,
+        token_type: 'Bearer',
+        resource_server: GCS_ENDPOINT_UUID,
+        state: 'STATE',
+        refresh_token: 'REFRESH-TOKEN',
+      },
     ];
     setup({
-      [`CLIENT_ID:${RESOURCE_SERVERS.AUTH}`]: JSON.stringify(TOKENS[0]),
-      [`CLIENT_ID:${RESOURCE_SERVERS.COMPUTE}`]: JSON.stringify(TOKENS[1]),
+      [`CLIENT_ID:${GCS_ENDPOINT_UUID}`]: JSON.stringify(TOKENS[0]),
     });
-    expect(lookup.getAll()).toEqual([TOKENS[0], TOKENS[1]]);
+
+    expect(lookup.gcs(GCS_ENDPOINT_UUID)).toEqual(TOKENS[0]);
   });
 });
