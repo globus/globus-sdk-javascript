@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.0](https://github.com/globus/globus-sdk-javascript/compare/v3.1.1...v3.2.0) (2024-05-09)
+
+
+### Features
+
+* **Authorization:** adds ability to look up GCS tokens (and tokens for arbitrary resource servers) managed by the AuthoirzationManager (client). ([#162](https://github.com/globus/globus-sdk-javascript/issues/162)) ([e1cb6b3](https://github.com/globus/globus-sdk-javascript/commit/e1cb6b3b7a41ef5a8f1380a415351b002a968009))
+
+
+### Bug Fixes
+
+* **Authorization:** allow creation of AuthorizationManager without a `scope` parameter ([#161](https://github.com/globus/globus-sdk-javascript/issues/161)) ([25d0649](https://github.com/globus/globus-sdk-javascript/commit/25d06498c0aeefabb4fdbc0f1fb0b263ed73ad63))
+* disable importHelpers to avoid peerDependency of tslib for consumers ([#157](https://github.com/globus/globus-sdk-javascript/issues/157)) ([e25946b](https://github.com/globus/globus-sdk-javascript/commit/e25946ba2a8743da554341872463b3b3403f971c))
+
 ## [3.1.1](https://github.com/globus/globus-sdk-javascript/compare/v3.1.0...v3.1.1) (2024-05-03)
 
 
