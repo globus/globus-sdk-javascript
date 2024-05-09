@@ -1,5 +1,6 @@
 import { stringifyParameters } from '../core/url.js';
 import { ENVIRONMENTS } from '../core/global.js';
+import type { AuthorizationManager } from '../core/authorization/AuthorizationManager.js';
 
 export interface JSONFetchResponse<Res> extends Response {
   json(): Promise<Res>;
@@ -24,6 +25,7 @@ type FetchOverrides =
 
 export type SDKOptions = {
   environment?: (typeof ENVIRONMENTS)[keyof typeof ENVIRONMENTS];
+  manager?: AuthorizationManager;
   fetch?: {
     options: FetchOverrides;
   };
