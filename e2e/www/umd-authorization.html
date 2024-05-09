@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@globus/sdk</title>
+    <script src="../../dist/umd/globus.production.js"></script>
+  </head>
+  <body>
+    <body>
+      <button id="sign-in" style="display: none">Sign In</button>
+      <button id="sign-out" style="display: none">Sign Out</button>
+      <code><pre id="user-information"></pre></code>
+      <script>
+        globus.logger.setLogger(console);
+        globus.logger.setLogLevel('DEBUG');
+        const manager = globus.authorization.create({
+          client: '938f3dce-6782-40e7-872d-2ef94c7b24e7',
+          redirect: 'example://redirect',
+          useRefreshTokens: true,
+        });
+        manager.handleCodeRedirect();
+        const UI = {
+          SIGN_IN: document.getElementById('sign-in'),
+          SIGN_OUT: document.getElementById('sign-out'),
+          USER_INFO: document.getElementById('user-information'),
+        };
+
+        UI.SIGN_IN.addEventListener('click', () => {
+          manager.login();
+        });
+        UI.SIGN_OUT.addEventListener('click', () => {
+          manager.revoke();
+          UI.USER_INFO.innerText = '';
+          UI.SIGN_IN.style.display = 'block';
+          UI.SIGN_OUT.style.display = 'none';
+        });
+        if (manager.authenticated) {
+          UI.USER_INFO.innerText = JSON.stringify(manager.user, null, 2);
+          UI.SIGN_OUT.style.display = 'block';
+        } else {
+          UI.SIGN_IN.style.display = 'block';
+        }
+      </script>
+    </body>
+  </body>
+</html>
