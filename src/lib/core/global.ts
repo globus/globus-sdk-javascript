@@ -116,7 +116,7 @@ export function getVerifySSL(): boolean {
   const verifySSLTemp = env<string>('GLOBUS_SDK_VERIFY_SSL', 'true').toLowerCase();
   if (['n', 'no', 'f', 'false', 'off', '0'].includes(verifySSLTemp)) {
     console.warn(
-      'Setting GLOBUS_SDK_VERIFY_SSL to false is disallowed in the Globus Javascript SDK. It will always true in this context',
+      'Setting GLOBUS_SDK_VERIFY_SSL to false is disallowed in the Globus JavaScript SDK. It will always true in this context',
     );
   }
   return true;

@@ -12,8 +12,6 @@
       <button id="sign-out" style="display: none">Sign Out</button>
       <code><pre id="user-information"></pre></code>
       <script>
-        globus.logger.setLogger(console);
-        globus.logger.setLogLevel('DEBUG');
         const manager = globus.authorization.create({
           client: '938f3dce-6782-40e7-872d-2ef94c7b24e7',
           redirect: 'example://redirect',
