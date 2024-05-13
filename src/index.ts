@@ -63,6 +63,7 @@
 
 export * as logger from './lib/core/logger.js';
 export * as authorization from './lib/core/authorization/index.js';
+export * as errors from './lib/core/errors.js';
 
 /**
  * Services

@@ -21,6 +21,9 @@ jobs:
       run: npx playwright install --with-deps
     - name: Run Playwright tests
       run: npx playwright test
+      env: 
+        PREVIEW_GLOBUS_ID_USERNAME: ${{ secrets.PREVIEW_GLOBUS_ID_USERNAME }}
+        PREVIEW_GLOBUS_ID_PASSWORD: ${{ secrets.PREVIEW_GLOBUS_ID_PASSWORD }}
     - uses: actions/upload-artifact@v4
       if: always()
       with:

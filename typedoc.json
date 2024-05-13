@@ -1,6 +1,6 @@
 {
   "$schema": "https://typedoc.org/schema.json",
-  "name": "Globus SDK for Javascript",
+  "name": "Globus SDK for JavaScript",
   "entryPoints": [
     "./src/index.ts",
     "./src/constants.ts",

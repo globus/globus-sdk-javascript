@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@globus/sdk</title>
+    <script src="../../dist/umd/globus.production.js"></script>
+  </head>
+  <body>
+    <body>
+      <button id="sign-in" style="display: none">Sign In</button>
+      <button id="sign-out" style="display: none">Sign Out</button>
+      <code>
+        <pre id="user-information"></pre>
+        <pre id="ls-response"></pre>
+      </code>
+      <script>
+        /**
+         * Use `preview` environment
+         */
+        globalThis.GLOBUS_SDK_ENVIRONMENT = 'preview';
+
+        const manager = globus.authorization.create({
+          // https://app.preview.globus.org/settings/developers/projects/920de059-1f67-42e5-a70f-aef148ad4efe/apps
+          client: 'cae06dd5-6db5-4013-a7e0-b5b2dc4d5fa9',
+          redirect: 'http://127.0.0.1:3000/umd-transfer-ls',
+          scopes: 'urn:globus:auth:scope:transfer.api.globus.org:all',
+          useRefreshTokens: true,
+        });
+
+        manager.handleCodeRedirect();
+
+        const UI = {
+          SIGN_IN: document.getElementById('sign-in'),
+          SIGN_OUT: document.getElementById('sign-out'),
+          USER_INFO: document.getElementById('user-information'),
+          LS_RESPONSE: document.getElementById('ls-response'),
+        };
+
+        UI.SIGN_IN.addEventListener('click', () => {
+          manager.login();
+        });
+        UI.SIGN_OUT.addEventListener('click', () => {
+          manager.revoke();
+          UI.USER_INFO.innerText = '';
+          UI.SIGN_IN.style.display = 'block';
+          UI.SIGN_OUT.style.display = 'none';
+          UI.LS_RESPONSE.innerText = '';
+        });
+        if (manager.authenticated) {
+          UI.USER_INFO.innerText = JSON.stringify(manager.user, null, 2);
+          UI.SIGN_OUT.style.display = 'block';
+          /**
+           * Perform a basic `ls` on a Globus Tutorial Collection
+           */
+          globus.transfer.fileOperations
+            .ls('dc20d9c0-1fb7-4aee-91e9-2d301197d126', {
+              headers: {
+                Authorization: `Bearer ${manager.tokens.transfer.access_token}`,
+              },
+            })
+            .then((response) => response.json())
+            .then((json) => {
+              /**
+               * Update the UI with the raw `ls` response
+               */
+              UI.LS_RESPONSE.innerText = JSON.stringify(json, null, 2);
+              const isError = globus.errors.isErrorWellFormed(json);
+              if (isError) {
+                /**
+                 * If the error is well-formed, the SDK will be able to provide
+                 * default handling. We'll avoid the handler executing automatically
+                 * and instead bind it to the `onclick` event of a new `<button>`.
+                 */
+                const handler = manager.handleErrorResponse(json, false);
+                /**
+                 * If there was an identified error, with a handler, render
+                 * a button that will call the handler on click.
+                 */
+                const btn = document.createElement('button');
+                btn.innerText = 'Handle';
+                btn.onclick = handler;
+                document.body.appendChild(btn);
+              }
+            });
+        } else {
+          UI.SIGN_IN.style.display = 'block';
+        }
+      </script>
+    </body>
+  </body>
+</html>
