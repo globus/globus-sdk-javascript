@@ -1,9 +1,9 @@
 [![npm](https://img.shields.io/npm/v/@globus/sdk?style=flat-square&logo=npm&color=000&label)](https://www.npmjs.com/package/@globus/sdk) [![Codecov](https://img.shields.io/codecov/c/gh/globus/globus-sdk-javascript?style=flat-square&logo=codecov)](https://app.codecov.io/gh/globus/globus-sdk-javascript)
 
-
 The Globus SDK for JavaScript provides first class TypeScript support and makes it easy to call Globus services using idiomatic JavaScript APIs to build Node.js and web applications.
 
 - [@globus/sdk API Documentation](https://globus.github.io/globus-sdk-javascript/)
+- [Examples](./examples/README.md)
 
 ## Installation
 
@@ -27,11 +27,11 @@ npm install @globus/sdk @globus/types
 
 We aim to support all Active LTS [Node.js releases](https://nodejs.org/en/about/previous-releases). We intend to support all Maintenance LTS versions until their official end-of-life.
 
-| Version    |                                                                                                                                                                                                                     |                                                                                                                                                                                       |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Node.js 18 | [![lts/hydrogen](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/ci.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/ci.yml) |                                                                                                                                                                                       |
-| Node.js 20 | [![lts/iron](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/ci.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/ci.yml)     |                                                                                                                                                                                       |
-| Node.js 22 | 🧪 Experimental Support[^1]                                                                                                                                                                                         |                                                                                                                                                                                       |
+| Version    |                                                                                                                                                                                                                 |     |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
+| Node.js 18 | [![lts/hydrogen](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/ci.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/ci.yml) |     |
+| Node.js 20 | [![lts/iron](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/ci.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/ci.yml)     |     |
+| Node.js 22 | 🧪 Experimental Support[^1]                                                                                                                                                                                     |     |
 
 [^1]: Not covered by automated test suite(s).
 
