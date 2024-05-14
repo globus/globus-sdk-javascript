@@ -31,20 +31,18 @@ We aim to support all Active LTS [Node.js releases](https://nodejs.org/en/about/
 | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
 | Node.js 18 | [![lts/hydrogen](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/ci.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/ci.yml) |     |
 | Node.js 20 | [![lts/iron](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/ci.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/ci.yml)     |     |
-| Node.js 22 | 🧪 Experimental Support[^1]                                                                                                                                                                                     |     |
-
-[^1]: Not covered by automated test suite(s).
+| Node.js 22 | [![lts/iron](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/ci.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/ci.yml)     |     |
 
 ### Browser Support
 
 Officially, the SDK supports widely adopted evergreen browsers: Edge, Chrome, Safari, and Firefox. Our bundled browser distributions target ECMAScript 2015 (ES6), which has [broader browser support](https://caniuse.com/es6) but may not be explicitly evaluated.
 
-| Browser         | Version |
-| --------------- | ------- |
-| Google Chrome   | –       |
-| Mozilla Firefox | –       |
-| Microsoft Edge  | –       |
-| Apple Safari    | –       |
+| Browser         |                                                                                                                                                                                                                               |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Google Chrome   | [![playwright](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/playwright.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/playwright.yml) |
+| Mozilla Firefox | [![playwright](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/playwright.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/playwright.yml) |
+| Microsoft Edge  | [![playwright](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/playwright.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/playwright.yml) |
+| Apple Safari    | [![playwright](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/playwright.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/playwright.yml) |
 
 ### ESM, CommonJS, and UMD
 
