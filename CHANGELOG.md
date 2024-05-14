@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.0](https://github.com/globus/globus-sdk-javascript/compare/v3.2.0...v3.3.0) (2024-05-14)
+
+
+### Features
+
+* The `errors` module is now exposed as part of the default entry. This includes various utilities (and type guards) for interacting with responses from services. ([#166](https://github.com/globus/globus-sdk-javascript/issues/166)) ([0c178b9](https://github.com/globus/globus-sdk-javascript/commit/0c178b92c4b8eaddf746225c584493850e93b824))
+
 ## [3.2.0](https://github.com/globus/globus-sdk-javascript/compare/v3.1.1...v3.2.0) (2024-05-09)
 
 
