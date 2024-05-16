@@ -1,3 +1,10 @@
+/**
+ * @module Errors
+ * @example
+ * import { errors } from "globus/sdk";
+ * if (errors.isConsentRequiredError(...)) { ... }
+ */
+
 export class EnvironmentConfigurationError extends Error {
   override name = 'EnvironmentConfigurationError';
 

@@ -1,7 +1,3 @@
-/**
- * @module Authorization
- * @group Core
- */
 import { jwtDecode } from 'jwt-decode';
 
 import type IConfig from 'js-pkce/dist/IConfig';
@@ -57,7 +53,35 @@ const DEFAULT_CONFIGURATION = {
 };
 
 /**
- * @experimental
+ * Provides management of Globus authorization context for your application.
+ * - Handles the OAuth protcol flow (via PKCE)
+ * - Token lifecycle management
+ * - Common errors (e.g., `ConsentRequired`, `authorization_requirements`)
+ *
+ * Once you configure your instance, you can determine the authenticated state using `manager.authenticated`.
+ *
+ * To prompt a user to authenticate, call `manager.login()` on user interaction – this will initiate the OAuth protocol flow with your configured client and scopes, resulting in an initial redirect to Globus Auth.
+ *
+ * Once the user authenticates with Globus Auth, they will be redirected to your application using the configured `redirect` URL. On this URL, you will need to call `manager.handleCodeRedirect` (using a manager instance configured in the same manner that initiated the `manager.login()` call) to complete the PKCE flow, exchanging the provided code for a valid token, or tokens.
+ *
+ * All tokens managed by the `AuthorizationManager` instance can be found on `manager.token`.
+ *
+ * ### Registering your Globus Application
+ *
+ * The `AuthorizationManager` expects your Globus Application to be registered as an OAuth public client.
+ * In this Globus Web Application, this option is referenced as "_Register a thick client or script that will be installed and run by users on their devices_".
+ *
+ * @example <caption>Creating an AuthorizationManager instance.</caption>
+ * import { authorization } from "globus/sdk";
+ *
+ * const manager = authorization.create({
+ *  // Your registered Globus Application client ID.
+ *  client_id: '...',
+ *  // The redirect URL for your application; Where you will call `manager.handleCodeRedirect()`
+ *  redirect: 'https://example.com/callback',
+ *  // Known scopes required by your application.
+ *  scopes: 'urn:globus:auth:scope:transfer.api.globus.org:all',
+ * });
  */
 export class AuthorizationManager {
   #transport!: RedirectTransport;
@@ -210,10 +234,16 @@ export class AuthorizationManager {
     }
   }
 
+  /**
+   * Whether or not the instance has a reference to a Globus Auth token.
+   */
   hasGlobusAuthToken() {
     return this.getGlobusAuthToken() !== null;
   }
 
+  /**
+   * Retrieve the Globus Auth token managed by the instance.
+   */
   getGlobusAuthToken() {
     const entry = getStorage().get(`${this.storageKeyPrefix}auth.globus.org`);
     return entry ? JSON.parse(entry) : null;
@@ -296,6 +326,9 @@ export class AuthorizationManager {
     transport.send();
   }
 
+  /**
+   * This method will attempt to complete the PKCE protocol flow.
+   */
   async handleCodeRedirect(
     options: {
       shouldReplace: GetTokenOptions['shouldReplace'];
