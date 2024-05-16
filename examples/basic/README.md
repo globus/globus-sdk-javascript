@@ -13,6 +13,7 @@ To run this example, you will need to:
   - Your application will be an OAuth public client.
   - The application can be registered in the Globus Web Application using the "_Register a thick client or script that will be installed and run by users on their devices_" option.
     - https://app.globus.org/settings/developers/registration/public_installed_client/select-project
+    - make sure you specify the HTTPS url of your webpage under "Redirects"
 - Update the example to include the following:
   - `collection` – The UUID of the collection to `ls`.
   - `client` – The UUID of the client you registered.
