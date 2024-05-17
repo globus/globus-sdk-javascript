@@ -33,8 +33,7 @@ export const handlers = [
    */
   http.all('*', async ({ request }) => {
     const headers: MirroredRequest['req']['headers'] = {};
-
-    Array.from(request.headers.entries()).forEach(([key, value]) => {
+    (request.headers || new Headers()).forEach((value, key) => {
       headers[key] = value;
     });
 
