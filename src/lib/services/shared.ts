@@ -1,10 +1,10 @@
 import _fetch from 'cross-fetch';
 import { build } from '../core/url.js';
 import { getSDKOptions, Service } from '../core/global.js';
-import { getTokenForScope } from '../core/authorization/index.js';
 
 import type { ServiceMethodOptions, SDKOptions } from './types.js';
 import type { GCSConfiguration } from '../services/globus-connect-server/index.js';
+import { RESOURCE_SERVERS } from './auth/config.js';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export enum HTTP_METHODS {
@@ -25,9 +25,18 @@ type ServiceRequestDSL = {
    */
   service: Service | GCSConfiguration;
   /**
-   * The scope that will be passed to `getTokenForScope` and injected as an `Authorization` header if none is provided by the caller.
+   * A specific scope that is required for the request. If a scope is provided,
+   * the `serviceRequest` function will attempt to get a token for the request
+   * based on the the `service` => `resource_server` mapping.
    */
-  scope: string | undefined;
+  scope?: string;
+  /**
+   * The resource server that the request will be made to. This can be provided
+   * instead of (or addition to) the `scope` property. If this is provided, the
+   * `serviceRequest` function will attempt to get a token for the resource server
+   * when a `manager` instance is provided in the SDK options.
+   */
+  resource_server?: string;
   /**
    * The path of the resource (appended to the service's host).
    */
@@ -82,13 +91,30 @@ export function serviceRequest(
   };
 
   /**
-   * If a `scope` was provided, and there is no `Authorization` header
-   * provider, we'll try to get a token for the scope and use it.
+   * If a `resource_server` was provided, and the SDK is configured with a `manager`
+   * instance, we'll try to get a token for the resource server and use it.
    */
-  if (config.scope && !headers?.['Authorization']) {
-    const token = getTokenForScope(config.scope);
+  if (config.resource_server && sdkOptions?.manager) {
+    const token = sdkOptions.manager.tokens.getByResourceServer(config.resource_server);
     if (token) {
-      headers['Authorization'] = token;
+      headers['Authorization'] = `Bearer ${token.access_token}`;
+    }
+  }
+  /**
+   * If the `scope` property is provided, and the SDK is configured with a `manager`,
+   * we'll try to map the service to a resource server. This is mostly to support
+   * backwards compatibility of the `scope` property being used in the `ServiceRequestDSL`.
+   */
+  if (config.scope && sdkOptions?.manager) {
+    const resourceServer =
+      typeof config.service === 'string'
+        ? RESOURCE_SERVERS[config.service]
+        : // For `GCSConfiguration` objects, the `endpoint_id` is the resource server.
+          config.service.endpoint_id;
+
+    const token = sdkOptions.manager.tokens.getByResourceServer(resourceServer);
+    if (token) {
+      headers['Authorization'] = `Bearer ${token.access_token}`;
     }
   }
 

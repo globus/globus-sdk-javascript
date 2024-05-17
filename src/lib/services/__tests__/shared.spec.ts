@@ -1,6 +1,8 @@
 import { serviceRequest } from '../shared';
 import { mirror } from '../../../__mocks__/handlers';
-import { createStorage, getStorage } from '../../core/storage';
+import { setup } from '../../../__mocks__/localStorage';
+import { AuthorizationManager } from '../../core/authorization/AuthorizationManager';
+import { getRequiredScopes } from '../globus-connect-server';
 
 describe('serviceRequest', () => {
   afterEach(() => {
@@ -195,24 +197,34 @@ describe('serviceRequest', () => {
     });
   });
 
-  it('reads tokens from storage', async () => {
-    /**
-     * Bootstrap and setup a token in storage.
-     */
-    createStorage('memory');
-    const scope = 'a:required:scope';
-    const token = {
+  it('reads tokens from manager instance when `scope` is configured', async () => {
+    const TOKEN = {
+      access_token: 'access-token',
+      scope: 'profile email openid',
+      expires_in: 172800,
       token_type: 'Bearer',
-      access_token: 'EXAMPLE',
+      resource_server: 'auth.globus.org',
+      refresh_token: 'refresh-token',
+      other_tokens: [],
     };
-    getStorage().set(scope, token);
-    /**
-     * Create a request that requires the scope.
-     */
+
+    setup({
+      'client_id:auth.globus.org': JSON.stringify(TOKEN),
+      'client_id:transfer.api.globus.org': JSON.stringify({
+        ...TOKEN,
+        resource_server: 'transfer.api.globus.org',
+      }),
+    });
+
+    const manager = new AuthorizationManager({
+      client: 'client_id',
+      redirect: 'https://redirect_uri',
+    });
+
     const request = await serviceRequest(
       {
-        service: 'AUTH',
-        scope,
+        service: 'TRANSFER',
+        scope: 'some:required:scope',
         path: '/some-path',
       },
       {
@@ -220,12 +232,123 @@ describe('serviceRequest', () => {
           foo: 'bar',
         },
       },
+      {
+        manager,
+      },
     );
 
     const {
       req: { headers },
     } = await mirror(request);
 
-    expect(headers['authorization']).toEqual('Bearer EXAMPLE');
+    expect(headers['authorization']).toEqual(`Bearer ${TOKEN.access_token}`);
+  });
+
+  it('reads tokens from manager instance when `resource_server` is configured', async () => {
+    const TOKEN = {
+      access_token: 'access-token',
+      scope: 'profile email openid',
+      expires_in: 172800,
+      token_type: 'Bearer',
+      resource_server: 'auth.globus.org',
+      refresh_token: 'refresh-token',
+      other_tokens: [],
+    };
+
+    setup({
+      'client_id:auth.globus.org': JSON.stringify(TOKEN),
+      'client_id:transfer.api.globus.org': JSON.stringify({
+        ...TOKEN,
+        resource_server: 'transfer.api.globus.org',
+      }),
+    });
+
+    const manager = new AuthorizationManager({
+      client: 'client_id',
+      redirect: 'https://redirect_uri',
+    });
+
+    /**
+     * Create a request that configures the resource_server.
+     */
+    const request = await serviceRequest(
+      {
+        service: 'TRANSFER',
+        resource_server: 'transfer.api.globus.org',
+        path: '/some-path',
+      },
+      {
+        query: {
+          foo: 'bar',
+        },
+      },
+      {
+        manager,
+      },
+    );
+
+    const {
+      req: { headers },
+    } = await mirror(request);
+
+    expect(headers['authorization']).toEqual(`Bearer ${TOKEN.access_token}`);
+  });
+
+  it('reads tokens from manager instance for GCS', async () => {
+    const GCS_CONFIGURATION = {
+      host: 'https://fa5e.bd7c.data.globus.org',
+      endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
+    };
+
+    const TOKEN = {
+      access_token: 'access-token',
+      scope: 'profile email openid',
+      expires_in: 172800,
+      token_type: 'Bearer',
+      resource_server: 'auth.globus.org',
+      refresh_token: 'refresh-token',
+    };
+
+    setup({
+      'client_id:auth.globus.org': JSON.stringify({
+        ...TOKEN,
+        other_tokens: [],
+      }),
+      [`client_id:${GCS_CONFIGURATION.endpoint_id}`]: JSON.stringify({
+        ...TOKEN,
+        scope: getRequiredScopes(GCS_CONFIGURATION),
+        resource_server: GCS_CONFIGURATION.endpoint_id,
+      }),
+    });
+
+    const manager = new AuthorizationManager({
+      client: 'client_id',
+      redirect: 'https://redirect_uri',
+    });
+
+    /**
+     * Create a request that configures the resource_server.
+     */
+    const request = await serviceRequest(
+      {
+        service: GCS_CONFIGURATION,
+        scope: getRequiredScopes(GCS_CONFIGURATION),
+        path: '/some-path',
+      },
+      {
+        query: {
+          foo: 'bar',
+        },
+      },
+      {
+        manager,
+      },
+    );
+
+    const {
+      req: { headers },
+    } = await mirror(request);
+
+    expect(headers['authorization']).toEqual(`Bearer ${TOKEN.access_token}`);
   });
 });
