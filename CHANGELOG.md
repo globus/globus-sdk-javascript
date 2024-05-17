@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.1](https://github.com/globus/globus-sdk-javascript/compare/v3.3.0...v3.3.1) (2024-05-17)
+
+
+### Bug Fixes
+
+* **ESM:** addresses missing file extension in generated ESM build ([#177](https://github.com/globus/globus-sdk-javascript/issues/177)) ([69fe19c](https://github.com/globus/globus-sdk-javascript/commit/69fe19ca7ebd5502b06b624486a60369dbf48898))
+
 ## [3.3.0](https://github.com/globus/globus-sdk-javascript/compare/v3.2.0...v3.3.0) (2024-05-14)
 
 
