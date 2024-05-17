@@ -3,7 +3,7 @@
  * @see https://app.globus.org/
  */
 
-import { getEnvironment, type Environment } from '../core/global';
+import { getEnvironment, type Environment } from '../core/global.js';
 import type { SDKOptions } from '../services/types';
 
 /**

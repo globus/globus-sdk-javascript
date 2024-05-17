@@ -6,6 +6,7 @@ const config: JestConfigWithTsJest = {
   testPathIgnorePatterns: ['/node_modules/', '__utils__'],
   setupFilesAfterEnv: ['./jest.setup.ts'],
   preset: 'ts-jest/presets/default-esm',
+  extensionsToTreatAsEsm: ['.ts'],
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
