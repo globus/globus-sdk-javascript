@@ -3,7 +3,7 @@
 The Globus SDK for JavaScript provides first class TypeScript support and makes it easy to call Globus services using idiomatic JavaScript APIs to build Node.js and web applications.
 
 - [@globus/sdk API Documentation](https://globus.github.io/globus-sdk-javascript/)
-- [Examples](./examples/README.md)
+- [Examples](https://github.com/globus/globus-sdk-javascript/blob/main/examples/README.md)
 
 ## Installation
 
