@@ -1,19 +1,12 @@
 import { getRequiredScopes } from '../index.js';
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 
-import type { GCSServiceMethodDynamicSegments } from '../index';
-
-import type { JSONFetchResponse } from '../../types.js';
+import type { GCSServiceMethodDynamicSegments } from '../index.js';
 
 /**
  * @see https://docs.globus.org/globus-connect-server/v5.4/https-access-collections/
  */
-export const get = function (
-  configuration,
-  path,
-  options?,
-  sdkOptions?,
-): Promise<JSONFetchResponse<unknown>> {
+export const get = function (configuration, path, options?, sdkOptions?): Promise<Response> {
   return serviceRequest(
     {
       service: configuration,
@@ -38,12 +31,7 @@ export const get = function (
 /**
  * @see https://docs.globus.org/globus-connect-server/v5.4/https-access-collections/
  */
-export const remove = function (
-  configuration,
-  path,
-  options?,
-  sdkOptions?,
-): Promise<JSONFetchResponse<unknown>> {
+export const remove = function (configuration, path, options?, sdkOptions?): Promise<Response> {
   return serviceRequest(
     {
       service: configuration,
@@ -65,12 +53,7 @@ export const remove = function (
 /**
  * @see https://docs.globus.org/globus-connect-server/v5.4/https-access-collections/
  */
-export const update = function (
-  configuration,
-  path,
-  options,
-  sdkOptions?,
-): Promise<JSONFetchResponse<unknown>> {
+export const update = function (configuration, path, options, sdkOptions?): Promise<Response> {
   return serviceRequest(
     {
       service: configuration,
