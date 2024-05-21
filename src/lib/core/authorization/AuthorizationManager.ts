@@ -360,15 +360,15 @@ export class AuthorizationManager {
    */
   handleErrorResponse(
     response: Record<string, unknown>,
-    options?: { execute: true; additionalParams?: IObject } | true,
+    options?: { execute?: true; additionalParams?: IObject } | true,
   ): void;
   handleErrorResponse(
     response: Record<string, unknown>,
-    options?: { execute: false; additionalParams?: IObject } | false,
+    options?: { execute?: false; additionalParams?: IObject } | false,
   ): () => void;
   handleErrorResponse(
     response: Record<string, unknown>,
-    options?: { execute: boolean; additionalParams?: IObject } | boolean,
+    options?: { execute?: boolean; additionalParams?: IObject } | boolean,
   ) {
     const additionalParams = typeof options === 'boolean' ? undefined : options?.additionalParams;
     // The default is to execute the handler immediately (i.e. execute === true)
@@ -384,7 +384,7 @@ export class AuthorizationManager {
         'debug',
         'AuthorizationManager.handleErrorResponse | error=AuthorizationRequirementsError',
       );
-      handler = () => this.handleAuthorizationRequirementsError(response, additionalParams);
+      handler = () => this.handleAuthorizationRequirementsError(response, { additionalParams });
     }
     if (isConsentRequiredError(response)) {
       log('debug', 'AuthorizationManager.handleErrorResponse | error=ConsentRequiredError');
@@ -403,7 +403,7 @@ export class AuthorizationManager {
    */
   handleAuthorizationRequirementsError(
     response: AuthorizationRequirementsError,
-    options?: { additionalParams?: IObject }
+    options?: { additionalParams?: IObject },
   ) {
     this.#transport = this.#buildTransport({
       params: {
@@ -414,7 +414,7 @@ export class AuthorizationManager {
         session_required_single_domain:
           response.authorization_parameters.session_required_single_domain.join(','),
         prompt: 'login',
-        ...additionalParams,
+        ...options?.additionalParams,
       },
     });
     this.#transport.send();
