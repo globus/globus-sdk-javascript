@@ -403,7 +403,7 @@ export class AuthorizationManager {
    */
   handleAuthorizationRequirementsError(
     response: AuthorizationRequirementsError,
-    additionalParams: IObject = {},
+    options?: { additionalParams?: IObject }
   ) {
     this.#transport = this.#buildTransport({
       params: {
