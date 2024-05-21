@@ -18,6 +18,7 @@ import { type GCSConfiguration } from './index.js';
 
 import * as collections from './service/collections.js';
 import * as endpoint from './service/endpoint.js';
+import * as https from './service/https.js';
 import * as roles from './service/roles.js';
 import * as storageGateways from './service/storage-gateways.js';
 import * as userCredentials from './service/user-credentials.js';
@@ -88,6 +89,11 @@ export function getClient(configuration: GCSConfiguration) {
       getAll: bind(roles.getAll, configuration),
       create: bind(roles.create, configuration),
       remove: bind(roles.remove, configuration),
+    },
+    https: {
+      get: bind(https.get, configuration),
+      remove: bind(https.remove, configuration),
+      update: bind(https.update, configuration),
     },
   };
 }
