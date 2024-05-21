@@ -8,6 +8,11 @@ export type GetTokenOptions = {
    * @default true
    */
   shouldReplace?: boolean;
+
+  /**
+   * Additional parameters to be included in the query string of the authorization request.
+   */
+  additionalParams?: IObject;
 };
 
 export class RedirectTransport {
