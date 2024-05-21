@@ -510,5 +510,27 @@ describe('AuthorizationManager - Error Utilities', () => {
       expect(url.searchParams.get('session_required_single_domain')).toBe('');
       expect(url.searchParams.get('prompt')).toBe('login');
     });
+
+    it('should preserve passed in query parameters for Authorization requirements error', () => {
+      instance.handleErrorResponse(TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR, {
+        execute: true,
+        additionalParams: {
+          foo: 'bar',
+        },
+      });
+      const url = new URL(window.location.href);
+      expect(url.searchParams.get('foo')).toBe('bar');
+    });
+
+    it('should preserve passed in query parameters for consent required error', () => {
+      instance.handleErrorResponse(TRANSFER_CONSENT_REQUIRED_ERROR, {
+        execute: true,
+        additionalParams: {
+          foo: 'bar',
+        },
+      });
+      const url = new URL(window.location.href);
+      expect(url.searchParams.get('foo')).toBe('bar');
+    });
   });
 });
