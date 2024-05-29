@@ -3,6 +3,7 @@ import { mirror } from '../../../__mocks__/handlers';
 import { setup } from '../../../__mocks__/localStorage';
 import { AuthorizationManager } from '../../core/authorization/AuthorizationManager';
 import { getRequiredScopes } from '../globus-connect-server';
+import pkg from '../../../../package.json';
 
 describe('serviceRequest', () => {
   afterEach(() => {
@@ -350,5 +351,38 @@ describe('serviceRequest', () => {
     } = await mirror(request);
 
     expect(headers['authorization']).toEqual(`Bearer ${TOKEN.access_token}`);
+  });
+
+  it('includes X-Globus-ClientInfo header', async () => {
+    const request = await serviceRequest(
+      {
+        service: 'AUTH',
+        scope: 'a:required:scope',
+        path: '/some-path',
+      },
+      {
+        query: {
+          foo: 'bar',
+        },
+      },
+      {
+        environment: 'test',
+        fetch: {
+          options: {
+            headers: {
+              Authorization: 'Bearer example-token',
+            },
+          },
+        },
+      },
+    );
+
+    const {
+      req: { headers },
+    } = await mirror(request);
+
+    expect(headers).toMatchObject({
+      'x-globus-clientinfo': `product=javascript-sdk,version=${pkg.version}`,
+    });
   });
 });

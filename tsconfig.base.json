@@ -7,6 +7,7 @@
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": false,
-    "types": ["jest", "node"]
+    "types": ["jest", "node"],
+    "resolveJsonModule": true
   }
 }
