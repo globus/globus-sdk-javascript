@@ -1,7 +1,20 @@
 import server from './src/__mocks__/server';
 
+import { disable } from './src/lib/core/info/private';
+
 // Establish API mocking before all tests.
-beforeAll(() => server.listen());
+beforeAll(() => {
+  server.listen();
+  /**
+   * We disable the X-Globus-ClientInfo header from being injected in the test suite
+   * to avoid conflicts with snapshot results based on the `version` property in the
+   * `package.json` file.
+   *
+   * The behavior is explicitly tested (enabled) in `src/lib/core/__tests__/info.spec.ts` and
+   * `src/lib/services/__tests__/shared.spec.ts`.
+   */
+  disable();
+});
 
 // Reset any request handlers that we may add during the tests,
 // so they don't affect other tests.

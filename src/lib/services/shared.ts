@@ -1,7 +1,7 @@
 import _fetch from 'cross-fetch';
+import { getClientInfoRequestHeaders } from '../core/info/index.js';
 import { build } from '../core/url.js';
 import { getSDKOptions, Service } from '../core/global.js';
-
 import type { ServiceMethodOptions, SDKOptions } from './types.js';
 import type { GCSConfiguration } from '../services/globus-connect-server/index.js';
 import { RESOURCE_SERVERS } from './auth/config.js';
@@ -81,7 +81,8 @@ export function serviceRequest(
   const sdkOptions = getSDKOptions(passedSdkOptions);
   const injectedFetchOptions = sdkOptions?.fetch?.options || {};
 
-  const headers = {
+  const headers: Record<string, string> = {
+    ...getClientInfoRequestHeaders(),
     ...options?.headers,
     /**
      * Key/value pairs found in the `fetch` options override those found in the
