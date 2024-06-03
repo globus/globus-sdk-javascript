@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.0](https://github.com/globus/globus-sdk-javascript/compare/v3.3.1...v3.4.0) (2024-06-03)
+
+
+### Features
+
+* **Authorization:** adds "additionalParams" option to allow passing arbitrary query parameters through OAuth redirects. ([#170](https://github.com/globus/globus-sdk-javascript/issues/170)) ([754b508](https://github.com/globus/globus-sdk-javascript/commit/754b508c81b5a5e235dc52ffbd411eb4e5519fed))
+* **GCS:** adds HTTPS Access service methods to GCS ([#182](https://github.com/globus/globus-sdk-javascript/issues/182)) ([a258082](https://github.com/globus/globus-sdk-javascript/commit/a2580829c4feb092c5de280f54e949ea195b30bd))
+
 ## [3.3.1](https://github.com/globus/globus-sdk-javascript/compare/v3.3.0...v3.3.1) (2024-05-17)
 
 
