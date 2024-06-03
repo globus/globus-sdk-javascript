@@ -183,6 +183,21 @@ describe('AuthorizationManager', () => {
     );
   });
 
+  it('supports login with additionalParameters', () => {
+    const instance = new AuthorizationManager({
+      client: 'client_id',
+      redirect: 'https://redirect_uri',
+      scopes: 'foobar baz',
+    });
+    instance.login({
+      additionalParams: {
+        page: 'some.example.state',
+      },
+    });
+    const url = new URL(window.location.href);
+    expect(url.searchParams.get('page')).toBe('some.example.state');
+  });
+
   describe('user', () => {
     it('returns null when no Globus Auth token is present', () => {
       const instance = new AuthorizationManager({
@@ -509,6 +524,33 @@ describe('AuthorizationManager - Error Utilities', () => {
       expect(url.searchParams.get('session_required_mfa')).toBe('false');
       expect(url.searchParams.get('session_required_single_domain')).toBe('');
       expect(url.searchParams.get('prompt')).toBe('login');
+    });
+
+    describe('additionalParameters', () => {
+      it('should preserve passed in query parameters for "authorization_requirements" error', () => {
+        instance.handleErrorResponse(TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR, {
+          additionalParams: {
+            foo: 'bar',
+          },
+        });
+        const url = new URL(window.location.href);
+        expect(url.searchParams.get('foo')).toBe('bar');
+      });
+
+      it('should preserve passed in query parameters for "ConsentRequired" error', () => {
+        instance.handleErrorResponse(TRANSFER_CONSENT_REQUIRED_ERROR, {
+          additionalParams: {
+            retained_state: 'example-state',
+            retained_route: 'example.route',
+          },
+        });
+        const url = new URL(window.location.href);
+        expect(url.searchParams.get('retained_state')).toBe('example-state');
+        expect(url.searchParams.get('retained_route')).toBe('example.route');
+        expect(url.searchParams.get('scope')).toBe(
+          TRANSFER_CONSENT_REQUIRED_ERROR.required_scopes.join(' '),
+        );
+      });
     });
   });
 });

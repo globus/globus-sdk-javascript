@@ -10,19 +10,19 @@ export type GetTokenOptions = {
   shouldReplace?: boolean;
 };
 
+export type RedirectTransportOptions = IConfig & {
+  /**
+   * Additional parameters to be included in the query string of the authorization request.
+   */
+  params?: IObject;
+};
+
 export class RedirectTransport {
   #pkce: PKCE;
 
-  #params: IObject = {};
+  #params: RedirectTransportOptions['params'] = {};
 
-  constructor(
-    options: IConfig & {
-      /**
-       * Additional parameters to be included in the query string of the authorization request.
-       */
-      params?: IObject;
-    },
-  ) {
+  constructor(options: RedirectTransportOptions) {
     const { params, ...config } = options;
     this.#pkce = new PKCE({
       ...config,

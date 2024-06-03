@@ -14,7 +14,11 @@ import { createStorage, getStorage } from '../storage/index.js';
 import { log } from '../logger.js';
 
 import { Event } from './Event.js';
-import { GetTokenOptions, RedirectTransport } from './RedirectTransport.js';
+import {
+  RedirectTransportOptions,
+  GetTokenOptions,
+  RedirectTransport,
+} from './RedirectTransport.js';
 import { TokenLookup } from './TokenLookup.js';
 
 import {
@@ -50,6 +54,11 @@ export type AuthorizationManagerConfiguration = {
 const DEFAULT_CONFIGURATION = {
   useRefreshTokens: false,
   defaultScopes: 'openid profile email',
+};
+
+const DEFAULT_HANDLE_ERROR_OPTIONS = {
+  execute: true,
+  additionalParams: undefined,
 };
 
 /**
@@ -316,13 +325,13 @@ export class AuthorizationManager {
   /**
    * Initiate the login process by redirecting to the Globus Auth login page.
    */
-  login() {
+  login(options = { additionalParams: {} }) {
     log('debug', 'AuthorizationManager.login');
     this.reset();
     /**
      * In the future, it's possible that we may want to support different types of transports.
      */
-    const transport = this.#buildTransport();
+    const transport = this.#buildTransport({ params: options?.additionalParams });
     transport.send();
   }
 
@@ -332,10 +341,11 @@ export class AuthorizationManager {
   async handleCodeRedirect(
     options: {
       shouldReplace: GetTokenOptions['shouldReplace'];
-    } = { shouldReplace: true },
+      additionalParams?: RedirectTransportOptions['params'];
+    } = { shouldReplace: true, additionalParams: {} },
   ) {
     log('debug', 'AuthorizationManager.handleCodeRedirect');
-    const response = await this.#buildTransport().getToken({
+    const response = await this.#buildTransport({ params: options?.additionalParams }).getToken({
       shouldReplace: options?.shouldReplace,
     });
     if (isGlobusAuthTokenResponse(response)) {
@@ -351,15 +361,38 @@ export class AuthorizationManager {
    * Handle an error response from a Globus service in the context of this `AuthorizationManager`.
    * This method will introspect the response and attempt to handle any errors that should result
    * in some additional Globus Auth interaction.
-   * @param response - The error response from a Globus service.
-   * @param execute - Whether to execute the handler immediately or return a function that can be executed later.
+   * @param response The error response from a Globus service.
+   * @param {object|boolean} options Options for handling the error response. If a boolean is provided, this will be treated as the `options.execute` value.
+   * @param options.execute Whether to execute the handler immediately.
+   * @param options.additionalParms Additional query parameters to be included with the transport generated URL.
    */
-  handleErrorResponse(response: Record<string, unknown>, execute?: true): void;
-  handleErrorResponse(response: Record<string, unknown>, execute?: false): () => void;
-  handleErrorResponse(response: Record<string, unknown>, execute = true) {
+  handleErrorResponse(
+    response: Record<string, unknown>,
+    options?: { execute?: true; additionalParams?: RedirectTransportOptions['params'] } | true,
+  ): void;
+  handleErrorResponse(
+    response: Record<string, unknown>,
+    options?: { execute?: false; additionalParams?: RedirectTransportOptions['params'] } | false,
+  ): () => void;
+  handleErrorResponse(
+    response: Record<string, unknown>,
+    options?:
+      | { execute?: boolean; additionalParams?: RedirectTransportOptions['params'] }
+      | boolean,
+  ) {
+    const opts =
+      typeof options === 'boolean'
+        ? {
+            ...DEFAULT_HANDLE_ERROR_OPTIONS,
+            execute: options,
+          }
+        : {
+            ...DEFAULT_HANDLE_ERROR_OPTIONS,
+            ...options,
+          };
     log(
       'debug',
-      `AuthorizationManager.handleErrorResponse | response=${JSON.stringify(response)} execute=${execute}`,
+      `AuthorizationManager.handleErrorResponse | response=${JSON.stringify(response)} execute=${opts.execute}`,
     );
     let handler = () => {};
     if (isAuthorizationRequirementsError(response)) {
@@ -367,24 +400,31 @@ export class AuthorizationManager {
         'debug',
         'AuthorizationManager.handleErrorResponse | error=AuthorizationRequirementsError',
       );
-      handler = () => this.handleAuthorizationRequirementsError(response);
+      handler = () =>
+        this.handleAuthorizationRequirementsError(response, {
+          additionalParams: opts.additionalParams,
+        });
     }
     if (isConsentRequiredError(response)) {
       log('debug', 'AuthorizationManager.handleErrorResponse | error=ConsentRequiredError');
-      handler = () => this.handleConsentRequiredError(response);
+      handler = () =>
+        this.handleConsentRequiredError(response, { additionalParams: opts.additionalParams });
     }
     if ('code' in response && response['code'] === 'AuthenticationFailed') {
       log('debug', 'AuthorizationManager.handleErrorResponse | error=AuthenticationFailed');
       handler = () => this.revoke();
     }
-    return execute === true ? handler() : handler;
+    return opts.execute === true ? handler() : handler;
   }
 
   /**
    * Process a well-formed Authorization Requirements error response from a Globus service
    * and redirect the user to the Globus Auth login page with the necessary parameters.
    */
-  handleAuthorizationRequirementsError(response: AuthorizationRequirementsError) {
+  handleAuthorizationRequirementsError(
+    response: AuthorizationRequirementsError,
+    options?: { additionalParams?: RedirectTransportOptions['params'] },
+  ) {
     this.#transport = this.#buildTransport({
       params: {
         session_message: response.authorization_parameters.session_message,
@@ -394,6 +434,7 @@ export class AuthorizationManager {
         session_required_single_domain:
           response.authorization_parameters.session_required_single_domain.join(','),
         prompt: 'login',
+        ...options?.additionalParams,
       },
     });
     this.#transport.send();
@@ -403,9 +444,15 @@ export class AuthorizationManager {
    * Process a well-formed `ConsentRequired` error response from a Globus service
    * and redirect the user to the Globus Auth login page with the necessary parameters.
    */
-  handleConsentRequiredError(response: ConsentRequiredError) {
+  handleConsentRequiredError(
+    response: ConsentRequiredError,
+    options?: { additionalParams?: RedirectTransportOptions['params'] },
+  ) {
     this.#transport = this.#buildTransport({
       requested_scopes: this.#withOfflineAccess(response.required_scopes.join(' ')),
+      params: {
+        ...options?.additionalParams,
+      },
     });
     this.#transport.send();
   }
