@@ -56,6 +56,11 @@ const DEFAULT_CONFIGURATION = {
   defaultScopes: 'openid profile email',
 };
 
+const DEFAULT_HANDLE_ERROR_OPTIONS = {
+  execute: true,
+  additionalParams: undefined,
+};
+
 /**
  * Provides management of Globus authorization context for your application.
  * - Handles the OAuth protcol flow (via PKCE)
@@ -356,10 +361,10 @@ export class AuthorizationManager {
    * Handle an error response from a Globus service in the context of this `AuthorizationManager`.
    * This method will introspect the response and attempt to handle any errors that should result
    * in some additional Globus Auth interaction.
-   * @param response - The error response from a Globus service.
-   * @param options - Options for handling the error response.
-   * @param options.execute - Whether to execute the handler immediately.
-   * @param options.overrides - Overrides for the handler.
+   * @param response The error response from a Globus service.
+   * @param {object|boolean} options Options for handling the error response. If a boolean is provided, this will be treated as the `options.execute` value.
+   * @param options.execute Whether to execute the handler immediately.
+   * @param options.additionalParms Additional query parameters to be included with the transport generated URL.
    */
   handleErrorResponse(
     response: Record<string, unknown>,
@@ -375,13 +380,19 @@ export class AuthorizationManager {
       | { execute?: boolean; additionalParams?: RedirectTransportOptions['params'] }
       | boolean,
   ) {
-    const additionalParams = typeof options === 'boolean' ? undefined : options?.additionalParams;
-    // The default is to execute the handler immediately (i.e. execute === true)
-    const execute = typeof options === 'boolean' ? options : options?.execute ?? true;
-
+    const opts =
+      typeof options === 'boolean'
+        ? {
+            ...DEFAULT_HANDLE_ERROR_OPTIONS,
+            execute: options,
+          }
+        : {
+            ...DEFAULT_HANDLE_ERROR_OPTIONS,
+            ...options,
+          };
     log(
       'debug',
-      `AuthorizationManager.handleErrorResponse | response=${JSON.stringify(response)} execute=${execute}`,
+      `AuthorizationManager.handleErrorResponse | response=${JSON.stringify(response)} execute=${opts.execute}`,
     );
     let handler = () => {};
     if (isAuthorizationRequirementsError(response)) {
@@ -389,17 +400,21 @@ export class AuthorizationManager {
         'debug',
         'AuthorizationManager.handleErrorResponse | error=AuthorizationRequirementsError',
       );
-      handler = () => this.handleAuthorizationRequirementsError(response, { additionalParams });
+      handler = () =>
+        this.handleAuthorizationRequirementsError(response, {
+          additionalParams: opts.additionalParams,
+        });
     }
     if (isConsentRequiredError(response)) {
       log('debug', 'AuthorizationManager.handleErrorResponse | error=ConsentRequiredError');
-      handler = () => this.handleConsentRequiredError(response, { additionalParams });
+      handler = () =>
+        this.handleConsentRequiredError(response, { additionalParams: opts.additionalParams });
     }
     if ('code' in response && response['code'] === 'AuthenticationFailed') {
       log('debug', 'AuthorizationManager.handleErrorResponse | error=AuthenticationFailed');
       handler = () => this.revoke();
     }
-    return execute === true ? handler() : handler;
+    return opts.execute === true ? handler() : handler;
   }
 
   /**
