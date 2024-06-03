@@ -183,7 +183,7 @@ describe('AuthorizationManager', () => {
     );
   });
 
-  it.only('supports login with additionalParameters', () => {
+  it('supports login with additionalParameters', () => {
     const instance = new AuthorizationManager({
       client: 'client_id',
       redirect: 'https://redirect_uri',
