@@ -511,26 +511,31 @@ describe('AuthorizationManager - Error Utilities', () => {
       expect(url.searchParams.get('prompt')).toBe('login');
     });
 
-    it('should preserve passed in query parameters for Authorization requirements error', () => {
-      instance.handleErrorResponse(TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR, {
-        execute: true,
-        additionalParams: {
-          foo: 'bar',
-        },
+    describe('additionalParameters', () => {
+      it('should preserve passed in query parameters for "authorization_requirements" error', () => {
+        instance.handleErrorResponse(TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR, {
+          additionalParams: {
+            foo: 'bar',
+          },
+        });
+        const url = new URL(window.location.href);
+        expect(url.searchParams.get('foo')).toBe('bar');
       });
-      const url = new URL(window.location.href);
-      expect(url.searchParams.get('foo')).toBe('bar');
-    });
 
-    it('should preserve passed in query parameters for consent required error', () => {
-      instance.handleErrorResponse(TRANSFER_CONSENT_REQUIRED_ERROR, {
-        execute: true,
-        additionalParams: {
-          foo: 'bar',
-        },
+      it('should preserve passed in query parameters for "ConsentRequired" error', () => {
+        instance.handleErrorResponse(TRANSFER_CONSENT_REQUIRED_ERROR, {
+          additionalParams: {
+            retained_state: 'example-state',
+            retained_route: 'example.route',
+          },
+        });
+        const url = new URL(window.location.href);
+        expect(url.searchParams.get('retained_state')).toBe('example-state');
+        expect(url.searchParams.get('retained_route')).toBe('example.route');
+        expect(url.searchParams.get('scope')).toBe(
+          TRANSFER_CONSENT_REQUIRED_ERROR.required_scopes.join(' '),
+        );
       });
-      const url = new URL(window.location.href);
-      expect(url.searchParams.get('foo')).toBe('bar');
     });
   });
 });

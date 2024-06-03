@@ -1,7 +1,6 @@
 import { jwtDecode } from 'jwt-decode';
 
 import type IConfig from 'js-pkce/dist/IConfig';
-import type IObject from 'js-pkce/dist/IObject';
 
 import {
   getAuthorizationEndpoint,
@@ -15,7 +14,11 @@ import { createStorage, getStorage } from '../storage/index.js';
 import { log } from '../logger.js';
 
 import { Event } from './Event.js';
-import { GetTokenOptions, RedirectTransport } from './RedirectTransport.js';
+import {
+  RedirectTransportOptions,
+  GetTokenOptions,
+  RedirectTransport,
+} from './RedirectTransport.js';
 import { TokenLookup } from './TokenLookup.js';
 
 import {
@@ -333,7 +336,7 @@ export class AuthorizationManager {
   async handleCodeRedirect(
     options: {
       shouldReplace: GetTokenOptions['shouldReplace'];
-      additionalParams?: GetTokenOptions['additionalParams'];
+      additionalParams?: RedirectTransportOptions['params'];
     } = { shouldReplace: true, additionalParams: {} },
   ) {
     log('debug', 'AuthorizationManager.handleCodeRedirect');
@@ -360,15 +363,17 @@ export class AuthorizationManager {
    */
   handleErrorResponse(
     response: Record<string, unknown>,
-    options?: { execute?: true; additionalParams?: IObject } | true,
+    options?: { execute?: true; additionalParams?: RedirectTransportOptions['params'] } | true,
   ): void;
   handleErrorResponse(
     response: Record<string, unknown>,
-    options?: { execute?: false; additionalParams?: IObject } | false,
+    options?: { execute?: false; additionalParams?: RedirectTransportOptions['params'] } | false,
   ): () => void;
   handleErrorResponse(
     response: Record<string, unknown>,
-    options?: { execute?: boolean; additionalParams?: IObject } | boolean,
+    options?:
+      | { execute?: boolean; additionalParams?: RedirectTransportOptions['params'] }
+      | boolean,
   ) {
     const additionalParams = typeof options === 'boolean' ? undefined : options?.additionalParams;
     // The default is to execute the handler immediately (i.e. execute === true)
@@ -388,7 +393,7 @@ export class AuthorizationManager {
     }
     if (isConsentRequiredError(response)) {
       log('debug', 'AuthorizationManager.handleErrorResponse | error=ConsentRequiredError');
-      handler = () => this.handleConsentRequiredError(response, additionalParams);
+      handler = () => this.handleConsentRequiredError(response, { additionalParams });
     }
     if ('code' in response && response['code'] === 'AuthenticationFailed') {
       log('debug', 'AuthorizationManager.handleErrorResponse | error=AuthenticationFailed');
@@ -403,7 +408,7 @@ export class AuthorizationManager {
    */
   handleAuthorizationRequirementsError(
     response: AuthorizationRequirementsError,
-    options?: { additionalParams?: IObject },
+    options?: { additionalParams?: RedirectTransportOptions['params'] },
   ) {
     this.#transport = this.#buildTransport({
       params: {
@@ -424,11 +429,14 @@ export class AuthorizationManager {
    * Process a well-formed `ConsentRequired` error response from a Globus service
    * and redirect the user to the Globus Auth login page with the necessary parameters.
    */
-  handleConsentRequiredError(response: ConsentRequiredError, additionalParams?: IObject) {
+  handleConsentRequiredError(
+    response: ConsentRequiredError,
+    options?: { additionalParams?: RedirectTransportOptions['params'] },
+  ) {
     this.#transport = this.#buildTransport({
       requested_scopes: this.#withOfflineAccess(response.required_scopes.join(' ')),
       params: {
-        ...additionalParams,
+        ...options?.additionalParams,
       },
     });
     this.#transport.send();
