@@ -2,14 +2,15 @@
  * This module is mostly intended for internal use, but can be helpful
  * identifying information about the SDK package you are using at runtime.
  */
-import pkg from '../../../package.json';
 
 export type Version = string;
 
 /**
- * The version of the @globus/sdk package that is in use.
+ * The version of the `@globus/sdk` package that is in use.
  */
-export const VERSION: Version = pkg.version;
+// x-release-please-start-version
+export const VERSION: Version = '3.3.1';
+// x-release-please-end
 
 export type Info = {
   product: string;
