@@ -3,7 +3,7 @@ import pkg from '../../../../package.json';
 
 describe('info', () => {
   it('returns default information for the sdk', () => {
-    expect(getClientInfo()).toEqual(`product=javascript-sdk,version=${pkg.version}}`);
+    expect(getClientInfo()).toEqual(`product=javascript-sdk,version=${pkg.version}`);
   });
 
   describe('toString', () => {
@@ -23,21 +23,21 @@ describe('info', () => {
             version: '2.0.3-alpha',
           },
           {
-            product: 'web-application',
+            product: '@globus/webapp',
             version: '10.10.10',
           },
         ]),
-      ).toEqual('product=example,version=2.0.3-alpha;product=web-application,version=10.10.10');
+      ).toEqual('product=example,version=2.0.3-alpha;product=@globus/webapp,version=10.10.10');
     });
   });
 
   it('allows adding client information', () => {
     addClientInfo({
-      product: 'data-portal',
+      product: '@globus/static-data-portal',
       version: '1.0.0',
     });
     expect(getClientInfo()).toEqual(
-      `product=javascript-sdk,version=${pkg.version};product=data-portal,version=1.0.0`,
+      `product=javascript-sdk,version=${pkg.version};product=@globus/static-data-portal,version=1.0.0`,
     );
   });
 });

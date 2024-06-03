@@ -3,6 +3,7 @@ import { mirror } from '../../../__mocks__/handlers';
 import { setup } from '../../../__mocks__/localStorage';
 import { AuthorizationManager } from '../../core/authorization/AuthorizationManager';
 import { getRequiredScopes } from '../globus-connect-server';
+import { enable } from '../../core/info';
 import pkg from '../../../../package.json';
 
 describe('serviceRequest', () => {
@@ -354,6 +355,9 @@ describe('serviceRequest', () => {
   });
 
   it('includes X-Globus-ClientInfo header', async () => {
+    // Enable the `X-Globus-ClientInfo` header for this test.
+    enable();
+
     const request = await serviceRequest(
       {
         service: 'AUTH',
