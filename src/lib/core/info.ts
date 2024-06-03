@@ -60,6 +60,7 @@ export function getClientInfo(): string {
 let ENABLED = true;
 /**
  * Disable the client information header from being included in requests (enabled by default).
+ * @private
  */
 export function disable() {
   ENABLED = false;
@@ -67,6 +68,7 @@ export function disable() {
 
 /**
  * Enables the client information header to be included in requests.
+ * @private
  */
 export function enable() {
   ENABLED = true;
@@ -74,6 +76,7 @@ export function enable() {
 
 /**
  * Whether or not the client information header should be sent with requests.
+ * @private
  */
 export function isEnabled() {
   return ENABLED;
