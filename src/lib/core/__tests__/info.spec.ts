@@ -1,4 +1,5 @@
-import { addClientInfo, toString, getClientInfo } from '../info';
+import { addClientInfo, getClientInfo } from '../info/index';
+import { toString } from '../info/private';
 import pkg from '../../../../package.json';
 
 describe('info', () => {

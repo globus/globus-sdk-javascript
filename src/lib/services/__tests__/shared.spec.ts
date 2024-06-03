@@ -3,7 +3,7 @@ import { mirror } from '../../../__mocks__/handlers';
 import { setup } from '../../../__mocks__/localStorage';
 import { AuthorizationManager } from '../../core/authorization/AuthorizationManager';
 import { getRequiredScopes } from '../globus-connect-server';
-import { enable } from '../../core/info';
+import { enable } from '../../core/info/private';
 import pkg from '../../../../package.json';
 
 describe('serviceRequest', () => {

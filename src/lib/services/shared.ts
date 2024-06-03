@@ -1,5 +1,5 @@
 import _fetch from 'cross-fetch';
-import { CLIENT_INFO_HEADER, getClientInfo, isEnabled } from '../core/info.js';
+import { getClientInfoRequestHeaders } from '../core/info/index.js';
 import { build } from '../core/url.js';
 import { getSDKOptions, Service } from '../core/global.js';
 import type { ServiceMethodOptions, SDKOptions } from './types.js';
@@ -82,7 +82,7 @@ export function serviceRequest(
   const injectedFetchOptions = sdkOptions?.fetch?.options || {};
 
   const headers: Record<string, string> = {
-    ...(isEnabled() ? { [CLIENT_INFO_HEADER]: getClientInfo() } : {}),
+    ...getClientInfoRequestHeaders(),
     ...options?.headers,
     /**
      * Key/value pairs found in the `fetch` options override those found in the

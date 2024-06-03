@@ -60,7 +60,7 @@
 /**
  * Core
  */
-export * as info from './lib/core/info.js';
+export * as info from './lib/core/info/index.js';
 export * as logger from './lib/core/logger.js';
 export * as authorization from './lib/core/authorization/index.js';
 export * as errors from './lib/core/errors.js';
