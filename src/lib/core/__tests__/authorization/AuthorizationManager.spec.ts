@@ -183,6 +183,21 @@ describe('AuthorizationManager', () => {
     );
   });
 
+  it.only('supports login with additionalParameters', () => {
+    const instance = new AuthorizationManager({
+      client: 'client_id',
+      redirect: 'https://redirect_uri',
+      scopes: 'foobar baz',
+    });
+    instance.login({
+      additionalParams: {
+        page: 'some.example.state',
+      },
+    });
+    const url = new URL(window.location.href);
+    expect(url.searchParams.get('page')).toBe('some.example.state');
+  });
+
   describe('user', () => {
     it('returns null when no Globus Auth token is present', () => {
       const instance = new AuthorizationManager({

@@ -325,13 +325,13 @@ export class AuthorizationManager {
   /**
    * Initiate the login process by redirecting to the Globus Auth login page.
    */
-  login() {
+  login(options = { additionalParams: {} }) {
     log('debug', 'AuthorizationManager.login');
     this.reset();
     /**
      * In the future, it's possible that we may want to support different types of transports.
      */
-    const transport = this.#buildTransport();
+    const transport = this.#buildTransport({ params: options?.additionalParams });
     transport.send();
   }
 
