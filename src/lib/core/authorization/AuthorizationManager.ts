@@ -85,7 +85,7 @@ const DEFAULT_HANDLE_ERROR_OPTIONS = {
  *
  * const manager = authorization.create({
  *  // Your registered Globus Application client ID.
- *  client_id: '...',
+ *  client: '...',
  *  // The redirect URL for your application; Where you will call `manager.handleCodeRedirect()`
  *  redirect: 'https://example.com/callback',
  *  // Known scopes required by your application.

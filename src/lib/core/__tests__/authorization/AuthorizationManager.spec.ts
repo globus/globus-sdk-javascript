@@ -46,7 +46,7 @@ describe('AuthorizationManager', () => {
     );
   });
 
-  it('throws if no "client_id" is provided', () => {
+  it('throws if no "client" is provided', () => {
     expect(() => {
       // @ts-ignore – For end-users using Typescript, this will be caught at compile time...
       const instance = new AuthorizationManager({
