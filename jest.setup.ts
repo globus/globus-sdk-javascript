@@ -6,7 +6,7 @@ import { disable } from './src/lib/core/info/private';
 beforeAll(() => {
   server.listen();
   /**
-   * We disable the X-Globus-ClientInfo header from being injected in the test suite
+   * We disable the X-Globus-Client-Info header from being injected in the test suite
    * to avoid conflicts with snapshot results based on the `version` property in the
    * `package.json` file.
    *

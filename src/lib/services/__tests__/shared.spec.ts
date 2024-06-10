@@ -354,8 +354,8 @@ describe('serviceRequest', () => {
     expect(headers['authorization']).toEqual(`Bearer ${TOKEN.access_token}`);
   });
 
-  it('includes X-Globus-ClientInfo header', async () => {
-    // Enable the `X-Globus-ClientInfo` header for this test.
+  it('includes X-Globus-Client-Info header', async () => {
+    // Enable the `X-Globus-Client-Info` header for this test.
     enable();
 
     const request = await serviceRequest(
@@ -386,7 +386,7 @@ describe('serviceRequest', () => {
     } = await mirror(request);
 
     expect(headers).toMatchObject({
-      'x-globus-clientinfo': `product=javascript-sdk,version=${pkg.version}`,
+      'x-globus-client-info': `product=javascript-sdk,version=${pkg.version}`,
     });
   });
 });

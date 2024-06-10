@@ -3,7 +3,7 @@ import type { Info } from './index.js';
 /**
  * @private
  */
-export const CLIENT_INFO_HEADER = `X-Globus-ClientInfo`;
+export const CLIENT_INFO_HEADER = `X-Globus-Client-Info`;
 
 let ENABLED = true;
 /**
