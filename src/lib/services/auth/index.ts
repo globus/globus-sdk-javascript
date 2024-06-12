@@ -16,6 +16,20 @@ import type { Token, TokenWithRefresh, TokenResponse } from './types.js';
  */
 export const CONFIG = AUTH;
 
+/**
+ * Query parameters that can be passed to the authorization endpoint.
+ * @see https://docs.globus.org/api/auth/reference/#authorization_code_grant_preferred
+ * @see https://docs.globus.org/api/auth/sessions/#client-initiated-authns
+ */
+export type AuthorizationQueryParameters = {
+  prompt?: string;
+  session_message?: string;
+  session_required_identities?: string;
+  session_required_single_domain?: string;
+  session_required_mfa?: 'true' | 'false';
+  session_required_policies?: string;
+};
+
 export function getAuthorizationEndpoint() {
   return build(AUTH.ID, '/v2/oauth2/authorize');
 }
