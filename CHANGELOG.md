@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.1](https://github.com/globus/globus-sdk-javascript/compare/v3.4.0...v3.4.1) (2024-06-12)
+
+
+### Bug Fixes
+
+* **Authorization:** improves AuthorizationRequirementsError type and related utilities. ([#206](https://github.com/globus/globus-sdk-javascript/issues/206)) ([eff53c4](https://github.com/globus/globus-sdk-javascript/commit/eff53c48185ff261cc81e92359a4dd43a67e6fb6))
+* **Core:** updates client information header name ([#199](https://github.com/globus/globus-sdk-javascript/issues/199)) ([010f572](https://github.com/globus/globus-sdk-javascript/commit/010f572f1f50ac844676793561d37a6586704395))
+* **Transfer, Typescript:** updates return type of `transfer.endpointManager.getPauseInfo` (PauseInfoLimitedDocument) ([#201](https://github.com/globus/globus-sdk-javascript/issues/201)) ([021e46a](https://github.com/globus/globus-sdk-javascript/commit/021e46ab7fe6d07bd9fa6b1ea3d983fa0a1ebb2e))
+
 ## [3.4.0](https://github.com/globus/globus-sdk-javascript/compare/v3.3.1...v3.4.0) (2024-06-03)
 
 
