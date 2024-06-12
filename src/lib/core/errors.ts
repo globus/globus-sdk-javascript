@@ -4,6 +4,7 @@
  * import { errors } from "globus/sdk";
  * if (errors.isConsentRequiredError(...)) { ... }
  */
+import type { AuthorizationQueryParameters } from '../services/auth/index.js';
 
 export class EnvironmentConfigurationError extends Error {
   override name = 'EnvironmentConfigurationError';
@@ -39,15 +40,52 @@ export function isConsentRequiredError(test: unknown): test is ConsentRequiredEr
   );
 }
 
+/**
+ * An error that includes an `authorization_parameters` property, a.k.a "G.A.R.E".
+ *
+ * A well-known error shape is provided by services when additional authorization requirements must be met by the session.
+ * This object can be converted to parameters accepted by Globus Auth using `sdk.errors.toAuthorizationQueryParams()`.
+ */
 export type AuthorizationRequirementsError = {
   authorization_parameters: {
-    session_message: string;
-    session_required_identities: string[];
-    session_required_mfa: boolean;
-    session_required_single_domain: string[];
+    session_message?: string;
+    session_required_identities?: string[];
+    session_required_mfa?: boolean;
+    session_required_single_domain?: string[];
+    prompt?: string;
+    required_scopes?: string[];
   };
   [key: string]: unknown;
 };
+/**
+ * Keys that should not be included in the query string object (not recognized by Globus Auth).
+ */
+const NO_OP_KEYS: (keyof AuthorizationRequirementsError)[] = ['required_scopes'];
+/**
+ * Convert an `AuthorizationRequirementsError` to a query string object accepted by Globus Auth.
+ */
+export function toAuthorizationQueryParams(
+  error: AuthorizationRequirementsError,
+): AuthorizationQueryParameters {
+  return Object.entries(error.authorization_parameters).reduce((acc, [key, v]) => {
+    /**
+     * Remove keys that are not recognized by Globus Auth and empty values.
+     */
+    if (NO_OP_KEYS.includes(key) || v === undefined || v === null) {
+      return acc;
+    }
+    /**
+     * All other values are converted to strings.
+     */
+    let value = v;
+    if (Array.isArray(value)) {
+      value = value.join(',');
+    } else if (typeof v === 'boolean') {
+      value = value ? 'true' : 'false';
+    }
+    return { ...acc, [key]: value };
+  }, {});
+}
 
 export function isAuthorizationRequirementsError(
   test: unknown,

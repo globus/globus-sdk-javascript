@@ -26,6 +26,7 @@ import {
   isAuthorizationRequirementsError,
   AuthorizationRequirementsError,
   ConsentRequiredError,
+  toAuthorizationQueryParams,
 } from '../errors.js';
 
 import type {
@@ -427,13 +428,8 @@ export class AuthorizationManager {
   ) {
     this.#transport = this.#buildTransport({
       params: {
-        session_message: response.authorization_parameters.session_message,
-        session_required_identities:
-          response.authorization_parameters.session_required_identities.join(','),
-        session_required_mfa: response.authorization_parameters.session_required_mfa,
-        session_required_single_domain:
-          response.authorization_parameters.session_required_single_domain.join(','),
         prompt: 'login',
+        ...toAuthorizationQueryParams(response),
         ...options?.additionalParams,
       },
     });
