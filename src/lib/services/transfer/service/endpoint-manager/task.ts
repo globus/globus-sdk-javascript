@@ -236,7 +236,7 @@ export const getPauseInfo = function (
   task_id,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.AdminPauseDocumentResponse>> {
+): Promise<JSONFetchResponse<Globus.Transfer.PauseInfoLimitedDocument>> {
   return serviceRequest(
     {
       service: ID,
