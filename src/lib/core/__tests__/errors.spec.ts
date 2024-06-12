@@ -2,6 +2,7 @@ import {
   isErrorWellFormed,
   isConsentRequiredError,
   isAuthorizationRequirementsError,
+  toAuthorizationQueryParams,
 } from '../errors';
 
 export const TRANSFER_GENERIC_ERROR = {
@@ -82,5 +83,32 @@ describe('isAuthorizationRequirementsError', () => {
 
   it('should return false for a missing authorization_parameters property', () => {
     expect(isAuthorizationRequirementsError({ code: 'test' })).toBe(false);
+  });
+});
+
+describe('toAuthorizationQueryParams', () => {
+  it('reformat as expected', () => {
+    expect(toAuthorizationQueryParams(TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR)).toEqual({
+      session_message: 'Session reauthentication required (Globus Transfer)',
+      session_required_identities: '',
+      session_required_mfa: 'false',
+      session_required_single_domain: 'globus.org',
+    });
+  });
+  it('handles empty', () => {
+    expect(
+      toAuthorizationQueryParams({
+        authorization_parameters: {},
+      }),
+    ).toEqual({});
+  });
+  it('drops known unsupported properties', () => {
+    expect(
+      toAuthorizationQueryParams({
+        authorization_parameters: {
+          required_scopes: ['foobar'],
+        },
+      }),
+    ).toEqual({});
   });
 });
