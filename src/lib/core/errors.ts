@@ -52,6 +52,7 @@ export type AuthorizationRequirementsError = {
     session_required_identities?: string[];
     session_required_mfa?: boolean;
     session_required_single_domain?: string[];
+    session_required_policies?: string[];
     prompt?: string;
     required_scopes?: string[];
   };
