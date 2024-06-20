@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.2](https://github.com/globus/globus-sdk-javascript/compare/v3.4.1...v3.4.2) (2024-06-20)
+
+
+### Bug Fixes
+
+* **errors, Typescript:** adds `session_required_policies` to `AuthorizatonRequirementsError` type ([#209](https://github.com/globus/globus-sdk-javascript/issues/209)) ([2336eed](https://github.com/globus/globus-sdk-javascript/commit/2336eedb5869c86e69c7a1f98c827528a9b0e4dd))
+
 ## [3.4.1](https://github.com/globus/globus-sdk-javascript/compare/v3.4.0...v3.4.1) (2024-06-12)
 
 
