@@ -24,7 +24,7 @@
   "devDependencies": {
     "@globus/types": "^0.0.7",
     "@playwright/test": "^1.45.1",
-    "@tsconfig/recommended": "^1.0.6",
+    "@tsconfig/recommended": "^1.0.7",
     "@types/jest": "29.5.12",
     "@types/node": "^20.14.10",
     "dotenv": "^16.4.5",
