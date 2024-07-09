@@ -56,6 +56,12 @@ export type AuthorizationRequirementsError = {
     prompt?: string;
     required_scopes?: string[];
   };
+  /**
+   * @todo At the moment, most Globus services do not guarentee a `code` property for this error type.
+   * Once it becomes more common, this type (and the `isAuthorizationRequirementsError` function) should be updated.
+   * @see https://globus-sdk-python.readthedocs.io/en/stable/experimental/auth_requirements_errors.html
+   */
+  // code: string;
   [key: string]: unknown;
 };
 /**
@@ -88,11 +94,16 @@ export function toAuthorizationQueryParams(
   }, {});
 }
 
+/**
+ * Check if an object is an `AuthorizationRequirementsError`.
+ * @see {@link AuthorizationRequirementsError}
+ */
 export function isAuthorizationRequirementsError(
   test: unknown,
 ): test is AuthorizationRequirementsError {
   return (
-    isErrorWellFormed(test) &&
+    typeof test === 'object' &&
+    test !== null &&
     'authorization_parameters' in test &&
     typeof test.authorization_parameters === 'object' &&
     test.authorization_parameters !== null
