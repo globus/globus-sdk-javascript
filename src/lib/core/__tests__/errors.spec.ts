@@ -1,4 +1,9 @@
 import {
+  FLOWS_AUTHORIZATION_REQUIREMENTS_ERROR,
+  TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR,
+} from '../../../__mocks__/errors/authorization_parameters';
+
+import {
   isErrorWellFormed,
   isConsentRequiredError,
   isAuthorizationRequirementsError,
@@ -62,20 +67,6 @@ describe('isConsentRequiredError', () => {
   });
 });
 
-export const TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR = {
-  authorization_parameters: {
-    session_message: 'Session reauthentication required (Globus Transfer)',
-    session_required_identities: [],
-    session_required_mfa: false,
-    session_required_single_domain: ['globus.org'],
-  },
-  code: 'ExternalError.DirListingFailed.LoginFailed',
-  message:
-    'Command Failed: Error (login)\nEndpoint: Globus Staff GCSv5.4 Demo POSIX HA (eed63c24-36cb-4f29-a47f-91d94a65fef8)\nServer: 35.89.91.21:443\nMessage: Login Failed\n---\nDetails: 530-Login incorrect. : GlobusError: v=1 c=LOGIN_DENIED\\r\\n530-GridFTP-Message: None of your identities are from domains allowed by resource policies\\r\\n530-GridFTP-JSON-Result: {"DATA_TYPE": "result#1.0.0", "code": "permission_denied", "detail": {"DATA_TYPE": "not_from_allowed_domain#1.0.0", "allowed_domains": ["globus.org"]}, "has_next_page": false, "http_response_code": 403, "message": "None of your identities are from domains allowed by resource policies"}\\r\\n530 End.\\r\\n\n',
-  request_id: 'rvWu7tCfa',
-  resource: '/operation/endpoint/eed63c24-36cb-4f29-a47f-91d94a65fef8/ls',
-};
-
 describe('isAuthorizationRequirementsError', () => {
   it('should return true for an authorization requirements error', () => {
     expect(isAuthorizationRequirementsError(TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR)).toBe(true);
@@ -83,6 +74,12 @@ describe('isAuthorizationRequirementsError', () => {
 
   it('should return false for a missing authorization_parameters property', () => {
     expect(isAuthorizationRequirementsError({ code: 'test' })).toBe(false);
+  });
+  /**
+   * Service Errors
+   */
+  it('supports Globus Flows', () => {
+    expect(isAuthorizationRequirementsError(FLOWS_AUTHORIZATION_REQUIREMENTS_ERROR)).toBe(true);
   });
 });
 

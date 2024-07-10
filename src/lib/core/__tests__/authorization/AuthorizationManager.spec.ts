@@ -6,11 +6,8 @@ import '../../../../__mocks__/sessionStorage';
 import '../../../../__mocks__/window-location';
 import { AuthorizationManager } from '../../authorization/AuthorizationManager';
 import { Event } from '../../authorization/Event';
-import {
-  TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR,
-  TRANSFER_CONSENT_REQUIRED_ERROR,
-  TRANSFER_GENERIC_ERROR,
-} from '../errors.spec';
+import { TRANSFER_CONSENT_REQUIRED_ERROR, TRANSFER_GENERIC_ERROR } from '../errors.spec';
+import { TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR } from '../../../../__mocks__/errors/authorization_parameters';
 
 describe('AuthorizationManager', () => {
   beforeEach(() => {
