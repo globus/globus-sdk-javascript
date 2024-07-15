@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.3](https://github.com/globus/globus-sdk-javascript/compare/v3.4.2...v3.4.3) (2024-07-15)
+
+
+### Bug Fixes
+
+* **Errors:** updates isAuthorizationRequirementsError method to not require "message" or "code" ([#227](https://github.com/globus/globus-sdk-javascript/issues/227)) ([100417e](https://github.com/globus/globus-sdk-javascript/commit/100417eefb05259f63ee63432ae74e23caeeecf1))
+
 ## [3.4.2](https://github.com/globus/globus-sdk-javascript/compare/v3.4.1...v3.4.2) (2024-06-20)
 
 
