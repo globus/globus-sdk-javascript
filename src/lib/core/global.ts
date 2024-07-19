@@ -45,14 +45,6 @@ export const ENVIRONMENTS = {
 
 export type Environment = (typeof ENVIRONMENTS)[keyof typeof ENVIRONMENTS];
 
-export function getEnvironment(): Environment {
-  const environment = env<Environment>('GLOBUS_SDK_ENVIRONMENT', ENVIRONMENTS.PRODUCTION);
-  if (!environment || !Object.values(ENVIRONMENTS).includes(environment)) {
-    throw new EnvironmentConfigurationError('GLOBUS_SDK_ENVIRONMENT', environment);
-  }
-  return environment;
-}
-
 export const SERVICES = {
   [AUTH.ID]: AUTH.ID,
   [TRANSFER.ID]: TRANSFER.ID,
@@ -101,6 +93,18 @@ export function getSDKOptions(options?: SDKOptions) {
       },
     },
   };
+}
+
+export function getEnvironment(): Environment {
+  const globalOptions = getSDKOptions();
+  const environment = env<Environment>(
+    'GLOBUS_SDK_ENVIRONMENT',
+    globalOptions?.environment ?? ENVIRONMENTS.PRODUCTION,
+  );
+  if (!environment || !Object.values(ENVIRONMENTS).includes(environment)) {
+    throw new EnvironmentConfigurationError('GLOBUS_SDK_ENVIRONMENT', environment);
+  }
+  return environment;
 }
 
 /**
