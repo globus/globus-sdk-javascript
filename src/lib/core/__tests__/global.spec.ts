@@ -43,7 +43,7 @@ describe('getEnvironment', () => {
     expect(getEnvironment()).toEqual(ENVIRONMENTS.SANDBOX);
   });
 
-  it('should be sourced from SDKOptions object when GLOBUS_SDK_ENVIRONMENT var is not set', () => {
+  it('should be sourced from GLOBUS_SDK_OPTIONS when GLOBUS_SDK_ENVIRONMENT is not set', () => {
     process.env['GLOBUS_SDK_OPTIONS'] = JSON.stringify({
       environment: ENVIRONMENTS.PREVIEW,
     });
