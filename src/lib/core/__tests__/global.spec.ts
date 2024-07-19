@@ -35,7 +35,7 @@ describe('getEnvironment', () => {
     }).toThrow(EnvironmentConfigurationError);
   });
 
-  it('should take precedence over SDKOptions object', () => {
+  it('uses GLOBUS_SDK_ENVIRONMENT over GLOBUS_SDK_OPTIONS for sourcing environment', () => {
     process.env['GLOBUS_SDK_OPTIONS'] = JSON.stringify({
       environment: ENVIRONMENTS.PREVIEW,
     });
