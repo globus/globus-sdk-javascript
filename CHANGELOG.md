@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.0](https://github.com/globus/globus-sdk-javascript/compare/v3.4.3...v3.5.0) (2024-07-22)
+
+
+### Features
+
+* **Transfer:** adds transfer.fileOperations.stat support ([#238](https://github.com/globus/globus-sdk-javascript/issues/238)) ([dea8195](https://github.com/globus/globus-sdk-javascript/commit/dea8195499eb37956703b57401e1194aaf925f4e))
+
+
+### Bug Fixes
+
+* `GLOBUS_SDK_ENVIRONMENT` environment variable will now take precedence over `GLOBUS_SDK_OPTIONS` ([#237](https://github.com/globus/globus-sdk-javascript/issues/237)) ([94acd33](https://github.com/globus/globus-sdk-javascript/commit/94acd336fde626156a8c1c2bf59b74112a95efa0))
+
 ## [3.4.3](https://github.com/globus/globus-sdk-javascript/compare/v3.4.2...v3.4.3) (2024-07-15)
 
 
