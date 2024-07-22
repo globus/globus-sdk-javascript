@@ -34,6 +34,22 @@ describe('getEnvironment', () => {
       getEnvironment();
     }).toThrow(EnvironmentConfigurationError);
   });
+
+  it('uses GLOBUS_SDK_ENVIRONMENT over GLOBUS_SDK_OPTIONS for sourcing environment', () => {
+    process.env['GLOBUS_SDK_OPTIONS'] = JSON.stringify({
+      environment: ENVIRONMENTS.PREVIEW,
+    });
+    process.env['GLOBUS_SDK_ENVIRONMENT'] = ENVIRONMENTS.SANDBOX;
+    expect(getEnvironment()).toEqual(ENVIRONMENTS.SANDBOX);
+  });
+
+  it('should be sourced from GLOBUS_SDK_OPTIONS when GLOBUS_SDK_ENVIRONMENT is not set', () => {
+    process.env['GLOBUS_SDK_OPTIONS'] = JSON.stringify({
+      environment: ENVIRONMENTS.PREVIEW,
+    });
+    delete process.env['GLOBUS_SDK_ENVIRONMENT'];
+    expect(getEnvironment()).toEqual(ENVIRONMENTS.PREVIEW);
+  });
 });
 
 describe('getVerifySSL', () => {

@@ -8,6 +8,7 @@ import * as COMPUTE from '../services/compute/config.js';
 
 import { EnvironmentConfigurationError } from './errors.js';
 import { SDKOptions } from '../services/types.js';
+import { log } from './logger.js';
 
 function getRuntime() {
   return typeof window !== 'undefined' ? window : process;
@@ -44,14 +45,6 @@ export const ENVIRONMENTS = {
 } as const;
 
 export type Environment = (typeof ENVIRONMENTS)[keyof typeof ENVIRONMENTS];
-
-export function getEnvironment(): Environment {
-  const environment = env<Environment>('GLOBUS_SDK_ENVIRONMENT', ENVIRONMENTS.PRODUCTION);
-  if (!environment || !Object.values(ENVIRONMENTS).includes(environment)) {
-    throw new EnvironmentConfigurationError('GLOBUS_SDK_ENVIRONMENT', environment);
-  }
-  return environment;
-}
 
 export const SERVICES = {
   [AUTH.ID]: AUTH.ID,
@@ -103,6 +96,24 @@ export function getSDKOptions(options?: SDKOptions) {
   };
 }
 
+export function getEnvironment(): Environment {
+  const globalOptions = getSDKOptions();
+  const environment = env<Environment>(
+    'GLOBUS_SDK_ENVIRONMENT',
+    globalOptions?.environment ?? ENVIRONMENTS.PRODUCTION,
+  );
+  if (globalOptions?.environment && environment !== globalOptions.environment) {
+    log(
+      'debug',
+      'GLOBUS_SDK_ENVIRONMENT and GLOBUS_SDK_OPTIONS.environment are set to different values. GLOBUS_SDK_ENVIRONMENT will take precedence',
+    );
+  }
+  if (!environment || !Object.values(ENVIRONMENTS).includes(environment)) {
+    throw new EnvironmentConfigurationError('GLOBUS_SDK_ENVIRONMENT', environment);
+  }
+  return environment;
+}
+
 /**
  * Handlers for: GLOBUS_SDK_VERIFY_SSL
  * Since disabling SSL is at least not-recommended, we consider
@@ -115,7 +126,8 @@ export function getSDKOptions(options?: SDKOptions) {
 export function getVerifySSL(): boolean {
   const verifySSLTemp = env<string>('GLOBUS_SDK_VERIFY_SSL', 'true').toLowerCase();
   if (['n', 'no', 'f', 'false', 'off', '0'].includes(verifySSLTemp)) {
-    console.warn(
+    log(
+      'warn',
       'Setting GLOBUS_SDK_VERIFY_SSL to false is disallowed in the Globus JavaScript SDK. It will always true in this context',
     );
   }
