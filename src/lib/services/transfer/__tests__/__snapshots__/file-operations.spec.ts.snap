@@ -50,6 +50,20 @@ exports[`transfer.file-operations rename 1`] = `
 }
 `;
 
+exports[`transfer.file-operations stat 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globusonline.org/v0.10/operation/endpoint/c591c905-2674-4227-9d31-1ff9485945a7/stat?path=%2F%7E%2Fmy-file",
+}
+`;
+
 exports[`transfer.file-operations symlink 1`] = `
 {
   "headers": {

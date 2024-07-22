@@ -97,4 +97,21 @@ describe('transfer.file-operations', () => {
       headers,
     }).toMatchSnapshot();
   });
+
+  test('stat', async () => {
+    const {
+      req: { url, method, headers },
+    } = await mirror(
+      await fileOperations.stat(ENDPOINT, {
+        query: {
+          path: '/~/my-file',
+        },
+      }),
+    );
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchSnapshot();
+  });
 });

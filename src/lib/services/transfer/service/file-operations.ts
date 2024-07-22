@@ -191,3 +191,32 @@ export const symlink = function (endpoint_xid, options, sdkOptions?) {
     payload: Omit<Transfer['Request']['Symlink'], 'DATA_TYPE'>;
   }
 >;
+
+/**
+ * Stat the file or directory at the specified path on a collection.
+ *
+ * @see https://docs.globus.org/api/transfer/file_operations/#stat
+ */
+export const stat = function (
+  endpoint_xid,
+  options,
+  sdkOptions?,
+): Promise<JSONFetchResponse<FileDocument>> {
+  return serviceRequest(
+    {
+      service: ID,
+      scope: SCOPES.ALL,
+      path: `/v0.10/operation/endpoint/${endpoint_xid}/stat`,
+    },
+    options,
+    sdkOptions,
+  );
+} satisfies ServiceMethodDynamicSegments<
+  string,
+  {
+    query?: {
+      path: string;
+      local_user?: string;
+    };
+  }
+>;
