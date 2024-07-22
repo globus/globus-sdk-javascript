@@ -8,6 +8,7 @@ import * as COMPUTE from '../services/compute/config.js';
 
 import { EnvironmentConfigurationError } from './errors.js';
 import { SDKOptions } from '../services/types.js';
+import { log } from './logger.js';
 
 function getRuntime() {
   return typeof window !== 'undefined' ? window : process;
@@ -101,6 +102,12 @@ export function getEnvironment(): Environment {
     'GLOBUS_SDK_ENVIRONMENT',
     globalOptions?.environment ?? ENVIRONMENTS.PRODUCTION,
   );
+  if (globalOptions?.environment && environment !== globalOptions.environment) {
+    log(
+      'debug',
+      'GLOBUS_SDK_ENVIRONMENT and GLOBUS_SDK_OPTIONS.environment are set to different values. GLOBUS_SDK_ENVIRONMENT will take precedence',
+    );
+  }
   if (!environment || !Object.values(ENVIRONMENTS).includes(environment)) {
     throw new EnvironmentConfigurationError('GLOBUS_SDK_ENVIRONMENT', environment);
   }
@@ -119,7 +126,8 @@ export function getEnvironment(): Environment {
 export function getVerifySSL(): boolean {
   const verifySSLTemp = env<string>('GLOBUS_SDK_VERIFY_SSL', 'true').toLowerCase();
   if (['n', 'no', 'f', 'false', 'off', '0'].includes(verifySSLTemp)) {
-    console.warn(
+    log(
+      'warn',
       'Setting GLOBUS_SDK_VERIFY_SSL to false is disallowed in the Globus JavaScript SDK. It will always true in this context',
     );
   }
