@@ -56,3 +56,32 @@ export const remove = function (flow_id, options?, sdkOptions?) {
     payload?: never;
   }
 >;
+
+/**
+ * Run an instance of a particular Flow.
+ * @see https://globusonline.github.io/globus-flows/#tag/Runs/paths/~1flows~1%7Bflow_id%7D~1run/post
+ */
+export const run = function (flow_id, options?, sdkOptions?) {
+  return serviceRequest(
+    {
+      service: ID,
+      scope: SCOPES.VIEW_FLOWS,
+      path: `/flows/${flow_id}/run`,
+      method: HTTP_METHODS.POST,
+    },
+    options,
+    sdkOptions,
+  );
+} satisfies ServiceMethodDynamicSegments<
+  string,
+  {
+    query?: never;
+    payload: {
+      label?: string;
+      body: Record<string, any>;
+      tags?: string[];
+    };
+  }
+>;
+
+export const invoke = run;
