@@ -50,11 +50,17 @@ export type AuthorizationManagerConfiguration = {
    * @default DEFAULT_CONFIGURATION.defaultScopes
    */
   defaultScopes?: string | false;
+  /**
+   * Start the silent refresh process automatically.
+   * @default false
+   */
+  automaticSilentRefresh?: boolean;
 };
 
 const DEFAULT_CONFIGURATION = {
   useRefreshTokens: false,
   defaultScopes: 'openid profile email',
+  automaticSilentRefresh: false,
 };
 
 const DEFAULT_HANDLE_ERROR_OPTIONS = {
@@ -162,6 +168,7 @@ export class AuthorizationManager {
         : configuration.defaultScopes ?? DEFAULT_CONFIGURATION.defaultScopes;
 
     this.configuration = {
+      ...DEFAULT_CONFIGURATION,
       ...configuration,
       scopes: [configuration.scopes ? configuration.scopes : '', scopes]
         .filter((s) => s.length)
@@ -171,8 +178,17 @@ export class AuthorizationManager {
     this.tokens = new TokenLookup({
       manager: this,
     });
-    this.#bootstrapFromStorageState();
-    this.startSilentRefresh();
+
+    /**
+     * If we're automatically starting the silent refresh process,
+     * we'll let that method dispatch the initial authorization check.
+     * Otherwise, we just bootstrap from the storage state.
+     */
+    if (this.configuration.automaticSilentRefresh) {
+      this.startSilentRefresh();
+    } else {
+      this.#bootstrapFromStorageState();
+    }
   }
 
   get storageKeyPrefix() {
@@ -211,12 +227,20 @@ export class AuthorizationManager {
     }
   }
 
+  waitForSilentRefresh: Promise<void> | null = null;
+
   #silentRefreshTokens() {
     log('debug', 'AuthorizationManager.#silentRefreshTokens');
-    this.tokens.getAll().forEach((token) => {
-      if (isRefreshToken(token)) {
-        this.refreshToken(token);
-      }
+    this.waitForSilentRefresh = Promise.allSettled(
+      this.tokens.getAll().map((token) => {
+        if (isRefreshToken(token)) {
+          return this.refreshToken(token);
+        }
+        return Promise.resolve();
+      }),
+    ).then(() => {
+      this.#checkAuthorizationState();
+      this.waitForSilentRefresh = null;
     });
   }
 
