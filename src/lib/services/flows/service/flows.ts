@@ -83,5 +83,3 @@ export const run = function (flow_id, options?, sdkOptions?) {
     };
   }
 >;
-
-export const invoke = run;

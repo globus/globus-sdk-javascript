@@ -67,51 +67,28 @@ describe('flows.flow', () => {
     expect(headers['x-test-header']).toEqual('test');
   });
 
-  describe('run', () => {
-    test('invoke (alias)', async () => {
-      const {
-        req: { url, method, headers, json },
-      } = await mirror(
-        await flows.invoke('flow-id', {
-          payload: {
-            body: {},
+  test('run', async () => {
+    const {
+      req: { url, method, headers, json },
+    } = await mirror(
+      await flows.run('flow-id', {
+        payload: {
+          body: {
+            sleep_time: 5,
+            echo_string: 'Hello, world!',
           },
-          headers: {
-            Authorization: 'Bearer this-is-an-example-token',
-          },
-        }),
-      );
-      expect({
-        url,
-        method,
-        headers,
-        json,
-      }).toMatchSnapshot();
-    });
-
-    test('run', async () => {
-      const {
-        req: { url, method, headers, json },
-      } = await mirror(
-        await flows.run('flow-id', {
-          payload: {
-            body: {
-              sleep_time: 5,
-              echo_string: 'Hello, world!',
-            },
-            tags: ['tag1', 'tag2'],
-          },
-          headers: {
-            Authorization: 'Bearer this-is-an-example-token',
-          },
-        }),
-      );
-      expect({
-        url,
-        method,
-        headers,
-        json,
-      }).toMatchSnapshot();
-    });
+          tags: ['tag1', 'tag2'],
+        },
+        headers: {
+          Authorization: 'Bearer this-is-an-example-token',
+        },
+      }),
+    );
+    expect({
+      url,
+      method,
+      headers,
+      json,
+    }).toMatchSnapshot();
   });
 });
