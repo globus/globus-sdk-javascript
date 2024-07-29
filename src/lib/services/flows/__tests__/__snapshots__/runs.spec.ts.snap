@@ -1,5 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`flows.runs cancel 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "0",
+    "host": "flows.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "POST",
+  "url": "https://flows.globus.org/runs/run-id/cancel",
+}
+`;
+
 exports[`flows.runs getAll 1`] = `
 {
   "headers": {
@@ -11,5 +26,33 @@ exports[`flows.runs getAll 1`] = `
   },
   "method": "GET",
   "url": "https://flows.globus.org/runs",
+}
+`;
+
+exports[`flows.runs getLog basic 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "flows.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://flows.globus.org/runs/run-id/log",
+}
+`;
+
+exports[`flows.runs getLog query 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "flows.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://flows.globus.org/runs/run-id/log?limit=4&pagination_token=abc",
 }
 `;
