@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.1](https://github.com/globus/globus-sdk-javascript/compare/v3.5.0...v3.5.1) (2024-07-29)
+
+
+### Bug Fixes
+
+* **Authorization:** Automatic silent refresh of tokens (on instantiation) is now controlled via configuration (disabled by default). ([#245](https://github.com/globus/globus-sdk-javascript/issues/245)) ([7525431](https://github.com/globus/globus-sdk-javascript/commit/75254317cf6d98578ea24699d8ea92951782cc55))
+
 ## [3.5.0](https://github.com/globus/globus-sdk-javascript/compare/v3.4.3...v3.5.0) (2024-07-22)
 
 
