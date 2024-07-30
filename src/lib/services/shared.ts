@@ -5,6 +5,7 @@ import { getSDKOptions, Service } from '../core/global.js';
 import type { ServiceMethodOptions, SDKOptions } from './types.js';
 import type { GCSConfiguration } from '../services/globus-connect-server/index.js';
 import { RESOURCE_SERVERS } from './auth/config.js';
+import { isRefreshToken } from './auth/index.js';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export enum HTTP_METHODS {
@@ -69,7 +70,7 @@ type ServiceRequestDSL = {
  * @param passedSdkOptions The SDK options passed to the service method.
  * @returns
  */
-export function serviceRequest(
+export async function serviceRequest(
   this: unknown,
   config: ServiceRequestDSL,
   options?: ServiceMethodOptions,
@@ -92,11 +93,17 @@ export function serviceRequest(
   };
 
   /**
+   * The `AuthorizationManager` instance provided with the call.
+   */
+  const manager = sdkOptions?.manager;
+
+  let token;
+  /**
    * If a `resource_server` was provided, and the SDK is configured with a `manager`
    * instance, we'll try to get a token for the resource server and use it.
    */
-  if (config.resource_server && sdkOptions?.manager) {
-    const token = sdkOptions.manager.tokens.getByResourceServer(config.resource_server);
+  if (config.resource_server && manager) {
+    token = manager.tokens.getByResourceServer(config.resource_server);
     if (token) {
       headers['Authorization'] = `Bearer ${token.access_token}`;
     }
@@ -106,14 +113,14 @@ export function serviceRequest(
    * we'll try to map the service to a resource server. This is mostly to support
    * backwards compatibility of the `scope` property being used in the `ServiceRequestDSL`.
    */
-  if (config.scope && sdkOptions?.manager) {
+  if (config.scope && manager) {
     const resourceServer =
       typeof config.service === 'string'
         ? RESOURCE_SERVERS[config.service]
         : // For `GCSConfiguration` objects, the `endpoint_id` is the resource server.
           config.service.endpoint_id;
 
-    const token = sdkOptions.manager.tokens.getByResourceServer(resourceServer);
+    token = manager.tokens.getByResourceServer(resourceServer);
     if (token) {
       headers['Authorization'] = `Bearer ${token.access_token}`;
     }
@@ -153,15 +160,50 @@ export function serviceRequest(
     headers,
   };
 
+  /**
+   * The request handler for the fetch call. This can be overridden by providing a
+   * `__callable` property in the `fetch` options.
+   */
+  let handler = _fetch;
   /* eslint-disable no-underscore-dangle */
   if (injectedFetchOptions?.__callable) {
+    handler = injectedFetchOptions.__callable.bind(this);
     /**
      * Remove the `__callable` property from the `fetch` options before passing the options along.
      */
     delete init.__callable;
-    return injectedFetchOptions.__callable.call(this, url, init);
   }
   /* eslint-enable no-underscore-dangle */
 
-  return _fetch(url, init);
+  /**
+   * If there is no `manager` instance, or token, we'll make the request as-is.
+   */
+  if (!manager || !token || !isRefreshToken(token)) {
+    return handler(url, init);
+  }
+
+  /**
+   * If there is a `manager` instance, we'll make the request and attempt to
+   * refresh the token if it's expired.
+   */
+  const initialResponse = await handler(url, init);
+  if (initialResponse.status === 401 && manager) {
+    try {
+      await manager.refreshToken(token);
+    } catch (_e) {
+      return initialResponse;
+    }
+    const newToken = manager.tokens.getByResourceServer(token.resource_server);
+    if (!newToken) {
+      return initialResponse;
+    }
+    return handler(url, {
+      ...init,
+      headers: {
+        ...init.headers,
+        Authorization: `Bearer ${newToken.access_token}`,
+      },
+    });
+  }
+  return initialResponse;
 }

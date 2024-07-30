@@ -50,17 +50,11 @@ export type AuthorizationManagerConfiguration = {
    * @default DEFAULT_CONFIGURATION.defaultScopes
    */
   defaultScopes?: string | false;
-  /**
-   * Start the silent refresh process automatically.
-   * @default false
-   */
-  automaticSilentRefresh?: boolean;
 };
 
 const DEFAULT_CONFIGURATION = {
   useRefreshTokens: false,
   defaultScopes: 'openid profile email',
-  automaticSilentRefresh: false,
 };
 
 const DEFAULT_HANDLE_ERROR_OPTIONS = {
@@ -118,6 +112,12 @@ export class AuthorizationManager {
    * Set the authenticated state and emit the `authenticated` event.
    */
   set authenticated(value: boolean) {
+    /**
+     * Avoid emitting the event if the value hasn't changed.
+     */
+    if (value === this.#authenticated) {
+      return;
+    }
     this.#authenticated = value;
     this.#emitAuthenticatedState();
   }
@@ -179,16 +179,7 @@ export class AuthorizationManager {
       manager: this,
     });
 
-    /**
-     * If we're automatically starting the silent refresh process,
-     * we'll let that method dispatch the initial authorization check.
-     * Otherwise, we just bootstrap from the storage state.
-     */
-    if (this.configuration.automaticSilentRefresh) {
-      this.startSilentRefresh();
-    } else {
-      this.#bootstrapFromStorageState();
-    }
+    this.#checkAuthorizationState();
   }
 
   get storageKeyPrefix() {
@@ -211,37 +202,20 @@ export class AuthorizationManager {
   }
 
   /**
-   * Start the silent refresh process for the instance.
-   * @todo Add interval support for the silent refresh.
+   * Attempt to refresh all of the tokens managed by the instance.
+   * This method will only attempt to refresh tokens that have a `refresh_token` attribute.
    */
-  startSilentRefresh() {
-    log(
-      'debug',
-      `AuthorizationManager.startSilentRefresh | useRefreshTokens=${this.configuration.useRefreshTokens}`,
-    );
-    /**
-     * Silent refresh is only supported when using refresh tokens.
-     */
-    if (this.configuration.useRefreshTokens) {
-      this.#silentRefreshTokens();
-    }
-  }
-
-  waitForSilentRefresh: Promise<void> | null = null;
-
-  #silentRefreshTokens() {
-    log('debug', 'AuthorizationManager.#silentRefreshTokens');
-    this.waitForSilentRefresh = Promise.allSettled(
+  async refreshTokens() {
+    log('debug', 'AuthorizationManager.refreshTokens');
+    await Promise.allSettled(
       this.tokens.getAll().map((token) => {
         if (isRefreshToken(token)) {
           return this.refreshToken(token);
         }
         return Promise.resolve();
       }),
-    ).then(() => {
-      this.#checkAuthorizationState();
-      this.waitForSilentRefresh = null;
-    });
+    );
+    this.#checkAuthorizationState();
   }
 
   /**
@@ -288,11 +262,6 @@ export class AuthorizationManager {
     if (this.hasGlobusAuthToken()) {
       this.authenticated = true;
     }
-  }
-
-  async #bootstrapFromStorageState() {
-    log('debug', 'AuthorizationManager.bootstrapFromStorageState');
-    this.#checkAuthorizationState();
   }
 
   async #emitAuthenticatedState() {

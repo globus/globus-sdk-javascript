@@ -54,19 +54,7 @@ describe('AuthorizationManager', () => {
     }).toThrow();
   });
 
-  it('should startSilentRefresh on creation, when configured', () => {
-    const spy = jest.spyOn(AuthorizationManager.prototype, 'startSilentRefresh');
-    const instance = new AuthorizationManager({
-      client: 'client_id',
-      redirect: 'https://redirect_uri',
-      scopes: 'foobar baz',
-      automaticSilentRefresh: true,
-    });
-    expect(instance).toBeDefined();
-    expect(spy).toHaveBeenCalledTimes(1);
-  });
-
-  it('should refresh existing tokens on bootstrap', async () => {
+  it('refreshTokens should refresh existing tokens', async () => {
     const TOKEN = {
       access_token: 'access-token',
       scope: 'profile email openid',
@@ -117,25 +105,19 @@ describe('AuthorizationManager', () => {
       }),
     );
 
-    const spy = jest.spyOn(AuthorizationManager.prototype, 'refreshToken');
-
     const instance = new AuthorizationManager({
       client: 'client_id',
       redirect: 'https://redirect_uri',
       scopes: 'profile email openid',
       useRefreshTokens: true,
-      automaticSilentRefresh: true,
     });
 
-    expect(instance.authenticated).toBe(false);
+    expect(instance.authenticated).toBe(true);
     expect(instance.tokens.auth?.access_token).toBe('access-token');
     expect(instance.tokens.transfer?.access_token).toBe('access-token');
 
-    expect(spy).toHaveBeenCalledTimes(2);
-    /**
-     * This effectively waits for the next tick to allow the refresh promise to resolve.
-     */
-    await instance.waitForSilentRefresh;
+    await instance.refreshTokens();
+
     expect(instance.tokens.auth?.access_token).toBe('new-token');
     expect(instance.tokens.auth?.refresh_token).toBe('new-refresh-token');
     /**
