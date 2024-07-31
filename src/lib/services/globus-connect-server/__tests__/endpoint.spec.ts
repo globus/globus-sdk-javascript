@@ -157,4 +157,118 @@ describe('gcs – endpoint', () => {
       }
     `);
   });
+
+  test('updateOwnerString', async () => {
+    const result = await endpoint.updateOwnerString(
+      {
+        host: GCS_HOST,
+        endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
+      },
+      {
+        payload: {
+          DATA_TYPE: 'owner_string#1.0.0',
+          identity_id: 'example-identity-id',
+        },
+      },
+    );
+    const {
+      req: { url, method, headers, json },
+    } = (await result.json()) as unknown as MirroredRequest;
+    expect({
+      url,
+      method,
+      headers,
+      json,
+    }).toMatchInlineSnapshot(`
+      {
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "gzip,deflate",
+          "connection": "close",
+          "content-length": "70",
+          "content-type": "application/json",
+          "host": "fa5e.bd7c.data.globus.org",
+          "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+        },
+        "json": {
+          "DATA_TYPE": "owner_string#1.0.0",
+          "identity_id": "example-identity-id",
+        },
+        "method": "PUT",
+        "url": "https://fa5e.bd7c.data.globus.org/api/endpoint/owner_string",
+      }
+    `);
+  });
+
+  test('updateOwner', async () => {
+    const result = await endpoint.updateOwner(
+      {
+        host: GCS_HOST,
+        endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
+      },
+      {
+        payload: {
+          DATA_TYPE: 'endpoint_owner#1.0.0',
+          identity_id: 'example-identity-id',
+        },
+      },
+    );
+    const {
+      req: { url, method, headers, json },
+    } = (await result.json()) as unknown as MirroredRequest;
+    expect({
+      url,
+      method,
+      headers,
+      json,
+    }).toMatchInlineSnapshot(`
+      {
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "gzip,deflate",
+          "connection": "close",
+          "content-length": "72",
+          "content-type": "application/json",
+          "host": "fa5e.bd7c.data.globus.org",
+          "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+        },
+        "json": {
+          "DATA_TYPE": "endpoint_owner#1.0.0",
+          "identity_id": "example-identity-id",
+        },
+        "method": "PUT",
+        "url": "https://fa5e.bd7c.data.globus.org/api/endpoint/owner",
+      }
+    `);
+  });
+
+  test('resetOwnerString', async () => {
+    const result = await endpoint.resetOwnerString(
+      {
+        host: GCS_HOST,
+        endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
+      },
+      {},
+    );
+    const {
+      req: { url, method, headers },
+    } = (await result.json()) as unknown as MirroredRequest;
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchInlineSnapshot(`
+      {
+        "headers": {
+          "accept": "*/*",
+          "accept-encoding": "gzip,deflate",
+          "connection": "close",
+          "host": "fa5e.bd7c.data.globus.org",
+          "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+        },
+        "method": "DELETE",
+        "url": "https://fa5e.bd7c.data.globus.org/api/endpoint/owner_string",
+      }
+    `);
+  });
 });
