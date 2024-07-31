@@ -2,10 +2,10 @@ import _fetch from 'cross-fetch';
 import { getClientInfoRequestHeaders } from '../core/info/index.js';
 import { build } from '../core/url.js';
 import { getSDKOptions, Service } from '../core/global.js';
-import type { ServiceMethodOptions, SDKOptions } from './types.js';
-import type { GCSConfiguration } from '../services/globus-connect-server/index.js';
 import { RESOURCE_SERVERS } from './auth/config.js';
 import { isRefreshToken } from './auth/index.js';
+import type { ServiceMethodOptions, SDKOptions } from './types.js';
+import type { GCSConfiguration } from '../services/globus-connect-server/index.js';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export enum HTTP_METHODS {
@@ -80,7 +80,7 @@ export async function serviceRequest(
   config: ServiceRequestDSL,
   options?: ServiceMethodOptions,
   passedSdkOptions?: SDKOptions,
-) {
+): Promise<Response> {
   /**
    * Get the SDK options, merging any passed options with the global options.
    */
@@ -206,12 +206,7 @@ export async function serviceRequest(
    */
   const shouldAttemptTokenRefresh = initialResponse.status === 401;
   if (shouldAttemptTokenRefresh) {
-    try {
-      await manager.refreshToken(token);
-    } catch (_e) {
-      return initialResponse;
-    }
-    const newToken = manager.tokens.getByResourceServer(token.resource_server);
+    const newToken = await manager.refreshToken(token);
     if (!newToken) {
       return initialResponse;
     }

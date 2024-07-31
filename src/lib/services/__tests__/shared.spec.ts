@@ -458,6 +458,26 @@ describe('serviceRequest', () => {
       expect(spy).not.toHaveBeenCalled();
     });
 
+    it('does not retry a request that is not "ok", but not a 401', async () => {
+      const spy = jest.spyOn(manager, 'refreshToken');
+      server.use(
+        http.get('https://transfer.api.globusonline.org/fake-resource', () =>
+          HttpResponse.json({}, { status: 500 }),
+        ),
+      );
+      const response = await serviceRequest(
+        {
+          service: 'TRANSFER',
+          scope: 'some:required:scope',
+          path: '/fake-resource',
+        },
+        {},
+        { manager },
+      );
+      expect(response.status).toEqual(500);
+      expect(spy).not.toHaveBeenCalled();
+    });
+
     it('attempts to refresh a token when a 401 is encountered', async () => {
       server.use(
         /**
@@ -471,7 +491,7 @@ describe('serviceRequest', () => {
                 code: 'AuthenticationFailed',
                 message: 'Token is not active',
                 request_id: 'UhP7t1wh2',
-                resource: '/endpoint/543aade1-db97-4a4b-9bdf-0b58e78dfa69',
+                resource: '/fake-resource',
               },
               {
                 status: 401,
@@ -510,6 +530,54 @@ describe('serviceRequest', () => {
       } = await response.json();
       expect(headers).toMatchObject({
         authorization: 'Bearer refreshed-access-token',
+      });
+    });
+
+    it('returns the initial response when refresh fails', async () => {
+      server.use(
+        http.get(
+          'https://transfer.api.globusonline.org/fake-resource',
+          () =>
+            HttpResponse.json(
+              {
+                code: 'AuthenticationFailed',
+                message: 'Token is not active',
+                request_id: '1',
+                resource: '/fake-resource',
+              },
+              {
+                status: 401,
+              },
+            ),
+          { once: true },
+        ),
+        http.post('https://auth.globus.org/v2/oauth2/token', () =>
+          HttpResponse.json(
+            { error: 'invalid_grant' },
+            {
+              status: 401,
+            },
+          ),
+        ),
+        http.get('https://transfer.api.globusonline.org/fake-resource', () =>
+          HttpResponse.json(null, {
+            status: 500,
+          }),
+        ),
+      );
+
+      const response = await serviceRequest(
+        {
+          service: 'TRANSFER',
+          scope: 'some:required:scope',
+          path: '/fake-resource',
+        },
+        {},
+        { manager },
+      );
+      expect(response.status).toEqual(401);
+      expect(await response.json()).toMatchObject({
+        request_id: '1',
       });
     });
   });

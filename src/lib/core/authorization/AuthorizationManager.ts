@@ -230,15 +230,16 @@ export class AuthorizationManager {
    */
   async refreshTokens() {
     log('debug', 'AuthorizationManager.refreshTokens');
-    await Promise.allSettled(
+    const tokens = await Promise.allSettled(
       this.tokens.getAll().map((token) => {
         if (isRefreshToken(token)) {
           return this.refreshToken(token);
         }
-        return Promise.resolve();
+        return Promise.resolve(null);
       }),
     );
     this.#checkAuthorizationState();
+    return tokens;
   }
 
   /**
@@ -259,10 +260,12 @@ export class AuthorizationManager {
       ).json();
       if (isGlobusAuthTokenResponse(response)) {
         this.addTokenResponse(response);
+        return response;
       }
     } catch (error) {
       log('error', `AuthorizationManager.refreshToken | resource_server=${token.resource_server}`);
     }
+    return null;
   }
 
   /**
