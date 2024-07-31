@@ -46,6 +46,11 @@ type ServiceRequestDSL = {
    * The HTTP method to use for the request.
    */
   method?: HTTP_METHODS;
+  /**
+   * For some resources, it doesn't make sense for requests to be retried.
+   * Setting this to `true` will prevent any retry logic from being applied.
+   */
+  preventRetry?: boolean;
 };
 
 /**
@@ -176,18 +181,31 @@ export async function serviceRequest(
   /* eslint-enable no-underscore-dangle */
 
   /**
-   * If there is no `manager` instance, or token, we'll make the request as-is.
+   * If the resource is configured to prevent retries, there is no `manager` instance,
+   * or token, the request will be made as-is.
    */
-  if (!manager || !token || !isRefreshToken(token)) {
+  if (config.preventRetry || !manager || !token || !isRefreshToken(token)) {
     return handler(url, init);
   }
 
   /**
-   * If there is a `manager` instance, we'll make the request and attempt to
-   * refresh the token if it's expired.
+   * Automatic Retry Handling
    */
+
   const initialResponse = await handler(url, init);
-  if (initialResponse.status === 401 && manager) {
+  /**
+   * If the response is "ok", we can return it as-is.
+   */
+  if (initialResponse.ok) {
+    return initialResponse;
+  }
+  /**
+   * Detect if the response might be caused by a token that
+   * has expired, and if so, attempt to refresh the token then
+   * retry the request.
+   */
+  const shouldAttemptTokenRefresh = initialResponse.status === 401;
+  if (shouldAttemptTokenRefresh) {
     try {
       await manager.refreshToken(token);
     } catch (_e) {
@@ -197,6 +215,9 @@ export async function serviceRequest(
     if (!newToken) {
       return initialResponse;
     }
+    /**
+     * Retry the request with the new token.
+     */
     return handler(url, {
       ...init,
       headers: {
@@ -205,5 +226,8 @@ export async function serviceRequest(
       },
     });
   }
+  /**
+   * No retry was attempted, return the initial response.
+   */
   return initialResponse;
 }

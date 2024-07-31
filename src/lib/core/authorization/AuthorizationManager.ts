@@ -50,6 +50,19 @@ export type AuthorizationManagerConfiguration = {
    * @default DEFAULT_CONFIGURATION.defaultScopes
    */
   defaultScopes?: string | false;
+  /**
+   * Provide an object with event listeners to attach to the instance.
+   * This is useful if you need to listen to events that might dispatch immediately
+   * after the creation of the instance (constructor), e.g., the `authenticated`.
+   */
+  events?: Partial<
+    Record<
+      keyof AuthorizationManager['events'],
+      Parameters<
+        AuthorizationManager['events'][keyof AuthorizationManager['events']]['addListener']
+      >[0]
+    >
+  >;
 };
 
 const DEFAULT_CONFIGURATION = {
@@ -174,11 +187,21 @@ export class AuthorizationManager {
         .filter((s) => s.length)
         .join(' '),
     };
+    /**
+     * If an `events` object is provided, add the listeners to the instance before
+     * any event might be dispatched.
+     */
+    if (this.configuration.events) {
+      Object.entries(this.configuration.events).forEach(([name, callback]) => {
+        if (name in this.events) {
+          this.events[name as keyof AuthorizationManager['events']].addListener(callback);
+        }
+      });
+    }
 
     this.tokens = new TokenLookup({
       manager: this,
     });
-
     this.#checkAuthorizationState();
   }
 
