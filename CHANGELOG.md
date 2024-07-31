@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.0](https://github.com/globus/globus-sdk-javascript/compare/v3.5.1...v3.6.0) (2024-07-31)
+
+
+### Features
+
+* **Flows:** adds support for `flows.flow.run()`, `flows.runs.getLog()`, and `flows.runs.cancel()` ([#246](https://github.com/globus/globus-sdk-javascript/issues/246)) ([93abc5e](https://github.com/globus/globus-sdk-javascript/commit/93abc5e6addad2977bccbd69bd5f4ba5624cc7f3))
+* **GCS:** Add support for `endpoint.updateOwner`, `endpoint.updateOwnerString`, and `endpoint.resetOwnerString` ([#252](https://github.com/globus/globus-sdk-javascript/issues/252)) ([689f87f](https://github.com/globus/globus-sdk-javascript/commit/689f87fcd3d9cbb5591cceeeef5d2a325be732fd))
+
 ## [3.5.1](https://github.com/globus/globus-sdk-javascript/compare/v3.5.0...v3.5.1) (2024-07-29)
 
 
