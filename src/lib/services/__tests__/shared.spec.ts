@@ -1,6 +1,8 @@
+import { HttpResponse, http } from 'msw';
 import { serviceRequest } from '../shared';
 import { mirror } from '../../../__mocks__/handlers';
 import { setup } from '../../../__mocks__/localStorage';
+import server from '../../../__mocks__/server';
 import { AuthorizationManager } from '../../core/authorization/AuthorizationManager';
 import { getRequiredScopes } from '../globus-connect-server';
 import { enable } from '../../core/info/private';
@@ -387,6 +389,128 @@ describe('serviceRequest', () => {
 
     expect(headers).toMatchObject({
       'x-globus-client-info': `product=javascript-sdk,version=${pkg.version}`,
+    });
+  });
+
+  describe('automatic retries', () => {
+    let manager: AuthorizationManager;
+
+    const TOKEN = {
+      access_token: 'access-token',
+      scope: 'profile email openid',
+      expires_in: 172800,
+      token_type: 'Bearer',
+      resource_server: 'auth.globus.org',
+      refresh_token: 'refresh-token',
+      other_tokens: [],
+    };
+
+    const TRANSFER_TOKEN = {
+      ...TOKEN,
+      resource_server: 'transfer.api.globus.org',
+    };
+
+    beforeEach(() => {
+      setup({
+        'client_id:auth.globus.org': JSON.stringify(TOKEN),
+        'client_id:transfer.api.globus.org': JSON.stringify(TRANSFER_TOKEN),
+      });
+
+      manager = new AuthorizationManager({
+        client: 'client_id',
+        redirect: 'https://redirect_uri',
+      });
+    });
+
+    it('does not retry a request that is configured to prevent retries', async () => {
+      const spy = jest.spyOn(manager, 'refreshToken');
+      server.use(
+        http.get('https://transfer.api.globusonline.org/fake-resource', () =>
+          HttpResponse.json({}, { status: 401 }),
+        ),
+      );
+      const response = await serviceRequest(
+        {
+          service: 'TRANSFER',
+          scope: 'some:required:scope',
+          path: '/fake-resource',
+          preventRetry: true,
+        },
+        {},
+        { manager },
+      );
+      expect(response.status).toEqual(401);
+      expect(spy).not.toHaveBeenCalled();
+    });
+
+    it('does not retry a request that is "ok"', async () => {
+      const spy = jest.spyOn(manager, 'refreshToken');
+      const response = await serviceRequest(
+        {
+          service: 'TRANSFER',
+          scope: 'some:required:scope',
+          path: '/fake-resource',
+        },
+        {},
+        { manager },
+      );
+      expect(response.status).toEqual(200);
+      expect(spy).not.toHaveBeenCalled();
+    });
+
+    it('attempts to refresh a token when a 401 is encountered', async () => {
+      server.use(
+        /**
+         * The first request will return a 401, which should trigger a token refresh.
+         */
+        http.get(
+          'https://transfer.api.globusonline.org/fake-resource',
+          () =>
+            HttpResponse.json(
+              {
+                code: 'AuthenticationFailed',
+                message: 'Token is not active',
+                request_id: 'UhP7t1wh2',
+                resource: '/endpoint/543aade1-db97-4a4b-9bdf-0b58e78dfa69',
+              },
+              {
+                status: 401,
+              },
+            ),
+          { once: true },
+        ),
+        /**
+         * Return a token refresh response, with a new access token we can assert
+         * for on the second request...
+         */
+        http.post('https://auth.globus.org/v2/oauth2/token', () =>
+          HttpResponse.json({
+            ...TRANSFER_TOKEN,
+            access_token: 'refreshed-access-token',
+          }),
+        ),
+      );
+
+      const response = await serviceRequest(
+        {
+          service: 'TRANSFER',
+          scope: 'some:required:scope',
+          path: '/fake-resource',
+        },
+        {},
+        { manager },
+      );
+      /**
+       * The returned response should just be the mirrored `/fake-resource` request,
+       * with the new token swapped out in the background.
+       */
+      expect(response.status).toEqual(200);
+      const {
+        req: { headers },
+      } = await response.json();
+      expect(headers).toMatchObject({
+        authorization: 'Bearer refreshed-access-token',
+      });
     });
   });
 });
