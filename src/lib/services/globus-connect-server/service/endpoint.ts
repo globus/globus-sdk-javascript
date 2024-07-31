@@ -110,3 +110,79 @@ export const updateSubscriptionId = function (
 } satisfies GCSServiceMethod<{
   payload: operations['putEndpointSubscriptionId']['requestBody']['content']['application/json'];
 }>;
+
+/**
+ * @see https://docs.globus.org/globus-connect-server/v5.4/api/openapi_Endpoint/#putEndpointOwner
+ */
+export const updateOwner = function (
+  configuration,
+  options?,
+  sdkOptions?,
+): Promise<
+  JSONFetchResponse<
+    operations['putEndpointOwner']['responses']['200']['content']['application/json']
+  >
+> {
+  return serviceRequest(
+    {
+      service: configuration,
+      scope: getRequiredScopes(configuration),
+      path: `/api/endpoint/owner`,
+      method: HTTP_METHODS.PUT,
+    },
+    options,
+    sdkOptions,
+  );
+} satisfies GCSServiceMethod<{
+  payload: operations['putEndpointOwner']['requestBody']['content']['application/json'];
+}>;
+
+/**
+ * @see https://docs.globus.org/globus-connect-server/v5.4/api/openapi_Endpoint/#putEndpointOwnerString
+ */
+export const updateOwnerString = function (
+  configuration,
+  options?,
+  sdkOptions?,
+): Promise<
+  JSONFetchResponse<
+    operations['putEndpointOwnerString']['responses']['200']['content']['application/json']
+  >
+> {
+  return serviceRequest(
+    {
+      service: configuration,
+      scope: getRequiredScopes(configuration),
+      path: `/api/endpoint/owner_string`,
+      method: HTTP_METHODS.PUT,
+    },
+    options,
+    sdkOptions,
+  );
+} satisfies GCSServiceMethod<{
+  payload: operations['putEndpointOwnerString']['requestBody']['content']['application/json'];
+}>;
+
+/**
+ * @see https://docs.globus.org/globus-connect-server/v5.4/api/openapi_Endpoint/#deleteEndpointOwnerString
+ */
+export const resetOwnerString = function (
+  configuration,
+  options,
+  sdkOptions?,
+): Promise<
+  JSONFetchResponse<
+    operations['deleteEndpointOwnerString']['responses']['200']['content']['application/json']
+  >
+> {
+  return serviceRequest(
+    {
+      service: configuration,
+      scope: getRequiredScopes(configuration),
+      path: `/api/endpoint/owner_string`,
+      method: HTTP_METHODS.DELETE,
+    },
+    options,
+    sdkOptions,
+  );
+} satisfies GCSServiceMethod<{}>;

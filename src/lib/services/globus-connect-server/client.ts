@@ -54,6 +54,9 @@ export function getClient(configuration: GCSConfiguration) {
       update: bind(endpoint.update, configuration),
       patch: bind(endpoint.patch, configuration),
       updateSubscriptionId: bind(endpoint.updateSubscriptionId, configuration),
+      updateOwner: bind(endpoint.updateOwner, configuration),
+      updateOwnerString: bind(endpoint.updateOwnerString, configuration),
+      resetOwnerString: bind(endpoint.resetOwnerString, configuration),
     },
     versioning: {
       info: bind(versioning.info, configuration),
