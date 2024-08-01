@@ -54,6 +54,40 @@ describe('AuthorizationManager', () => {
     }).toThrow();
   });
 
+  it('allows binding events on instance creation', async () => {
+    const TOKEN = {
+      access_token: 'access-token',
+      scope: 'profile email openid',
+      expires_in: 172800,
+      token_type: 'Bearer',
+      resource_server: 'auth.globus.org',
+      refresh_token: 'refresh-token',
+      other_tokens: [],
+    };
+    setup({
+      'client_id:auth.globus.org': JSON.stringify(TOKEN),
+    });
+    const authenticatedHandler = jest.fn();
+    const revokeHandler = jest.fn();
+    const instance = new AuthorizationManager({
+      client: 'client_id',
+      redirect: 'https://redirect_uri',
+      scopes: 'profile email openid',
+      events: {
+        authenticated: authenticatedHandler,
+        revoke: revokeHandler,
+      },
+    });
+    expect(instance.authenticated).toBe(true);
+    expect(authenticatedHandler).toHaveBeenCalledTimes(1);
+    expect(authenticatedHandler).toHaveBeenCalledWith({
+      isAuthenticated: true,
+      token: TOKEN,
+    });
+    await instance.revoke();
+    expect(revokeHandler).toHaveBeenCalledTimes(1);
+  });
+
   it('refreshTokens should refresh existing tokens', async () => {
     const TOKEN = {
       access_token: 'access-token',
