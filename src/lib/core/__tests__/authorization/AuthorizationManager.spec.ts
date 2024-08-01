@@ -11,6 +11,7 @@ import { TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR } from '../../../../__mocks__
 
 describe('AuthorizationManager', () => {
   beforeEach(() => {
+    globalThis.localStorage.clear();
     jest.clearAllMocks();
     jest.restoreAllMocks();
   });
@@ -158,6 +159,34 @@ describe('AuthorizationManager', () => {
      * The transfer token should not be refreshed due to the thrown error.
      */
     expect(instance.tokens.transfer?.access_token).toBe('access-token');
+  });
+
+  it('calling refreshTokens should not throw if no refresh tokens are present', async () => {
+    const TOKEN = {
+      access_token: 'access-token',
+      scope: 'profile email openid',
+      expires_in: 172800,
+      token_type: 'Bearer',
+      resource_server: 'auth.globus.org',
+      other_tokens: [],
+    };
+    setup({
+      'client_id:auth.globus.org': JSON.stringify(TOKEN),
+    });
+    const instance = new AuthorizationManager({
+      client: 'client_id',
+      redirect: 'https://redirect_uri',
+      scopes: 'profile email openid',
+    });
+
+    expect(instance.authenticated).toBe(true);
+    const result = await instance.refreshTokens();
+    expect(result).toEqual([
+      {
+        status: 'fulfilled',
+        value: null,
+      },
+    ]);
   });
 
   it('should bootstrap from an existing token', () => {
