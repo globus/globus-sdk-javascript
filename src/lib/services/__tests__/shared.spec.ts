@@ -422,6 +422,31 @@ describe('serviceRequest', () => {
       });
     });
 
+    it('does not retry when an `AuthorizationRequirementsError` is encountered', async () => {
+      const spy = jest.spyOn(manager, 'refreshToken');
+      server.use(
+        http.get('https://transfer.api.globusonline.org/fake-resource', () =>
+          HttpResponse.json(
+            {
+              authorization_parameters: {},
+            },
+            { status: 401 },
+          ),
+        ),
+      );
+      const response = await serviceRequest(
+        {
+          service: 'TRANSFER',
+          scope: 'some:required:scope',
+          path: '/fake-resource',
+        },
+        {},
+        { manager },
+      );
+      expect(response.status).toEqual(401);
+      expect(spy).not.toHaveBeenCalled();
+    });
+
     it('does not retry a request that is configured to prevent retries', async () => {
       const spy = jest.spyOn(manager, 'refreshToken');
       server.use(

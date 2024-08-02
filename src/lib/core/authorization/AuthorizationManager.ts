@@ -55,14 +55,11 @@ export type AuthorizationManagerConfiguration = {
    * This is useful if you need to listen to events that might dispatch immediately
    * after the creation of the instance (constructor), e.g., the `authenticated`.
    */
-  events?: Partial<
-    Record<
-      keyof AuthorizationManager['events'],
-      Parameters<
-        AuthorizationManager['events'][keyof AuthorizationManager['events']]['addListener']
-      >[0]
-    >
-  >;
+  events?: Partial<{
+    [Event in keyof AuthorizationManager['events']]: Parameters<
+      AuthorizationManager['events'][Event]['addListener']
+    >[0];
+  }>;
 };
 
 const DEFAULT_CONFIGURATION = {

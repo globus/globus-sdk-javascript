@@ -2,6 +2,7 @@ import _fetch from 'cross-fetch';
 import { getClientInfoRequestHeaders } from '../core/info/index.js';
 import { build } from '../core/url.js';
 import { getSDKOptions, Service } from '../core/global.js';
+import { isAuthorizationRequirementsError } from '../core/errors.js';
 import { RESOURCE_SERVERS } from './auth/config.js';
 import { isRefreshToken } from './auth/index.js';
 import type { ServiceMethodOptions, SDKOptions } from './types.js';
@@ -200,11 +201,26 @@ export async function serviceRequest(
     return initialResponse;
   }
   /**
-   * Detect if the response might be caused by a token that
-   * has expired, and if so, attempt to refresh the token then
-   * retry the request.
+   * Do a safe check to see if the response contains any authorization requirements.
    */
-  const shouldAttemptTokenRefresh = initialResponse.status === 401;
+  let hasAuthorizationRequirements;
+  try {
+    hasAuthorizationRequirements = isAuthorizationRequirementsError(
+      /**
+       * It is important to clone the response before calling `json` avoid
+       * `body used already for [...]` errors when the initial response is
+       * returned.
+       */
+      await initialResponse.clone().json(),
+    );
+  } catch (_e) {
+    hasAuthorizationRequirements = false;
+  }
+  /**
+   * We only attempt to refresh the original token supplied with teh request, if the
+   * response status is 401 and the response does not contain any authorization requirements.
+   */
+  const shouldAttemptTokenRefresh = initialResponse.status === 401 && !hasAuthorizationRequirements;
   if (shouldAttemptTokenRefresh) {
     const newToken = await manager.refreshToken(token);
     if (!newToken) {
