@@ -51,16 +51,20 @@ export type AuthorizationManagerConfiguration = {
    */
   defaultScopes?: string | false;
   /**
-   * Start the silent refresh process automatically.
-   * @default false
+   * Provide an object with event listeners to attach to the instance.
+   * This is useful if you need to listen to events that might dispatch immediately
+   * after the creation of the instance (constructor), e.g., the `authenticated`.
    */
-  automaticSilentRefresh?: boolean;
+  events?: Partial<{
+    [Event in keyof AuthorizationManager['events']]: Parameters<
+      AuthorizationManager['events'][Event]['addListener']
+    >[0];
+  }>;
 };
 
 const DEFAULT_CONFIGURATION = {
   useRefreshTokens: false,
   defaultScopes: 'openid profile email',
-  automaticSilentRefresh: false,
 };
 
 const DEFAULT_HANDLE_ERROR_OPTIONS = {
@@ -118,6 +122,12 @@ export class AuthorizationManager {
    * Set the authenticated state and emit the `authenticated` event.
    */
   set authenticated(value: boolean) {
+    /**
+     * Avoid emitting the event if the value hasn't changed.
+     */
+    if (value === this.#authenticated) {
+      return;
+    }
     this.#authenticated = value;
     this.#emitAuthenticatedState();
   }
@@ -174,21 +184,22 @@ export class AuthorizationManager {
         .filter((s) => s.length)
         .join(' '),
     };
+    /**
+     * If an `events` object is provided, add the listeners to the instance before
+     * any event might be dispatched.
+     */
+    if (this.configuration.events) {
+      Object.entries(this.configuration.events).forEach(([name, callback]) => {
+        if (name in this.events) {
+          this.events[name as keyof AuthorizationManager['events']].addListener(callback);
+        }
+      });
+    }
 
     this.tokens = new TokenLookup({
       manager: this,
     });
-
-    /**
-     * If we're automatically starting the silent refresh process,
-     * we'll let that method dispatch the initial authorization check.
-     * Otherwise, we just bootstrap from the storage state.
-     */
-    if (this.configuration.automaticSilentRefresh) {
-      this.startSilentRefresh();
-    } else {
-      this.#bootstrapFromStorageState();
-    }
+    this.#checkAuthorizationState();
   }
 
   get storageKeyPrefix() {
@@ -211,37 +222,21 @@ export class AuthorizationManager {
   }
 
   /**
-   * Start the silent refresh process for the instance.
-   * @todo Add interval support for the silent refresh.
+   * Attempt to refresh all of the tokens managed by the instance.
+   * This method will only attempt to refresh tokens that have a `refresh_token` attribute.
    */
-  startSilentRefresh() {
-    log(
-      'debug',
-      `AuthorizationManager.startSilentRefresh | useRefreshTokens=${this.configuration.useRefreshTokens}`,
-    );
-    /**
-     * Silent refresh is only supported when using refresh tokens.
-     */
-    if (this.configuration.useRefreshTokens) {
-      this.#silentRefreshTokens();
-    }
-  }
-
-  waitForSilentRefresh: Promise<void> | null = null;
-
-  #silentRefreshTokens() {
-    log('debug', 'AuthorizationManager.#silentRefreshTokens');
-    this.waitForSilentRefresh = Promise.allSettled(
+  async refreshTokens() {
+    log('debug', 'AuthorizationManager.refreshTokens');
+    const tokens = await Promise.allSettled(
       this.tokens.getAll().map((token) => {
         if (isRefreshToken(token)) {
           return this.refreshToken(token);
         }
-        return Promise.resolve();
+        return Promise.resolve(null);
       }),
-    ).then(() => {
-      this.#checkAuthorizationState();
-      this.waitForSilentRefresh = null;
-    });
+    );
+    this.#checkAuthorizationState();
+    return tokens;
   }
 
   /**
@@ -262,10 +257,12 @@ export class AuthorizationManager {
       ).json();
       if (isGlobusAuthTokenResponse(response)) {
         this.addTokenResponse(response);
+        return response;
       }
     } catch (error) {
       log('error', `AuthorizationManager.refreshToken | resource_server=${token.resource_server}`);
     }
+    return null;
   }
 
   /**
@@ -288,11 +285,6 @@ export class AuthorizationManager {
     if (this.hasGlobusAuthToken()) {
       this.authenticated = true;
     }
-  }
-
-  async #bootstrapFromStorageState() {
-    log('debug', 'AuthorizationManager.bootstrapFromStorageState');
-    this.#checkAuthorizationState();
   }
 
   async #emitAuthenticatedState() {
