@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.7.0](https://github.com/globus/globus-sdk-javascript/compare/v3.6.0...v3.7.0) (2024-08-05)
+
+
+### Features
+
+* **Authorization:** updates SDK methods to automatically attempt to refresh tokens when 401 errors are encountered. ([#251](https://github.com/globus/globus-sdk-javascript/issues/251)) ([8d91cea](https://github.com/globus/globus-sdk-javascript/commit/8d91cead9b5eac1c8b059012391058eb5ee34644))
+
 ## [3.6.0](https://github.com/globus/globus-sdk-javascript/compare/v3.5.1...v3.6.0) (2024-07-31)
 
 
