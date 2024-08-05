@@ -1,0 +1,36 @@
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+name: prerelease
+
+concurrency:
+  group: prerelease
+  cancel-in-progress: true
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: google-github-actions/release-please-action@v4
+        id: release
+        with:
+          config-file: release-please-config-prerelease.json
+          manifest-file: .release-please-manifest.json
+          skip-github-pull-request: true
+      # # Publish to NPM
+      # - uses: actions/checkout@v4
+      # - uses: actions/setup-node@v4
+      #   with:
+      #     node-version: lts/hydrogen
+      #     registry-url: 'https://registry.npmjs.org'
+      #     scope: '@globus'
+      # - run: npm ci
+      # - run: npm run publish-to-npm:next
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
