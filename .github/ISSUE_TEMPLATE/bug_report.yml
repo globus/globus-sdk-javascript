@@ -1,0 +1,49 @@
+name: "Bug Report"
+description: "If something isn't working as expected..."
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to file a bug report! Please fill out this form as completely as possible.
+
+  - type: dropdown
+    attributes:
+      label: How are you using the `@globus/sdk`?
+      options:
+        - Server-side JavaScript (e.g. Node.js)
+        - Client-side JavaScript (e.g. Browser)
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Current and expected behavior
+      description: A clear and concise description of what `@globus/sdk` is doing and what you would expect.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Environment
+      description: |
+        **Tip:** you can run `npx envinfo` to obtain much of this information.
+      placeholder: |
+        - @globus/sdk version(s): [e.g. v3.7.0]
+        - Browser: [e.g. Chrome 127, Safari 17.5]
+        - Node: [e.g. Node 20.16.0]
+        - npm/Yarn version: [e.g. npm 10.8.1/Yarn 1.22.22]
+        - OS: [e.g. macOS 14.5, Windows 10]
+        - Monorepo: [e.g. yes/no/Lerna]
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Possible solution
+      description: "If you have suggestions on a fix for the bug."
+
+  - type: textarea
+    attributes:
+      label: Additional context
+      description: "Add any other context about the problem here. Or a screenshot if applicable."
