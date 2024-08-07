@@ -55,3 +55,32 @@ export function readableBytes(bytes: number, truncate = 2) {
   const value = bytes / bytesInUnit;
   return `${value.toFixed(truncate)} ${unit}`;
 }
+
+/**
+ * Known Globus DNS domains.
+ */
+const GLOBUS_DNS_DOMAINS = ['dnsteam.globuscs.info', 'data.globus.org', 'dn.glob.us'];
+
+/**
+ * Returns DNS domain, if any, for a collection or endpoint.
+ *
+ * - Custom domains will be displayed without any auto-generated wildcard subdomains.
+ * - Globus domains will include the auto-generated section to make them identifiable.
+ *
+ * @param endpoint The endpoint to extract the domain from. While any object will be parsed, this function is intended for use with [Globus Transfer Endpoint or Collection Documents](https://docs.globus.org/api/transfer/endpoints_and_collections/#endpoint_or_collection_document).
+ * @see https://docs.globus.org/globus-connect-server/v5.4/domain-guide/#custom_domains_new_in_v_5_4_13
+ */
+export function getDomainFromEndpoint(endpoint: Record<string, unknown>) {
+  const { tlsftp_server: tls } = endpoint;
+  if (!tls || typeof tls !== 'string') {
+    return null;
+  }
+  /**
+   * Swap the protocol to `https` so we can use the URL API to extract the hostname.
+   */
+  const { hostname } = new URL(tls.replace('tlsftp', 'https'));
+  const hasCustomDomain = !GLOBUS_DNS_DOMAINS.find((d) => hostname.endsWith(d));
+  const customDomain = hasCustomDomain && /(?:[gm]-\w{6}.)?(\w+(\.\w+)+)$/.exec(hostname)?.[1];
+
+  return customDomain || hostname || null;
+}

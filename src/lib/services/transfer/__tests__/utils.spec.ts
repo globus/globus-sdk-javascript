@@ -1,4 +1,4 @@
-import { readableBytes, isDirectory, isFileDocument } from '../utils';
+import { readableBytes, isDirectory, isFileDocument, getDomainFromEndpoint } from '../utils';
 
 describe('readableBytes', () => {
   it('should return the correct readable string for bytes', () => {
@@ -51,5 +51,33 @@ describe('isFileDocument', () => {
     expect(isFileDocument(FILE)).toBe(true);
     expect(isFileDocument(DIR)).toBe(true);
     expect(isFileDocument(INVALID_SYMLINK)).toBe(true);
+  });
+});
+
+describe('getDomainFromEndpoint', () => {
+  it('should return the domain from a valid endpoint', () => {
+    /**
+     * Custom Domain
+     */
+    expect(
+      getDomainFromEndpoint({
+        tlsftp_server: 'tlsftp://m-d3a2c3.collection.tutorials.globus.org:443',
+      }),
+    ).toBe('collection.tutorials.globus.org');
+
+    expect(
+      getDomainFromEndpoint({
+        tlsftp_server: 'tlsftp://m-4d5adb.fa5e.bd7c.data.globus.org:443',
+      }),
+    ).toBe('m-4d5adb.fa5e.bd7c.data.globus.org');
+  });
+
+  it('should return null for invalid objects', () => {
+    expect(getDomainFromEndpoint({})).toBeNull();
+    expect(
+      getDomainFromEndpoint({
+        tlsftp_server: null,
+      }),
+    ).toBeNull();
   });
 });
