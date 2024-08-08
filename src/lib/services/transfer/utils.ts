@@ -53,7 +53,15 @@ export function readableBytes(bytes: number, truncate = 2) {
     bytesInUnit = PB;
   }
   const value = bytes / bytesInUnit;
-  return `${value.toFixed(truncate)} ${unit}`;
+  const [int, dec] = `${value}`.split('.');
+  let rendered = `${int}`;
+  if (dec && dec.length) {
+    const truncated = dec.slice(0, truncate);
+    if (truncated.length) {
+      rendered = `${int}.${truncated}`;
+    }
+  }
+  return `${rendered} ${unit}`;
 }
 
 /**

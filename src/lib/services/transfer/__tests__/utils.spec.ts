@@ -4,16 +4,20 @@ describe('readableBytes', () => {
   it('should return the correct readable string for bytes', () => {
     expect(readableBytes(90)).toBe('90 B');
     expect(readableBytes(1024)).toBe('1.02 KB');
-    expect(readableBytes(1048576)).toBe('1.05 MB');
+    expect(readableBytes(1048576)).toBe('1.04 MB');
     expect(readableBytes(1073741824)).toBe('1.07 GB');
-    expect(readableBytes(1099511627776)).toBe('1.10 TB');
-    expect(readableBytes(1125899906842624)).toBe('1.13 PB');
+    expect(readableBytes(1099511627776)).toBe('1.09 TB');
+    expect(readableBytes(1125899906842624)).toBe('1.12 PB');
   });
 
   it('should truncate the readable string based on the truncate parameter', () => {
     expect(readableBytes(1024, 0)).toBe('1 KB');
+    expect(readableBytes(1024, 1)).toBe('1.0 KB');
+    expect(readableBytes(1024, 2)).toBe('1.02 KB');
+    expect(readableBytes(1024, 3)).toBe('1.024 KB');
+    expect(readableBytes(1024, 4)).toBe('1.024 KB');
     expect(readableBytes(1048576, 1)).toBe('1.0 MB');
-    expect(readableBytes(1073741824, 3)).toBe('1.074 GB');
+    expect(readableBytes(1073741824, 3)).toBe('1.073 GB');
   });
 });
 
