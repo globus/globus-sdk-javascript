@@ -23,3 +23,5 @@ export * as access from './service/access.js';
 export * as collectionBookmarks from './service/collection-bookmarks.js';
 
 export * as endpointManager from './service/endpoint-manager/index.js';
+
+export * as utils from './utils.js';
