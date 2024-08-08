@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.0](https://github.com/globus/globus-sdk-javascript/compare/v3.7.0...v3.8.0) (2024-08-08)
+
+
+### Features
+
+* adds `transfer.utils.getDomainFromEndpoint()` ([cb0834b](https://github.com/globus/globus-sdk-javascript/commit/cb0834b0b524b7fd7a459f80c7caa102fe1f2789))
+* adds `transfer.utils.isDirectory()` and `transfer.utils.isFileDocument()` ([cb0834b](https://github.com/globus/globus-sdk-javascript/commit/cb0834b0b524b7fd7a459f80c7caa102fe1f2789))
+* adds `transfer.utils.readableBytes()` ([cb0834b](https://github.com/globus/globus-sdk-javascript/commit/cb0834b0b524b7fd7a459f80c7caa102fe1f2789))
+* adds Transfer utilities ([#255](https://github.com/globus/globus-sdk-javascript/issues/255)) ([cb0834b](https://github.com/globus/globus-sdk-javascript/commit/cb0834b0b524b7fd7a459f80c7caa102fe1f2789))
+
 ## [3.7.0](https://github.com/globus/globus-sdk-javascript/compare/v3.6.0...v3.7.0) (2024-08-05)
 
 
