@@ -175,7 +175,7 @@ export class AuthorizationManager {
     const scopes =
       configuration.defaultScopes === false
         ? ''
-        : configuration.defaultScopes ?? DEFAULT_CONFIGURATION.defaultScopes;
+        : (configuration.defaultScopes ?? DEFAULT_CONFIGURATION.defaultScopes);
 
     this.configuration = {
       ...DEFAULT_CONFIGURATION,
