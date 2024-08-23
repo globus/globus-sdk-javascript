@@ -33,7 +33,7 @@ export class RedirectTransport {
   }
 
   send() {
-    window.location.replace(this.#pkce.authorizeUrl(this.#params));
+    window.location.assign(this.#pkce.authorizeUrl(this.#params));
   }
 
   /**
