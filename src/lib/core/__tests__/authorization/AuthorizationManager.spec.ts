@@ -38,8 +38,8 @@ describe('AuthorizationManager', () => {
     expect(instance).toBeDefined();
     expect(instance.authenticated).toBe(false);
     instance.login();
-    expect(window.location.replace).toHaveBeenCalledTimes(1);
-    expect(window.location.replace).toHaveBeenCalledWith(
+    expect(window.location.assign).toHaveBeenCalledTimes(1);
+    expect(window.location.assign).toHaveBeenCalledWith(
       expect.stringContaining('scope=openid+profile+email&'),
     );
   });
@@ -217,8 +217,8 @@ describe('AuthorizationManager', () => {
       scopes: 'foobar baz',
     });
     instance.login();
-    expect(window.location.replace).toHaveBeenCalledTimes(1);
-    expect(window.location.replace).toHaveBeenCalledWith(
+    expect(window.location.assign).toHaveBeenCalledTimes(1);
+    expect(window.location.assign).toHaveBeenCalledWith(
       expect.stringContaining(
         'https://auth.globus.org/v2/oauth2/authorize?response_type=code&client_id=client_id&state=&scope=foobar+baz+openid+profile+email&redirect_uri=https%3A%2F%2Fredirect_uri',
       ),
@@ -285,8 +285,8 @@ describe('AuthorizationManager', () => {
         defaultScopes: 'openid',
       });
       instance.login();
-      expect(window.location.replace).toHaveBeenCalledTimes(1);
-      expect(window.location.replace).toHaveBeenCalledWith(
+      expect(window.location.assign).toHaveBeenCalledTimes(1);
+      expect(window.location.assign).toHaveBeenCalledWith(
         expect.stringContaining(
           'https://auth.globus.org/v2/oauth2/authorize?response_type=code&client_id=client_id&state=&scope=foobar+baz+openid&redirect_uri=https%3A%2F%2Fredirect_uri',
         ),
@@ -301,8 +301,8 @@ describe('AuthorizationManager', () => {
         defaultScopes: false,
       });
       instance.login();
-      expect(window.location.replace).toHaveBeenCalledTimes(1);
-      expect(window.location.replace).toHaveBeenCalledWith(
+      expect(window.location.assign).toHaveBeenCalledTimes(1);
+      expect(window.location.assign).toHaveBeenCalledWith(
         expect.stringContaining(
           'https://auth.globus.org/v2/oauth2/authorize?response_type=code&client_id=client_id&state=&scope=foobar+baz&redirect_uri=https%3A%2F%2Fredirect_uri',
         ),
@@ -318,8 +318,8 @@ describe('AuthorizationManager', () => {
       useRefreshTokens: true,
     });
     instance.login();
-    expect(window.location.replace).toHaveBeenCalledTimes(1);
-    expect(window.location.replace).toHaveBeenCalledWith(
+    expect(window.location.assign).toHaveBeenCalledTimes(1);
+    expect(window.location.assign).toHaveBeenCalledWith(
       expect.stringContaining(
         'https://auth.globus.org/v2/oauth2/authorize?response_type=code&client_id=client_id&state=&scope=foobar+baz+openid+profile+email+offline_access&redirect_uri=https%3A%2F%2Fredirect_uri',
       ),
