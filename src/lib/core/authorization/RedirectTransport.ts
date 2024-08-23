@@ -17,6 +17,15 @@ export type RedirectTransportOptions = IConfig & {
   params?: IObject;
 };
 
+/**
+ * Resets js-pkce state
+ * @see https://github.com/bpedroza/js-pkce/blob/master/src/PKCE.ts
+ */
+function resetPKCE() {
+  sessionStorage.removeItem('pkce_state');
+  sessionStorage.removeItem('pkce_code_verifier');
+}
+
 export class RedirectTransport {
   #pkce: PKCE;
 
@@ -33,7 +42,12 @@ export class RedirectTransport {
   }
 
   send() {
-    window.location.replace(this.#pkce.authorizeUrl(this.#params));
+    /**
+     * By resetting PKCE before sending, we ensure that a fresh `code_challenge` is generated
+     * when `authorizeUrl` is called.
+     */
+    resetPKCE();
+    window.location.assign(this.#pkce.authorizeUrl(this.#params));
   }
 
   /**
@@ -48,12 +62,7 @@ export class RedirectTransport {
      */
     if (!params.get('code')) return undefined;
     const response = await this.#pkce.exchangeForAccessToken(url.toString());
-    /**
-     * Resets js-pkce state
-     * @see https://github.com/bpedroza/js-pkce/blob/master/src/PKCE.ts
-     */
-    sessionStorage.removeItem('pkce_state');
-    sessionStorage.removeItem('pkce_code_verifier');
+    resetPKCE();
     if (options.shouldReplace) {
       /**
        * Remove the `code` and `state` parameters from the URL.

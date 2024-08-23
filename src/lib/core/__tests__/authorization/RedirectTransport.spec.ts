@@ -25,11 +25,11 @@ describe('RedirectTransport', () => {
     jest.resetAllMocks();
   });
 
-  it('should authorize using the window.location.replace method', async () => {
+  it('should authorize using the window.location.assign method', async () => {
     const transport = new RedirectTransport(MOCK_CONFIG);
     transport.send();
-    expect(window.location.replace).toHaveBeenCalled();
-    expect(window.location.replace).toHaveBeenCalledWith(
+    expect(window.location.assign).toHaveBeenCalled();
+    expect(window.location.assign).toHaveBeenCalledWith(
       expect.stringContaining(
         'AUTHORIZATION_ENDPOINT?response_type=code&client_id=CLIENT_ID&state=&scope=REQUIRED_SCOPES&redirect_uri=https%3A%2F%2Fredirect_uri%2Fmy-page',
       ),
@@ -66,8 +66,8 @@ describe('RedirectTransport', () => {
       window.location.href = `${MOCK_CONFIG.redirect_uri}?code=CODE&state=SOME_STATE`;
       const response = await transport.getToken({ shouldReplace: false });
       expect(response).toBe(MOCK_TOKEN);
-      expect(window.location.replace).not.toHaveBeenCalled();
-      expect(window.location.replace).not.toHaveBeenCalledWith(new URL(MOCK_CONFIG.redirect_uri));
+      expect(window.location.assign).not.toHaveBeenCalled();
+      expect(window.location.assign).not.toHaveBeenCalledWith(new URL(MOCK_CONFIG.redirect_uri));
       expect(window.location.href).toEqual(url);
     });
   });
