@@ -166,27 +166,44 @@ type IngestResponse = {
   num_documents_ingested: number;
 };
 
+/**
+ * A mapping from field names (dotted) to the types for those fields. Currently only supports `geo_point` and `geo_shape` as types.
+ */
+type FieldMapping = Record<string, 'geo_point' | 'geo_shape' | string>;
+
+/**
+ * A `GIngest` document is a wrapper around a {@link GMetaList} or {@link GMetaEntry} which supplies attributes relevant to the ingest and indexing of metadata into the Globus Search service.
+ * @see https://docs.globus.org/api/search/reference/ingest/#gingest
+ */
 type GIngest =
   | {
       ingest_type: string;
       ingest_data: Record<string, unknown>;
-      field_mapping: Record<string, unknown>;
+      field_mapping?: FieldMapping;
     }
   | {
       ingest_type: 'GMetaList';
       ingest_data: GMetaList;
-      field_mapping: Record<string, unknown>;
+      field_mapping?: FieldMapping;
     }
   | {
       ingest_type: 'GMetaEntry';
       ingest_data: GMetaEntry;
-      field_mapping: Record<string, unknown>;
+      field_mapping?: FieldMapping;
     };
 
+/**
+ * A GMetaList is a collection of {@link GMetaEntry} documents.
+ * @see https://docs.globus.org/api/search/reference/ingest/#gmetalist
+ */
 type GMetaList = {
   gmeta: GMetaEntry[];
 };
 
+/**
+ * A GMetaEntry is a single block of data pertaining to a given subject.
+ * @see https://docs.globus.org/api/search/reference/ingest/#gmetaentry
+ */
 type GMetaEntry = {
   id: string;
   subject: string;
