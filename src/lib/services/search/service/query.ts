@@ -5,6 +5,8 @@ import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../type
 import { ID, SCOPES } from '../config.js';
 import { ResultFormatVersion } from '../types.js';
 
+export type MatchedPrincipalSets = string[];
+
 /**
  * @see https://docs.globus.org/api/search/reference/post_query/#gmetaresult
  */
@@ -13,7 +15,7 @@ export type GMetaResult = {
   entries: {
     entry_id: string;
     content: Record<string, unknown>;
-    matched_principal_sets: string[];
+    matched_principal_sets: MatchedPrincipalSets;
   }[];
 };
 
@@ -39,7 +41,7 @@ export type GBucket = {
  */
 export type GSearchResult = {
   gmeta: GMetaResult;
-  facet_result?: GFacetResult[];
+  facet_results?: GFacetResult[];
   offset: number;
   count: number;
   total: number;
@@ -84,6 +86,23 @@ export const get = function (
 >;
 
 /**
+ * @see https://docs.globus.org/api/search/reference/post_query/#gsearchrequest
+ */
+export type GSearchRequest = {
+  q: string;
+  offset?: number;
+  limit?: number;
+  advanced?: boolean;
+  bypass_visible_to?: boolean;
+  result_format_version?: ResultFormatVersion;
+  filter_principal_sets?: string[];
+  filters?: GFilter[];
+  facets?: GFacet[];
+  boosts?: GBoost[];
+  sort?: GSort[];
+};
+
+/**
  * @param index_id The UUID of the index to query.
  *
  * @see https://docs.globus.org/api/search/reference/post_query/
@@ -106,22 +125,7 @@ export const post = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    /**
-     * @see https://docs.globus.org/api/search/reference/post_query/#gsearchrequest
-     */
-    payload: {
-      q: string;
-      offset?: number;
-      limit?: number;
-      advanced?: boolean;
-      bypass_visible_to?: boolean;
-      result_format_version?: ResultFormatVersion;
-      filter_principal_sets?: string[];
-      filters?: GFilter[];
-      facets?: GFacet[];
-      boosts?: GBoost[];
-      sort?: GSort[];
-    };
+    payload: GSearchRequest;
   }
 >;
 
