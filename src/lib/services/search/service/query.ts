@@ -27,7 +27,7 @@ export type GFacetResult = {
  * @see https://docs.globus.org/api/search/reference/post_query/#gbucket
  */
 export type GBucket = {
-  value: string | Globus.Search.GFilter;
+  value: string | GFilter;
   count: number;
 };
 
@@ -114,10 +114,84 @@ export const post = function (
       bypass_visible_to?: boolean;
       result_format_version?: ResultFormatVersion;
       filter_principal_sets?: string[];
-      filters?: Globus.Search.GFilter[];
-      facets?: Globus.Search.GFacet[];
-      boosts?: Globus.Search.GBoost[];
-      sort?: Globus.Search.GSort[];
+      filters?: GFilter[];
+      facets?: GFacet[];
+      boosts?: GBoost[];
+      sort?: GSort[];
     };
   }
 >;
+
+/**
+ * @see https://docs.globus.org/api/search/reference/post_query/#gfilter
+ */
+export type GFilter = GFilterMatch | GFilterRange | GFilterExists | GFilterNot;
+
+type GFilterTypeMatch = 'match_any' | 'match_all';
+type GFilterTypeRange = 'range';
+
+type GFilterMatch = {
+  type: GFilterTypeMatch;
+  field_name: string;
+  values: Array<string>;
+};
+type GFilterRange = {
+  type: GFilterTypeRange;
+  field_name: string;
+  values: Array<{ from: string; to: string }>;
+};
+type GFilterExists = {
+  type: 'exists';
+  field_name: string;
+};
+type GFilterNot = {
+  type: 'not';
+  filter: GFilter;
+};
+
+type HistogramRange = { low: number | string; high: number | string };
+
+/**
+ * @see https://docs.globus.org/api/search/reference/post_query/#gfacet
+ */
+type GFacet = {
+  name: string;
+  field_name: string;
+} & (
+  | {
+      type: 'terms';
+    }
+  | {
+      type: 'sum' | 'avg';
+      missing?: number;
+    }
+  | {
+      type: 'date_histogram';
+      date_interval: DateInterval;
+      histogram_range?: HistogramRange;
+    }
+  | {
+      type: 'numeric_histogram';
+      size: string;
+      interval: number;
+      histogram_range: HistogramRange;
+    }
+);
+
+type DateInterval = 'year' | 'quarter' | 'month' | 'week' | 'day' | 'hour' | 'minute' | 'second';
+
+/**
+ * @see https://docs.globus.org/api/search/reference/post_query/#gboost
+ */
+type GBoost = {
+  field_name: string;
+  factor: number;
+};
+
+/**
+ * @see https://docs.globus.org/api/search/reference/post_query/#gsort
+ */
+type GSort = {
+  field_name: string;
+  order: 'asc' | 'desc';
+};
