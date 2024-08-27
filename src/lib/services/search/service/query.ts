@@ -3,13 +3,56 @@ import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../types.js';
 
 import { ID, SCOPES } from '../config.js';
+import { ResultFormatVersion } from '../types.js';
+
+type GMetaResult = {
+  subject: string;
+  entries: {
+    entry_id: string;
+    content: Record<string, unknown>;
+    matched_principal_sets: string[];
+  }[];
+};
+
+/**
+ * @see https://docs.globus.org/api/search/reference/post_query/#gfacetresult
+ */
+export type GFacetResult = {
+  name: string;
+  value?: string;
+  buckets?: GBucket[];
+};
+
+/**
+ * @see https://docs.globus.org/api/search/reference/post_query/#gbucket
+ */
+export type GBucket = {
+  value: string | Globus.Search.GFilter;
+  count: number;
+};
+
+/**
+ * @see https://docs.globus.org/api/search/reference/post_query/#gsearchresult
+ */
+export type GSearchResult = {
+  gmeta: GMetaResult;
+  facet_result?: GFacetResult[];
+  offset: number;
+  count: number;
+  total: number;
+  has_next_page: boolean;
+};
 
 /**
  * @param index_id The UUID of the index to query.
  *
  * @see https://docs.globus.org/api/search/reference/get_query/
  */
-export const get = function (index_id, options?, sdkOptions?) {
+export const get = function (
+  index_id,
+  options?,
+  sdkOptions?,
+): Promise<JSONFetchResponse<GSearchResult>> {
   return serviceRequest(
     {
       service: ID,
@@ -46,7 +89,7 @@ export const post = function (
   index_id,
   options,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Search.GSearchResult>> {
+): Promise<JSONFetchResponse<GSearchResult>> {
   return serviceRequest(
     {
       service: ID,
@@ -69,12 +112,12 @@ export const post = function (
       limit?: number;
       advanced?: boolean;
       bypass_visible_to?: boolean;
-      result_format_version?: Globus.Search.ResultFormatVersion;
-      filter_principal_sets?: Array<string>;
-      filters?: Array<Globus.Search.GFilter>;
-      facets?: Array<Globus.Search.GFacet>;
-      boosts?: Array<Globus.Search.GBoost>;
-      sort?: Array<Globus.Search.GSort>;
+      result_format_version?: ResultFormatVersion;
+      filter_principal_sets?: string[];
+      filters?: Globus.Search.GFilter[];
+      facets?: Globus.Search.GFacet[];
+      boosts?: Globus.Search.GBoost[];
+      sort?: Globus.Search.GSort[];
     };
   }
 >;
