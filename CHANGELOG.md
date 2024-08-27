@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.9.0](https://github.com/globus/globus-sdk-javascript/compare/v3.8.1...v3.9.0) (2024-08-27)
+
+
+### Features
+
+* **Search, Typescript:** Moves Globus Search types internal to the SDK (previously sourced from `@globus/types`) ([3a1387a](https://github.com/globus/globus-sdk-javascript/commit/3a1387a7988bf39d6921867f47b265384d8c536e))
+* **Search:** Adds methods for interaction and management of Globus Search indicies (e.g. `search.index.create()`, `search.index.ingest()`) ([#275](https://github.com/globus/globus-sdk-javascript/issues/275)) ([3a1387a](https://github.com/globus/globus-sdk-javascript/commit/3a1387a7988bf39d6921867f47b265384d8c536e))
+
 ## [3.8.1](https://github.com/globus/globus-sdk-javascript/compare/v3.8.0...v3.8.1) (2024-08-23)
 
 
