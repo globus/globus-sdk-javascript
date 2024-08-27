@@ -5,7 +5,10 @@ import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../type
 import { ID, SCOPES } from '../config.js';
 import { ResultFormatVersion } from '../types.js';
 
-type GMetaResult = {
+/**
+ * @see https://docs.globus.org/api/search/reference/post_query/#gmetaresult
+ */
+export type GMetaResult = {
   subject: string;
   entries: {
     entry_id: string;
@@ -154,7 +157,7 @@ type HistogramRange = { low: number | string; high: number | string };
 /**
  * @see https://docs.globus.org/api/search/reference/post_query/#gfacet
  */
-type GFacet = {
+export type GFacet = {
   name: string;
   field_name: string;
 } & (
@@ -183,7 +186,7 @@ type DateInterval = 'year' | 'quarter' | 'month' | 'week' | 'day' | 'hour' | 'mi
 /**
  * @see https://docs.globus.org/api/search/reference/post_query/#gboost
  */
-type GBoost = {
+export type GBoost = {
   field_name: string;
   factor: number;
 };
@@ -191,7 +194,7 @@ type GBoost = {
 /**
  * @see https://docs.globus.org/api/search/reference/post_query/#gsort
  */
-type GSort = {
+export type GSort = {
   field_name: string;
   order: 'asc' | 'desc';
 };
