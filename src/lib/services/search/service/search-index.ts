@@ -205,9 +205,9 @@ type GMetaList = {
  * @see https://docs.globus.org/api/search/reference/ingest/#gmetaentry
  */
 type GMetaEntry = {
-  id: string;
+  id?: string;
   subject: string;
-  visible_to: string | 'public' | 'all_authenticated_users';
+  visible_to: 'public' | 'all_authenticated_users' | string;
   principal_sets: Record<string, unknown>;
   content: Record<string, unknown>;
 };
