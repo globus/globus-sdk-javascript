@@ -1,19 +1,19 @@
 import { createStorage } from '../../../core/storage';
 import { query } from '..';
 
-import { MirroredRequest, mirror } from '../../../../__mocks__/handlers';
+import { mirror } from '../../../../__mocks__/handlers';
 
 describe('search – query', () => {
   test('get', async () => {
     createStorage('memory');
-    const result = await query.get('524de2f6-d1a6-4b49-9286-d8dccb4196ae', {
+    const request = await query.get('524de2f6-d1a6-4b49-9286-d8dccb4196ae', {
       query: {
         q: 'test',
       },
     });
     const {
       req: { url, method, headers },
-    } = (await result.json()) as MirroredRequest;
+    } = await mirror(request);
     expect({
       url,
       method,
@@ -62,12 +62,12 @@ describe('search – query', () => {
 
   test('post', async () => {
     createStorage('memory');
-    const result = await query.post('524de2f6-d1a6-4b49-9286-d8dccb4196ae', {
+    const request = await query.post('524de2f6-d1a6-4b49-9286-d8dccb4196ae', {
       payload: { q: 'test' },
     });
     const {
       req: { url, method, headers, json },
-    } = (await result.json()) as unknown as MirroredRequest;
+    } = await mirror(request);
     expect({
       url,
       method,
