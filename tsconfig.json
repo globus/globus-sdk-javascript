@@ -1,15 +1,26 @@
 {
   "extends": "@tsconfig/recommended/tsconfig.json",
   "compilerOptions": {
-    "target": "ES2019",
+    "target": "ES6",
+    "module": "ES2022",
     "esModuleInterop": true,
     "declaration": true,
     "declarationMap": true,
     "rootDir": "./src",
-    "outDir": "./lib",
+    "outDir": "./dist/esm",
     "noEmit": false,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "forceConsistentCasingInFileNames": true
   },
-  "include": ["src"]
+  "files": ["./src/index.ts"],
+  "include": ["./src/**/*.ts"],
+  "exclude": [
+    "node_modules",
+    "tmp",
+    "dist",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/__tests__/*",
+    "**/__utils__/*",
+    "**/__mocks__/*"
+  ]
 }

@@ -1,18 +1,22 @@
 {
   "name": "@globus/sdk",
   "version": "3.9.0",
-  "private": true,
   "description": "The Globus SDK for JavaScript",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/types/index.d.ts",
+      "types": "./dist/esm/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     },
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./*": {
+      "types": "./dist/esm/lib/*.d.ts",
+      "import": "./dist/esm/lib/index.js",
+      "require": "./dist/cjs/lib/index.js"
+    }
   },
   "files": [
     "dist"
@@ -22,7 +26,7 @@
     "lint": "eslint .",
     "build": "node scripts/build.js",
     "watch": "tsc --watch tsconfig.package.json",
-    "generate:docs": "npx typedoc --tsconfig tsconfig.package.json",
+    "generate:docs": "npx typedoc",
     "publish-to-npm": "npm run build && cp README.md dist && cp LICENSE dist && cd dist && npm publish --access public",
     "publish-to-npm:next": "npm run build && cp README.md dist && cp LICENSE dist && cd dist && npm publish --access public --tag next"
   },

@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig.base.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
     "sourceMap": true,
     "importHelpers": false,
@@ -9,7 +9,6 @@
     "declaration": true,
     "declarationMap": true,
     "baseUrl": ".",
-    "outDir": "dist/esm",
     "rootDir": "./src"
   },
   "files": ["./src/index.ts"],

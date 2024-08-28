@@ -5,7 +5,7 @@ const { buildSync } = require('esbuild');
 const { dependencies, peerDependencies, version } = require('../package.json');
 
 const opts = {
-  entryPoints: ['src/index.ts'],
+  entryPoints: ['src/index.ts', 'src/constants.ts'],
   absWorkingDir: join(__dirname, '..'),
   bundle: true,
   sourcemap: true,
@@ -14,9 +14,12 @@ const opts = {
 
 buildSync({
   ...opts,
+  bundle: false,
   platform: 'neutral',
   format: 'esm',
-  outfile: 'dist/esm/index.js',
+  outdir: 'dist/esm',
+  packages: 'external',
+  external: [],
 });
 
 fs.writeFileSync(
@@ -35,13 +38,14 @@ buildSync({
   ...opts,
   platform: 'node',
   format: 'cjs',
-  outfile: 'dist/cjs/index.js',
+  outdir: 'dist/cjs',
 });
 
 buildSync({
   ...opts,
+  minify: true,
   platform: 'browser',
   format: 'iife',
   globalName: 'globus',
-  outfile: 'dist/umd/index.js',
+  outdir: 'dist/umd',
 });
