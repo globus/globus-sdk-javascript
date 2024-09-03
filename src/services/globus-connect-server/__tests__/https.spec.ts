@@ -1,5 +1,5 @@
 import { createStorage } from '../../../core/storage';
-import { mirror } from '../../../../__mocks__/handlers';
+import { mirror } from '../../../__mocks__/handlers';
 import { https } from '..';
 
 const GCS_CONFIGURATION = {

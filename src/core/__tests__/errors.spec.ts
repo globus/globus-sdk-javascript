@@ -1,7 +1,7 @@
 import {
   FLOWS_AUTHORIZATION_REQUIREMENTS_ERROR,
   TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR,
-} from '../../../__mocks__/errors/authorization_parameters';
+} from '../../__mocks__/errors/authorization_parameters';
 
 import {
   isErrorWellFormed,

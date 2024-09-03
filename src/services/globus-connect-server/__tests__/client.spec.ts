@@ -2,7 +2,7 @@ import { readdir } from 'node:fs/promises';
 
 import { createStorage } from '../../../core/storage';
 import { getClient } from '../client';
-import { mirror } from '../../../../__mocks__/handlers';
+import { mirror } from '../../../__mocks__/handlers';
 
 const GCS_CONFIGURATION = {
   host: 'https://fa5e.bd7c.data.globus.org',

@@ -1,7 +1,7 @@
 import { create } from '../index';
 import { createStorage } from '../../../core/storage';
 
-import type { MirroredRequest } from '../../../../__mocks__/handlers';
+import type { MirroredRequest } from '../../../__mocks__/handlers';
 
 test('create', async () => {
   createStorage('memory');

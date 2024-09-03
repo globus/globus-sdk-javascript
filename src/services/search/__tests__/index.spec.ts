@@ -1,6 +1,6 @@
 import { index } from '..';
 
-import { mirror } from '../../../../__mocks__/handlers';
+import { mirror } from '../../../__mocks__/handlers';
 
 describe('search – index', () => {
   test('get', async () => {

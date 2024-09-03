@@ -1,7 +1,7 @@
 import { createStorage } from '../../../core/storage';
 import { userCredentials } from '..';
 
-import type { MirroredRequest } from '../../../../__mocks__/handlers';
+import type { MirroredRequest } from '../../../__mocks__/handlers';
 
 const GCS_HOST = 'https://fa5e.bd7c.data.globus.org';
 const GCS_CONFIGURATION = {

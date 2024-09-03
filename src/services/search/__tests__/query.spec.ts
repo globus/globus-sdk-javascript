@@ -1,7 +1,7 @@
 import { createStorage } from '../../../core/storage';
 import { query } from '..';
 
-import { mirror } from '../../../../__mocks__/handlers';
+import { mirror } from '../../../__mocks__/handlers';
 
 describe('search – query', () => {
   test('get', async () => {

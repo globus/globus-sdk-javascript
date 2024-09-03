@@ -1,7 +1,7 @@
 import { endpointSearch } from '..';
 import { createStorage } from '../../../core/storage';
 
-import type { MirroredRequest } from '../../../../__mocks__/handlers';
+import type { MirroredRequest } from '../../../__mocks__/handlers';
 
 test('endpointSearch', async () => {
   createStorage('memory');

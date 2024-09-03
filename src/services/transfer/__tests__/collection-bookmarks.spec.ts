@@ -1,5 +1,5 @@
 import { collectionBookmarks } from '../index';
-import { mirror } from '../../../../__mocks__/handlers';
+import { mirror } from '../../../__mocks__/handlers';
 
 describe('collectionBookmarks', () => {
   test('getAll', async () => {

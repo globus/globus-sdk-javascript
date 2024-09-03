@@ -1,5 +1,5 @@
 import { access } from '../index';
-import { mirror } from '../../../../__mocks__/handlers';
+import { mirror } from '../../../__mocks__/handlers';
 
 describe('access', () => {
   test('getAll', async () => {

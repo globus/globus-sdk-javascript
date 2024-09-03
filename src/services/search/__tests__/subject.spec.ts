@@ -1,5 +1,5 @@
 import { subject } from '..';
-import { mirror } from '../../../../__mocks__/handlers';
+import { mirror } from '../../../__mocks__/handlers';
 
 describe('search – subject', () => {
   test('get', async () => {

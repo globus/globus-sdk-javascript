@@ -1,6 +1,6 @@
 import { addClientInfo, getClientInfo } from '../info/index';
 import { toString } from '../info/private';
-import pkg from '../../../../package.json';
+import pkg from '../../../package.json';
 
 describe('info', () => {
   it('returns default information for the sdk', () => {

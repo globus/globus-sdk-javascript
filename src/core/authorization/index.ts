@@ -16,3 +16,5 @@ import {
 export function create(configuration: AuthorizationManagerConfiguration) {
   return new AuthorizationManager(configuration);
 }
+
+export { AuthorizationManager, AuthorizationManagerConfiguration };

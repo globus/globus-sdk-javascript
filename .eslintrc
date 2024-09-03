@@ -22,6 +22,9 @@
   "overrides": [
     {
       "files": ["**/*.ts"],
+      "parserOptions": {
+        "project": "./tsconfig.eslint.json",
+      },
       "extends": ["airbnb-typescript/base", "prettier"],
       "plugins": ["@typescript-eslint"],
       "rules": {

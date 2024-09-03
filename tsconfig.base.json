@@ -1,0 +1,14 @@
+{
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "skipDefaultLibCheck": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": false,
+    "importHelpers": false,
+    "types": ["jest", "node"],
+    "resolveJsonModule": true
+  }
+}

@@ -1,6 +1,6 @@
 import server from './src/__mocks__/server';
 
-import { disable } from './src/lib/core/info/private';
+import { disable } from './src/core/info/private';
 
 // Establish API mocking before all tests.
 beforeAll(() => {

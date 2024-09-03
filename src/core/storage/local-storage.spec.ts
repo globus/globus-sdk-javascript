@@ -1,4 +1,4 @@
-import '../../../__mocks__/localStorage';
+import '../../__mocks__/localStorage';
 import { LocalStorage } from './local-storage';
 
 describe('LocalStorage', () => {

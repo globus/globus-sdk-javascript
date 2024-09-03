@@ -4,7 +4,6 @@
  * @see [Globus Connect Server Manager API Documentation](https://docs.globus.org/globus-connect-server/v5.4/api/)
  * @module
  */
-
 import type {
   Segment,
   ServiceMethodOptions,

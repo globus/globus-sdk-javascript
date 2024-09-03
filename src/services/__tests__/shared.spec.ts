@@ -1,12 +1,12 @@
 import { HttpResponse, http } from 'msw';
 import { serviceRequest } from '../shared';
-import { mirror } from '../../../__mocks__/handlers';
-import { setup } from '../../../__mocks__/localStorage';
-import server from '../../../__mocks__/server';
+import { mirror } from '../../__mocks__/handlers';
+import { setup } from '../../__mocks__/localStorage';
+import server from '../../__mocks__/server';
 import { AuthorizationManager } from '../../core/authorization/AuthorizationManager';
 import { getRequiredScopes } from '../globus-connect-server';
 import { enable } from '../../core/info/private';
-import pkg from '../../../../package.json';
+import pkg from '../../../package.json';
 
 describe('serviceRequest', () => {
   afterEach(() => {

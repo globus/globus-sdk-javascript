@@ -1,5 +1,5 @@
 import { endpointManager } from '../../index';
-import { mirror } from '../../../../../__mocks__/handlers';
+import { mirror } from '../../../../__mocks__/handlers';
 
 const { pauseRule } = endpointManager;
 

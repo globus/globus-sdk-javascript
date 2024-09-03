@@ -1,5 +1,5 @@
-import '../../../../__mocks__/sessionStorage';
-import '../../../../__mocks__/window-location';
+import '../../../__mocks__/sessionStorage';
+import '../../../__mocks__/window-location';
 import PKCE from 'js-pkce';
 import { RedirectTransport } from '../../authorization/RedirectTransport';
 

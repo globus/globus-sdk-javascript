@@ -1,5 +1,5 @@
 import { endpointManager } from '../..';
-import { mirror } from '../../../../../__mocks__/handlers';
+import { mirror } from '../../../../__mocks__/handlers';
 
 const { endpoint } = endpointManager;
 

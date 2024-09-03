@@ -1,4 +1,4 @@
-import { setup } from '../../../../__mocks__/localStorage';
+import { setup } from '../../../__mocks__/localStorage';
 import { AuthorizationManager } from '../../authorization/AuthorizationManager';
 import { TokenLookup } from '../../authorization/TokenLookup';
 

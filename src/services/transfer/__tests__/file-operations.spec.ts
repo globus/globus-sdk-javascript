@@ -1,5 +1,5 @@
 import { createStorage } from '../../../core/storage';
-import { mirror } from '../../../../__mocks__/handlers';
+import { mirror } from '../../../__mocks__/handlers';
 
 import { fileOperations } from '..';
 

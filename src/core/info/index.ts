@@ -1,5 +1,6 @@
 /**
- * This module is mostly intended for internal use, but can be helpful
+ * @module Information
+ * @description This module is mostly intended for internal use, but can be helpful
  * identifying information about the SDK package you are using at runtime.
  */
 import { toString, isEnabled, CLIENT_INFO_HEADER } from './private.js';
