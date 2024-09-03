@@ -4,8 +4,8 @@
   "entryPoints": [
     "./src/index.ts",
     "./src/constants.ts",
-    "./src/lib/services/globus-connect-server/client.ts",
-    "./src/lib/core/authorization/AuthorizationManager.ts"
+    "./src/services/globus-connect-server/client.ts",
+    "./src/core/authorization/AuthorizationManager.ts"
   ],
   "entryPointStrategy": "expand",
   "out": "docs"

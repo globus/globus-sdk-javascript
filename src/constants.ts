@@ -13,4 +13,4 @@
  * console.log(GCS.CONNECTORS.POSIX);
  */
 
-export * as GCS from './lib/services/globus-connect-server/constants.js';
+export * as GCS from './services/globus-connect-server/constants.js';

@@ -1,16 +1,29 @@
 {
   "name": "@globus/sdk",
   "version": "3.9.0",
-  "private": true,
   "description": "The Globus SDK for JavaScript",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
-  "files": [],
+  "exports": {
+    ".": {
+      "types": "./dist/esm/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    },
+    "./package.json": "./package.json",
+    "./cjs/*": {
+      "types": "./dist/esm/*.d.ts",
+      "require": "./dist/cjs/*.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "jest",
     "lint": "eslint .",
-    "build": "rm -rf ./dist && tsc --build tsconfig.package.json && tsc --build tsconfig.cjs.json && webpack && node ./scripts/generate-package-json.js",
+    "build": "tsc --project tsconfig.json --outDir dist/esm && node scripts/build.js",
     "watch": "tsc --watch tsconfig.package.json",
     "generate:docs": "npx typedoc --tsconfig tsconfig.package.json",
     "publish-to-npm": "npm run build && cp README.md dist && cp LICENSE dist && cd dist && npm publish --access public",
@@ -28,6 +41,7 @@
     "@types/jest": "29.5.12",
     "@types/node": "^22.5.0",
     "dotenv": "^16.4.5",
+    "esbuild": "0.23.1",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^18.0.0",

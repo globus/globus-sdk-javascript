@@ -58,6 +58,7 @@ The ESM distribution is the `module` export of the package.
 
 ```js
 import { transfer } from '@globus/sdk';
+import { GCS } from '@globus/sdk/constants';
 ```
 
 #### CommonJS

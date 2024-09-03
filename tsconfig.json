@@ -1,0 +1,40 @@
+{
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "skipDefaultLibCheck": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": false,
+    "sourceMap": true,
+    "importHelpers": false,
+    "target": "es6",
+    "module": "es2022",
+    "lib": ["es2022", "dom"],
+    "declaration": true,
+    "declarationMap": true,
+    "baseUrl": ".",
+    "outDir": "dist",
+    "rootDir": "./src",
+    "types": ["jest", "node"],
+    "resolveJsonModule": true
+  },
+  "files": [
+    "./src/index.ts",
+    "./src/constants.ts",
+    "./src/services/globus-connect-server/client.ts",
+    "./src/core/authorization/AuthorizationManager.ts"
+  ],
+  "include": ["./src/**/*.ts"],
+  "exclude": [
+    "node_modules",
+    "tmp",
+    "dist",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/__tests__/*",
+    "**/__utils__/*",
+    "**/__mocks__/*"
+  ]
+}
