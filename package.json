@@ -1,16 +1,85 @@
 {
   "name": "@globus/sdk",
   "version": "3.9.0",
-  "private": true,
   "description": "The Globus SDK for JavaScript",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
-  "files": [],
+  "exports": {
+    ".": {
+      "types": "./dist/esm/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    },
+    "./package.json": "./package.json",
+    "./cjs/*": {
+      "types": "./dist/esm/*.d.ts",
+      "require": "./dist/cjs/*.js",
+      "default": "./dist/cjs/*.js"
+    },
+    "./core/authorization": {
+      "types": "./dist/esm/core/authorization/index.d.ts",
+      "import": "./dist/esm/core/authorization/index.js",
+      "default": "./dist/esm/core/authorization/index.js"
+    },
+    "./core/info": {
+      "types": "./dist/esm/core/info/index.d.ts",
+      "import": "./dist/esm/core/info/index.js",
+      "default": "./dist/esm/core/info/index.js"
+    },
+    "./services/auth": {
+      "types": "./dist/esm/services/auth/index.d.ts",
+      "import": "./dist/esm/services/auth/index.js",
+      "default": "./dist/esm/services/auth/index.js"
+    },
+    "./services/compute": {
+      "types": "./dist/esm/services/compute/index.d.ts",
+      "import": "./dist/esm/services/compute/index.js",
+      "default": "./dist/esm/services/compute/index.js"
+    },
+    "./services/flows": {
+      "types": "./dist/esm/services/compute/index.d.ts",
+      "import": "./dist/esm/services/compute/index.js",
+      "default": "./dist/esm/services/compute/index.js"
+    },
+    "./services/globus-connect-server": {
+      "types": "./dist/esm/services/globus-connect-server/index.d.ts",
+      "import": "./dist/esm/services/globus-connect-server/index.js",
+      "default": "./dist/esm/services/globus-connect-server/index.js"
+    },
+    "./services/groups": {
+      "types": "./dist/esm/services/groups/index.d.ts",
+      "import": "./dist/esm/services/groups/index.js",
+      "default": "./dist/esm/services/groups/index.js"
+    },
+    "./services/search": {
+      "types": "./dist/esm/services/search/index.d.ts",
+      "import": "./dist/esm/services/search/index.js",
+      "default": "./dist/esm/services/search/index.js"
+    },
+    "./services/timer": {
+      "types": "./dist/esm/services/timer/index.d.ts",
+      "import": "./dist/esm/services/timer/index.js",
+      "default": "./dist/esm/services/timer/index.js"
+    },
+    "./services/transfer": {
+      "types": "./dist/esm/services/transfer/index.d.ts",
+      "import": "./dist/esm/services/transfer/index.js",
+      "default": "./dist/esm/services/transfer/index.js"
+    },
+    "./*": {
+      "types": "./dist/esm/*.d.ts",
+      "import": "./dist/esm/*.js",
+      "default": "./dist/esm/*.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "jest",
     "lint": "eslint .",
-    "build": "rm -rf ./dist && tsc --build tsconfig.package.json && tsc --build tsconfig.cjs.json && webpack && node ./scripts/generate-package-json.js",
+    "build": "tsc --project tsconfig.package.json && node scripts/build.js",
     "watch": "tsc --watch tsconfig.package.json",
     "generate:docs": "npx typedoc --tsconfig tsconfig.package.json",
     "publish-to-npm": "npm run build && cp README.md dist && cp LICENSE dist && cd dist && npm publish --access public",
@@ -28,6 +97,7 @@
     "@types/jest": "29.5.12",
     "@types/node": "^22.5.2",
     "dotenv": "^16.4.5",
+    "esbuild": "0.23.1",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^18.0.0",
@@ -41,9 +111,7 @@
     "ts-node": "^10.9.2",
     "tslib": "^2.7.0",
     "typedoc": "^0.26.6",
-    "typescript": "^5.5.4",
-    "webpack": "^5.94.0",
-    "webpack-cli": "^5.1.4"
+    "typescript": "^5.5.4"
   },
   "engines": {
     "node": ">=18"

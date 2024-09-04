@@ -6,31 +6,31 @@
     "browser": true,
     "es6": true,
     "jest": true,
-    "node": true
+    "node": true,
   },
   "globals": {
-    "globalThis": "readonly"
+    "globalThis": "readonly",
   },
   "parserOptions": {
     "ecmaVersion": 2020,
-    "sourceType": "module"
+    "sourceType": "module",
   },
   "plugins": ["prettier"],
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
   },
   "overrides": [
     {
       "files": ["**/*.ts"],
       "parserOptions": {
-        "project": "./tsconfig.eslint.json"
+        "project": "./tsconfig.eslint.json",
       },
       "extends": ["airbnb-typescript/base", "prettier"],
       "plugins": ["@typescript-eslint"],
       "rules": {
         "import/prefer-default-export": "off", // Allowed based on many of our files being early-stage abstractions.
-        "func-names": "off" // Allowed based on our usage of `satisfies`
-      }
-    }
-  ]
+        "func-names": "off", // Allowed based on our usage of `satisfies`
+      },
+    },
+  ],
 }

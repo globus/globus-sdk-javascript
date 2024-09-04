@@ -2,7 +2,6 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "sourceMap": true,
-    "importHelpers": false,
     "target": "es6",
     "module": "es2022",
     "lib": ["es2022", "dom"],
@@ -10,9 +9,16 @@
     "declarationMap": true,
     "baseUrl": ".",
     "outDir": "dist/esm",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "types": ["node"]
   },
-  "files": ["./src/index.ts"],
+  "files": [
+    "./src/index.ts",
+    "./src/constants.ts",
+    "./src/services/globus-connect-server/client.ts",
+    "./src/core/info/index.ts",
+    "./src/core/authorization/index.ts"
+  ],
   "include": ["./src/**/*.ts"],
   "exclude": [
     "node_modules",

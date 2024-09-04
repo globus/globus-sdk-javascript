@@ -60,26 +60,24 @@
 /**
  * Core
  */
-export * as info from './lib/core/info/index.js';
-export * as logger from './lib/core/logger.js';
-export * as authorization from './lib/core/authorization/index.js';
-export * as errors from './lib/core/errors.js';
+export * as info from './core/info/index.js';
+export * as logger from './core/logger.js';
+export * as authorization from './core/authorization/index.js';
+export * as errors from './core/errors.js';
 
 /**
  * Services
  */
-
-export * as auth from './lib/services/auth/index.js';
-export * as transfer from './lib/services/transfer/index.js';
-export * as search from './lib/services/search/index.js';
-export * as groups from './lib/services/groups/index.js';
-export * as flows from './lib/services/flows/index.js';
-export * as gcs from './lib/services/globus-connect-server/index.js';
-export * as timer from './lib/services/timer/index.js';
-export * as compute from './lib/services/compute/index.js';
+export * as auth from './services/auth/index.js';
+export * as transfer from './services/transfer/index.js';
+export * as search from './services/search/index.js';
+export * as groups from './services/groups/index.js';
+export * as flows from './services/flows/index.js';
+export * as gcs from './services/globus-connect-server/index.js';
+export * as timer from './services/timer/index.js';
+export * as compute from './services/compute/index.js';
 
 /**
  * Applications
  */
-
-export * as webapp from './lib/apps/web.js';
+export * as webapp from './apps/web.js';
