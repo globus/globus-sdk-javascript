@@ -1,14 +1,6 @@
 import { jwtDecode } from 'jwt-decode';
 
-import type IConfig from 'js-pkce/dist/IConfig';
-
-import {
-  getAuthorizationEndpoint,
-  getTokenEndpoint,
-  isGlobusAuthTokenResponse,
-  isRefreshToken,
-  oauth2,
-} from '../../services/auth/index.js';
+import { isGlobusAuthTokenResponse, isRefreshToken, oauth2 } from '../../services/auth/index.js';
 
 import { createStorage, getStorage } from '../storage/index.js';
 import { log } from '../logger.js';
@@ -37,9 +29,9 @@ import type {
 } from '../../services/auth/types.js';
 
 export type AuthorizationManagerConfiguration = {
-  client: IConfig['client_id'];
-  scopes?: IConfig['requested_scopes'];
-  redirect: IConfig['redirect_uri'];
+  client: string;
+  scopes?: string;
+  redirect: string;
   /**
    * @private
    * @default DEFAULT_CONFIGURATION.useRefreshTokens
@@ -320,16 +312,12 @@ export class AuthorizationManager {
   }
 
   #buildTransport(overrides?: Partial<ConstructorParameters<typeof RedirectTransport>[0]>) {
-    const scopes = this.#withOfflineAccess(
-      overrides?.requested_scopes ?? (this.configuration.scopes || ''),
-    );
+    const scopes = this.#withOfflineAccess(overrides?.scopes ?? (this.configuration.scopes || ''));
 
     return new RedirectTransport({
-      client_id: this.configuration.client,
-      authorization_endpoint: getAuthorizationEndpoint(),
-      token_endpoint: getTokenEndpoint(),
-      redirect_uri: this.configuration.redirect,
-      requested_scopes: scopes,
+      client: this.configuration.client,
+      redirect: this.configuration.redirect,
+      scopes,
       ...overrides,
       // @todo Decide if we want to include the `include_consented_scopes` parameter by default.
       // params: {
@@ -461,7 +449,7 @@ export class AuthorizationManager {
     options?: { additionalParams?: RedirectTransportOptions['params'] },
   ) {
     this.#transport = this.#buildTransport({
-      requested_scopes: this.#withOfflineAccess(response.required_scopes.join(' ')),
+      scopes: this.#withOfflineAccess(response.required_scopes.join(' ')),
       params: {
         ...options?.additionalParams,
       },
