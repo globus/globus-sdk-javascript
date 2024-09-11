@@ -7,7 +7,7 @@ exports[`oauth2 introspect 1`] = `
     "token": "abc-def-ghi",
   },
   "headers": {
-    "accept": "*/*",
+    "accept": "application/json",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
     "content-length": "53",
@@ -28,7 +28,7 @@ exports[`oauth2 refresh 1`] = `
     "refresh_token": "abc-def-ghi",
   },
   "headers": {
-    "accept": "*/*",
+    "accept": "application/json",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
     "content-length": "75",
@@ -48,7 +48,7 @@ exports[`oauth2 revoke 1`] = `
     "token": "abc-def-ghi",
   },
   "headers": {
-    "accept": "*/*",
+    "accept": "application/json",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
     "content-length": "42",
@@ -83,7 +83,7 @@ exports[`oauth2 validate 1`] = `
     "token": "abc-def-ghi",
   },
   "headers": {
-    "accept": "*/*",
+    "accept": "application/json",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
     "content-length": "40",

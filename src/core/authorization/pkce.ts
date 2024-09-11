@@ -1,5 +1,11 @@
-function getCrypto() {
-  return globalThis.crypto;
+export function isSupported() {
+  return 'crypto' in globalThis;
+}
+
+function getCrypto(): Crypto {
+  return 'webcrypto' in globalThis.crypto
+    ? (globalThis.crypto.webcrypto as unknown as Crypto)
+    : globalThis.crypto;
 }
 
 /**

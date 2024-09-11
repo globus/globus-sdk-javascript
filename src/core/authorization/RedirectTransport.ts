@@ -6,6 +6,7 @@ import {
   generateState,
   AuthorizationRequestParameters,
   AuthorizationCodeExchangeParameters,
+  isSupported,
 } from './pkce';
 
 export type GetTokenOptions = {
@@ -40,7 +41,12 @@ export class RedirectTransport {
 
   constructor(options: RedirectTransportOptions) {
     this.#options = options;
+    if (RedirectTransport.supported === false) {
+      throw new Error('RedirectTransport is not supported in this environment.');
+    }
   }
+
+  static supported = isSupported();
 
   /**
    * For the redirect transport, sending the request will redirect the user to the authorization endpoint, initiating the OAuth flow.
