@@ -21,10 +21,15 @@ async function sha256(input: string) {
 }
 
 /**
+ * Character set for generating random alpha-numeric strings.
+ */
+const CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+/**
  * Character set allowed to be used in the PKCE `code_verifier`
  * @see https://www.rfc-editor.org/rfc/rfc7636#section-4.1
  */
-const PKCE_SAFE_CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
+const PKCE_SAFE_CHARSET = `${CHARSET}-._~`;
 /**
  * Create a Code Verifier for PKCE
  * @see https://www.rfc-editor.org/rfc/rfc7636#section-4.1
@@ -48,7 +53,9 @@ export async function generateCodeChallenge(verifier: string) {
 }
 
 export function generateState() {
-  return String.fromCharCode(...Array.from(getCrypto().getRandomValues(new Uint8Array(16))));
+  return Array.from(getCrypto().getRandomValues(new Uint8Array(16)))
+    .map((v) => CHARSET[v % CHARSET.length])
+    .join('');
 }
 
 /**
