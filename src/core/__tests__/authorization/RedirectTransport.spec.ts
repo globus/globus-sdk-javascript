@@ -22,6 +22,7 @@ const MOCK_TOKEN = {
 
 describe('RedirectTransport', () => {
   beforeEach(() => {
+    sessionStorage.clear();
     jest.clearAllMocks();
     jest.restoreAllMocks();
   });
@@ -52,6 +53,40 @@ describe('RedirectTransport', () => {
         expect(response).toBeUndefined();
       });
 
+      it('throws when "error" parameter is present', async () => {
+        window.location.href = `${MOCK_CONFIG.redirect}?error=access_denied`;
+        const transport = new RedirectTransport(MOCK_CONFIG);
+        await expect(async () => {
+          await transport.getToken();
+        }).rejects.toThrow();
+      });
+
+      it('throws and includes "error_description"', async () => {
+        window.location.href = `${MOCK_CONFIG.redirect}?error=access_denied&error_description=Access+denied+by+user`;
+        const transport = new RedirectTransport(MOCK_CONFIG);
+        await expect(async () => {
+          await transport.getToken();
+        }).rejects.toThrow('Access denied by user');
+      });
+
+      it('throws on "state" mismatch', async () => {
+        sessionStorage.setItem(KEYS.PKCE_STATE, 'ACTUAL_STATE');
+        window.location.href = `${MOCK_CONFIG.redirect}?code=CODE&state=INVALID_STATE`;
+        const transport = new RedirectTransport(MOCK_CONFIG);
+        await expect(async () => {
+          await transport.getToken();
+        }).rejects.toThrow('Invalid State');
+      });
+
+      it('throws on missing verifier', async () => {
+        sessionStorage.setItem(KEYS.PKCE_STATE, 'ACTUAL_STATE');
+        window.location.href = `${MOCK_CONFIG.redirect}?code=CODE&state=ACTUAL_STATE`;
+        const transport = new RedirectTransport(MOCK_CONFIG);
+        await expect(async () => {
+          await transport.getToken();
+        }).rejects.toThrow('Invalid Code Verifier');
+      });
+
       it('removes code and state from location after processing (by default)', async () => {
         jest
           .spyOn(oauth2.token, 'exchange')
@@ -62,6 +97,7 @@ describe('RedirectTransport', () => {
          */
         const state = 'SOME_STATE';
         sessionStorage.setItem(KEYS.PKCE_STATE, state);
+        sessionStorage.setItem(KEYS.PKCE_CODE_VERIFIER, 'CODE_VERIFIER');
 
         const transport = new RedirectTransport(MOCK_CONFIG);
 
