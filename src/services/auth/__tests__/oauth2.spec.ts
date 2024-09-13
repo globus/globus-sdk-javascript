@@ -66,6 +66,32 @@ describe('oauth2', () => {
     }).toMatchSnapshot();
   });
 
+  test('token', async () => {
+    const {
+      req: { url, method, headers, formData },
+    } = await mirror(
+      await oauth2.token.token({
+        payload: {
+          grant_type: 'authorization_code',
+          code: 'CODE',
+          client_id: 'my-client-id',
+          code_verifier: 'CODE_VERIFIER',
+          redirect_uri: 'https://redirect-uri',
+        },
+      }),
+    );
+    expect({
+      url,
+      method,
+      headers,
+      formData,
+    }).toMatchSnapshot();
+  });
+
+  test('exchange (alias)', () => {
+    expect(oauth2.token.exchange).toBe(oauth2.token.token);
+  });
+
   test('refresh', async () => {
     expect(() => {
       // @ts-expect-error This intentionally does not have a payload to test the error case.
