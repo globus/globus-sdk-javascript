@@ -21,12 +21,21 @@ export type RedirectTransportOptions = Pick<
   AuthorizationManagerConfiguration,
   'client' | 'redirect' | 'scopes'
 > & {
+  /**
+   * Query parameters to include in the authorization request.
+   *
+   * The `RedirectTransport` will include all parameters required for a default OAuth PKCE flow, but
+   * these parameters can be overridden or extended with this option.
+   */
   params?: {
     [key: string]: string;
   };
 };
 
-const KEYS = {
+/**
+ * @private
+ */
+export const KEYS = {
   PKCE_STATE: 'pkce_state',
   PKCE_CODE_VERIFIER: 'pkce_code_verifier',
 };
@@ -67,20 +76,20 @@ export class RedirectTransport {
     sessionStorage.setItem(KEYS.PKCE_STATE, state);
 
     const params: AuthorizationRequestParameters = {
+      response_type: 'code',
       client_id: this.#options.client,
       scope: this.#options.scopes || '',
       redirect_uri: this.#options.redirect,
       state,
       code_challenge: challenge,
       code_challenge_method: 'S256',
-      response_type: 'code',
-      ...[this.#options.params],
+      ...(this.#options.params || {}),
     };
 
     const url = new URL(getAuthorizationEndpoint());
     url.search = new URLSearchParams(params).toString();
 
-    window.location.assign(url);
+    window.location.assign(url.toString());
   }
 
   /**
@@ -113,6 +122,7 @@ export class RedirectTransport {
      * Now that we have the values in memory, we can remove them from session storage.
      */
     resetPKCE();
+
     /**
      * Validate the `state` parameter matches the preserved state (to prevent CSRF attacks).
      */

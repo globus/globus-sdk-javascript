@@ -8,7 +8,7 @@ import { Event } from '../../authorization/Event';
 import { TRANSFER_CONSENT_REQUIRED_ERROR, TRANSFER_GENERIC_ERROR } from '../errors.spec';
 import { TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR } from '../../../__mocks__/errors/authorization_parameters';
 import { oauth2 } from '../../../services/auth';
-import { RedirectTransport } from '../../authorization/RedirectTransport';
+import { KEYS, RedirectTransport } from '../../authorization/RedirectTransport';
 
 describe('AuthorizationManager', () => {
   beforeEach(() => {
@@ -33,42 +33,42 @@ describe('AuthorizationManager', () => {
 
   if (RedirectTransport.supported) {
     describe('RedirectTransport', () => {
-      it('can be created without providing scopes', () => {
+      it('can be created without providing scopes', async () => {
         const instance = new AuthorizationManager({
           client: 'client_id',
           redirect: 'https://redirect_uri',
         });
         expect(instance).toBeDefined();
         expect(instance.authenticated).toBe(false);
-        instance.login();
+        await instance.login();
         expect(window.location.assign).toHaveBeenCalledTimes(1);
         expect(window.location.assign).toHaveBeenCalledWith(
           expect.stringContaining('scope=openid+profile+email&'),
         );
       });
 
-      it('supports login', () => {
+      it('supports login', async () => {
         const instance = new AuthorizationManager({
           client: 'client_id',
           redirect: 'https://redirect_uri',
           scopes: 'foobar baz',
         });
-        instance.login();
+        await instance.login();
         expect(window.location.assign).toHaveBeenCalledTimes(1);
         expect(window.location.assign).toHaveBeenCalledWith(
           expect.stringContaining(
-            'https://auth.globus.org/v2/oauth2/authorize?response_type=code&client_id=client_id&state=&scope=foobar+baz+openid+profile+email&redirect_uri=https%3A%2F%2Fredirect_uri',
+            'https://auth.globus.org/v2/oauth2/authorize?response_type=code&client_id=client_id&scope=foobar+baz+openid+profile+email&redirect_uri=https%3A%2F%2Fredirect_uri&state=',
           ),
         );
       });
 
-      it('supports login with additionalParameters', () => {
+      it('supports login with additionalParameters', async () => {
         const instance = new AuthorizationManager({
           client: 'client_id',
           redirect: 'https://redirect_uri',
           scopes: 'foobar baz',
         });
-        instance.login({
+        await instance.login({
           additionalParams: {
             page: 'some.example.state',
           },
@@ -78,50 +78,50 @@ describe('AuthorizationManager', () => {
       });
 
       describe('defaultScopes', () => {
-        it('supports custom value', () => {
+        it('supports custom value', async () => {
           const instance = new AuthorizationManager({
             client: 'client_id',
             redirect: 'https://redirect_uri',
             scopes: 'foobar baz',
             defaultScopes: 'openid',
           });
-          instance.login();
+          await instance.login();
           expect(window.location.assign).toHaveBeenCalledTimes(1);
           expect(window.location.assign).toHaveBeenCalledWith(
             expect.stringContaining(
-              'https://auth.globus.org/v2/oauth2/authorize?response_type=code&client_id=client_id&state=&scope=foobar+baz+openid&redirect_uri=https%3A%2F%2Fredirect_uri',
+              'https://auth.globus.org/v2/oauth2/authorize?response_type=code&client_id=client_id&scope=foobar+baz+openid&redirect_uri=https%3A%2F%2Fredirect_uri&state=',
             ),
           );
         });
 
-        it('can be disabled', () => {
+        it('can be disabled', async () => {
           const instance = new AuthorizationManager({
             client: 'client_id',
             redirect: 'https://redirect_uri',
             scopes: 'foobar baz',
             defaultScopes: false,
           });
-          instance.login();
+          await instance.login();
           expect(window.location.assign).toHaveBeenCalledTimes(1);
           expect(window.location.assign).toHaveBeenCalledWith(
             expect.stringContaining(
-              'https://auth.globus.org/v2/oauth2/authorize?response_type=code&client_id=client_id&state=&scope=foobar+baz&redirect_uri=https%3A%2F%2Fredirect_uri',
+              'https://auth.globus.org/v2/oauth2/authorize?response_type=code&client_id=client_id&scope=foobar+baz&redirect_uri=https%3A%2F%2Fredirect_uri&state=',
             ),
           );
         });
 
-        it('requests "offline_access" with useRefreshTokens', () => {
+        it('requests "offline_access" with useRefreshTokens', async () => {
           const instance = new AuthorizationManager({
             client: 'client_id',
             redirect: 'https://redirect_uri',
             scopes: 'foobar baz',
             useRefreshTokens: true,
           });
-          instance.login();
+          await instance.login();
           expect(window.location.assign).toHaveBeenCalledTimes(1);
           expect(window.location.assign).toHaveBeenCalledWith(
             expect.stringContaining(
-              'https://auth.globus.org/v2/oauth2/authorize?response_type=code&client_id=client_id&state=&scope=foobar+baz+openid+profile+email+offline_access&redirect_uri=https%3A%2F%2Fredirect_uri',
+              'https://auth.globus.org/v2/oauth2/authorize?response_type=code&client_id=client_id&scope=foobar+baz+openid+profile+email+offline_access&redirect_uri=https%3A%2F%2Fredirect_uri&state=',
             ),
           );
         });
@@ -144,13 +144,20 @@ describe('AuthorizationManager', () => {
         };
 
         jest
-          .spyOn(oauth2.token, 'token')
+          .spyOn(oauth2.token, 'exchange')
           .mockReturnValue(Promise.resolve(Response.json(MOCK_TOKEN)));
+
+        /**
+         * Set fake state to be used as part of the OAuth flow.
+         */
+        const state = 'SOME_STATE';
+        sessionStorage.setItem(KEYS.PKCE_STATE, state);
+        sessionStorage.setItem(KEYS.PKCE_CODE_VERIFIER, 'CODE_VERIFIER');
 
         const instance = new AuthorizationManager(CONFIG);
         const spy = jest.spyOn(instance.events.authenticated, 'dispatch');
 
-        window.location.href = 'https://redirect_uri?code=CODE';
+        window.location.href = `https://redirect_uri?code=CODE&state=${state}`;
         await instance.handleCodeRedirect();
         expect(instance.authenticated).toBe(true);
         expect(spy).toHaveBeenCalledWith({
@@ -495,6 +502,11 @@ describe('AuthorizationManager', () => {
   });
 });
 
+/**
+ * @todo This test suite should **not** be dependent on the transport, but since the
+ * `RedirectTransport` is the only transport available, we can only run these tests
+ * when it is supported.
+ */
 if (RedirectTransport.supported) {
   describe('AuthorizationManager - Error Utilities', () => {
     let instance: AuthorizationManager;
@@ -509,14 +521,15 @@ if (RedirectTransport.supported) {
     });
 
     describe('handleErrorResponse', () => {
-      it('should no-op on an unknown error', () => {
+      it('should no-op on an unknown error', async () => {
         const location = window.location.href;
-        instance.handleErrorResponse(TRANSFER_GENERIC_ERROR);
+        await instance.handleErrorResponse(TRANSFER_GENERIC_ERROR);
         expect(window.location.href).toBe(location);
       });
 
-      it('should handle Authorization Requirements errors', () => {
-        instance.handleErrorResponse(TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR);
+      it('should handle Authorization Requirements errors', async () => {
+        await instance.handleErrorResponse(TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR);
+
         const url = new URL(window.location.href);
         expect(url.searchParams.get('session_message')).toBe(
           TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR.authorization_parameters.session_message,
@@ -526,25 +539,25 @@ if (RedirectTransport.supported) {
         expect(url.searchParams.get('session_required_single_domain')).toBe('globus.org');
         expect(url.searchParams.get('prompt')).toBe('login');
       });
-      it('should handle Consent Required errors', () => {
-        instance.handleErrorResponse(TRANSFER_CONSENT_REQUIRED_ERROR);
+      it('should handle Consent Required errors', async () => {
+        await instance.handleErrorResponse(TRANSFER_CONSENT_REQUIRED_ERROR);
         const url = new URL(window.location.href);
         expect(url.searchParams.get('scope')).toBe(
           TRANSFER_CONSENT_REQUIRED_ERROR.required_scopes.join(' '),
         );
       });
-      it('should handle AuthenticationFailed errors', () => {
+      it('should handle AuthenticationFailed errors', async () => {
         const spy = jest.spyOn(instance, 'revoke');
-        instance.handleErrorResponse({
+        await instance.handleErrorResponse({
           code: 'AuthenticationFailed',
           message: '...',
         });
         expect(spy).toHaveBeenCalledTimes(1);
       });
 
-      it('should return the handler when told not to execute', () => {
+      it('should return the handler when told not to execute', async () => {
         const location = window.location.href;
-        const handler = instance.handleErrorResponse(
+        const handler = await instance.handleErrorResponse(
           {
             code: 'SomethingHappend',
             message: '...',
@@ -560,7 +573,7 @@ if (RedirectTransport.supported) {
         expect(window.location.href).toBe(location);
         expect(handler).toBeDefined();
         expect(handler).toBeInstanceOf(Function);
-        handler();
+        await handler();
 
         const url = new URL(window.location.href);
         expect(url.searchParams.get('session_message')).toBe('This is a session message');
@@ -571,8 +584,8 @@ if (RedirectTransport.supported) {
       });
 
       describe('additionalParameters', () => {
-        it('should preserve passed in query parameters for "authorization_requirements" error', () => {
-          instance.handleErrorResponse(TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR, {
+        it('should preserve passed in query parameters for "authorization_requirements" error', async () => {
+          await instance.handleErrorResponse(TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR, {
             additionalParams: {
               foo: 'bar',
             },
@@ -581,8 +594,8 @@ if (RedirectTransport.supported) {
           expect(url.searchParams.get('foo')).toBe('bar');
         });
 
-        it('should preserve passed in query parameters for "ConsentRequired" error', () => {
-          instance.handleErrorResponse(TRANSFER_CONSENT_REQUIRED_ERROR, {
+        it('should preserve passed in query parameters for "ConsentRequired" error', async () => {
+          await instance.handleErrorResponse(TRANSFER_CONSENT_REQUIRED_ERROR, {
             additionalParams: {
               retained_state: 'example-state',
               retained_route: 'example.route',

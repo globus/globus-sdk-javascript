@@ -2,14 +2,12 @@ import { version } from 'node:process';
 
 import '../../../__mocks__/sessionStorage';
 import '../../../__mocks__/window-location';
-import { RedirectTransport } from '../../authorization/RedirectTransport';
+import { KEYS, RedirectTransport } from '../../authorization/RedirectTransport';
 import { oauth2 } from '../../../services/auth';
 
 const MOCK_CONFIG = {
   client: 'CLIENT_ID',
   redirect: 'https://redirect_uri/my-page',
-  authorization_endpoint: 'AUTHORIZATION_ENDPOINT',
-  token_endpoint: 'TOKEN_ENDPOINT',
   scopes: 'REQUIRED_SCOPES',
 };
 
@@ -24,7 +22,8 @@ const MOCK_TOKEN = {
 
 describe('RedirectTransport', () => {
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
+    jest.restoreAllMocks();
   });
 
   if (version.startsWith('v18')) {
@@ -36,11 +35,11 @@ describe('RedirectTransport', () => {
   } else {
     it('should authorize using the window.location.assign method', async () => {
       const transport = new RedirectTransport(MOCK_CONFIG);
-      transport.send();
+      await transport.send();
       expect(window.location.assign).toHaveBeenCalled();
       expect(window.location.assign).toHaveBeenCalledWith(
         expect.stringContaining(
-          'AUTHORIZATION_ENDPOINT?response_type=code&client_id=CLIENT_ID&state=&scope=REQUIRED_SCOPES&redirect_uri=https%3A%2F%2Fredirect_uri%2Fmy-page',
+          'https://auth.globus.org/v2/oauth2/authorize?response_type=code&client_id=CLIENT_ID&scope=REQUIRED_SCOPES&redirect_uri=https%3A%2F%2Fredirect_uri%2Fmy-page&state=',
         ),
       );
     });
@@ -55,27 +54,41 @@ describe('RedirectTransport', () => {
 
       it('removes code and state from location after processing (by default)', async () => {
         jest
-          .spyOn(oauth2.token, 'token')
+          .spyOn(oauth2.token, 'exchange')
           .mockReturnValue(Promise.resolve(Response.json(MOCK_TOKEN)));
 
+        /**
+         * Set fake state to be used as part of the OAuth flow.
+         */
+        const state = 'SOME_STATE';
+        sessionStorage.setItem(KEYS.PKCE_STATE, state);
+
         const transport = new RedirectTransport(MOCK_CONFIG);
-        window.location.href = `${MOCK_CONFIG.redirect}?code=CODE&state=SOME_STATE`;
+
+        window.location.href = `${MOCK_CONFIG.redirect}?code=CODE&state=${state}`;
         const response = await transport.getToken();
-        expect(response).toBe(MOCK_TOKEN);
+        expect(response).toEqual(MOCK_TOKEN);
         expect(window.location.replace).toHaveBeenCalled();
         expect(window.location.replace).toHaveBeenCalledWith(new URL(MOCK_CONFIG.redirect));
       });
 
       it('it does not alter the URL if shouldReplace: true is passed', async () => {
         jest
-          .spyOn(oauth2.token, 'token')
+          .spyOn(oauth2.token, 'exchange')
           .mockReturnValue(Promise.resolve(Response.json(MOCK_TOKEN)));
 
-        const url = `${MOCK_CONFIG.redirect}?code=CODE&state=SOME_STATE`;
+        /**
+         * Set fake state to be used as part of the OAuth flow.
+         */
+        const state = 'SOME_STATE';
+        sessionStorage.setItem(KEYS.PKCE_STATE, state);
+        sessionStorage.setItem(KEYS.PKCE_CODE_VERIFIER, 'CODE_VERIFIER');
+
+        const url = `${MOCK_CONFIG.redirect}?code=CODE&state=${state}`;
         const transport = new RedirectTransport(MOCK_CONFIG);
-        window.location.href = `${MOCK_CONFIG.redirect}?code=CODE&state=SOME_STATE`;
+        window.location.href = url;
         const response = await transport.getToken({ shouldReplace: false });
-        expect(response).toBe(MOCK_TOKEN);
+        expect(response).toEqual(MOCK_TOKEN);
         expect(window.location.assign).not.toHaveBeenCalled();
         expect(window.location.assign).not.toHaveBeenCalledWith(new URL(MOCK_CONFIG.redirect));
         expect(window.location.href).toEqual(url);
