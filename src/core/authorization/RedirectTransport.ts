@@ -108,10 +108,13 @@ export class RedirectTransport {
         params.get('error_description') || 'An error occurred during the authorization process.',
       );
     }
+
+    const code = params.get('code');
+
     /**
      * If we don't have a `code` parameter, we can't exchange it for an access token.
      */
-    if (!params.get('code')) return undefined;
+    if (!code) return undefined;
 
     /**
      * Grab the PKCE information from session storage.
@@ -140,7 +143,7 @@ export class RedirectTransport {
      * Prepare the payload for the PKCE token exchange.
      */
     const payload: AuthorizationCodeExchangeParameters = {
-      code: params.get('code')!,
+      code,
       client_id: this.#options.client,
       /**
        * Retrieve the code verifier from session storage.

@@ -17,9 +17,7 @@ const encode = (value: string) =>
 
 async function sha256(input: string) {
   const hashBuffer = await getCrypto().subtle.digest('SHA-256', new TextEncoder().encode(input));
-  return Array.from(new Uint8Array(hashBuffer))
-    .map((item) => item.toString(16).padStart(2, '0'))
-    .join('');
+  return String.fromCharCode(...new Uint8Array(hashBuffer));
 }
 
 /**
@@ -32,13 +30,16 @@ const PKCE_SAFE_CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0
  * @see https://www.rfc-editor.org/rfc/rfc7636#section-4.1
  */
 export function generateCodeVerifier() {
+  /**
+   * @todo Make length random between 43 and 128 characters
+   */
   return Array.from(getCrypto().getRandomValues(new Uint8Array(43)))
     .map((v) => PKCE_SAFE_CHARSET[v % PKCE_SAFE_CHARSET.length])
     .join('');
 }
 
 /**
- * Create a Code Challenge from a provided Code Verifier
+ * Create a Code Challenge from a provided Code Verifier (assumes S256 `code_challenge_method`).
  * @see https://www.rfc-editor.org/rfc/rfc7636#section-4.2
  */
 export async function generateCodeChallenge(verifier: string) {
@@ -47,9 +48,7 @@ export async function generateCodeChallenge(verifier: string) {
 }
 
 export function generateState() {
-  return Array.from(getCrypto().getRandomValues(new Uint8Array(16)))
-    .map((v) => v.toString(16).padStart(2, '0'))
-    .join('');
+  return String.fromCharCode(...Array.from(getCrypto().getRandomValues(new Uint8Array(16))));
 }
 
 /**
