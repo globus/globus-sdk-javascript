@@ -8,6 +8,8 @@ The Globus SDK for JavaScript provides first class TypeScript support and makes 
 
 - [@globus/sdk API Documentation](https://globus.github.io/globus-sdk-javascript/)
 - [Examples](https://github.com/globus/globus-sdk-javascript/blob/main/examples/README.md)
+- [Upgrading](https://github.com/globus/globus-sdk-javascript/blob/main/UPGRADING.md)
+  - [Migrating from `v3` to `v4`](https://github.com/globus/globus-sdk-javascript/blob/main/UPGRADING.md#migrating-from-v3-to-v4)
 
 ## Installation
 
