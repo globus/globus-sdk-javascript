@@ -65,7 +65,13 @@ import { GCS } from '@globus/sdk/constants';
 
 #### CommonJS
 
-The CommonJS distribution is the `main` export of the package. It is intended for use in Node.js applications and environments that support the `require` statement. You can also explicitly use the `cjs` namespace to import a CommonJS entrypoint.
+The CommonJS distribution is the `main` export of the package. It is intended for use in Node.js applications and environments that support the `require` statement.
+
+```js
+const { transfer } = require('@globus/sdk');
+```
+
+You can also explicitly use the `cjs` namespace to import a CommonJS entrypoint.
 
 ```js
 const transfer = require('@globus/sdk/cjs').transfer;
