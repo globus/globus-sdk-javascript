@@ -63,7 +63,7 @@ export function build(
     search?: Parameters<typeof stringifyParameters>[0];
   },
   sdkOptions?: SDKOptions,
-) {
+): string {
   let url;
   if (typeof serviceOrConfiguration === 'object') {
     url = new URL(path, serviceOrConfiguration.host);

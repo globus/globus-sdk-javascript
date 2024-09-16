@@ -30,7 +30,20 @@ type RefreshPayload = {
   client_id: string;
 };
 
-type SupportedPayloads = IntrospectPayload | RevokePayload | ValidatePayload | RefreshPayload;
+type ExchangePayload = {
+  grant_type: 'authorization_code';
+  code: string;
+  client_id: string;
+  code_verifier: string;
+  redirect_uri: string;
+};
+
+type SupportedPayloads =
+  | IntrospectPayload
+  | RevokePayload
+  | ValidatePayload
+  | RefreshPayload
+  | ExchangePayload;
 
 function serialize(payload?: SupportedPayloads) {
   return new URLSearchParams(payload);
@@ -41,7 +54,7 @@ function serialize(payload?: SupportedPayloads) {
  */
 function injectServiceOptions(
   options: ServiceMethodOptions & {
-    payload: SupportedPayloads;
+    payload?: SupportedPayloads;
   },
 ): ServiceMethodOptions {
   return {
@@ -50,9 +63,10 @@ function injectServiceOptions(
      * The `token` service methods always expect a form-encoded body. We still allow
      * end-consumers to pass a raw body, but if `payload` is provided it is serialized.
      */
-    body: serialize(options.payload),
+    body: options.payload ? serialize(options.payload) : undefined,
     headers: {
       ...(options?.headers || {}),
+      Accept: 'application/json',
       /**
        * Force the `Content-Type` header to be `application/x-www-form-urlencoded` and `charset=UTF-8`.
        */
@@ -60,6 +74,30 @@ function injectServiceOptions(
     },
   };
 }
+
+/**
+ * @see https://docs.globus.org/api/auth/reference/#dependent_token_grant_post_v2oauth2token
+ */
+export const token = function (options = {}, sdkOptions?) {
+  return serviceRequest(
+    {
+      service: ID,
+      scope: undefined,
+      path: `/v2/oauth2/token`,
+      method: HTTP_METHODS.POST,
+      preventRetry: true,
+    },
+    injectServiceOptions(options),
+    sdkOptions,
+  );
+} satisfies ServiceMethod<{
+  payload?: ExchangePayload;
+}>;
+
+/**
+ * @see https://docs.globus.org/api/auth/developer-guide/#obtaining-authorization
+ */
+export const exchange = token;
 
 /**
  * Token Introspection

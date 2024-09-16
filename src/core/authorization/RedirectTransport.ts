@@ -1,6 +1,13 @@
-import PKCE from 'js-pkce';
-import type IConfig from 'js-pkce/dist/IConfig';
-import type IObject from 'js-pkce/dist/IObject';
+import { getAuthorizationEndpoint, oauth2 } from '../../services/auth';
+import type { AuthorizationManagerConfiguration } from './AuthorizationManager';
+import {
+  generateCodeChallenge,
+  generateCodeVerifier,
+  generateState,
+  AuthorizationRequestParameters,
+  AuthorizationCodeExchangeParameters,
+  isSupported,
+} from './pkce';
 
 export type GetTokenOptions = {
   /**
@@ -10,44 +17,79 @@ export type GetTokenOptions = {
   shouldReplace?: boolean;
 };
 
-export type RedirectTransportOptions = IConfig & {
+export type RedirectTransportOptions = Pick<
+  AuthorizationManagerConfiguration,
+  'client' | 'redirect' | 'scopes'
+> & {
   /**
-   * Additional parameters to be included in the query string of the authorization request.
+   * Query parameters to include in the authorization request.
+   *
+   * The `RedirectTransport` will include all parameters required for a default OAuth PKCE flow, but
+   * these parameters can be overridden or extended with this option.
    */
-  params?: IObject;
+  params?: {
+    [key: string]: string;
+  };
 };
 
 /**
- * Resets js-pkce state
- * @see https://github.com/bpedroza/js-pkce/blob/master/src/PKCE.ts
+ * @private
  */
+export const KEYS = {
+  PKCE_STATE: 'pkce_state',
+  PKCE_CODE_VERIFIER: 'pkce_code_verifier',
+};
+
 function resetPKCE() {
-  sessionStorage.removeItem('pkce_state');
-  sessionStorage.removeItem('pkce_code_verifier');
+  sessionStorage.removeItem(KEYS.PKCE_STATE);
+  sessionStorage.removeItem(KEYS.PKCE_CODE_VERIFIER);
 }
 
 export class RedirectTransport {
-  #pkce: PKCE;
-
-  #params: RedirectTransportOptions['params'] = {};
+  #options: RedirectTransportOptions;
 
   constructor(options: RedirectTransportOptions) {
-    const { params, ...config } = options;
-    this.#pkce = new PKCE({
-      ...config,
-    });
-    this.#params = {
-      ...params,
-    };
+    this.#options = options;
+    if (RedirectTransport.supported === false) {
+      throw new Error('RedirectTransport is not supported in this environment.');
+    }
   }
 
-  send() {
+  static supported = isSupported();
+
+  /**
+   * For the redirect transport, sending the request will redirect the user to the authorization endpoint, initiating the OAuth flow.
+   */
+  async send() {
     /**
-     * By resetting PKCE before sending, we ensure that a fresh `code_challenge` is generated
-     * when `authorizeUrl` is called.
+     * Since we'll be using PKCE, we need to generate a code verifier and challenge
+     * for the OAuth handshake.
      */
-    resetPKCE();
-    window.location.assign(this.#pkce.authorizeUrl(this.#params));
+    const verifier = generateCodeVerifier();
+    const challenge = await generateCodeChallenge(verifier);
+    const state = generateState();
+    /**
+     * The verifier and state are stored in session storage so that we can validate
+     * the response when we receive it.
+     */
+    sessionStorage.setItem(KEYS.PKCE_CODE_VERIFIER, verifier);
+    sessionStorage.setItem(KEYS.PKCE_STATE, state);
+
+    const params: AuthorizationRequestParameters = {
+      response_type: 'code',
+      client_id: this.#options.client,
+      scope: this.#options.scopes || '',
+      redirect_uri: this.#options.redirect,
+      state,
+      code_challenge: challenge,
+      code_challenge_method: 'S256',
+      ...(this.#options.params || {}),
+    };
+
+    const url = new URL(getAuthorizationEndpoint());
+    url.search = new URLSearchParams(params).toString();
+
+    window.location.assign(url.toString());
   }
 
   /**
@@ -58,11 +100,65 @@ export class RedirectTransport {
     const url = new URL(window.location.href);
     const params = new URLSearchParams(url.search);
     /**
+     * Check for an error in the OAuth flow.
+     * @see https://www.oauth.com/oauth2-servers/pkce/authorization-request/
+     */
+    if (params.get('error')) {
+      throw new Error(
+        params.get('error_description') || 'An error occurred during the authorization process.',
+      );
+    }
+
+    const code = params.get('code');
+
+    /**
      * If we don't have a `code` parameter, we can't exchange it for an access token.
      */
-    if (!params.get('code')) return undefined;
-    const response = await this.#pkce.exchangeForAccessToken(url.toString());
+    if (!code) return undefined;
+
+    /**
+     * Grab the PKCE information from session storage.
+     */
+    const state = sessionStorage.getItem(KEYS.PKCE_STATE);
+    const verifier = sessionStorage.getItem(KEYS.PKCE_CODE_VERIFIER);
+    /**
+     * Now that we have the values in memory, we can remove them from session storage.
+     */
     resetPKCE();
+
+    /**
+     * Validate the `state` parameter matches the preserved state (to prevent CSRF attacks).
+     */
+    if (params.get('state') !== state) {
+      throw new Error('Invalid State');
+    }
+    /**
+     * Ensure we have a valid code verifier.
+     */
+    if (!verifier) {
+      throw new Error('Invalid Code Verifier');
+    }
+
+    /**
+     * Prepare the payload for the PKCE token exchange.
+     */
+    const payload: AuthorizationCodeExchangeParameters = {
+      code,
+      client_id: this.#options.client,
+      /**
+       * Retrieve the code verifier from session storage.
+       */
+      code_verifier: verifier,
+      redirect_uri: this.#options.redirect,
+      grant_type: 'authorization_code',
+    };
+
+    const response = await (
+      await oauth2.token.exchange({
+        payload,
+      })
+    ).json();
+
     if (options.shouldReplace) {
       /**
        * Remove the `code` and `state` parameters from the URL.
