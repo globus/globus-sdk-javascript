@@ -1,5 +1,4 @@
-import { getAuthorizationEndpoint, oauth2 } from '../../services/auth';
-import type { AuthorizationManagerConfiguration } from './AuthorizationManager';
+import { getAuthorizationEndpoint, oauth2 } from '../../services/auth/index.js';
 import {
   generateCodeChallenge,
   generateCodeVerifier,
@@ -7,7 +6,9 @@ import {
   AuthorizationRequestParameters,
   AuthorizationCodeExchangeParameters,
   isSupported,
-} from './pkce';
+} from './pkce.js';
+
+import type { AuthorizationManagerConfiguration } from './AuthorizationManager';
 
 export type GetTokenOptions = {
   /**
