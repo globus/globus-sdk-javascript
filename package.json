@@ -82,8 +82,8 @@
     "build": "tsc --project tsconfig.package.json && node scripts/build.js",
     "watch": "tsc --watch tsconfig.package.json",
     "generate:docs": "npx typedoc --tsconfig tsconfig.package.json",
-    "publish-to-npm": "npm run build && cp README.md dist && cp LICENSE dist && cd dist && npm publish --access public",
-    "publish-to-npm:next": "npm run build && cp README.md dist && cp LICENSE dist && cd dist && npm publish --access public --tag next"
+    "publish-to-npm": "npm run build && npm publish --access public",
+    "publish-to-npm:next": "npm run build && npm publish --access public --tag next"
   },
   "homepage": "https://github.com/globus/globus-sdk-javascript#readme",
   "bugs": {
