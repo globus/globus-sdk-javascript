@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.0](https://github.com/globus/globus-sdk-javascript/compare/v3.9.0...v4.0.0) (2024-09-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* removes the `lib` directory.
+* addresses issues found in the ESM bundle that prevented proper bundling in nested dependencies ([#282](https://github.com/globus/globus-sdk-javascript/issues/282))
+
+### Bug Fixes
+
+* addresses issues found in the ESM bundle that prevented proper bundling in nested dependencies ([#282](https://github.com/globus/globus-sdk-javascript/issues/282)) ([ba3214f](https://github.com/globus/globus-sdk-javascript/commit/ba3214f8b59fae14e4634e68b7e87699329005ec))
+* **Authorization:** include file extensions in RedirectTransport for ESM ([#296](https://github.com/globus/globus-sdk-javascript/issues/296)) ([a418cd7](https://github.com/globus/globus-sdk-javascript/commit/a418cd7f592222bd6fc91fb79e939403206b9333))
+* **Authorization:** updates PKCE integration to use native API (drops js-pkce package) ([#287](https://github.com/globus/globus-sdk-javascript/issues/287)) ([3a3c83d](https://github.com/globus/globus-sdk-javascript/commit/3a3c83db106a28ab7213f386d3923317f4f28ccb))
+
+
+### Miscellaneous Chores
+
+* removes the `lib` directory. ([ba3214f](https://github.com/globus/globus-sdk-javascript/commit/ba3214f8b59fae14e4634e68b7e87699329005ec))
+
 ## [3.9.0](https://github.com/globus/globus-sdk-javascript/compare/v3.8.1...v3.9.0) (2024-08-27)
 
 
