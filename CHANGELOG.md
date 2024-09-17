@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.0](https://github.com/globus/globus-sdk-javascript/compare/v4.0.0...v4.1.0) (2024-09-17)
+
+
+### Features
+
+* **GCS:** added get, getAll, create, remove, update and patch method for Nodes ([#301](https://github.com/globus/globus-sdk-javascript/issues/301)) ([5b833c1](https://github.com/globus/globus-sdk-javascript/commit/5b833c145c4217ae8b5273712599494c193c5c5e))
+
+
+### Bug Fixes
+
+* ensure proper exported VERSION constant ([1d7c9f4](https://github.com/globus/globus-sdk-javascript/commit/1d7c9f49b0d5b02f42e354942b3522925640036e))
+
 ## [4.0.0](https://github.com/globus/globus-sdk-javascript/compare/v3.9.0...v4.0.0) (2024-09-16)
 
 
