@@ -83,7 +83,7 @@ const transfer = require('@globus/sdk/cjs').transfer;
 The UMD distribution is provided for use in web applications and environments that do not support ESM or CommonJS. Referencing the UMD distribution as a `<script>` tag will provide a global variable `globus` that contains all default exports from the package.
 
 ```html
-<script src="https://unpkg.com/@globus/sdk/umd/globus.production.js"></script>
+<script src="https://unpkg.com/@globus/sdk/dist/umd/globus.production.js"></script>
 ```
 
 Currently, the UMD distribution only provides the default entrypoint for the package.
