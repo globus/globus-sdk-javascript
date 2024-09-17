@@ -25,7 +25,7 @@ export default function extract() {
        * Replace the CDN-loaded script with the local script.
        */
       .replace(
-        '<script src="https://unpkg.com/@globus/sdk/umd/globus.production.js"></script>',
+        '<script src="https://unpkg.com/@globus/sdk/dist/umd/globus.production.js"></script>',
         `
         <script src="../../dist/umd/globus.production.js"></script>
         <script>globalThis.GLOBUS_SDK_ENVIRONMENT = 'preview';</script>
