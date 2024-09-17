@@ -10,8 +10,8 @@ beforeAll(() => {
    * to avoid conflicts with snapshot results based on the `version` property in the
    * `package.json` file.
    *
-   * The behavior is explicitly tested (enabled) in `src/lib/core/__tests__/info.spec.ts` and
-   * `src/lib/services/__tests__/shared.spec.ts`.
+   * The behavior is explicitly tested (enabled) in `src/core/__tests__/info.spec.ts` and
+   * `src/services/__tests__/shared.spec.ts`.
    */
   disable();
 });
