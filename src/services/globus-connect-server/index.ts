@@ -19,6 +19,7 @@ import type {
 export * as collections from './service/collections.js';
 export * as endpoint from './service/endpoint.js';
 export * as https from './service/https.js';
+export * as nodes from './service/nodes.js';
 export * as roles from './service/roles.js';
 export * as storageGateways from './service/storage-gateways.js';
 export * as userCredentials from './service/user-credentials.js';
