@@ -91,4 +91,28 @@ describe('flows.flow', () => {
       json,
     }).toMatchSnapshot();
   });
+
+  test('validate', async () => {
+    const {
+      req: { url, method, headers, json },
+    } = await mirror(
+      await flows.validate({
+        payload: {
+          definition: {
+            States: {},
+            StartAt: 'FooBar',
+          },
+        },
+        headers: {
+          Authorization: 'Bearer this-is-an-example-token',
+        },
+      }),
+    );
+    expect({
+      url,
+      method,
+      headers,
+      json,
+    }).toMatchSnapshot();
+  });
 });

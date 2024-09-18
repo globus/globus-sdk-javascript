@@ -71,3 +71,26 @@ exports[`flows.flow run 1`] = `
   "url": "https://flows.globus.org/flows/flow-id/run",
 }
 `;
+
+exports[`flows.flow validate 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "authorization": "Bearer this-is-an-example-token",
+    "connection": "close",
+    "content-length": "47",
+    "content-type": "application/json",
+    "host": "flows.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "definition": {
+      "StartAt": "FooBar",
+      "States": {},
+    },
+  },
+  "method": "POST",
+  "url": "https://flows.globus.org/flows/validate",
+}
+`;

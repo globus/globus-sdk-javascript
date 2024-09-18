@@ -1,6 +1,10 @@
 import { ID, SCOPES } from '../config.js';
 import { HTTP_METHODS, serviceRequest } from '../../../services/shared.js';
-import type { ServiceMethod, ServiceMethodDynamicSegments } from '../../types.js';
+import type {
+  JSONFetchResponse,
+  ServiceMethod,
+  ServiceMethodDynamicSegments,
+} from '../../types.js';
 
 /**
  * @see https://globusonline.github.io/globus-flows/#tag/Flows/paths/~1flows/get
@@ -83,3 +87,61 @@ export const run = function (flow_id, options?, sdkOptions?) {
     };
   }
 >;
+
+type ValidateSuccessResponse = {
+  scopes: Record<string, any>;
+};
+
+/**
+ * An error that was generated during validation that includes the location of the error.
+ */
+export type ValidationLocationError = {
+  /**
+   * The location of the error represents the path to the property that caused the error.
+   */
+  loc: string[];
+  msg: string;
+  type: string;
+};
+
+type ValidateErrorResponse = {
+  error: {
+    code: string;
+    /**
+     * When `detail` is a string, it is a general error message and cannot be mapped to a specific location
+     * in the provided payload.
+     */
+    detail: string | ValidationLocationError[];
+    /**
+     * `message` being available is dependent on the error code.
+     */
+    message?: string;
+  };
+  debug_id: string;
+};
+
+/**
+ * Validate a flow definition and its schema.
+ * @see https://globusonline.github.io/globus-flows/#tag/Flows/paths/~1flows~1validate/post
+ */
+export const validate = function (
+  options,
+  sdkOptions?,
+): Promise<JSONFetchResponse<ValidateSuccessResponse | ValidateErrorResponse>> {
+  return serviceRequest(
+    {
+      service: ID,
+      scope: SCOPES.MANAGE_FLOWS,
+      path: `/flows/validate`,
+      method: HTTP_METHODS.POST,
+    },
+    options,
+    sdkOptions,
+  );
+} satisfies ServiceMethod<{
+  query?: never;
+  payload: {
+    definition: Record<string, any>;
+    input_schema?: Record<string, any>;
+  };
+}>;
