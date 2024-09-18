@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.0](https://github.com/globus/globus-sdk-javascript/compare/v4.1.0...v4.2.0) (2024-09-18)
+
+
+### Features
+
+* **Flows:** adds flows.validate service method ([#305](https://github.com/globus/globus-sdk-javascript/issues/305)) ([51071c1](https://github.com/globus/globus-sdk-javascript/commit/51071c1a98a3ddc93889496964fb685555a79f53))
+
+
+### Bug Fixes
+
+* **Authorization:** ensures the proper token is returned when accessing `AuthorizationManager.tokens.flows` ([#304](https://github.com/globus/globus-sdk-javascript/issues/304)) ([e6e7c65](https://github.com/globus/globus-sdk-javascript/commit/e6e7c65442ade575ce01fbf1e49004c9b9511e30))
+* **Core, Info:** addresses issue causing trailing `VERSION` updates. ([3d3da91](https://github.com/globus/globus-sdk-javascript/commit/3d3da9164c67b21818e0789b3dcc7868cf4efa5f))
+
 ## [4.1.0](https://github.com/globus/globus-sdk-javascript/compare/v4.0.0...v4.1.0) (2024-09-17)
 
 
