@@ -24,7 +24,7 @@ export const SCOPES = {
 export const RESOURCE_SERVERS = {
   [ID]: 'auth.globus.org',
   [TRANSFER]: 'transfer.api.globus.org',
-  [FLOWS]: 'flows.api.globus.org',
+  [FLOWS]: 'flows.globus.org',
   [GROUPS]: 'groups.api.globus.org',
   [SEARCH]: 'search.api.globus.org',
   [TIMER]: '524230d7-ea86-4a52-8312-86065a9e0417',
