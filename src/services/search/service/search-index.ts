@@ -37,6 +37,10 @@ type GSearchIndex = {
   num_entries: number;
 };
 
+type IndexList = {
+  index_list: IndexWithPermissions[];
+};
+
 /**
  * @see https://docs.globus.org/api/search/reference/index_show/
  */
@@ -59,10 +63,7 @@ export const get = function (
 /**
  * @see https://docs.globus.org/api/search/reference/index_list/
  */
-export const getAll = function (
-  options?,
-  sdkOptions?,
-): Promise<JSONFetchResponse<IndexWithPermissions[]>> {
+export const getAll = function (options?, sdkOptions?): Promise<JSONFetchResponse<IndexList>> {
   return serviceRequest(
     {
       service: ID,
