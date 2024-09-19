@@ -10,8 +10,21 @@ import type {
 /**
  * @see https://docs.globus.org/api/search/reference/index_list/#indexwithpermissions
  */
-type IndexWithPermissions = {
+export type IndexWithPermissions = {
   permissions: string[];
+  display_name: string;
+  id: string;
+  description: string;
+  creation_date: string;
+  is_trial: boolean;
+  subscription_id: string | null;
+  max_size_in_mb: number;
+  size_in_mb: number;
+  num_subjects: number;
+  num_entries: number;
+};
+
+export type GSearchIndex = {
   display_name: string;
   id: string;
   description: string;
@@ -24,17 +37,11 @@ type IndexWithPermissions = {
   num_entries: number;
 };
 
-type GSearchIndex = {
-  display_name: string;
-  id: string;
-  description: string;
-  creation_date: string;
-  is_trial: boolean;
-  subscription_id: string;
-  max_size_in_mb: number;
-  size_in_mb: number;
-  num_subjects: number;
-  num_entries: number;
+/**
+ * @see https://docs.globus.org/api/search/reference/index_list/#indexlist
+ */
+export type IndexList = {
+  index_list: IndexWithPermissions[];
 };
 
 /**
@@ -59,10 +66,7 @@ export const get = function (
 /**
  * @see https://docs.globus.org/api/search/reference/index_list/
  */
-export const getAll = function (
-  options?,
-  sdkOptions?,
-): Promise<JSONFetchResponse<IndexWithPermissions[]>> {
+export const getAll = function (options?, sdkOptions?): Promise<JSONFetchResponse<IndexList>> {
   return serviceRequest(
     {
       service: ID,
@@ -175,7 +179,7 @@ type FieldMapping = Record<string, 'geo_point' | 'geo_shape' | string>;
  * A `GIngest` document is a wrapper around a {@link GMetaList} or {@link GMetaEntry} which supplies attributes relevant to the ingest and indexing of metadata into the Globus Search service.
  * @see https://docs.globus.org/api/search/reference/ingest/#gingest
  */
-type GIngest =
+export type GIngest =
   | {
       ingest_type: string;
       ingest_data: Record<string, unknown>;
@@ -196,7 +200,7 @@ type GIngest =
  * A GMetaList is a collection of {@link GMetaEntry} documents.
  * @see https://docs.globus.org/api/search/reference/ingest/#gmetalist
  */
-type GMetaList = {
+export type GMetaList = {
   gmeta: GMetaEntry[];
 };
 
@@ -204,7 +208,7 @@ type GMetaList = {
  * A GMetaEntry is a single block of data pertaining to a given subject.
  * @see https://docs.globus.org/api/search/reference/ingest/#gmetaentry
  */
-type GMetaEntry = {
+export type GMetaEntry = {
   id?: string;
   subject: string;
   visible_to: 'public' | 'all_authenticated_users' | string;
