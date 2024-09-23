@@ -1,6 +1,7 @@
 import { jwtDecode } from 'jwt-decode';
 
 import { isGlobusAuthTokenResponse, isRefreshToken, oauth2 } from '../../services/auth/index.js';
+import { RESOURCE_SERVERS } from '../../services/auth/config.js';
 
 import { createStorage, getStorage } from '../storage/index.js';
 import { log } from '../logger.js';
@@ -268,7 +269,7 @@ export class AuthorizationManager {
    * Retrieve the Globus Auth token managed by the instance.
    */
   getGlobusAuthToken() {
-    const entry = getStorage().get(`${this.storageKeyPrefix}auth.globus.org`);
+    const entry = getStorage().get(`${this.storageKeyPrefix}${RESOURCE_SERVERS.AUTH}`);
     return entry ? JSON.parse(entry) : null;
   }
 
@@ -329,6 +330,10 @@ export class AuthorizationManager {
 
   /**
    * Initiate the login process by redirecting to the Globus Auth login page.
+   *
+   * **IMPORTANT**: This method will reset the instance state before initiating the login process,
+   * including clearing all tokens from storage. If you need to maintain the current state,
+   * use the `AuthorizationManager.prompt` method.
    */
   async login(options = { additionalParams: {} }) {
     log('debug', 'AuthorizationManager.login');
@@ -337,6 +342,15 @@ export class AuthorizationManager {
      * In the future, it's possible that we may want to support different types of transports.
      */
     const transport = this.#buildTransport({ params: options?.additionalParams });
+    await transport.send();
+  }
+
+  /**
+   * Prompt the user to authenticate with Globus Auth.
+   */
+  async prompt(options?: Partial<RedirectTransportOptions>) {
+    log('debug', 'AuthorizationManager.prompt');
+    const transport = this.#buildTransport(options);
     await transport.send();
   }
 
@@ -471,10 +485,7 @@ export class AuthorizationManager {
    * consumers to add tokens to storage if necessary.
    */
   addTokenResponse = (token: Token | TokenResponse) => {
-    getStorage().set(`${this.configuration.client}:${token.resource_server}`, token);
-    if ('other_tokens' in token) {
-      token.other_tokens?.forEach(this.addTokenResponse);
-    }
+    this.tokens.add(token);
     this.#checkAuthorizationState();
   };
 

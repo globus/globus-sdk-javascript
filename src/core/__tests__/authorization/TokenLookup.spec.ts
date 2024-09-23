@@ -4,7 +4,13 @@ import { TokenLookup } from '../../authorization/TokenLookup';
 
 import { RESOURCE_SERVERS } from '../../../services/auth/config';
 
+import type { Token } from '../../../services/auth/types';
+
 describe('TokenLookup', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
   const manager = new AuthorizationManager({
     client: 'CLIENT_ID',
     redirect: 'REDIRECT_URI',
@@ -36,6 +42,59 @@ describe('TokenLookup', () => {
     expect(lookup.search).toBeNull();
     expect(lookup.timer).toBeNull();
     expect(lookup.compute).toBeNull();
+  });
+
+  describe('isTokenExpired', () => {
+    it('processes a token without __metadata as expired', () => {
+      const TOKEN: Token = {
+        resource_server: RESOURCE_SERVERS.AUTH,
+        access_token: 'AUTH',
+        token_type: 'Bearer',
+        scope: 'openid',
+        expires_in: 1000,
+      };
+      expect(TokenLookup.isTokenExpired(TOKEN)).toBe(true);
+    });
+
+    it('handles stored tokens', () => {
+      const TOKEN: Token = {
+        resource_server: RESOURCE_SERVERS.AUTH,
+        access_token: 'AUTH',
+        token_type: 'Bearer',
+        scope: 'openid',
+        expires_in: 1000,
+      };
+      const EXPIRED_TOKEN = {
+        ...TOKEN,
+        resource_server: RESOURCE_SERVERS.FLOWS,
+        expires_in: 0,
+      };
+
+      lookup.add(TOKEN);
+      lookup.add(EXPIRED_TOKEN);
+
+      expect(TokenLookup.isTokenExpired(lookup.auth)).toBe(false);
+      expect(TokenLookup.isTokenExpired(lookup.flows)).toBe(true);
+      /**
+       * `null` / Missing Token
+       */
+      expect(TokenLookup.isTokenExpired(lookup.groups)).toBe(true);
+    });
+
+    it('supports time augments', () => {
+      const TOKEN: Token = {
+        resource_server: RESOURCE_SERVERS.AUTH,
+        access_token: 'AUTH',
+        token_type: 'Bearer',
+        scope: 'openid',
+        expires_in: 5,
+      };
+
+      lookup.add(TOKEN);
+
+      expect(TokenLookup.isTokenExpired(lookup.auth, 4500)).toBe(false);
+      expect(TokenLookup.isTokenExpired(lookup.auth, 20 * 1000)).toBe(true);
+    });
   });
 
   describe('getAll', () => {

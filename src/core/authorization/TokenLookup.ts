@@ -4,11 +4,31 @@ import { CONFIG, isToken } from '../../services/auth/index.js';
 import { SERVICES, type Service } from '../global.js';
 import { AuthorizationManager } from './AuthorizationManager.js';
 
-import type { Token } from '../../services/auth/types.js';
+import type { Token, TokenResponse } from '../../services/auth/types.js';
+
+export type StoredToken = Token & {
+  /**
+   * Tokens stored before the introduction of the `__metadata` field will be missing this property.
+   * @since 4.3.0
+   */
+  __metadata?: {
+    /**
+     * The timestamp when the token was added to the storage as a number of milliseconds since the Unix epoch.
+     *
+     * **IMPORTANT**: This value might **not** represent the time when the token was created by the authorization server.
+     */
+    created: number;
+    /**
+     * The timestamp when the token will expire as a number of milliseconds since the Unix epoch, based
+     * on the `expires_in` value from the token response and the time when the token was stored.
+     */
+    expires: number | null;
+  };
+};
 
 function getTokenFromStorage(key: string) {
   const raw = getStorage().get(key) || 'null';
-  let token: Token | null = null;
+  let token: StoredToken | null = null;
   try {
     const parsed = JSON.parse(raw);
     if (isToken(parsed)) {
@@ -20,6 +40,10 @@ function getTokenFromStorage(key: string) {
   return token;
 }
 
+/**
+ * @todo In the next major version, we should consider renaming this class to `TokenManager`,
+ * since it's usage has expanded beyond just looking up tokens.
+ */
 export class TokenLookup {
   #manager: AuthorizationManager;
 
@@ -36,51 +60,87 @@ export class TokenLookup {
     return this.#getClientStorageEntry(resourceServer);
   }
 
-  get auth(): Token | null {
+  get auth(): StoredToken | null {
     return this.#getTokenForService(SERVICES.AUTH);
   }
 
-  get transfer(): Token | null {
+  get transfer(): StoredToken | null {
     return this.#getTokenForService(SERVICES.TRANSFER);
   }
 
-  get flows(): Token | null {
+  get flows(): StoredToken | null {
     return this.#getTokenForService(SERVICES.FLOWS);
   }
 
-  get groups(): Token | null {
+  get groups(): StoredToken | null {
     return this.#getTokenForService(SERVICES.GROUPS);
   }
 
-  get search(): Token | null {
+  get search(): StoredToken | null {
     return this.#getTokenForService(SERVICES.SEARCH);
   }
 
-  get timer(): Token | null {
+  get timer(): StoredToken | null {
     return this.#getTokenForService(SERVICES.TIMER);
   }
 
-  get compute(): Token | null {
+  get compute(): StoredToken | null {
     return this.#getTokenForService(SERVICES.COMPUTE);
   }
 
-  gcs(endpoint: string): Token | null {
+  gcs(endpoint: string): StoredToken | null {
     return this.getByResourceServer(endpoint);
   }
 
-  getByResourceServer(resourceServer: string): Token | null {
+  getByResourceServer(resourceServer: string): StoredToken | null {
     return this.#getClientStorageEntry(resourceServer);
   }
 
-  getAll(): Token[] {
+  getAll(): StoredToken[] {
     const entries = getStorage()
       .keys()
-      .reduce((acc: (Token | null)[], key) => {
+      .reduce((acc: (StoredToken | null)[], key) => {
         if (key.startsWith(this.#manager.storageKeyPrefix)) {
           acc.push(getTokenFromStorage(key));
         }
         return acc;
       }, []);
     return entries.filter(isToken);
+  }
+
+  /**
+   * Add a token to the storage.
+   */
+  add(token: Token | TokenResponse) {
+    const created = Date.now();
+    const expires = token.expires_in ? created + token.expires_in * 1000 : null;
+    getStorage().set(`${this.#manager.storageKeyPrefix}${token.resource_server}`, {
+      ...token,
+      /**
+       * Add metadata to the token to track when it was created and when it expires.
+       */
+      __metadata: {
+        created,
+        expires,
+      },
+    });
+    if ('other_tokens' in token) {
+      token.other_tokens?.forEach((t) => {
+        this.add(t);
+      });
+    }
+  }
+
+  /**
+   * Determines whether or not a stored token is expired.
+   * @param token The token to check.
+   * @param augment An optional number of milliseconds to add to the current time when checking the expiration.
+   */
+  static isTokenExpired(token: StoredToken | null, augment: number = 0) {
+    /* eslint-disable no-underscore-dangle */
+    return token && token.__metadata?.expires
+      ? Date.now() + augment >= token.__metadata.expires
+      : true;
+    /* eslint-enable no-underscore-dangle */
   }
 }
