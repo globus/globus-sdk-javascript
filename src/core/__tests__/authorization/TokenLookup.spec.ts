@@ -53,7 +53,10 @@ describe('TokenLookup', () => {
         scope: 'openid',
         expires_in: 1000,
       };
-      expect(TokenLookup.isTokenExpired(TOKEN)).toBe(true);
+      /**
+       * Expect raw token to be returned as `undefined`; Only includes relative `expires_in`.
+       */
+      expect(TokenLookup.isTokenExpired(TOKEN)).toBe(undefined);
     });
 
     it('handles stored tokens', () => {
@@ -78,7 +81,7 @@ describe('TokenLookup', () => {
       /**
        * `null` / Missing Token
        */
-      expect(TokenLookup.isTokenExpired(lookup.groups)).toBe(true);
+      expect(TokenLookup.isTokenExpired(lookup.groups)).toBe(undefined);
     });
 
     it('supports time augments', () => {

@@ -113,7 +113,7 @@ export class TokenLookup {
    */
   add(token: Token | TokenResponse) {
     const created = Date.now();
-    const expires = token.expires_in ? created + token.expires_in * 1000 : null;
+    const expires = created + token.expires_in * 1000;
     getStorage().set(`${this.#manager.storageKeyPrefix}${token.resource_server}`, {
       ...token,
       /**
@@ -135,12 +135,15 @@ export class TokenLookup {
    * Determines whether or not a stored token is expired.
    * @param token The token to check.
    * @param augment An optional number of milliseconds to add to the current time when checking the expiration.
+   * @returns `true` if the token is expired, `false` if it is not expired, and `undefined` if the expiration status cannot be determined
+   * based on the token's metadata. This can happen if the token is missing the `__metadata` field or the `expires` field.
    */
-  static isTokenExpired(token: StoredToken | null, augment: number = 0) {
+  static isTokenExpired(token: StoredToken | null, augment: number = 0): boolean | undefined {
     /* eslint-disable no-underscore-dangle */
-    return token && token.__metadata?.expires
-      ? Date.now() + augment >= token.__metadata.expires
-      : true;
+    if (!token || !token.__metadata || typeof token.__metadata.expires !== 'number') {
+      return undefined;
+    }
+    return Date.now() + augment >= token.__metadata.expires;
     /* eslint-enable no-underscore-dangle */
   }
 }
