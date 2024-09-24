@@ -32,6 +32,36 @@ describe('AuthorizationManager', () => {
   });
 
   if (RedirectTransport.supported) {
+    it('supports prompt', async () => {
+      const instance = new AuthorizationManager({
+        client: 'client_id',
+        redirect: 'https://redirect_uri',
+      });
+      await instance.prompt({
+        scopes: 'some:scope:example',
+      });
+      expect(window.location.assign).toHaveBeenCalledTimes(1);
+
+      expect(window.location.assign).toHaveBeenCalledWith(
+        /**
+         * Ensure arbitrary `scope` parameters are passed.
+         */
+        expect.stringContaining('scope=some%3Ascope%3Aexample'),
+      );
+      expect(window.location.assign).toHaveBeenCalledWith(
+        /**
+         * Should contain the configured `client_id`
+         */
+        expect.stringContaining('client_id=client_id'),
+      );
+      expect(window.location.assign).toHaveBeenCalledWith(
+        /**
+         * Should contain the configured `redirect_uri`
+         */
+        expect.stringContaining('redirect_uri=https%3A%2F%2Fredirect_uri'),
+      );
+    });
+
     describe('RedirectTransport', () => {
       it('can be created without providing scopes', async () => {
         const instance = new AuthorizationManager({
@@ -162,7 +192,13 @@ describe('AuthorizationManager', () => {
         expect(instance.authenticated).toBe(true);
         expect(spy).toHaveBeenCalledWith({
           isAuthenticated: true,
-          token: MOCK_TOKEN,
+          token: expect.objectContaining({
+            ...MOCK_TOKEN,
+            __metadata: expect.objectContaining({
+              created: expect.any(Number),
+              expires: expect.any(Number),
+            }),
+          }),
         });
         expect(spy).toHaveBeenCalledTimes(1);
       });
