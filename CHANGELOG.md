@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.0](https://github.com/globus/globus-sdk-javascript/compare/v4.2.0...v4.3.0) (2024-09-24)
+
+
+### Features
+
+* **Authorization:** `AuthorizationManager` enhancements. ([#310](https://github.com/globus/globus-sdk-javascript/issues/310)) ([644c263](https://github.com/globus/globus-sdk-javascript/commit/644c263f5db7b5366c0a63dfc84ac8918501deec))
+
+
+### Bug Fixes
+
+* **Search, Typescript:** updates return type for `search.index.getAll` and exports service types. ([#306](https://github.com/globus/globus-sdk-javascript/issues/306)) ([7fcebbe](https://github.com/globus/globus-sdk-javascript/commit/7fcebbef0e07f7d9d81a79347607cca84e6b989a))
+
 ## [4.2.0](https://github.com/globus/globus-sdk-javascript/compare/v4.1.0...v4.2.0) (2024-09-18)
 
 
