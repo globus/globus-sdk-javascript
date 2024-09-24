@@ -22,6 +22,7 @@ export type IndexWithPermissions = {
   size_in_mb: number;
   num_subjects: number;
   num_entries: number;
+  status: 'open' | 'delete_pending';
 };
 
 export type GSearchIndex = {
@@ -35,6 +36,7 @@ export type GSearchIndex = {
   size_in_mb: number;
   num_subjects: number;
   num_entries: number;
+  status: 'open' | 'delete_pending';
 };
 
 /**
