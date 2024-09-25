@@ -10,18 +10,8 @@ import type {
 /**
  * @see https://docs.globus.org/api/search/reference/index_list/#indexwithpermissions
  */
-export type IndexWithPermissions = {
+export type IndexWithPermissions = GSearchIndex & {
   permissions: string[];
-  display_name: string;
-  id: string;
-  description: string;
-  creation_date: string;
-  is_trial: boolean;
-  subscription_id: string | null;
-  max_size_in_mb: number;
-  size_in_mb: number;
-  num_subjects: number;
-  num_entries: number;
 };
 
 export type GSearchIndex = {
@@ -35,6 +25,7 @@ export type GSearchIndex = {
   size_in_mb: number;
   num_subjects: number;
   num_entries: number;
+  status: 'open' | 'delete_pending' | string;
 };
 
 /**
