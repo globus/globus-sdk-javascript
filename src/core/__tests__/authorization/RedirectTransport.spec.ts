@@ -45,6 +45,26 @@ describe('RedirectTransport', () => {
       );
     });
 
+    it('should accept caller-provided "state"', async () => {
+      const transport = new RedirectTransport({
+        ...MOCK_CONFIG,
+        params: {
+          state: 'CUSTOM_STATE',
+        },
+      });
+      await transport.send();
+      expect(window.location.assign).toHaveBeenCalled();
+      expect(window.location.assign).toHaveBeenCalledWith(
+        expect.stringContaining(
+          'https://auth.globus.org/v2/oauth2/authorize?response_type=code&client_id=CLIENT_ID&scope=REQUIRED_SCOPES&redirect_uri=https%3A%2F%2Fredirect_uri%2Fmy-page&state=CUSTOM_STATE',
+        ),
+      );
+      /**
+       * Ensure that the state is stored in sessionStorage.
+       */
+      expect(sessionStorage.getItem(KEYS.PKCE_STATE)).toBe('CUSTOM_STATE');
+    });
+
     describe('getToken', () => {
       it('returns `undefined` when called on location with missing required parameters (code)', async () => {
         window.location.href = MOCK_CONFIG.redirect;
