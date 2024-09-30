@@ -68,7 +68,10 @@ export class RedirectTransport {
      */
     const verifier = generateCodeVerifier();
     const challenge = await generateCodeChallenge(verifier);
-    const state = generateState();
+    /**
+     * If there is caller-provided `state`, use it; Otherwise, generate a state parameter.
+     */
+    const state = this.#options.params?.['state'] ?? generateState();
     /**
      * The verifier and state are stored in session storage so that we can validate
      * the response when we receive it.
@@ -131,7 +134,9 @@ export class RedirectTransport {
      * Validate the `state` parameter matches the preserved state (to prevent CSRF attacks).
      */
     if (params.get('state') !== state) {
-      throw new Error('Invalid State');
+      throw new Error(
+        'Invalid State. The received "state" parameter does not match the expected state.',
+      );
     }
     /**
      * Ensure we have a valid code verifier.
