@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.1](https://github.com/globus/globus-sdk-javascript/compare/v4.3.0...v4.3.1) (2024-09-30)
+
+
+### Bug Fixes
+
+* **Authorization:** ensure caller-provided "state" is stored on OAuth dispatch ([#319](https://github.com/globus/globus-sdk-javascript/issues/319)) ([32a71f7](https://github.com/globus/globus-sdk-javascript/commit/32a71f753a1f51fc9fd961008761c171b8650cb7))
+* **Search, Typescript:** add field `status` to `GSearchIndex` and `IndexWithPermissions` ([#313](https://github.com/globus/globus-sdk-javascript/issues/313)) ([e69803e](https://github.com/globus/globus-sdk-javascript/commit/e69803e0c68f642428aafe1b52b9ab8d73fcad77))
+* **Search, Typescript:** updates the `gmeta` property in `GSearchResult` type ([#320](https://github.com/globus/globus-sdk-javascript/issues/320)) ([0cd9404](https://github.com/globus/globus-sdk-javascript/commit/0cd9404e12cbb4e09f93173d9c9ab0097147cda6))
+
 ## [4.3.0](https://github.com/globus/globus-sdk-javascript/compare/v4.2.0...v4.3.0) (2024-09-24)
 
 
