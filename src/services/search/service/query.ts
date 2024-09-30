@@ -40,7 +40,7 @@ export type GBucket = {
  * @see https://docs.globus.org/api/search/reference/post_query/#gsearchresult
  */
 export type GSearchResult = {
-  gmeta: GMetaResult;
+  gmeta: GMetaResult[];
   facet_results?: GFacetResult[];
   offset: number;
   count: number;
