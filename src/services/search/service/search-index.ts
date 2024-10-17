@@ -25,7 +25,7 @@ export type GSearchIndex = {
   size_in_mb: number;
   num_subjects: number;
   num_entries: number;
-  status: 'open' | 'delete_pending' | string;
+  status: 'open' | 'delete-pending' | string;
 };
 
 /**
