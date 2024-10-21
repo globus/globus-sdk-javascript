@@ -374,6 +374,7 @@ export class AuthorizationManager {
       );
       this.addTokenResponse(response);
     }
+    return response;
   }
 
   /**
