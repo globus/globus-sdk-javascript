@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.0](https://github.com/globus/globus-sdk-javascript/compare/v4.3.1...v4.4.0) (2024-10-22)
+
+
+### Features
+
+* **Authorization:** allow configuration of 'storage' used by AuthorizationManager instance. ([#337](https://github.com/globus/globus-sdk-javascript/issues/337)) ([07b7ffd](https://github.com/globus/globus-sdk-javascript/commit/07b7ffd07be3886132d8c15344d02b08562456eb))
+
+
+### Bug Fixes
+
+* **Authorization:** updates handleCodeRedirect to return the transport response ([#333](https://github.com/globus/globus-sdk-javascript/issues/333)) ([82883d7](https://github.com/globus/globus-sdk-javascript/commit/82883d77bcd9889d04f5d91d226a5708af832f1b))
+* **Search, Types:** `status` `delete_pending` -&gt; `delete-pending` ([#331](https://github.com/globus/globus-sdk-javascript/issues/331)) ([718833d](https://github.com/globus/globus-sdk-javascript/commit/718833d3544e00de287ffb3e5aaf0dda920d030b))
+
 ## [4.3.1](https://github.com/globus/globus-sdk-javascript/compare/v4.3.0...v4.3.1) (2024-09-30)
 
 
