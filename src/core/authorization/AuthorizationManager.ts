@@ -3,7 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 import { isGlobusAuthTokenResponse, isRefreshToken, oauth2 } from '../../services/auth/index.js';
 import { RESOURCE_SERVERS } from '../../services/auth/config.js';
 
-import { createStorage, getStorage } from '../storage/index.js';
+import { createStorage, getStorage, StorageOptions } from '../storage/index.js';
 import { log } from '../logger.js';
 
 import { Event } from './Event.js';
@@ -33,6 +33,13 @@ export type AuthorizationManagerConfiguration = {
   client: string;
   scopes?: string;
   redirect: string;
+  /**
+   * The storage system used by the `AuthorizationManager`.
+   *
+   * **BREAKING CHANGE NOTICE** In an upcoming release, the default storage system will be changed to `"memory"` in order to move toward a "secure by default" model.
+   * @default "localStorage"
+   */
+  storage?: StorageOptions;
   /**
    * @private
    * @default DEFAULT_CONFIGURATION.useRefreshTokens
@@ -154,10 +161,7 @@ export class AuthorizationManager {
   };
 
   constructor(configuration: AuthorizationManagerConfiguration) {
-    /**
-     * @todo Add support for passing in an alternative storage mechanism.
-     */
-    createStorage('localStorage');
+    createStorage(configuration.storage || 'localStorage');
     if (!configuration.client) {
       throw new Error('You must provide a `client` for your application.');
     }

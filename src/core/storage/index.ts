@@ -12,7 +12,8 @@ export interface StorageSystem {
 }
 
 let storage: StorageSystem | undefined;
-type StorageOptions =
+
+export type StorageOptions =
   | 'localStorage'
   | 'memory'
   | {
