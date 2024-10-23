@@ -11,6 +11,7 @@ import { TRANSFER_CONSENT_REQUIRED_ERROR, TRANSFER_GENERIC_ERROR } from '../erro
 import { TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR } from '../../../__mocks__/errors/authorization_parameters';
 import { oauth2 } from '../../../services/auth';
 import { KEYS, RedirectTransport } from '../../authorization/RedirectTransport';
+import { MemoryStorage } from '../../storage/memory';
 
 describe('AuthorizationManager', () => {
   beforeEach(() => {
@@ -19,6 +20,7 @@ describe('AuthorizationManager', () => {
   });
 
   afterEach(() => {
+    jest.clearAllMocks();
     jest.restoreAllMocks();
   });
 
@@ -34,6 +36,10 @@ describe('AuthorizationManager', () => {
     });
     expect(instance).toBeDefined();
     expect(instance.authenticated).toBe(false);
+    /**
+     * The default storage should be `MemoryStorage`.
+     */
+    expect(instance.storage).toBeInstanceOf(MemoryStorage);
   });
 
   if (RedirectTransport.supported) {
@@ -195,15 +201,20 @@ describe('AuthorizationManager', () => {
         window.location.href = `https://redirect_uri?code=CODE&state=${state}`;
         await instance.handleCodeRedirect();
         expect(instance.authenticated).toBe(true);
+
+        const tokenAssertion = expect.objectContaining({
+          ...MOCK_TOKEN,
+          __metadata: expect.objectContaining({
+            created: expect.any(Number),
+            expires: expect.any(Number),
+          }),
+        });
+
+        expect(instance.tokens.auth).toEqual(tokenAssertion);
+
         expect(spy).toHaveBeenCalledWith({
           isAuthenticated: true,
-          token: expect.objectContaining({
-            ...MOCK_TOKEN,
-            __metadata: expect.objectContaining({
-              created: expect.any(Number),
-              expires: expect.any(Number),
-            }),
-          }),
+          token: tokenAssertion,
         });
         expect(spy).toHaveBeenCalledTimes(1);
       });
