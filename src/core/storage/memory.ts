@@ -1,3 +1,7 @@
+/**
+ * An in-memory implementation of the `Storage` interface.
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/Storage
+ */
 export class MemoryStorage implements Storage {
   #storage: Record<string, string | null> = {};
 

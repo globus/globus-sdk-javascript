@@ -19,6 +19,20 @@ describe('MemoryStorage', () => {
     expect(storage.getItem('key')).toBeNull();
   });
 
+  it('key', () => {
+    const storage = new MemoryStorage();
+    storage.setItem('key-1', 'value-1');
+    storage.setItem('key-2', 'value-2');
+    expect(storage.key(1)).toBe('key-2');
+  });
+
+  it('length', () => {
+    const storage = new MemoryStorage();
+    storage.setItem('key-1', 'value-1');
+    storage.setItem('key-2', 'value-2');
+    expect(storage.length).toBe(2);
+  });
+
   it('clear', () => {
     const storage = new MemoryStorage();
     storage.setItem('key', 'value');
