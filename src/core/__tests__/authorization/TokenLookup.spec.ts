@@ -7,14 +7,11 @@ import { RESOURCE_SERVERS } from '../../../services/auth/config';
 import type { Token } from '../../../services/auth/types';
 
 describe('TokenLookup', () => {
-  beforeEach(() => {
-    localStorage.clear();
-  });
-
   const manager = new AuthorizationManager({
     client: 'CLIENT_ID',
     redirect: 'REDIRECT_URI',
     scopes: 'REQUIRED_SCOPES',
+    storage: 'localStorage',
   });
 
   const lookup = new TokenLookup({ manager });

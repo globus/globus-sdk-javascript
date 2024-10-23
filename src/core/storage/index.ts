@@ -1,39 +1,32 @@
 import { MemoryStorage } from './memory.js';
-import { LocalStorage } from './local-storage.js';
 /**
  * Acts as a basic wrapper for storage layers to make their surface APIs consistent.
  */
-export interface StorageSystem {
-  get(key: string): string | null;
-  set(key: string, value: unknown): void;
-  remove(key: string): void;
-  keys(): string[];
-  clear(): void;
-}
-
-let storage: StorageSystem | undefined;
+let storage: Storage | undefined;
 
 export type StorageOptions =
+  | 'sessionStorage'
   | 'localStorage'
   | 'memory'
   | {
-      new (): StorageSystem;
+      new (): Storage;
     };
 
 /**
  * Returns the active storage system or creates an instance for the running process.
  */
-export function createStorage(storageType: StorageOptions = 'memory'): StorageSystem {
+export function createStorage(storageType: StorageOptions = 'memory'): Storage {
   if (!storage) {
-    let Factory: new () => StorageSystem;
     if (storageType === 'localStorage') {
-      Factory = LocalStorage;
+      storage = globalThis.localStorage;
     } else if (storageType === 'memory') {
-      Factory = MemoryStorage;
+      storage = new MemoryStorage();
+    } else if (storageType === 'sessionStorage') {
+      storage = globalThis.sessionStorage;
     } else {
-      Factory = storageType;
+      const Factory = storageType;
+      storage = new Factory();
     }
-    storage = new Factory();
   }
   return storage;
 }

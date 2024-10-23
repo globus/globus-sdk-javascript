@@ -27,7 +27,7 @@ export type StoredToken = Token & {
 };
 
 function getTokenFromStorage(key: string) {
-  const raw = getStorage().get(key) || 'null';
+  const raw = getStorage().getItem(key) || 'null';
   let token: StoredToken | null = null;
   try {
     const parsed = JSON.parse(raw);
@@ -97,14 +97,12 @@ export class TokenLookup {
   }
 
   getAll(): StoredToken[] {
-    const entries = getStorage()
-      .keys()
-      .reduce((acc: (StoredToken | null)[], key) => {
-        if (key.startsWith(this.#manager.storageKeyPrefix)) {
-          acc.push(getTokenFromStorage(key));
-        }
-        return acc;
-      }, []);
+    const entries = Object.keys(getStorage()).reduce((acc: (StoredToken | null)[], key) => {
+      if (key.startsWith(this.#manager.storageKeyPrefix)) {
+        acc.push(getTokenFromStorage(key));
+      }
+      return acc;
+    }, []);
     return entries.filter(isToken);
   }
 
@@ -114,16 +112,19 @@ export class TokenLookup {
   add(token: Token | TokenResponse) {
     const created = Date.now();
     const expires = created + token.expires_in * 1000;
-    getStorage().set(`${this.#manager.storageKeyPrefix}${token.resource_server}`, {
-      ...token,
-      /**
-       * Add metadata to the token to track when it was created and when it expires.
-       */
-      __metadata: {
-        created,
-        expires,
-      },
-    });
+    getStorage().setItem(
+      `${this.#manager.storageKeyPrefix}${token.resource_server}`,
+      JSON.stringify({
+        ...token,
+        /**
+         * Add metadata to the token to track when it was created and when it expires.
+         */
+        __metadata: {
+          created,
+          expires,
+        },
+      }),
+    );
     if ('other_tokens' in token) {
       token.other_tokens?.forEach((t) => {
         this.add(t);

@@ -223,6 +223,7 @@ describe('serviceRequest', () => {
     const manager = new AuthorizationManager({
       client: 'client_id',
       redirect: 'https://redirect_uri',
+      storage: 'localStorage',
     });
 
     const request = await serviceRequest(

@@ -36,8 +36,13 @@ export type AuthorizationManagerConfiguration = {
   /**
    * The storage system used by the `AuthorizationManager`.
    *
-   * **BREAKING CHANGE NOTICE** In an upcoming release, the default storage system will be changed to `"memory"` in order to move toward a "secure by default" model.
-   * @default "localStorage"
+   * By default, the `AuthorizationManager` uses an in-memory storage (`"memory"`), this option is secure by default.
+   *
+   * If you want to persist the state of the `AuthorizationManager`, you can use `"localStorage"`, or provide your own storage system.
+   * It is important to note that using the `localStorage`, or any persistant storage option will preserve authorization and refresh tokens of users.
+   * Best practices for ensuring the security of your application should be followed to protect this data.
+   *
+   * @default "memory"
    */
   storage?: StorageOptions;
   /**
@@ -161,7 +166,7 @@ export class AuthorizationManager {
   };
 
   constructor(configuration: AuthorizationManagerConfiguration) {
-    createStorage(configuration.storage || 'localStorage');
+    createStorage(configuration.storage || 'memory');
     if (!configuration.client) {
       throw new Error('You must provide a `client` for your application.');
     }
@@ -273,7 +278,7 @@ export class AuthorizationManager {
    * Retrieve the Globus Auth token managed by the instance.
    */
   getGlobusAuthToken() {
-    const entry = getStorage().get(`${this.storageKeyPrefix}${RESOURCE_SERVERS.AUTH}`);
+    const entry = getStorage().getItem(`${this.storageKeyPrefix}${RESOURCE_SERVERS.AUTH}`);
     return entry ? JSON.parse(entry) : null;
   }
 
@@ -298,13 +303,11 @@ export class AuthorizationManager {
    * This method **does not** emit the `revoke` event. If you need to emit the `revoke` event, use the `AuthorizationManager.revoke` method.
    */
   reset() {
-    getStorage()
-      .keys()
-      .forEach((key) => {
-        if (key.startsWith(this.storageKeyPrefix)) {
-          getStorage().remove(key);
-        }
-      });
+    Object.keys(getStorage()).forEach((key) => {
+      if (key.startsWith(this.storageKeyPrefix)) {
+        getStorage().removeItem(key);
+      }
+    });
     this.authenticated = false;
   }
 

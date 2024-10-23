@@ -3,6 +3,9 @@ import { setup } from '../../../__mocks__/localStorage';
 import server from '../../../__mocks__/server';
 import '../../../__mocks__/sessionStorage';
 import '../../../__mocks__/window-location';
+
+import { __reset } from '../../storage';
+
 import { AuthorizationManager } from '../../authorization/AuthorizationManager';
 import { Event } from '../../authorization/Event';
 import { TRANSFER_CONSENT_REQUIRED_ERROR, TRANSFER_GENERIC_ERROR } from '../errors.spec';
@@ -15,6 +18,10 @@ describe('AuthorizationManager', () => {
     globalThis.localStorage.clear();
     jest.clearAllMocks();
     jest.restoreAllMocks();
+  });
+
+  afterEach(() => {
+    __reset();
   });
 
   it('should be defined', () => {
@@ -239,7 +246,9 @@ describe('AuthorizationManager', () => {
         authenticated: authenticatedHandler,
         revoke: revokeHandler,
       },
+      storage: 'localStorage',
     });
+
     expect(instance.authenticated).toBe(true);
     expect(authenticatedHandler).toHaveBeenCalledTimes(1);
     expect(authenticatedHandler).toHaveBeenCalledWith({
@@ -306,6 +315,7 @@ describe('AuthorizationManager', () => {
       redirect: 'https://redirect_uri',
       scopes: 'profile email openid',
       useRefreshTokens: true,
+      storage: 'localStorage',
     });
 
     expect(instance.authenticated).toBe(true);
@@ -338,6 +348,7 @@ describe('AuthorizationManager', () => {
       client: 'client_id',
       redirect: 'https://redirect_uri',
       scopes: 'profile email openid',
+      storage: 'localStorage',
     });
 
     expect(instance.authenticated).toBe(true);
@@ -361,6 +372,7 @@ describe('AuthorizationManager', () => {
       client: 'client_id',
       redirect: 'https://redirect_uri',
       scopes: 'foobar baz',
+      storage: 'localStorage',
     });
 
     expect(spy).toHaveBeenCalledTimes(1);
@@ -398,6 +410,7 @@ describe('AuthorizationManager', () => {
         client: 'client_id',
         redirect: 'https://redirect_uri',
         scopes: 'foobar baz',
+        storage: 'localStorage',
       });
       expect(instance.user).toMatchObject({
         sub: '1234567890',
@@ -421,6 +434,7 @@ describe('AuthorizationManager', () => {
         client: 'client_id',
         redirect: 'https://redirect_uri',
         scopes: 'foobar baz',
+        storage: 'localStorage',
       });
 
       expect(instance.authenticated).toBe(true);
@@ -455,6 +469,7 @@ describe('AuthorizationManager', () => {
         client: 'client_id',
         redirect: 'https://redirect_uri',
         scopes: 'foobar baz',
+        storage: 'localStorage',
       });
       /**
        * Check values before `reset` to ensure they are present.
@@ -467,8 +482,8 @@ describe('AuthorizationManager', () => {
        * Check values after `reset`...
        */
       expect(localStorage.getItem('some-entry')).toBe(store['some-entry']);
-      expect(localStorage.getItem('client_id:foobar')).toBe(null);
-      expect(localStorage.getItem('client_id:baz')).toBe(null);
+      expect(localStorage.getItem('client_id:foobar')).toBe(undefined);
+      expect(localStorage.getItem('client_id:baz')).toBe(undefined);
     });
   });
 
@@ -492,6 +507,7 @@ describe('AuthorizationManager', () => {
       redirect: 'https://redirect_uri',
       scopes:
         'urn:globus:auth:scope:transfer.api.globus.org:all urn:globus:auth:scope:groups.api.globus.org:all',
+      storage: 'localStorage',
     });
     const spy = jest.spyOn(instance.events.revoke, 'dispatch');
     expect(instance.authenticated).toBe(true);
