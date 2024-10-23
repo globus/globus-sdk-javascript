@@ -1,6 +1,5 @@
 import { readdir } from 'node:fs/promises';
 
-import { createStorage } from '../../../core/storage';
 import { getClient } from '../client';
 import { mirror } from '../../../__mocks__/handlers';
 
@@ -136,7 +135,6 @@ describe('gcs client', () => {
   });
 
   test('obtain client and call endpoint.get', async () => {
-    createStorage('memory');
     const client = getClient(GCS_CONFIGURATION);
     const {
       req: { url, method, headers },
@@ -161,7 +159,6 @@ describe('gcs client', () => {
   });
 
   test('obtain client and call collections.get', async () => {
-    createStorage('memory');
     const client = getClient(GCS_CONFIGURATION);
     const {
       req: { url, method, headers },

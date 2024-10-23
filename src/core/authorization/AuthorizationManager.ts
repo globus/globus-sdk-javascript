@@ -3,7 +3,6 @@ import { jwtDecode } from 'jwt-decode';
 import { isGlobusAuthTokenResponse, isRefreshToken, oauth2 } from '../../services/auth/index.js';
 import { RESOURCE_SERVERS } from '../../services/auth/config.js';
 
-import { createStorage, getStorage, StorageOptions } from '../storage/index.js';
 import { log } from '../logger.js';
 
 import { Event } from './Event.js';
@@ -12,7 +11,7 @@ import {
   GetTokenOptions,
   RedirectTransport,
 } from './RedirectTransport.js';
-import { TokenLookup } from './TokenLookup.js';
+import { TokenManager } from './TokenManager.js';
 
 import {
   isConsentRequiredError,
@@ -28,6 +27,7 @@ import type {
   TokenResponse,
   TokenWithRefresh,
 } from '../../services/auth/types.js';
+import { MemoryStorage } from '../storage/memory.js';
 
 export type AuthorizationManagerConfiguration = {
   client: string;
@@ -36,15 +36,15 @@ export type AuthorizationManagerConfiguration = {
   /**
    * The storage system used by the `AuthorizationManager`.
    *
-   * By default, the `AuthorizationManager` uses an in-memory storage (`"memory"`), this option is secure by default.
+   * By default, the `AuthorizationManager` uses an in-memory storage, this option is secure by default.
    *
-   * If you want to persist the state of the `AuthorizationManager`, you can use `"localStorage"`, or provide your own storage system.
-   * It is important to note that using the `localStorage`, or any persistant storage option will preserve authorization and refresh tokens of users.
-   * Best practices for ensuring the security of your application should be followed to protect this data.
+   * If you want to persist the state of the `AuthorizationManager`, you can use `localStorage`, or provide your own storage system.
+   * **It is important to note that using the `localStorage`, or any persistant storage option will preserve authorization and refresh tokens of users.**
+   * Best practices for ensuring the security of your application should be followed to protect this data (e.g., ensuring XSS protection).
    *
-   * @default "memory"
+   * @default MemoryStorage
    */
-  storage?: StorageOptions;
+  storage?: Storage;
   /**
    * @private
    * @default DEFAULT_CONFIGURATION.useRefreshTokens
@@ -113,6 +113,12 @@ export class AuthorizationManager {
 
   configuration: AuthorizationManagerConfiguration;
 
+  /**
+   * The storage system used by the `AuthorizationManager`.
+   * @implements Storage
+   */
+  storage: Storage;
+
   #authenticated = false;
 
   /**
@@ -137,7 +143,7 @@ export class AuthorizationManager {
     this.#emitAuthenticatedState();
   }
 
-  tokens: TokenLookup;
+  tokens: TokenManager;
 
   events = {
     /**
@@ -166,7 +172,11 @@ export class AuthorizationManager {
   };
 
   constructor(configuration: AuthorizationManagerConfiguration) {
-    createStorage(configuration.storage || 'memory');
+    /**
+     * Configure the storage system for the instance, defaulting to an in-memory storage system.
+     */
+    this.storage = configuration.storage || new MemoryStorage();
+
     if (!configuration.client) {
       throw new Error('You must provide a `client` for your application.');
     }
@@ -198,7 +208,7 @@ export class AuthorizationManager {
       });
     }
 
-    this.tokens = new TokenLookup({
+    this.tokens = new TokenManager({
       manager: this,
     });
     this.#checkAuthorizationState();
@@ -278,7 +288,7 @@ export class AuthorizationManager {
    * Retrieve the Globus Auth token managed by the instance.
    */
   getGlobusAuthToken() {
-    const entry = getStorage().getItem(`${this.storageKeyPrefix}${RESOURCE_SERVERS.AUTH}`);
+    const entry = this.storage.getItem(`${this.storageKeyPrefix}${RESOURCE_SERVERS.AUTH}`);
     return entry ? JSON.parse(entry) : null;
   }
 
@@ -303,9 +313,9 @@ export class AuthorizationManager {
    * This method **does not** emit the `revoke` event. If you need to emit the `revoke` event, use the `AuthorizationManager.revoke` method.
    */
   reset() {
-    Object.keys(getStorage()).forEach((key) => {
+    Object.keys(this.storage).forEach((key) => {
       if (key.startsWith(this.storageKeyPrefix)) {
-        getStorage().removeItem(key);
+        this.storage.removeItem(key);
       }
     });
     this.authenticated = false;

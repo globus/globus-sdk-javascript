@@ -1,10 +1,9 @@
 import { HttpResponse, http } from 'msw';
-import { setup } from '../../../__mocks__/localStorage';
-import server from '../../../__mocks__/server';
-import '../../../__mocks__/sessionStorage';
-import '../../../__mocks__/window-location';
 
-import { __reset } from '../../storage';
+import { mockLocalStorage, setInitialLocalStorageState } from '../../../__mocks__/localStorage';
+import { mockSessionStorage } from '../../../__mocks__/sessionStorage';
+import server from '../../../__mocks__/server';
+import '../../../__mocks__/window-location';
 
 import { AuthorizationManager } from '../../authorization/AuthorizationManager';
 import { Event } from '../../authorization/Event';
@@ -15,13 +14,12 @@ import { KEYS, RedirectTransport } from '../../authorization/RedirectTransport';
 
 describe('AuthorizationManager', () => {
   beforeEach(() => {
-    globalThis.localStorage.clear();
-    jest.clearAllMocks();
-    jest.restoreAllMocks();
+    mockLocalStorage();
+    mockSessionStorage();
   });
 
   afterEach(() => {
-    __reset();
+    jest.restoreAllMocks();
   });
 
   it('should be defined', () => {
@@ -233,7 +231,7 @@ describe('AuthorizationManager', () => {
       refresh_token: 'refresh-token',
       other_tokens: [],
     };
-    setup({
+    setInitialLocalStorageState({
       'client_id:auth.globus.org': JSON.stringify(TOKEN),
     });
     const authenticatedHandler = jest.fn();
@@ -246,7 +244,7 @@ describe('AuthorizationManager', () => {
         authenticated: authenticatedHandler,
         revoke: revokeHandler,
       },
-      storage: 'localStorage',
+      storage: localStorage,
     });
 
     expect(instance.authenticated).toBe(true);
@@ -270,7 +268,7 @@ describe('AuthorizationManager', () => {
       other_tokens: [],
     };
 
-    setup({
+    setInitialLocalStorageState({
       'client_id:auth.globus.org': JSON.stringify(TOKEN),
       'client_id:transfer.api.globus.org': JSON.stringify({
         ...TOKEN,
@@ -315,7 +313,7 @@ describe('AuthorizationManager', () => {
       redirect: 'https://redirect_uri',
       scopes: 'profile email openid',
       useRefreshTokens: true,
-      storage: 'localStorage',
+      storage: localStorage,
     });
 
     expect(instance.authenticated).toBe(true);
@@ -341,14 +339,14 @@ describe('AuthorizationManager', () => {
       resource_server: 'auth.globus.org',
       other_tokens: [],
     };
-    setup({
+    setInitialLocalStorageState({
       'client_id:auth.globus.org': JSON.stringify(TOKEN),
     });
     const instance = new AuthorizationManager({
       client: 'client_id',
       redirect: 'https://redirect_uri',
       scopes: 'profile email openid',
-      storage: 'localStorage',
+      storage: localStorage,
     });
 
     expect(instance.authenticated).toBe(true);
@@ -362,7 +360,7 @@ describe('AuthorizationManager', () => {
   });
 
   it('should bootstrap from an existing token', () => {
-    setup({
+    setInitialLocalStorageState({
       'client_id:auth.globus.org': JSON.stringify({ resource_server: 'auth.globus.org' }),
       'client_id:foobar': JSON.stringify({ resource_server: 'foobar' }),
       'client_id:baz': JSON.stringify({ resource_server: 'baz' }),
@@ -372,7 +370,7 @@ describe('AuthorizationManager', () => {
       client: 'client_id',
       redirect: 'https://redirect_uri',
       scopes: 'foobar baz',
-      storage: 'localStorage',
+      storage: localStorage,
     });
 
     expect(spy).toHaveBeenCalledTimes(1);
@@ -403,14 +401,14 @@ describe('AuthorizationManager', () => {
         id_token:
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
       };
-      setup({
+      setInitialLocalStorageState({
         'client_id:auth.globus.org': JSON.stringify(AUTH_TOKEN_FIXTURE),
       });
       const instance = new AuthorizationManager({
         client: 'client_id',
         redirect: 'https://redirect_uri',
         scopes: 'foobar baz',
-        storage: 'localStorage',
+        storage: localStorage,
       });
       expect(instance.user).toMatchObject({
         sub: '1234567890',
@@ -422,7 +420,7 @@ describe('AuthorizationManager', () => {
 
   describe('reset', () => {
     it('resets the AuthenticationManager dispatching expected events', () => {
-      setup({
+      setInitialLocalStorageState({
         'client_id:auth.globus.org': JSON.stringify({ resource_server: 'auth.globus.org' }),
         'client_id:foobar': JSON.stringify({ resource_server: 'foobar' }),
         'client_id:baz': JSON.stringify({ resource_server: 'baz' }),
@@ -434,7 +432,7 @@ describe('AuthorizationManager', () => {
         client: 'client_id',
         redirect: 'https://redirect_uri',
         scopes: 'foobar baz',
-        storage: 'localStorage',
+        storage: localStorage,
       });
 
       expect(instance.authenticated).toBe(true);
@@ -463,13 +461,13 @@ describe('AuthorizationManager', () => {
         'client_id:baz': JSON.stringify({ resource_server: 'baz' }),
       };
 
-      setup(store);
+      setInitialLocalStorageState(store);
 
       const instance = new AuthorizationManager({
         client: 'client_id',
         redirect: 'https://redirect_uri',
         scopes: 'foobar baz',
-        storage: 'localStorage',
+        storage: localStorage,
       });
       /**
        * Check values before `reset` to ensure they are present.
@@ -488,7 +486,7 @@ describe('AuthorizationManager', () => {
   });
 
   it('revoke', async () => {
-    setup({
+    setInitialLocalStorageState({
       'client_id:auth.globus.org': JSON.stringify({
         resource_server: 'auth.globus.org',
         access_token: 'AUTH',
@@ -507,7 +505,7 @@ describe('AuthorizationManager', () => {
       redirect: 'https://redirect_uri',
       scopes:
         'urn:globus:auth:scope:transfer.api.globus.org:all urn:globus:auth:scope:groups.api.globus.org:all',
-      storage: 'localStorage',
+      storage: localStorage,
     });
     const spy = jest.spyOn(instance.events.revoke, 'dispatch');
     expect(instance.authenticated).toBe(true);

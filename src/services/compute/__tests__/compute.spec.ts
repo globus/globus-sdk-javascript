@@ -1,13 +1,8 @@
 import { endpoints } from '../index';
-import { createStorage } from '../../../core/storage';
 
 import { mirror } from '../../../__mocks__/handlers';
 
 describe('compute.endpoints', () => {
-  beforeEach(() => {
-    createStorage('memory');
-  });
-
   test('getAll', async () => {
     const {
       req: { url, method, headers },

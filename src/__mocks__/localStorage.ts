@@ -1,21 +1,18 @@
 import { createStorageMock } from './storage';
 
-(function () {
+export function setInitialLocalStorageState(initialState: Record<string, string>) {
+  Object.keys(initialState).forEach((key) => {
+    globalThis.localStorage.setItem(key, initialState[key]);
+  });
+}
+
+export function mockLocalStorage(initialState: Record<string, string> = {}) {
+  const mock = createStorageMock();
   Object.defineProperty(globalThis, 'localStorage', {
-    value: createStorageMock(),
+    value: mock,
     writable: true,
   });
-})();
-
-/**
- * Clear the mocked `localStorage` and set a new state for the test context.
- */
-export function setup(state: Record<string, string> = {}) {
-  /**
-   * Clear the localStorage before setting the new state...
-   */
-  globalThis.localStorage.clear();
-  Object.keys(state).forEach((key) => {
-    globalThis.localStorage.setItem(key, state[key]);
-  });
+  if (initialState) {
+    setInitialLocalStorageState(initialState);
+  }
 }

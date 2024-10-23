@@ -1,8 +1,8 @@
 import { createStorageMock } from './storage';
 
-(function () {
+export function mockSessionStorage() {
   Object.defineProperty(globalThis, 'sessionStorage', {
     value: createStorageMock(),
     writable: true,
   });
-})();
+}

@@ -1,44 +1,54 @@
-import { setup } from '../../../__mocks__/localStorage';
+import { mockLocalStorage, setInitialLocalStorageState } from '../../../__mocks__/localStorage';
 import { AuthorizationManager } from '../../authorization/AuthorizationManager';
-import { TokenLookup } from '../../authorization/TokenLookup';
+import { TokenManager } from '../../authorization/TokenManager';
 
 import { RESOURCE_SERVERS } from '../../../services/auth/config';
 
 import type { Token } from '../../../services/auth/types';
 
-describe('TokenLookup', () => {
-  const manager = new AuthorizationManager({
-    client: 'CLIENT_ID',
-    redirect: 'REDIRECT_URI',
-    scopes: 'REQUIRED_SCOPES',
-    storage: 'localStorage',
+describe('TokenManager', () => {
+  let manager: AuthorizationManager;
+  let tokens: TokenManager;
+
+  beforeEach(() => {
+    mockLocalStorage();
+    manager = new AuthorizationManager({
+      client: 'CLIENT_ID',
+      redirect: 'REDIRECT_URI',
+      scopes: 'REQUIRED_SCOPES',
+      storage: globalThis.localStorage,
+    });
+    tokens = new TokenManager({ manager });
   });
 
-  const lookup = new TokenLookup({ manager });
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
 
   it('should return empty values for all defined services', () => {
-    expect(lookup.auth).toBeNull();
-    expect(lookup.transfer).toBeNull();
-    expect(lookup.flows).toBeNull();
-    expect(lookup.groups).toBeNull();
-    expect(lookup.search).toBeNull();
-    expect(lookup.timer).toBeNull();
-    expect(lookup.compute).toBeNull();
+    expect(tokens.auth).toBeNull();
+    expect(tokens.transfer).toBeNull();
+    expect(tokens.flows).toBeNull();
+    expect(tokens.groups).toBeNull();
+    expect(tokens.search).toBeNull();
+    expect(tokens.timer).toBeNull();
+    expect(tokens.compute).toBeNull();
   });
 
   it('should return tokens for services when in storage', () => {
     const TOKEN = { resource_server: RESOURCE_SERVERS.AUTH, access_token: 'AUTH' };
-    setup({
+    setInitialLocalStorageState({
       'CLIENT_ID:auth.globus.org': JSON.stringify(TOKEN),
     });
-    expect(lookup.auth).not.toBeNull();
-    expect(lookup.auth).toEqual(TOKEN);
-    expect(lookup.transfer).toBeNull();
-    expect(lookup.flows).toBeNull();
-    expect(lookup.groups).toBeNull();
-    expect(lookup.search).toBeNull();
-    expect(lookup.timer).toBeNull();
-    expect(lookup.compute).toBeNull();
+
+    expect(tokens.auth).not.toBeNull();
+    expect(tokens.auth).toEqual(TOKEN);
+    expect(tokens.transfer).toBeNull();
+    expect(tokens.flows).toBeNull();
+    expect(tokens.groups).toBeNull();
+    expect(tokens.search).toBeNull();
+    expect(tokens.timer).toBeNull();
+    expect(tokens.compute).toBeNull();
   });
 
   describe('isTokenExpired', () => {
@@ -53,7 +63,7 @@ describe('TokenLookup', () => {
       /**
        * Expect raw token to be returned as `undefined`; Only includes relative `expires_in`.
        */
-      expect(TokenLookup.isTokenExpired(TOKEN)).toBe(undefined);
+      expect(TokenManager.isTokenExpired(TOKEN)).toBe(undefined);
     });
 
     it('handles stored tokens', () => {
@@ -70,15 +80,15 @@ describe('TokenLookup', () => {
         expires_in: 0,
       };
 
-      lookup.add(TOKEN);
-      lookup.add(EXPIRED_TOKEN);
+      tokens.add(TOKEN);
+      tokens.add(EXPIRED_TOKEN);
 
-      expect(TokenLookup.isTokenExpired(lookup.auth)).toBe(false);
-      expect(TokenLookup.isTokenExpired(lookup.flows)).toBe(true);
+      expect(TokenManager.isTokenExpired(tokens.auth)).toBe(false);
+      expect(TokenManager.isTokenExpired(tokens.flows)).toBe(true);
       /**
        * `null` / Missing Token
        */
-      expect(TokenLookup.isTokenExpired(lookup.groups)).toBe(undefined);
+      expect(TokenManager.isTokenExpired(tokens.groups)).toBe(undefined);
     });
 
     it('supports time augments', () => {
@@ -90,10 +100,10 @@ describe('TokenLookup', () => {
         expires_in: 5,
       };
 
-      lookup.add(TOKEN);
+      tokens.add(TOKEN);
 
-      expect(TokenLookup.isTokenExpired(lookup.auth, 4500)).toBe(false);
-      expect(TokenLookup.isTokenExpired(lookup.auth, 20 * 1000)).toBe(true);
+      expect(TokenManager.isTokenExpired(tokens.auth, 4500)).toBe(false);
+      expect(TokenManager.isTokenExpired(tokens.auth, 20 * 1000)).toBe(true);
     });
   });
 
@@ -103,11 +113,11 @@ describe('TokenLookup', () => {
         { resource_server: RESOURCE_SERVERS.AUTH, access_token: 'TOKEN-1' },
         { resource_server: RESOURCE_SERVERS.COMPUTE, access_token: 'TOKEN-2' },
       ];
-      setup({
+      setInitialLocalStorageState({
         [`CLIENT_ID:${RESOURCE_SERVERS.AUTH}`]: JSON.stringify(TOKENS[0]),
         [`CLIENT_ID:${RESOURCE_SERVERS.COMPUTE}`]: JSON.stringify(TOKENS[1]),
       });
-      expect(lookup.getAll()).toEqual([TOKENS[0], TOKENS[1]]);
+      expect(tokens.getAll()).toEqual([TOKENS[0], TOKENS[1]]);
     });
 
     it('should return all tokens for the client regardless of association with a service (e.g., GCS)', () => {
@@ -118,15 +128,15 @@ describe('TokenLookup', () => {
         { resource_server: GCS_ENDPOINT_UUID, access_token: 'GCS-TOKEN' },
         { resource_server: 'arbitrary', access_token: 'arbitrary' },
       ];
-      setup({
+      setInitialLocalStorageState({
         [`CLIENT_ID:${RESOURCE_SERVERS.AUTH}`]: JSON.stringify(TOKENS[0]),
         [`CLIENT_ID:${RESOURCE_SERVERS.COMPUTE}`]: JSON.stringify(TOKENS[1]),
         [`CLIENT_ID:${GCS_ENDPOINT_UUID}`]: JSON.stringify(TOKENS[2]),
         'some-storage-key': 'NOT-A-TOKEN',
         [`CLIENT_ID:arbitrary`]: JSON.stringify(TOKENS[3]),
       });
-      expect(lookup.getAll()).toEqual([TOKENS[0], TOKENS[1], TOKENS[2], TOKENS[3]]);
-      expect(lookup.getAll()).not.toContain('NOT-A-TOKEN');
+      expect(tokens.getAll()).toEqual([TOKENS[0], TOKENS[1], TOKENS[2], TOKENS[3]]);
+      expect(tokens.getAll()).not.toContain('NOT-A-TOKEN');
     });
   });
 
@@ -154,15 +164,15 @@ describe('TokenLookup', () => {
         scope: 'openid',
       },
     ];
-    setup({
+    setInitialLocalStorageState({
       [`CLIENT_ID:${GCS_ENDPOINT_UUID}`]: JSON.stringify(TOKENS[0]),
       [`CLIENT_ID:${FLOW_UUID}`]: JSON.stringify(TOKENS[1]),
       [`CLIENT_ID:${RESOURCE_SERVERS.AUTH}`]: JSON.stringify(TOKENS[2]),
     });
 
-    expect(lookup.getByResourceServer(GCS_ENDPOINT_UUID)).toEqual(TOKENS[0]);
-    expect(lookup.getByResourceServer(FLOW_UUID)).toEqual(TOKENS[1]);
-    expect(lookup.getByResourceServer(RESOURCE_SERVERS.AUTH)).toEqual(TOKENS[2]);
+    expect(tokens.getByResourceServer(GCS_ENDPOINT_UUID)).toEqual(TOKENS[0]);
+    expect(tokens.getByResourceServer(FLOW_UUID)).toEqual(TOKENS[1]);
+    expect(tokens.getByResourceServer(RESOURCE_SERVERS.AUTH)).toEqual(TOKENS[2]);
   });
 
   it('should provide access to GCS tokens', () => {
@@ -178,10 +188,10 @@ describe('TokenLookup', () => {
         refresh_token: 'REFRESH-TOKEN',
       },
     ];
-    setup({
+    setInitialLocalStorageState({
       [`CLIENT_ID:${GCS_ENDPOINT_UUID}`]: JSON.stringify(TOKENS[0]),
     });
 
-    expect(lookup.gcs(GCS_ENDPOINT_UUID)).toEqual(TOKENS[0]);
+    expect(tokens.gcs(GCS_ENDPOINT_UUID)).toEqual(TOKENS[0]);
   });
 });

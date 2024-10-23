@@ -1,4 +1,3 @@
-import { createStorage } from '../../../core/storage';
 import { mirror } from '../../../__mocks__/handlers';
 
 import { fileOperations } from '..';
@@ -9,10 +8,6 @@ import { fileOperations } from '..';
 const ENDPOINT = 'c591c905-2674-4227-9d31-1ff9485945a7';
 
 describe('transfer.file-operations', () => {
-  beforeEach(() => {
-    createStorage('memory');
-  });
-
   test('mkdir', async () => {
     const {
       req: { url, method, headers, json },
