@@ -1,12 +1,7 @@
-import { createStorage } from '../../../core/storage';
 import { mirror } from '../../../__mocks__/handlers';
 import { taskSubmission } from '..';
 
 describe('transfer.task-submission', () => {
-  beforeEach(() => {
-    createStorage('memory');
-  });
-
   test('submissionId', async () => {
     const {
       req: { url, method, headers },

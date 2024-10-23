@@ -1,4 +1,3 @@
-import '../../../__mocks__/localStorage';
 import { create } from '../../authorization';
 
 describe('authorization', () => {

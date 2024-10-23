@@ -1,12 +1,7 @@
-import { createStorage } from '../../../core/storage';
 import { mirror } from '../../../__mocks__/handlers';
 import { flows } from '..';
 
 describe('flows.flow', () => {
-  beforeEach(() => {
-    createStorage('memory');
-  });
-
   test('getAll', async () => {
     const {
       req: { url, method, headers },

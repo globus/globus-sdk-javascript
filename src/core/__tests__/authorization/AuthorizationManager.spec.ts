@@ -1,18 +1,25 @@
 import { HttpResponse, http } from 'msw';
-import { setup } from '../../../__mocks__/localStorage';
+
+import { mockLocalStorage, setInitialLocalStorageState } from '../../../__mocks__/localStorage';
+import { mockSessionStorage } from '../../../__mocks__/sessionStorage';
 import server from '../../../__mocks__/server';
-import '../../../__mocks__/sessionStorage';
 import '../../../__mocks__/window-location';
+
 import { AuthorizationManager } from '../../authorization/AuthorizationManager';
 import { Event } from '../../authorization/Event';
 import { TRANSFER_CONSENT_REQUIRED_ERROR, TRANSFER_GENERIC_ERROR } from '../errors.spec';
 import { TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR } from '../../../__mocks__/errors/authorization_parameters';
 import { oauth2 } from '../../../services/auth';
 import { KEYS, RedirectTransport } from '../../authorization/RedirectTransport';
+import { MemoryStorage } from '../../storage/memory';
 
 describe('AuthorizationManager', () => {
   beforeEach(() => {
-    globalThis.localStorage.clear();
+    mockLocalStorage();
+    mockSessionStorage();
+  });
+
+  afterEach(() => {
     jest.clearAllMocks();
     jest.restoreAllMocks();
   });
@@ -29,6 +36,10 @@ describe('AuthorizationManager', () => {
     });
     expect(instance).toBeDefined();
     expect(instance.authenticated).toBe(false);
+    /**
+     * The default storage should be `MemoryStorage`.
+     */
+    expect(instance.storage).toBeInstanceOf(MemoryStorage);
   });
 
   if (RedirectTransport.supported) {
@@ -190,15 +201,20 @@ describe('AuthorizationManager', () => {
         window.location.href = `https://redirect_uri?code=CODE&state=${state}`;
         await instance.handleCodeRedirect();
         expect(instance.authenticated).toBe(true);
+
+        const tokenAssertion = expect.objectContaining({
+          ...MOCK_TOKEN,
+          __metadata: expect.objectContaining({
+            created: expect.any(Number),
+            expires: expect.any(Number),
+          }),
+        });
+
+        expect(instance.tokens.auth).toEqual(tokenAssertion);
+
         expect(spy).toHaveBeenCalledWith({
           isAuthenticated: true,
-          token: expect.objectContaining({
-            ...MOCK_TOKEN,
-            __metadata: expect.objectContaining({
-              created: expect.any(Number),
-              expires: expect.any(Number),
-            }),
-          }),
+          token: tokenAssertion,
         });
         expect(spy).toHaveBeenCalledTimes(1);
       });
@@ -226,7 +242,7 @@ describe('AuthorizationManager', () => {
       refresh_token: 'refresh-token',
       other_tokens: [],
     };
-    setup({
+    setInitialLocalStorageState({
       'client_id:auth.globus.org': JSON.stringify(TOKEN),
     });
     const authenticatedHandler = jest.fn();
@@ -239,7 +255,9 @@ describe('AuthorizationManager', () => {
         authenticated: authenticatedHandler,
         revoke: revokeHandler,
       },
+      storage: localStorage,
     });
+
     expect(instance.authenticated).toBe(true);
     expect(authenticatedHandler).toHaveBeenCalledTimes(1);
     expect(authenticatedHandler).toHaveBeenCalledWith({
@@ -261,7 +279,7 @@ describe('AuthorizationManager', () => {
       other_tokens: [],
     };
 
-    setup({
+    setInitialLocalStorageState({
       'client_id:auth.globus.org': JSON.stringify(TOKEN),
       'client_id:transfer.api.globus.org': JSON.stringify({
         ...TOKEN,
@@ -306,6 +324,7 @@ describe('AuthorizationManager', () => {
       redirect: 'https://redirect_uri',
       scopes: 'profile email openid',
       useRefreshTokens: true,
+      storage: localStorage,
     });
 
     expect(instance.authenticated).toBe(true);
@@ -331,13 +350,14 @@ describe('AuthorizationManager', () => {
       resource_server: 'auth.globus.org',
       other_tokens: [],
     };
-    setup({
+    setInitialLocalStorageState({
       'client_id:auth.globus.org': JSON.stringify(TOKEN),
     });
     const instance = new AuthorizationManager({
       client: 'client_id',
       redirect: 'https://redirect_uri',
       scopes: 'profile email openid',
+      storage: localStorage,
     });
 
     expect(instance.authenticated).toBe(true);
@@ -351,7 +371,7 @@ describe('AuthorizationManager', () => {
   });
 
   it('should bootstrap from an existing token', () => {
-    setup({
+    setInitialLocalStorageState({
       'client_id:auth.globus.org': JSON.stringify({ resource_server: 'auth.globus.org' }),
       'client_id:foobar': JSON.stringify({ resource_server: 'foobar' }),
       'client_id:baz': JSON.stringify({ resource_server: 'baz' }),
@@ -361,6 +381,7 @@ describe('AuthorizationManager', () => {
       client: 'client_id',
       redirect: 'https://redirect_uri',
       scopes: 'foobar baz',
+      storage: localStorage,
     });
 
     expect(spy).toHaveBeenCalledTimes(1);
@@ -391,13 +412,14 @@ describe('AuthorizationManager', () => {
         id_token:
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
       };
-      setup({
+      setInitialLocalStorageState({
         'client_id:auth.globus.org': JSON.stringify(AUTH_TOKEN_FIXTURE),
       });
       const instance = new AuthorizationManager({
         client: 'client_id',
         redirect: 'https://redirect_uri',
         scopes: 'foobar baz',
+        storage: localStorage,
       });
       expect(instance.user).toMatchObject({
         sub: '1234567890',
@@ -409,7 +431,7 @@ describe('AuthorizationManager', () => {
 
   describe('reset', () => {
     it('resets the AuthenticationManager dispatching expected events', () => {
-      setup({
+      setInitialLocalStorageState({
         'client_id:auth.globus.org': JSON.stringify({ resource_server: 'auth.globus.org' }),
         'client_id:foobar': JSON.stringify({ resource_server: 'foobar' }),
         'client_id:baz': JSON.stringify({ resource_server: 'baz' }),
@@ -421,6 +443,7 @@ describe('AuthorizationManager', () => {
         client: 'client_id',
         redirect: 'https://redirect_uri',
         scopes: 'foobar baz',
+        storage: localStorage,
       });
 
       expect(instance.authenticated).toBe(true);
@@ -449,12 +472,13 @@ describe('AuthorizationManager', () => {
         'client_id:baz': JSON.stringify({ resource_server: 'baz' }),
       };
 
-      setup(store);
+      setInitialLocalStorageState(store);
 
       const instance = new AuthorizationManager({
         client: 'client_id',
         redirect: 'https://redirect_uri',
         scopes: 'foobar baz',
+        storage: localStorage,
       });
       /**
        * Check values before `reset` to ensure they are present.
@@ -467,13 +491,13 @@ describe('AuthorizationManager', () => {
        * Check values after `reset`...
        */
       expect(localStorage.getItem('some-entry')).toBe(store['some-entry']);
-      expect(localStorage.getItem('client_id:foobar')).toBe(null);
-      expect(localStorage.getItem('client_id:baz')).toBe(null);
+      expect(localStorage.getItem('client_id:foobar')).toBe(undefined);
+      expect(localStorage.getItem('client_id:baz')).toBe(undefined);
     });
   });
 
   it('revoke', async () => {
-    setup({
+    setInitialLocalStorageState({
       'client_id:auth.globus.org': JSON.stringify({
         resource_server: 'auth.globus.org',
         access_token: 'AUTH',
@@ -492,6 +516,7 @@ describe('AuthorizationManager', () => {
       redirect: 'https://redirect_uri',
       scopes:
         'urn:globus:auth:scope:transfer.api.globus.org:all urn:globus:auth:scope:groups.api.globus.org:all',
+      storage: localStorage,
     });
     const spy = jest.spyOn(instance.events.revoke, 'dispatch');
     expect(instance.authenticated).toBe(true);

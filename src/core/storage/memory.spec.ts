@@ -5,44 +5,42 @@ describe('MemoryStorage', () => {
     jest.restoreAllMocks();
   });
 
-  it('should set and get a string value', () => {
+  it('should setItem and get a string value', () => {
     const storage = new MemoryStorage();
-    storage.set('key', 'value');
-    expect(storage.get('key')).toBe('value');
-  });
-
-  it('should set and get an object value', () => {
-    const OBJ = {
-      access_token: 'example',
-    };
-    const storage = new MemoryStorage();
-    storage.set('key', OBJ);
-    expect(storage.get('key')).toBe(JSON.stringify(OBJ));
+    storage.setItem('key', 'value');
+    expect(storage.getItem('key')).toBe('value');
   });
 
   it('remove', () => {
     const storage = new MemoryStorage();
-    storage.set('key', 'value');
-    expect(storage.get('key')).toBe('value');
-    storage.remove('key');
-    expect(storage.get('key')).toBeNull();
+    storage.setItem('key', 'value');
+    expect(storage.getItem('key')).toBe('value');
+    storage.removeItem('key');
+    expect(storage.getItem('key')).toBeNull();
   });
 
-  it('keys', () => {
+  it('key', () => {
     const storage = new MemoryStorage();
-    storage.set('key', 'value');
-    storage.set('one', 1);
-    expect(storage.keys()).toEqual(['key', 'one']);
+    storage.setItem('key-1', 'value-1');
+    storage.setItem('key-2', 'value-2');
+    expect(storage.key(1)).toBe('key-2');
+  });
+
+  it('length', () => {
+    const storage = new MemoryStorage();
+    storage.setItem('key-1', 'value-1');
+    storage.setItem('key-2', 'value-2');
+    expect(storage.length).toBe(2);
   });
 
   it('clear', () => {
     const storage = new MemoryStorage();
-    storage.set('key', 'value');
-    storage.set('one', 1);
-    expect(storage.get('key')).toBe('value');
-    expect(storage.get('one')).toBe('1');
+    storage.setItem('key', 'value');
+    storage.setItem('one', '1');
+    expect(storage.getItem('key')).toBe('value');
+    expect(storage.getItem('one')).toBe('1');
     storage.clear();
-    expect(storage.get('key')).toBeNull();
-    expect(storage.get('one')).toBeNull();
+    expect(storage.getItem('key')).toBeNull();
+    expect(storage.getItem('one')).toBeNull();
   });
 });

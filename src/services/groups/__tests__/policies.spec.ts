@@ -1,10 +1,8 @@
 import { policies } from '..';
-import { createStorage } from '../../../core/storage';
 
 import type { MirroredRequest } from '../../../__mocks__/handlers';
 
 test('policies - get', async () => {
-  createStorage('memory');
   const result = await policies.get('6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9');
   const {
     req: { url, method, headers },

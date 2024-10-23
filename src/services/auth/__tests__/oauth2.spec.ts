@@ -1,12 +1,7 @@
-import { createStorage } from '../../../core/storage';
 import { mirror } from '../../../__mocks__/handlers';
 import { oauth2 } from '../index';
 
 describe('oauth2', () => {
-  beforeEach(() => {
-    createStorage('memory');
-  });
-
   test('userinfo', async () => {
     const {
       req: { url, method, headers, formData },

@@ -1,11 +1,9 @@
-import { createStorage } from '../../../core/storage';
 import { query } from '..';
 
 import { mirror } from '../../../__mocks__/handlers';
 
 describe('search – query', () => {
   test('get', async () => {
-    createStorage('memory');
     const request = await query.get('524de2f6-d1a6-4b49-9286-d8dccb4196ae', {
       query: {
         q: 'test',
@@ -61,7 +59,6 @@ describe('search – query', () => {
   });
 
   test('post', async () => {
-    createStorage('memory');
     const request = await query.post('524de2f6-d1a6-4b49-9286-d8dccb4196ae', {
       payload: { q: 'test' },
     });

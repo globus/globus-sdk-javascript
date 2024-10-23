@@ -1,16 +1,21 @@
 import { HttpResponse, http } from 'msw';
 import { serviceRequest } from '../shared';
 import { mirror } from '../../__mocks__/handlers';
-import { setup } from '../../__mocks__/localStorage';
 import server from '../../__mocks__/server';
 import { AuthorizationManager } from '../../core/authorization/AuthorizationManager';
 import { getRequiredScopes } from '../globus-connect-server';
 import { enable } from '../../core/info/private';
 import pkg from '../../../package.json';
+import { mockLocalStorage, setInitialLocalStorageState } from '../../__mocks__/localStorage';
 
-describe('serviceRequest', () => {
+describe.only('serviceRequest', () => {
+  beforeEach(() => {
+    mockLocalStorage();
+  });
+
   afterEach(() => {
     delete process.env['GLOBUS_SDK_OPTIONS'];
+    jest.restoreAllMocks();
   });
 
   it('generates a service request', async () => {
@@ -212,7 +217,7 @@ describe('serviceRequest', () => {
       other_tokens: [],
     };
 
-    setup({
+    setInitialLocalStorageState({
       'client_id:auth.globus.org': JSON.stringify(TOKEN),
       'client_id:transfer.api.globus.org': JSON.stringify({
         ...TOKEN,
@@ -223,6 +228,7 @@ describe('serviceRequest', () => {
     const manager = new AuthorizationManager({
       client: 'client_id',
       redirect: 'https://redirect_uri',
+      storage: localStorage,
     });
 
     const request = await serviceRequest(
@@ -259,7 +265,7 @@ describe('serviceRequest', () => {
       other_tokens: [],
     };
 
-    setup({
+    setInitialLocalStorageState({
       'client_id:auth.globus.org': JSON.stringify(TOKEN),
       'client_id:transfer.api.globus.org': JSON.stringify({
         ...TOKEN,
@@ -270,6 +276,7 @@ describe('serviceRequest', () => {
     const manager = new AuthorizationManager({
       client: 'client_id',
       redirect: 'https://redirect_uri',
+      storage: localStorage,
     });
 
     /**
@@ -313,7 +320,7 @@ describe('serviceRequest', () => {
       refresh_token: 'refresh-token',
     };
 
-    setup({
+    setInitialLocalStorageState({
       'client_id:auth.globus.org': JSON.stringify({
         ...TOKEN,
         other_tokens: [],
@@ -328,6 +335,7 @@ describe('serviceRequest', () => {
     const manager = new AuthorizationManager({
       client: 'client_id',
       redirect: 'https://redirect_uri',
+      storage: localStorage,
     });
 
     /**
@@ -411,7 +419,7 @@ describe('serviceRequest', () => {
     };
 
     beforeEach(() => {
-      setup({
+      mockLocalStorage({
         'client_id:auth.globus.org': JSON.stringify(TOKEN),
         'client_id:transfer.api.globus.org': JSON.stringify(TRANSFER_TOKEN),
       });
@@ -419,6 +427,7 @@ describe('serviceRequest', () => {
       manager = new AuthorizationManager({
         client: 'client_id',
         redirect: 'https://redirect_uri',
+        storage: localStorage,
       });
     });
 

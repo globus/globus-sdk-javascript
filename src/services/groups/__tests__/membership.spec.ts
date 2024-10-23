@@ -1,10 +1,8 @@
 import { membership } from '..';
-import { createStorage } from '../../../core/storage';
 
 import type { MirroredRequest } from '../../../__mocks__/handlers';
 
 test('membership - act', async () => {
-  createStorage('memory');
   const result = await membership.act('6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9', {
     payload: {
       reject: [

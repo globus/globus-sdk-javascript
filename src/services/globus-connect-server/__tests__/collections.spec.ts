@@ -1,4 +1,3 @@
-import { createStorage } from '../../../core/storage';
 import { collections } from '..';
 
 import type { MirroredRequest } from '../../../__mocks__/handlers';
@@ -9,7 +8,6 @@ const GCS_CONFIGURATION = {
 };
 
 describe('gcs – collection', () => {
-  createStorage('memory');
   test('get', async () => {
     const result = await collections.get(
       GCS_CONFIGURATION,

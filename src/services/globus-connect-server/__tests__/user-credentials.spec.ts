@@ -1,4 +1,3 @@
-import { createStorage } from '../../../core/storage';
 import { userCredentials } from '..';
 
 import type { MirroredRequest } from '../../../__mocks__/handlers';
@@ -10,8 +9,6 @@ const GCS_CONFIGURATION = {
 };
 
 describe('gcs – user-credentials', () => {
-  createStorage('memory');
-
   test('getAll', async () => {
     const result = await userCredentials.getAll(GCS_CONFIGURATION, {
       query: {

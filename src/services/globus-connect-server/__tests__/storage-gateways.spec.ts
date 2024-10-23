@@ -1,4 +1,3 @@
-import { createStorage } from '../../../core/storage';
 import { storageGateways } from '..';
 
 import type { MirroredRequest } from '../../../__mocks__/handlers';
@@ -10,8 +9,6 @@ const GCS_CONFIGURATION = {
 };
 
 describe('gcs – storageGateways', () => {
-  createStorage('memory');
-
   test('getAll', async () => {
     const result = await storageGateways.getAll(GCS_CONFIGURATION, {
       query: { include: ['accounts', 'private_policies'] },

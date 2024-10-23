@@ -1,6 +1,6 @@
 import { version } from 'node:process';
 
-import '../../../__mocks__/sessionStorage';
+import { mockSessionStorage } from '../../../__mocks__/sessionStorage';
 import '../../../__mocks__/window-location';
 import { KEYS, RedirectTransport } from '../../authorization/RedirectTransport';
 import { oauth2 } from '../../../services/auth';
@@ -22,8 +22,10 @@ const MOCK_TOKEN = {
 
 describe('RedirectTransport', () => {
   beforeEach(() => {
-    sessionStorage.clear();
-    jest.clearAllMocks();
+    mockSessionStorage();
+  });
+
+  afterEach(() => {
     jest.restoreAllMocks();
   });
 

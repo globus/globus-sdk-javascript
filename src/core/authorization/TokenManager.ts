@@ -1,4 +1,3 @@
-import { getStorage } from '../storage/index.js';
 import { CONFIG, isToken } from '../../services/auth/index.js';
 
 import { SERVICES, type Service } from '../global.js';
@@ -26,38 +25,37 @@ export type StoredToken = Token & {
   };
 };
 
-function getTokenFromStorage(key: string) {
-  const raw = getStorage().get(key) || 'null';
-  let token: StoredToken | null = null;
-  try {
-    const parsed = JSON.parse(raw);
-    if (isToken(parsed)) {
-      token = parsed;
-    }
-  } catch (e) {
-    // no-op
-  }
-  return token;
-}
-
-/**
- * @todo In the next major version, we should consider renaming this class to `TokenManager`,
- * since it's usage has expanded beyond just looking up tokens.
- */
-export class TokenLookup {
+export class TokenManager {
   #manager: AuthorizationManager;
 
   constructor(options: { manager: AuthorizationManager }) {
     this.#manager = options.manager;
   }
 
-  #getClientStorageEntry(identifier: string) {
-    return getTokenFromStorage(`${this.#manager.storageKeyPrefix}${identifier}`);
+  /**
+   * Retrieve and parse an item from the storage.
+   */
+  #getTokenFromStorage(key: string) {
+    const raw = this.#manager.storage.getItem(key) || 'null';
+    let token: StoredToken | null = null;
+    try {
+      const parsed = JSON.parse(raw);
+      if (isToken(parsed)) {
+        token = parsed;
+      }
+    } catch (e) {
+      // no-op
+    }
+    return token;
   }
 
   #getTokenForService(service: Service) {
     const resourceServer = CONFIG.RESOURCE_SERVERS?.[service];
-    return this.#getClientStorageEntry(resourceServer);
+    return this.getByResourceServer(resourceServer);
+  }
+
+  getByResourceServer(resourceServer: string): StoredToken | null {
+    return this.#getTokenFromStorage(`${this.#manager.storageKeyPrefix}${resourceServer}`);
   }
 
   get auth(): StoredToken | null {
@@ -92,19 +90,16 @@ export class TokenLookup {
     return this.getByResourceServer(endpoint);
   }
 
-  getByResourceServer(resourceServer: string): StoredToken | null {
-    return this.#getClientStorageEntry(resourceServer);
-  }
-
   getAll(): StoredToken[] {
-    const entries = getStorage()
-      .keys()
-      .reduce((acc: (StoredToken | null)[], key) => {
+    const entries = Object.keys(this.#manager.storage).reduce(
+      (acc: (StoredToken | null)[], key) => {
         if (key.startsWith(this.#manager.storageKeyPrefix)) {
-          acc.push(getTokenFromStorage(key));
+          acc.push(this.#getTokenFromStorage(key));
         }
         return acc;
-      }, []);
+      },
+      [],
+    );
     return entries.filter(isToken);
   }
 
@@ -114,16 +109,19 @@ export class TokenLookup {
   add(token: Token | TokenResponse) {
     const created = Date.now();
     const expires = created + token.expires_in * 1000;
-    getStorage().set(`${this.#manager.storageKeyPrefix}${token.resource_server}`, {
-      ...token,
-      /**
-       * Add metadata to the token to track when it was created and when it expires.
-       */
-      __metadata: {
-        created,
-        expires,
-      },
-    });
+    this.#manager.storage.setItem(
+      `${this.#manager.storageKeyPrefix}${token.resource_server}`,
+      JSON.stringify({
+        ...token,
+        /**
+         * Add metadata to the token to track when it was created and when it expires.
+         */
+        __metadata: {
+          created,
+          expires,
+        },
+      }),
+    );
     if ('other_tokens' in token) {
       token.other_tokens?.forEach((t) => {
         this.add(t);
