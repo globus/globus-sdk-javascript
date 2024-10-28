@@ -1,4 +1,3 @@
-import { createStorage } from '../../../core/storage';
 import { mirror } from '../../../__mocks__/handlers';
 import { https } from '..';
 
@@ -8,7 +7,6 @@ const GCS_CONFIGURATION = {
 };
 
 describe('gcs – https', () => {
-  createStorage('memory');
   test('get', async () => {
     const request = await https.get(GCS_CONFIGURATION, '/my-file.txt', {
       headers: {

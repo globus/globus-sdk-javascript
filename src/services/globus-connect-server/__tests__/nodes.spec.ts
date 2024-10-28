@@ -1,4 +1,3 @@
-import { createStorage } from '../../../core/storage';
 import { mirror } from '../../../__mocks__/handlers';
 import { nodes } from '..';
 
@@ -9,8 +8,6 @@ const GCS_CONFIGURATION = {
 };
 
 describe('gcs – nodes', () => {
-  createStorage('memory');
-
   test('getAll', async () => {
     const result = await nodes.getAll(GCS_CONFIGURATION);
     const {

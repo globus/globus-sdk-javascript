@@ -16,6 +16,19 @@
       </code>
       <script>
         /**
+         * Create references to our UI elements.
+         */
+        const UI = {
+          SIGN_IN: document.getElementById('sign-in'),
+          SIGN_OUT: document.getElementById('sign-out'),
+          USER_INFO: document.getElementById('user-information'),
+          LS_RESPONSE: document.getElementById('ls-response'),
+        };
+
+        globus.logger.setLogger(console);
+        globus.logger.setLogLevel('debug');
+
+        /**
          * The Collection UUID that the example will attempt to `ls`.
          */
         const COLLECTION = 'COLLECTION_ID';
@@ -44,21 +57,9 @@
            */
           useRefreshTokens: true,
         });
-
         /**
-         * Since **this** page was configured as the `redirect` handler, we will handle
-         * the code exchange here.
-         * This method will automatically no-op if the OAuth `?code=` parameter is not present.
+         * With the AuthorizationManager configured, we can bind relevant events to our UI.
          */
-        manager.handleCodeRedirect();
-
-        const UI = {
-          SIGN_IN: document.getElementById('sign-in'),
-          SIGN_OUT: document.getElementById('sign-out'),
-          USER_INFO: document.getElementById('user-information'),
-          LS_RESPONSE: document.getElementById('ls-response'),
-        };
-
         UI.SIGN_IN.addEventListener('click', async () => {
           await manager.login();
         });
@@ -69,7 +70,30 @@
           UI.SIGN_OUT.style.display = 'none';
           UI.LS_RESPONSE.innerText = '';
         });
-        if (manager.authenticated) {
+
+        /**
+         * Since **this** page was configured as the `redirect` handler, we will handle
+         * the code exchange here.
+         *
+         * **This method will automatically no-op if the OAuth `?code=` parameter is not present.**
+         */
+        manager.handleCodeRedirect({ shouldReplace: false }).then(() => {
+          if (!manager.authenticated) {
+            /**
+             * If the user is not authenticated, the "Sign In" button will be displayed
+             */
+            UI.SIGN_IN.style.display = 'block';
+            return;
+          }
+
+          const url = new URL(window.location.href);
+          url.searchParams.delete('state');
+          url.searchParams.delete('code');
+          history.pushState({}, document.title, url);
+
+          /**
+           * The user is authenticated, so we'll display their information and the "Sign Out" button.
+           */
           UI.USER_INFO.innerText = JSON.stringify(manager.user, null, 2);
           UI.SIGN_OUT.style.display = 'block';
           /**
@@ -94,20 +118,19 @@
                  * default handling. We'll avoid the handler executing automatically
                  * and instead bind it to the `onclick` event of a new `<button>`.
                  */
-                const handler = manager.handleErrorResponse(json, false);
-                /**
-                 * If there was an identified error, with a handler, render
-                 * a button that will call the handler on click.
-                 */
-                const btn = document.createElement('button');
-                btn.innerText = 'Handle';
-                btn.onclick = handler;
-                document.body.appendChild(btn);
+                manager.handleErrorResponse(json, false).then((handler) => {
+                  /**
+                   * If there was an identified error, with a handler, render
+                   * a button that will call the handler on click.
+                   */
+                  const btn = document.createElement('button');
+                  btn.innerText = 'Handle';
+                  btn.onclick = handler;
+                  document.body.appendChild(btn);
+                });
               }
             });
-        } else {
-          UI.SIGN_IN.style.display = 'block';
-        }
+        });
       </script>
     </body>
   </body>

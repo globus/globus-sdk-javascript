@@ -3,7 +3,6 @@ import { jwtDecode } from 'jwt-decode';
 import { isGlobusAuthTokenResponse, isRefreshToken, oauth2 } from '../../services/auth/index.js';
 import { RESOURCE_SERVERS } from '../../services/auth/config.js';
 
-import { createStorage, getStorage, StorageOptions } from '../storage/index.js';
 import { log } from '../logger.js';
 
 import { Event } from './Event.js';
@@ -12,7 +11,7 @@ import {
   GetTokenOptions,
   RedirectTransport,
 } from './RedirectTransport.js';
-import { TokenLookup } from './TokenLookup.js';
+import { TokenManager } from './TokenManager.js';
 
 import {
   isConsentRequiredError,
@@ -28,6 +27,13 @@ import type {
   TokenResponse,
   TokenWithRefresh,
 } from '../../services/auth/types.js';
+import { MemoryStorage } from '../storage/memory.js';
+// import { PopupTransport } from './PopupTransport.js';
+
+const TRANSPORTS = {
+  redirect: RedirectTransport,
+  // popup: PopupTransport,
+};
 
 export type AuthorizationManagerConfiguration = {
   client: string;
@@ -36,10 +42,16 @@ export type AuthorizationManagerConfiguration = {
   /**
    * The storage system used by the `AuthorizationManager`.
    *
-   * **BREAKING CHANGE NOTICE** In an upcoming release, the default storage system will be changed to `"memory"` in order to move toward a "secure by default" model.
-   * @default "localStorage"
+   * By default, the `AuthorizationManager` uses an in-memory storage, this option is secure by default.
+   *
+   * If you want to persist the state of the `AuthorizationManager`, you can use `localStorage`, or provide your own storage system.
+   * **It is important to note that using the `localStorage`, or any persistant storage option will preserve authorization and refresh tokens of users.**
+   * Best practices for ensuring the security of your application should be followed to protect this data (e.g., ensuring XSS protection).
+   *
+   * @default MemoryStorage
    */
-  storage?: StorageOptions;
+  storage?: Storage;
+  transport?: keyof typeof TRANSPORTS;
   /**
    * @private
    * @default DEFAULT_CONFIGURATION.useRefreshTokens
@@ -65,6 +77,7 @@ export type AuthorizationManagerConfiguration = {
 const DEFAULT_CONFIGURATION = {
   useRefreshTokens: false,
   defaultScopes: 'openid profile email',
+  transport: 'redirect' as const,
 };
 
 const DEFAULT_HANDLE_ERROR_OPTIONS = {
@@ -108,6 +121,12 @@ export class AuthorizationManager {
 
   configuration: AuthorizationManagerConfiguration;
 
+  /**
+   * The storage system used by the `AuthorizationManager`.
+   * @implements Storage
+   */
+  storage: Storage;
+
   #authenticated = false;
 
   /**
@@ -132,7 +151,7 @@ export class AuthorizationManager {
     this.#emitAuthenticatedState();
   }
 
-  tokens: TokenLookup;
+  tokens: TokenManager;
 
   events = {
     /**
@@ -161,7 +180,10 @@ export class AuthorizationManager {
   };
 
   constructor(configuration: AuthorizationManagerConfiguration) {
-    createStorage(configuration.storage || 'localStorage');
+    /**
+     * Configure the storage system for the instance, defaulting to an in-memory storage system.
+     */
+
     if (!configuration.client) {
       throw new Error('You must provide a `client` for your application.');
     }
@@ -181,6 +203,9 @@ export class AuthorizationManager {
         .filter((s) => s.length)
         .join(' '),
     };
+
+    this.storage = configuration.storage || new MemoryStorage();
+
     /**
      * If an `events` object is provided, add the listeners to the instance before
      * any event might be dispatched.
@@ -193,7 +218,7 @@ export class AuthorizationManager {
       });
     }
 
-    this.tokens = new TokenLookup({
+    this.tokens = new TokenManager({
       manager: this,
     });
     this.#checkAuthorizationState();
@@ -273,7 +298,7 @@ export class AuthorizationManager {
    * Retrieve the Globus Auth token managed by the instance.
    */
   getGlobusAuthToken() {
-    const entry = getStorage().get(`${this.storageKeyPrefix}${RESOURCE_SERVERS.AUTH}`);
+    const entry = this.storage.getItem(`${this.storageKeyPrefix}${RESOURCE_SERVERS.AUTH}`);
     return entry ? JSON.parse(entry) : null;
   }
 
@@ -298,13 +323,11 @@ export class AuthorizationManager {
    * This method **does not** emit the `revoke` event. If you need to emit the `revoke` event, use the `AuthorizationManager.revoke` method.
    */
   reset() {
-    getStorage()
-      .keys()
-      .forEach((key) => {
-        if (key.startsWith(this.storageKeyPrefix)) {
-          getStorage().remove(key);
-        }
-      });
+    Object.keys(this.storage).forEach((key) => {
+      if (key.startsWith(this.storageKeyPrefix)) {
+        this.storage.removeItem(key);
+      }
+    });
     this.authenticated = false;
   }
 
@@ -316,17 +339,31 @@ export class AuthorizationManager {
     return `${scopes}${this.configuration.useRefreshTokens ? ' offline_access' : ''}`;
   }
 
-  #buildTransport(overrides?: Partial<RedirectTransportOptions>) {
-    const scopes = this.#withOfflineAccess(overrides?.scopes ?? (this.configuration.scopes || ''));
+  #buildTransport(options?: Partial<RedirectTransportOptions>) {
+    const { scopes, ...overrides } = options ?? {};
+    const TransportFactory = TRANSPORTS[this.configuration.transport || 'redirect'];
 
-    return new RedirectTransport({
+    let scopesToRequest = this.#withOfflineAccess(scopes ?? (this.configuration.scopes || ''));
+
+    if (this.storage instanceof MemoryStorage) {
+      /**
+       * If the in-memory storage is used, we have to make sure when requesting additional
+       * consent the original configured scopes are included in the request.
+       *
+       * This will ensure we recieve a token for all of resource servers that were originally requested,
+       * in addition to any new scopes that are requested.
+       */
+      scopesToRequest = `${scopesToRequest} ${this.configuration.scopes}`;
+    }
+
+    return new TransportFactory({
       client: this.configuration.client,
       redirect: this.configuration.redirect,
-      scopes,
+      scopes: scopesToRequest,
       ...overrides,
-      // @todo Decide if we want to include the `include_consented_scopes` parameter by default.
       params: {
-        // include_consented_scopes: true,
+        // @todo @todo Decide if we want to include the `include_consented_scopes` parameter by default.
+        // include_consented_scopes: 'true',
         ...overrides?.params,
       },
     });

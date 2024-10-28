@@ -29,9 +29,9 @@ the only supported transport is the `RedirectTransport`, which will redirect the
 
 The abstraction exists to support additional transports in the future, i.e., `PopupTransport,` `ServiceWorkerTransport,` etc.
 
-### Token Lookup
+### Token Manager
 
-An instance of `TokenLookup` is used to retrieve tokens from the token store. The token store is an instance of `Storage` (e.g., `localStorage`). An instance of `TokenLookup` is made available on the `AuthorizationManager.tokens`.
+An instance of `TokenManager` is used to retrieve tokens from the token store. The token store is an instance of `Storage` (e.g., `localStorage`). An instance of `TokenManager` is made available on the `AuthorizationManager.tokens`.
 
 ## Implementation Notes
 

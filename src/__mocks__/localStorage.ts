@@ -1,48 +1,18 @@
-class LocalStorageMock {
-  [key: string]: unknown;
+import { createStorageMock } from './storage';
 
-  constructor() {
-    Object.defineProperty(this, 'getItem', {
-      enumerable: false,
-      value: jest.fn((key) => (this[key] !== undefined ? this[key] : null)),
-    });
-
-    Object.defineProperty(this, 'setItem', {
-      enumerable: false,
-      value: jest.fn((key, value) => {
-        this[key] = `${value}`;
-      }),
-    });
-
-    Object.defineProperty(this, 'removeItem', {
-      enumerable: false,
-      value: jest.fn((key) => {
-        delete this[key];
-      }),
-    });
-
-    Object.defineProperty(this, 'clear', {
-      enumerable: false,
-      value: jest.fn(() => {
-        Object.keys(this).map((key) => delete this[key]);
-      }),
-    });
-  }
-
-  get length() {
-    return Object.keys(this).length;
-  }
+export function setInitialLocalStorageState(initialState: Record<string, string>) {
+  Object.keys(initialState).forEach((key) => {
+    globalThis.localStorage.setItem(key, initialState[key]);
+  });
 }
 
-Object.defineProperty(globalThis, 'localStorage', {
-  value: new LocalStorageMock(),
-  writable: true,
-});
-/**
- * Provide an object to set in (the mocked) `localStorage`
- */
-export function setup(state: Record<string, string> = {}) {
-  Object.keys(state).forEach((key) => {
-    globalThis.localStorage.setItem(key, state[key]);
+export function mockLocalStorage(initialState: Record<string, string> = {}) {
+  const mock = createStorageMock();
+  Object.defineProperty(globalThis, 'localStorage', {
+    value: mock,
+    writable: true,
   });
+  if (initialState) {
+    setInitialLocalStorageState(initialState);
+  }
 }

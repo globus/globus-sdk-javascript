@@ -1,4 +1,3 @@
-import { createStorage } from '../../../core/storage';
 import { roles } from '..';
 
 import type { MirroredRequest } from '../../../__mocks__/handlers';
@@ -6,8 +5,6 @@ import type { MirroredRequest } from '../../../__mocks__/handlers';
 const GCS_HOST = 'https://fa5e.bd7c.data.globus.org';
 
 describe('gcs – roles', () => {
-  createStorage('memory');
-
   test('getAll', async () => {
     const result = await roles.getAll(
       {

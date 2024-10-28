@@ -2,8 +2,8 @@ import server from './src/__mocks__/server';
 
 import { disable } from './src/core/info/private';
 
-// Establish API mocking before all tests.
 beforeAll(() => {
+  // Establish API mocking before all tests.
   server.listen();
   /**
    * We disable the X-Globus-Client-Info header from being injected in the test suite
@@ -16,9 +16,11 @@ beforeAll(() => {
   disable();
 });
 
-// Reset any request handlers that we may add during the tests,
-// so they don't affect other tests.
-afterEach(() => server.resetHandlers());
+afterEach(() => {
+  // Reset any request handlers that we may add during the tests,
+  // so they don't affect other tests.
+  server.resetHandlers();
+});
 
 // Clean up after the tests are finished.
 afterAll(() => server.close());

@@ -1,10 +1,8 @@
 import { endpointSearch } from '..';
-import { createStorage } from '../../../core/storage';
 
 import type { MirroredRequest } from '../../../__mocks__/handlers';
 
 test('endpointSearch', async () => {
-  createStorage('memory');
   const result = await endpointSearch({
     query: {
       filter_fulltext: 'my search string',
