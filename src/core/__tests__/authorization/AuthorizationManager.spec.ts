@@ -36,10 +36,44 @@ describe('AuthorizationManager', () => {
     });
     expect(instance).toBeDefined();
     expect(instance.authenticated).toBe(false);
+  });
+
+  describe('MemoryStorage', () => {
+    let instance: AuthorizationManager;
+    beforeAll(() => {
+      instance = new AuthorizationManager({
+        client: 'client_id',
+        redirect: 'https://redirect_uri',
+        scopes: 'foobar baz',
+        // `storage` property is intentionally omitted.
+      });
+    });
+
+    it('default storage should be MemoryStorage', () => {
+      expect(instance.storage).toBeInstanceOf(MemoryStorage);
+    });
+
     /**
-     * The default storage should be `MemoryStorage`.
+     * @todo Expand to additional transports.
      */
-    expect(instance.storage).toBeInstanceOf(MemoryStorage);
+    if (RedirectTransport.supported) {
+      it('includes all configured "scopes" on prompt', async () => {
+        await instance.prompt({
+          scopes: 'some:scope:example',
+        });
+        expect(window.location.assign).toHaveBeenCalledWith(
+          expect.stringContaining('scope=some%3Ascope%3Aexample+foobar+baz+openid+profile+email&'),
+        );
+      });
+      it('includes all configured "scopes" on handleErrorResponse', async () => {
+        await instance.handleErrorResponse(TRANSFER_CONSENT_REQUIRED_ERROR);
+        expect(window.location.assign).toHaveBeenCalledWith(
+          expect.stringContaining(
+            'scope=urn%3Aglobus%3Aauth%3Ascope%3Atransfer.api.globus.org%3Aall%5B*https%3A%2F%2Fauth.globus.org%2Fscopes%2F6c54cade-bde5-45c1-bdea-f4bd71dba2cc%2Fdata_access%5D+foobar+baz+openid+profile+email',
+          ),
+        );
+      });
+    }
   });
 
   if (RedirectTransport.supported) {
@@ -72,7 +106,6 @@ describe('AuthorizationManager', () => {
         expect.stringContaining('redirect_uri=https%3A%2F%2Fredirect_uri'),
       );
     });
-
     describe('RedirectTransport', () => {
       it('can be created without providing scopes', async () => {
         const instance = new AuthorizationManager({
