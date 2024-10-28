@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.0](https://github.com/globus/globus-sdk-javascript/compare/v4.4.0...v5.0.0) (2024-10-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* **Authorization:** AuthorizationManager uses in-memory storage by default.
+
+### Features
+
+* **Authorization:** AuthorizationManager uses in-memory storage by default. ([09f6839](https://github.com/globus/globus-sdk-javascript/commit/09f6839de85097d40cc8cc67e10d08fa0f2c72d6))
+
+
+### Bug Fixes
+
+* Deduplicate the "scope" parameter when configuration scopes are appended. ([#347](https://github.com/globus/globus-sdk-javascript/issues/347)) ([37f215c](https://github.com/globus/globus-sdk-javascript/commit/37f215c490894e1b00b594322e99f7bd574e7af0))
+
 ## [4.4.0](https://github.com/globus/globus-sdk-javascript/compare/v4.3.1...v4.4.0) (2024-10-22)
 
 
