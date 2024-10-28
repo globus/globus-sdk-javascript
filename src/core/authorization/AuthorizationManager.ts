@@ -28,6 +28,12 @@ import type {
   TokenWithRefresh,
 } from '../../services/auth/types.js';
 import { MemoryStorage } from '../storage/memory.js';
+// import { PopupTransport } from './PopupTransport.js';
+
+const TRANSPORTS = {
+  redirect: RedirectTransport,
+  // popup: PopupTransport,
+};
 
 export type AuthorizationManagerConfiguration = {
   client: string;
@@ -45,6 +51,7 @@ export type AuthorizationManagerConfiguration = {
    * @default MemoryStorage
    */
   storage?: Storage;
+  transport?: keyof typeof TRANSPORTS;
   /**
    * @private
    * @default DEFAULT_CONFIGURATION.useRefreshTokens
@@ -70,6 +77,7 @@ export type AuthorizationManagerConfiguration = {
 const DEFAULT_CONFIGURATION = {
   useRefreshTokens: false,
   defaultScopes: 'openid profile email',
+  transport: 'redirect' as const,
 };
 
 const DEFAULT_HANDLE_ERROR_OPTIONS = {
@@ -175,7 +183,6 @@ export class AuthorizationManager {
     /**
      * Configure the storage system for the instance, defaulting to an in-memory storage system.
      */
-    this.storage = configuration.storage || new MemoryStorage();
 
     if (!configuration.client) {
       throw new Error('You must provide a `client` for your application.');
@@ -196,6 +203,9 @@ export class AuthorizationManager {
         .filter((s) => s.length)
         .join(' '),
     };
+
+    this.storage = configuration.storage || new MemoryStorage();
+
     /**
      * If an `events` object is provided, add the listeners to the instance before
      * any event might be dispatched.
@@ -329,17 +339,31 @@ export class AuthorizationManager {
     return `${scopes}${this.configuration.useRefreshTokens ? ' offline_access' : ''}`;
   }
 
-  #buildTransport(overrides?: Partial<RedirectTransportOptions>) {
-    const scopes = this.#withOfflineAccess(overrides?.scopes ?? (this.configuration.scopes || ''));
+  #buildTransport(options?: Partial<RedirectTransportOptions>) {
+    const { scopes, ...overrides } = options ?? {};
+    const TransportFactory = TRANSPORTS[this.configuration.transport || 'redirect'];
 
-    return new RedirectTransport({
+    let scopesToRequest = this.#withOfflineAccess(scopes ?? (this.configuration.scopes || ''));
+
+    if (this.storage instanceof MemoryStorage) {
+      /**
+       * If the in-memory storage is used, we have to make sure when requesting additional
+       * consent the original configured scopes are included in the request.
+       *
+       * This will ensure we recieve a token for all of resource servers that were originally requested,
+       * in addition to any new scopes that are requested.
+       */
+      scopesToRequest = `${scopesToRequest} ${this.configuration.scopes}`;
+    }
+
+    return new TransportFactory({
       client: this.configuration.client,
       redirect: this.configuration.redirect,
-      scopes,
+      scopes: scopesToRequest,
       ...overrides,
-      // @todo Decide if we want to include the `include_consented_scopes` parameter by default.
       params: {
-        // include_consented_scopes: true,
+        // @todo @todo Decide if we want to include the `include_consented_scopes` parameter by default.
+        // include_consented_scopes: 'true',
         ...overrides?.params,
       },
     });
