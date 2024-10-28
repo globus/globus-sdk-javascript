@@ -78,6 +78,7 @@ describe('AuthorizationManager', () => {
         const instance = new AuthorizationManager({
           client: 'client_id',
           redirect: 'https://redirect_uri',
+          storage: localStorage,
         });
         expect(instance).toBeDefined();
         expect(instance.authenticated).toBe(false);
@@ -93,6 +94,7 @@ describe('AuthorizationManager', () => {
           client: 'client_id',
           redirect: 'https://redirect_uri',
           scopes: 'foobar baz',
+          storage: localStorage,
         });
         await instance.login();
         expect(window.location.assign).toHaveBeenCalledTimes(1);
@@ -125,6 +127,7 @@ describe('AuthorizationManager', () => {
             redirect: 'https://redirect_uri',
             scopes: 'foobar baz',
             defaultScopes: 'openid',
+            storage: localStorage,
           });
           await instance.login();
           expect(window.location.assign).toHaveBeenCalledTimes(1);
@@ -141,6 +144,7 @@ describe('AuthorizationManager', () => {
             redirect: 'https://redirect_uri',
             scopes: 'foobar baz',
             defaultScopes: false,
+            storage: localStorage,
           });
           await instance.login();
           expect(window.location.assign).toHaveBeenCalledTimes(1);
@@ -157,6 +161,7 @@ describe('AuthorizationManager', () => {
             redirect: 'https://redirect_uri',
             scopes: 'foobar baz',
             useRefreshTokens: true,
+            storage: localStorage,
           });
           await instance.login();
           expect(window.location.assign).toHaveBeenCalledTimes(1);
@@ -578,6 +583,7 @@ if (RedirectTransport.supported) {
         client: 'CLIENT_ID',
         redirect: 'https://globus.github.io/example-data-portal/authenticate',
         scopes: 'urn:globus:auth:scope:transfer.api.globus.org:all',
+        storage: localStorage,
       });
     });
 

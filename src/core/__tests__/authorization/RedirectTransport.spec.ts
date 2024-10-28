@@ -22,6 +22,7 @@ const MOCK_TOKEN = {
 
 describe('RedirectTransport', () => {
   beforeEach(() => {
+    jest.clearAllMocks();
     mockSessionStorage();
   });
 
