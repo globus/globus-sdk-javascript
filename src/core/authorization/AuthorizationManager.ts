@@ -353,7 +353,12 @@ export class AuthorizationManager {
        * This will ensure we recieve a token for all of resource servers that were originally requested,
        * in addition to any new scopes that are requested.
        */
-      scopesToRequest = `${scopesToRequest} ${this.configuration.scopes}`;
+      scopesToRequest = [
+        // Use a Set to deduplicate the scopes.
+        ...new Set(
+          scopesToRequest.split(' ').concat((this.configuration?.scopes || '').split(' ')),
+        ),
+      ].join(' ');
     }
 
     return new TransportFactory({
