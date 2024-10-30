@@ -1,5 +1,42 @@
 # Upgrading
 
+## Migrating from `v4` to `v5`
+
+### In-Memory Storage by Default
+
+The `v5` release of `@globus/sdk` updates the `AuthorizationManager` to use an in-memory storage mechanism for tokens,  moving the implementation to "secure by default".
+
+The `v4` behavior of using `localStorage` as the storage mecanism is now opt-in and should only be enabled when following [security best practices related to Storage APIs](https://cheatsheetseries.owasp.org/cheatsheets/HTML5_Security_Cheat_Sheet.html#storage-apis).
+
+To use a different storage mechanism, a well-known storage system (i.e., `localStorage`, `sessionStorage`) can be provided as the `storage` configuration option on creation.
+```ts
+authorization.create({
+  // ...
+ storage: localStorage
+});
+```
+
+Any implementation of  [`Storage`](https://developer.mozilla.org/en-US/docs/Web/API/Storage) can be provided to use a custom storage mechanism.
+
+```ts
+class MyCustomStorage implements Storage {};
+
+authorization.create({
+  // ...
+ storage: new MyCustomStorage();
+});
+```
+
+### `TokenLookup` has been renamed to `TokenManager`
+
+The `TokenLookup` class has been renamed to `TokenManager` to better reflect the available methods.
+
+```diff
+-import { TokenLookup } from '@globus/sdk/core/authorization/TokenLookup';
++import { TokenManager } from '@globus/sdk/core/authorization/TokenManager';
+```
+
+
 ## Migrating from `v3` to `v4`
 
 The `v4` release of `@globus/sdk` addresses a number of issues related to the CommonJS and ESM bundle exports. Prior to this relases, many environments **required** the use of the CommonJS bundle (even when ESM was supported).
