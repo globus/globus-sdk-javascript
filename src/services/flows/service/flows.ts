@@ -145,3 +145,34 @@ export const validate = function (
     input_schema?: Record<string, any>;
   };
 }>;
+
+/**
+ * Deploy (Create) a Flow
+ * @see https://globusonline.github.io/globus-flows/#tag/Flows/paths/~1flows/post
+ */
+export const deploy = function (options?, sdkOptions?) {
+  return serviceRequest(
+    {
+      service: ID,
+      scope: SCOPES.MANAGE_FLOWS,
+      path: `/flows`,
+      method: HTTP_METHODS.POST,
+    },
+    options,
+    sdkOptions,
+  );
+} satisfies ServiceMethod<{
+  query?: never;
+  payload: {
+    definition: Record<string, any>;
+    input_schema?: Record<string, any>;
+    title?: string;
+    subtitle?: string;
+    description?: string;
+    keywords?: string[];
+    flow_viewers?: string[];
+    flows_starters?: string[];
+    flow_administrators?: string[];
+    subscription_id?: string;
+  };
+}>;

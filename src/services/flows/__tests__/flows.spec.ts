@@ -110,4 +110,20 @@ describe('flows.flow', () => {
       json,
     }).toMatchSnapshot();
   });
+
+  test('deploy', async () => {
+    await mirror(
+      await flows.deploy({
+        payload: {
+          definition: {
+            States: {},
+            StartAt: 'FooBar',
+          },
+        },
+        headers: {
+          Authorization: 'Bearer this-is-an-example-token',
+        },
+      }),
+    );
+  });
 });
