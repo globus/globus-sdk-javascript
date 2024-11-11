@@ -147,10 +147,10 @@ export const validate = function (
 }>;
 
 /**
- * Deploy (Create) a Flow
+ * Create a Flow
  * @see https://globusonline.github.io/globus-flows/#tag/Flows/paths/~1flows/post
  */
-export const deploy = function (options?, sdkOptions?) {
+export const create = function (options?, sdkOptions?) {
   return serviceRequest(
     {
       service: ID,
@@ -176,3 +176,8 @@ export const deploy = function (options?, sdkOptions?) {
     subscription_id?: string;
   };
 }>;
+
+/**
+ * An alias for `create` to match the API documentation.
+ */
+export const deploy = create;
