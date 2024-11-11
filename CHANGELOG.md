@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.0](https://github.com/globus/globus-sdk-javascript/compare/v5.0.0...v5.1.0) (2024-11-11)
+
+
+### Features
+
+* **Flows:** Adds flows.create (also available as flows.deploy) service method ([#361](https://github.com/globus/globus-sdk-javascript/issues/361)) ([726ed52](https://github.com/globus/globus-sdk-javascript/commit/726ed5232ee8a82c2a3899ba0b26ecdbe936d2f8))
+
 ## [5.0.0](https://github.com/globus/globus-sdk-javascript/compare/v4.4.0...v5.0.0) (2024-10-28)
 
 
