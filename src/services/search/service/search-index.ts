@@ -36,13 +36,16 @@ export type IndexList = {
 };
 
 /**
+ * `permissions` is included in the response as a convenience to
+ * the client, but it is not a field in GSearchIndex itself.
+ *
  * @see https://docs.globus.org/api/search/reference/index_show/
  */
 export const get = function (
   index_id,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<GSearchIndex>> {
+): Promise<JSONFetchResponse<IndexWithPermissions>> {
   return serviceRequest(
     {
       service: ID,
