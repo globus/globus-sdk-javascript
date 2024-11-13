@@ -99,13 +99,16 @@ describe('toAuthorizationQueryParams', () => {
       }),
     ).toEqual({});
   });
-  it('drops known unsupported properties', () => {
+
+  it('maps properties to their Globus Auth query parameter equivalent and removes unsupported parameters', () => {
     expect(
       toAuthorizationQueryParams({
         authorization_parameters: {
-          required_scopes: ['foobar'],
+          required_scopes: ['foobar', 'data_access'],
         },
       }),
-    ).toEqual({});
+    ).toEqual({
+      scope: 'foobar,data_access',
+    });
   });
 });
