@@ -5,6 +5,7 @@
  * if (errors.isConsentRequiredError(...)) { ... }
  */
 import type { AuthorizationQueryParameters } from '../services/auth/index.js';
+import type { AuthorizationRequestParameters } from './authorization/pkce.js';
 
 export class EnvironmentConfigurationError extends Error {
   override name = 'EnvironmentConfigurationError';
@@ -74,7 +75,7 @@ const NO_OP_KEYS: (keyof AuthorizationRequirementsError)[] = ['required_scopes']
  */
 export function toAuthorizationQueryParams(
   error: AuthorizationRequirementsError,
-): AuthorizationQueryParameters {
+): AuthorizationQueryParameters & Partial<AuthorizationRequestParameters> {
   /**
    * Map properties from the `AuthorizationRequirementsError` to accepted query parameters.
    */
