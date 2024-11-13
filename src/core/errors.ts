@@ -65,7 +65,8 @@ export type AuthorizationRequirementsError = {
   [key: string]: unknown;
 };
 /**
- * Keys that should not be included in the query string object (not recognized by Globus Auth).
+ * Keys that should not be included in the query string object (not recognized by Globus Auth),
+ * but are found on the `AuthorizationRequirementsError` object.
  */
 const NO_OP_KEYS: (keyof AuthorizationRequirementsError)[] = ['required_scopes'];
 /**
@@ -74,7 +75,24 @@ const NO_OP_KEYS: (keyof AuthorizationRequirementsError)[] = ['required_scopes']
 export function toAuthorizationQueryParams(
   error: AuthorizationRequirementsError,
 ): AuthorizationQueryParameters {
-  return Object.entries(error.authorization_parameters).reduce((acc, [key, v]) => {
+  /**
+   * Map properties from the `AuthorizationRequirementsError` to accepted query parameters.
+   */
+  const mapped = {
+    /**
+     * `required_scopes` isn't a query parameter accepted by Globus Auth, but
+     * in most cases the `required_scopes` represented in the error are intended
+     * to be included in the `scopes` (OAuth) parameter.
+     * @see https://docs.globus.org/api/auth/sessions/#client-initiated-authns
+     */
+    scope: error.authorization_parameters.required_scopes,
+    /**
+     * We still include the entire `authorization_parameters` object in addition to the mapped values for parsing.
+     */
+    ...error.authorization_parameters,
+  };
+
+  return Object.entries(mapped).reduce((acc, [key, v]) => {
     /**
      * Remove keys that are not recognized by Globus Auth and empty values.
      */
