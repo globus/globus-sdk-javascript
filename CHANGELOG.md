@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.1](https://github.com/globus/globus-sdk-javascript/compare/v5.1.0...v5.1.1) (2024-11-13)
+
+
+### Bug Fixes
+
+* **Authorization:** The value of the 'required_scopes' property of an AuthorizationError is now sent to Globus Auth as 'scope' parameter by default. ([#366](https://github.com/globus/globus-sdk-javascript/issues/366)) ([66e5c32](https://github.com/globus/globus-sdk-javascript/commit/66e5c32d335d612c69ae908821335b63d926e8af))
+
 ## [5.1.0](https://github.com/globus/globus-sdk-javascript/compare/v5.0.0...v5.1.0) (2024-11-11)
 
 
