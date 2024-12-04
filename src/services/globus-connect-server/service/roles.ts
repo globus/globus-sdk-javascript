@@ -1,5 +1,4 @@
 import type { operations } from '@globus/types/gcs-manager/api';
-import { getRequiredScopes } from '../index.js';
 
 import { HTTP_METHODS, serviceRequest } from '../../../services/shared.js';
 
@@ -20,7 +19,7 @@ export const getAll = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/roles`,
     },
     options,
@@ -44,7 +43,7 @@ export const get = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/roles/${role_id}`,
     },
     options,
@@ -72,7 +71,7 @@ export const remove = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/roles/${role_id}`,
       method: HTTP_METHODS.DELETE,
     },
@@ -100,7 +99,7 @@ export const create = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/roles`,
       method: HTTP_METHODS.POST,
     },

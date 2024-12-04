@@ -1,5 +1,4 @@
 import type { operations } from '@globus/types/gcs-manager/api';
-import { getRequiredScopes } from '../index.js';
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 
 import type { GCSServiceMethod, GCSServiceMethodDynamicSegments } from '../index';
@@ -21,7 +20,7 @@ export const getAll = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/collections`,
     },
     options,
@@ -45,7 +44,7 @@ export const get = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/collections/${collection_id}`,
     },
     options,
@@ -74,7 +73,7 @@ export const remove = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/collections/${collection_id}`,
       method: HTTP_METHODS.DELETE,
     },
@@ -102,7 +101,7 @@ export const create = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/collections`,
       method: HTTP_METHODS.POST,
     },
@@ -127,7 +126,7 @@ export const update = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/collections/${collection_id}`,
       method: HTTP_METHODS.PUT,
     },
@@ -157,7 +156,7 @@ export const patch = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/collections/${collection_id}`,
       method: HTTP_METHODS.PATCH,
     },
@@ -187,7 +186,7 @@ export const updateOwnerString = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/collections/${collection_id}/owner_string`,
       method: HTTP_METHODS.PUT,
     },
@@ -219,7 +218,7 @@ export const resetOwnerString = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/collections/${collection_id}/owner_string`,
       method: HTTP_METHODS.DELETE,
     },

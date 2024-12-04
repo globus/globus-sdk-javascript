@@ -25,14 +25,35 @@ export * as storageGateways from './service/storage-gateways.js';
 export * as userCredentials from './service/user-credentials.js';
 export * as versioning from './service/versioning.js';
 
+export * as utils from './utils.js';
+
 const SCOPES = {
   HIGH_ASSURANCE: 'urn:globus:auth:scope:<ENDPOINT_ID>:manage_collections',
   NON_HIGH_ASSURANCE:
     'urn:globus:auth:scope:<ENDPOINT_ID>:manage_collections[*https://auth.globus.org/scopes/<MAPPED_COLLECTION_ID>/data_access]',
 };
 
-export function getRequiredScopes(configuration: GCSConfiguration) {
-  return SCOPES.HIGH_ASSURANCE.replace('<ENDPOINT_ID>', configuration.endpoint_id);
+export function getScopes(configuration: GCSConfiguration, scope?: keyof typeof SCOPES) {
+  const { endpoint_id: id } = configuration;
+  if (!id) {
+    throw new Error(`An 'endpoint_id' is required to determine the required scopes`);
+  }
+  /**
+   * If a specific scope is requested, return the scope with the `<ENDPOINT_ID>` placeholder replaced
+   */
+  if (scope) {
+    return SCOPES[scope].replace('<ENDPOINT_ID>', id);
+  }
+  /**
+   * Otherwise, return all scopes with the `<ENDPOINT_ID>` placeholder replaced.
+   */
+  return Object.entries(SCOPES).reduce(
+    (reduc, [key, value]) => ({
+      ...reduc,
+      [key]: value.replace('<ENDPOINT_ID>', id),
+    }),
+    {},
+  );
 }
 
 /**
@@ -45,17 +66,31 @@ export type GCSConfiguration = {
    */
   host: string;
   /**
-   * The UUID
+   * The UUID of the endpoint the GCS API is associated with.
    */
-  endpoint_id: Globus.UUID;
+  endpoint_id: string;
 };
+
+/**
+ * In the case of a resource that allows unauthenticated access, the only property required is the `host`.
+ */
+export type UnauthenticatedGCSConfiguration = Pick<GCSConfiguration, 'host'>;
 
 /**
  * The GCSServiceMethod type is similar to the core ServiceMethod type, but
  * the first parameter is always a GCSConfiguration object.
  */
-export type GCSServiceMethod<O extends ServiceMethodOptions, R extends Response = Response> = (
-  configuration: GCSConfiguration,
+export type GCSServiceMethod<
+  O extends ServiceMethodOptions,
+  R extends Response = Response,
+  /**
+   * If `true`, the service method allows unauthenticated access (will not attempt to send an `Authorization` header).
+   */
+  AllowUnauthenticated extends Boolean = false,
+> = (
+  configuration: AllowUnauthenticated extends false
+    ? GCSConfiguration
+    : UnauthenticatedGCSConfiguration,
   methodOptions?: O & {
     query?: BaseServiceMethodOptions['query'];
     headers?: BaseServiceMethodOptions['headers'];

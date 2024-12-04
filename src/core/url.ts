@@ -1,5 +1,8 @@
 import { getServiceBaseUrl, getEnvironment, Environment, Service } from './global.js';
-import type { GCSConfiguration } from '../services/globus-connect-server/index.js';
+import type {
+  GCSConfiguration,
+  UnauthenticatedGCSConfiguration,
+} from '../services/globus-connect-server/index.js';
 import { SDKOptions } from '../services/types.js';
 
 /**
@@ -57,7 +60,7 @@ export function getServiceURL(
  * @param options Additional options for the URL.
  */
 export function build(
-  serviceOrConfiguration: Service | GCSConfiguration,
+  serviceOrConfiguration: Service | GCSConfiguration | UnauthenticatedGCSConfiguration,
   path: string,
   options?: {
     search?: Parameters<typeof stringifyParameters>[0];

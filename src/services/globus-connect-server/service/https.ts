@@ -1,4 +1,3 @@
-import { getRequiredScopes } from '../index.js';
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 
 import type { GCSServiceMethodDynamicSegments } from '../index.js';
@@ -10,7 +9,7 @@ export const get = function (configuration, path, options?, sdkOptions?): Promis
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path,
     },
     options,
@@ -35,7 +34,7 @@ export const remove = function (configuration, path, options?, sdkOptions?): Pro
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path,
       method: HTTP_METHODS.DELETE,
     },
@@ -57,7 +56,7 @@ export const update = function (configuration, path, options, sdkOptions?): Prom
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path,
       method: HTTP_METHODS.PUT,
     },

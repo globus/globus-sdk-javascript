@@ -1,5 +1,4 @@
 import type { operations } from '@globus/types/gcs-manager/api';
-import { getRequiredScopes } from '../index.js';
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 
 import type { GCSServiceMethod } from '../index';
@@ -18,7 +17,7 @@ export const get = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/endpoint`,
     },
     options,
@@ -42,7 +41,7 @@ export const update = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/endpoint`,
       method: HTTP_METHODS.PUT,
     },
@@ -66,7 +65,7 @@ export const patch = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/endpoint`,
       method: HTTP_METHODS.PATCH,
     },
@@ -100,7 +99,7 @@ export const updateSubscriptionId = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/endpoint/subscription_id`,
       method: HTTP_METHODS.PUT,
     },
@@ -126,7 +125,7 @@ export const updateOwner = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/endpoint/owner`,
       method: HTTP_METHODS.PUT,
     },
@@ -152,7 +151,7 @@ export const updateOwnerString = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/endpoint/owner_string`,
       method: HTTP_METHODS.PUT,
     },
@@ -178,7 +177,7 @@ export const resetOwnerString = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/endpoint/owner_string`,
       method: HTTP_METHODS.DELETE,
     },

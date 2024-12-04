@@ -1,5 +1,4 @@
 import type { operations } from '@globus/types/gcs-manager/api';
-import { getRequiredScopes } from '../index.js';
 
 import { HTTP_METHODS, serviceRequest } from '../../../services/shared.js';
 
@@ -20,7 +19,7 @@ export const getAll = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/nodes`,
     },
     options,
@@ -44,7 +43,7 @@ export const get = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/nodes/${node_id}`,
     },
     options,
@@ -72,7 +71,7 @@ export const remove = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/nodes/${node_id}`,
       method: HTTP_METHODS.DELETE,
     },
@@ -100,7 +99,7 @@ export const create = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/nodes`,
       method: HTTP_METHODS.POST,
     },
@@ -125,7 +124,7 @@ export const update = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/nodes/${node_id}`,
       method: HTTP_METHODS.PUT,
     },
@@ -153,7 +152,7 @@ export const patch = function (
   return serviceRequest(
     {
       service: configuration,
-      scope: getRequiredScopes(configuration),
+      resource_server: configuration.endpoint_id,
       path: `/api/nodes/${node_id}`,
       method: HTTP_METHODS.PATCH,
     },

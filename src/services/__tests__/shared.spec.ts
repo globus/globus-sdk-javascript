@@ -3,7 +3,7 @@ import { serviceRequest } from '../shared';
 import { mirror } from '../../__mocks__/handlers';
 import server from '../../__mocks__/server';
 import { AuthorizationManager } from '../../core/authorization/AuthorizationManager';
-import { getRequiredScopes } from '../globus-connect-server';
+import { getScopes } from '../globus-connect-server';
 import { enable } from '../../core/info/private';
 import pkg from '../../../package.json';
 import { mockLocalStorage, setInitialLocalStorageState } from '../../__mocks__/localStorage';
@@ -327,7 +327,7 @@ describe.only('serviceRequest', () => {
       }),
       [`client_id:${GCS_CONFIGURATION.endpoint_id}`]: JSON.stringify({
         ...TOKEN,
-        scope: getRequiredScopes(GCS_CONFIGURATION),
+        scope: getScopes(GCS_CONFIGURATION, 'HIGH_ASSURANCE'),
         resource_server: GCS_CONFIGURATION.endpoint_id,
       }),
     });
@@ -344,7 +344,7 @@ describe.only('serviceRequest', () => {
     const request = await serviceRequest(
       {
         service: GCS_CONFIGURATION,
-        scope: getRequiredScopes(GCS_CONFIGURATION),
+        resource_server: GCS_CONFIGURATION.endpoint_id,
         path: '/some-path',
       },
       {

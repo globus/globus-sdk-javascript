@@ -6,7 +6,10 @@ import { isAuthorizationRequirementsError } from '../core/errors.js';
 import { RESOURCE_SERVERS } from './auth/config.js';
 import { isRefreshToken } from './auth/index.js';
 import type { ServiceMethodOptions, SDKOptions } from './types.js';
-import type { GCSConfiguration } from '../services/globus-connect-server/index.js';
+import type {
+  GCSConfiguration,
+  UnauthenticatedGCSConfiguration,
+} from '../services/globus-connect-server/index.js';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export enum HTTP_METHODS {
@@ -25,7 +28,7 @@ type ServiceRequestDSL = {
   /**
    * The service that the request will be made to.
    */
-  service: Service | GCSConfiguration;
+  service: Service | GCSConfiguration | UnauthenticatedGCSConfiguration;
   /**
    * A specific scope that is required for the request. If a scope is provided,
    * the `serviceRequest` function will attempt to get a token for the request
@@ -118,8 +121,18 @@ export async function serviceRequest(
    * If the `scope` property is provided, and the SDK is configured with a `manager`,
    * we'll try to map the service to a resource server. This is mostly to support
    * backwards compatibility of the `scope` property being used in the `ServiceRequestDSL`.
+   *
+   * @todo This condition will likely be removed in a future version in favor of using `resource_server` to
+   * configure a service request.
    */
-  if (config.scope && manager) {
+  if (
+    config.scope &&
+    manager &&
+    /**
+     * Only attempt to get a token if the `service` property is a string or has an `endpoint_id` property (GCSConfiguration).
+     */
+    (typeof config.service === 'string' || 'endpoint_id' in config.service)
+  ) {
     const resourceServer =
       typeof config.service === 'string'
         ? RESOURCE_SERVERS[config.service]
