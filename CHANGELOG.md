@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.2](https://github.com/globus/globus-sdk-javascript/compare/v5.1.1...v5.1.2) (2024-12-04)
+
+
+### Bug Fixes
+
+* **Errors:** Ensure `required_scope` properties found in errors are properly serialized to the `scope` parameter (space-separated) ([#381](https://github.com/globus/globus-sdk-javascript/issues/381)) ([d1b6704](https://github.com/globus/globus-sdk-javascript/commit/d1b6704dc1af744ef1d2502068de67daaddd81a2))
+
 ## [5.1.1](https://github.com/globus/globus-sdk-javascript/compare/v5.1.0...v5.1.1) (2024-11-13)
 
 

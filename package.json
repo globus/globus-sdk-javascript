@@ -1,6 +1,6 @@
 {
   "name": "@globus/sdk",
-  "version": "5.1.1",
+  "version": "5.1.2",
   "description": "The Globus SDK for JavaScript",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
