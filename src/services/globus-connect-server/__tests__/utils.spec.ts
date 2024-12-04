@@ -1,6 +1,6 @@
+import { HttpResponse, http } from 'msw';
 import { getGCSDomainFromURL, getEndpointIdFromURL } from '../utils';
 import server from '../../../__mocks__/server';
-import { HttpResponse, http } from 'msw';
 
 describe('getGCSDomainFromURL', () => {
   it('returns the domain for a file path on a collection (e.g. HTTPS URL)', () => {
