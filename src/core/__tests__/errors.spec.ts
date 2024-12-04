@@ -108,7 +108,7 @@ describe('toAuthorizationQueryParams', () => {
         },
       }),
     ).toEqual({
-      scope: 'foobar,data_access',
+      scope: 'foobar data_access',
     });
   });
 });
