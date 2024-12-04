@@ -86,7 +86,7 @@ export function toAuthorizationQueryParams(
      * to be included in the `scopes` (OAuth) parameter.
      * @see https://docs.globus.org/api/auth/sessions/#client-initiated-authns
      */
-    scope: error.authorization_parameters.required_scopes,
+    scope: error.authorization_parameters.required_scopes?.join(' '),
     /**
      * We still include the entire `authorization_parameters` object in addition to the mapped values for parsing.
      */
