@@ -1,7 +1,9 @@
-import { ID, SCOPES } from '../config.js';
-import { serviceRequest } from '../../../services/shared.js';
+import { ID, SCOPES } from '../../config.js';
+import { serviceRequest } from '../../../../services/shared.js';
 
-import type { ServiceMethod, ServiceMethodDynamicSegments } from '../../types.js';
+import type { ServiceMethod, ServiceMethodDynamicSegments } from '../../../types.js';
+
+export * as consents from './consents.js';
 
 /**
  * Fetch a single Identity by ID.
