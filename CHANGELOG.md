@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.2.0](https://github.com/globus/globus-sdk-javascript/compare/v5.1.2...v5.2.0) (2025-01-06)
+
+
+### Features
+
+* **Auth:** Adds `auth.identities.consents.getAll` service method. ([#392](https://github.com/globus/globus-sdk-javascript/issues/392)) ([bd051cb](https://github.com/globus/globus-sdk-javascript/commit/bd051cba07fff3c39b1bd13acadc0e4531dab393))
+* **GCS:** Adds `getGCSDomainFromURL` and `getEndpointIdFromURL` utility methods to `gcs` ([305ad33](https://github.com/globus/globus-sdk-javascript/commit/305ad333cf3dc8b11e9c00c4cfbc28ba267d1f8a))
+
+
+### Bug Fixes
+
+* Allow for unauthenticated service request definition for GCS. Updates `.info` to not require `endpoint_id` (can be accessed unauthenticated). ([305ad33](https://github.com/globus/globus-sdk-javascript/commit/305ad333cf3dc8b11e9c00c4cfbc28ba267d1f8a))
+
 ## [5.1.2](https://github.com/globus/globus-sdk-javascript/compare/v5.1.1...v5.1.2) (2024-12-04)
 
 
