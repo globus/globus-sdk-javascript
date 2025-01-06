@@ -77,6 +77,39 @@ export class TokenManager {
      * This will ensure `this.#storage` is always the latest version.
      */
     this.#migrate();
+    /**
+     * Build the initial cache of tokens by scope.
+     */
+    this.#buildByScopeCache();
+  }
+
+  #buildByScopeCache() {
+    const { tokens } = this.#storage.state;
+    this.#byScopeCache = Object.values(tokens).reduce((acc: ByScopeCache, token) => {
+      token.scope.split(' ').forEach((scope) => {
+        /**
+         * If there isn't an existing token for the scope, add it to the cache.
+         */
+        if (!acc[scope]) {
+          acc[scope] = token.access_token;
+          return;
+        }
+        /**
+         * If there is an existing token for the scope, compare the expiration times and keep the token that expires later.
+         */
+        const existing = tokens[acc[scope]];
+        /**
+         * If the existing token or the new token is missing the expiration metadata, skip the comparison.
+         */
+        if (!existing.__metadata?.expires || !token.__metadata?.expires) {
+          return;
+        }
+        if (existing.__metadata.expires < token.__metadata.expires) {
+          acc[scope] = token.access_token;
+        }
+      });
+      return acc;
+    }, {});
   }
 
   /**
@@ -105,31 +138,7 @@ export class TokenManager {
     /**
      * When the storage is update, we need to rebuild the cache of tokens by scope.
      */
-    this.#byScopeCache = Object.values(value.state.tokens).reduce((acc: ByScopeCache, token) => {
-      token.scope.split(' ').forEach((scope) => {
-        /**
-         * If there isn't an existing token for the scope, add it to the cache.
-         */
-        if (!acc[scope]) {
-          acc[scope] = token.access_token;
-          return;
-        }
-        /**
-         * If there is an existing token for the scope, compare the expiration times and keep the token that expires later.
-         */
-        const existing = value.state.tokens[acc[scope]];
-        /**
-         * If the existing token or the new token is missing the expiration metadata, skip the comparison.
-         */
-        if (!existing.__metadata?.expires || !token.__metadata?.expires) {
-          return;
-        }
-        if (existing.__metadata.expires < token.__metadata.expires) {
-          acc[scope] = token.access_token;
-        }
-      });
-      return acc;
-    }, {});
+    this.#buildByScopeCache();
   }
 
   /**
