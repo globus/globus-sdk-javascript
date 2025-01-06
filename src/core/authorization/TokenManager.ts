@@ -11,9 +11,9 @@ import type { Token, TokenResponse } from '../../services/auth/types.js';
  * The current version of the token storage format the `TokenManager` will
  * process.
  */
-const TOKEN_STORAGE_VERSION = 0;
+export const TOKEN_STORAGE_VERSION = 0;
 
-type TokenStorage = {
+type BaseTokenStorage = {
   /**
    * The version of the token storage format.
    */
@@ -24,14 +24,26 @@ type TokenStorage = {
   state: Record<string, unknown>;
 };
 
-type TokenStorageV0 = TokenStorage & {
+type TokenStorageV0 = BaseTokenStorage & {
   version: 0;
   state: {
     tokens: Record<StoredToken['access_token'], StoredToken>;
   };
 };
 
+/**
+ * The `TokenStorage` type represents the currently supported token storage format.
+ */
+export type TokenStorage = TokenStorageV0;
+
 type ByScopeCache = Record<string, StoredToken['access_token']>;
+
+const DEFAULT_STORAGE: TokenStorage = {
+  version: TOKEN_STORAGE_VERSION,
+  state: {
+    tokens: {},
+  },
+};
 
 export type StoredToken = (Token | TokenResponse) & {
   /**
@@ -62,7 +74,7 @@ export class TokenManager {
   /**
    * The key used to store the TokenStorage in the AuthorizationManager's storage provider.
    */
-  #storageKey: string;
+  storageKey: string;
 
   /**
    * A cache of tokens by scope to allow for quick retrieval.
@@ -71,7 +83,7 @@ export class TokenManager {
 
   constructor(options: { manager: AuthorizationManager }) {
     this.#manager = options.manager;
-    this.#storageKey = `${this.#manager.storageKeyPrefix}TokenManager`;
+    this.storageKey = `${this.#manager.storageKeyPrefix}TokenManager`;
     /**
      * When the TokenManager is created, we need to check if there is a storage entry and migrate it if necessary.
      * This will ensure `this.#storage` is always the latest version.
@@ -86,7 +98,7 @@ export class TokenManager {
   #buildByScopeCache() {
     const { tokens } = this.#storage.state;
     this.#byScopeCache = Object.values(tokens).reduce((acc: ByScopeCache, token) => {
-      token.scope.split(' ').forEach((scope) => {
+      token.scope?.split(' ').forEach((scope) => {
         /**
          * If there isn't an existing token for the scope, add it to the cache.
          */
@@ -116,16 +128,21 @@ export class TokenManager {
    * Determines whether or not the TokenManager has a storage entry.
    */
   get #hasStorage() {
-    return this.#manager.storage.getItem(this.#storageKey) !== null;
+    return Boolean(this.#manager.storage.getItem(this.storageKey));
   }
 
   /**
    * Retrieve the TokenStorage from the AuthorizationManager's storage provider.
    */
-  get #storage(): TokenStorageV0 {
-    const raw = this.#manager.storage.getItem(this.#storageKey);
+  get #storage(): TokenStorage {
+    const raw = this.#manager.storage.getItem(this.storageKey);
     if (!raw) {
-      throw new Error('@globus/sdk | Unable to retrieve TokenStorage.');
+      /**
+       * If there was no storage entry, create a new one, store it, and return it.
+       */
+      const storage = DEFAULT_STORAGE;
+      this.#storage = storage;
+      return storage;
     }
     return JSON.parse(raw);
   }
@@ -133,8 +150,8 @@ export class TokenManager {
   /**
    * Store the TokenStorage in the AuthorizationManager's storage provider.
    */
-  set #storage(value: TokenStorageV0) {
-    this.#manager.storage.setItem(this.#storageKey, JSON.stringify(value));
+  set #storage(value: TokenStorage) {
+    this.#manager.storage.setItem(this.storageKey, JSON.stringify(value));
     /**
      * When the storage is update, we need to rebuild the cache of tokens by scope.
      */
@@ -156,16 +173,26 @@ export class TokenManager {
      *
      * Tokens were previously stored as individual items in the storage with keys that
      * included the resource server, e.g. `{client_id}:auth.globus.org`
+     *
+     * @since v7
      */
-    const tokens: TokenStorageV0['state']['tokens'] = {};
+    const tokens: TokenStorage['state']['tokens'] = {};
     Object.keys(this.#manager.storage).forEach((key) => {
       if (key.startsWith(this.#manager.storageKeyPrefix)) {
         const maybeToken = this.#manager.storage.getItem(key);
-        if (isToken(maybeToken)) {
-          tokens[maybeToken.access_token] = maybeToken;
+        if (!maybeToken) return;
+        let parsed = {};
+        try {
+          parsed = JSON.parse(maybeToken);
+        } catch {
+          return;
+        }
+        if (isToken(parsed)) {
+          tokens[parsed.access_token] = parsed;
         }
       }
     }, {});
+
     this.#storage = {
       version: TOKEN_STORAGE_VERSION,
       state: {
@@ -272,6 +299,7 @@ export class TokenManager {
         [key]: value,
       };
     }, {});
+
     this.#storage = {
       ...storage,
       state: {
@@ -312,12 +340,7 @@ export class TokenManager {
   }
 
   clear() {
-    this.#storage = {
-      version: TOKEN_STORAGE_VERSION,
-      state: {
-        tokens: {},
-      },
-    };
+    this.#storage = DEFAULT_STORAGE;
   }
 
   /**

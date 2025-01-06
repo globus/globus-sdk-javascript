@@ -8,7 +8,7 @@ import { enable } from '../../core/info/private';
 import pkg from '../../../package.json';
 import { mockLocalStorage, setInitialLocalStorageState } from '../../__mocks__/localStorage';
 
-describe.only('serviceRequest', () => {
+describe('serviceRequest', () => {
   beforeEach(() => {
     mockLocalStorage();
   });
@@ -221,6 +221,7 @@ describe.only('serviceRequest', () => {
       'client_id:auth.globus.org': JSON.stringify(TOKEN),
       'client_id:transfer.api.globus.org': JSON.stringify({
         ...TOKEN,
+        scope: 'some:required:scope',
         resource_server: 'transfer.api.globus.org',
       }),
     });
@@ -264,7 +265,7 @@ describe.only('serviceRequest', () => {
 
   it('reads tokens from manager instance when `scope` is configured', async () => {
     const TOKEN = {
-      access_token: 'access-token',
+      access_token: 'auth-access-token',
       scope: 'profile email openid',
       expires_in: 172800,
       token_type: 'Bearer',
@@ -277,6 +278,8 @@ describe.only('serviceRequest', () => {
       'client_id:auth.globus.org': JSON.stringify(TOKEN),
       'client_id:transfer.api.globus.org': JSON.stringify({
         ...TOKEN,
+        scope: 'some:required:scope',
+        access_token: 'transfer-access-token',
         resource_server: 'transfer.api.globus.org',
       }),
     });
@@ -307,7 +310,7 @@ describe.only('serviceRequest', () => {
       req: { headers },
     } = await mirror(request);
 
-    expect(headers['authorization']).toEqual(`Bearer ${TOKEN.access_token}`);
+    expect(headers['authorization']).toEqual(`Bearer transfer-access-token`);
   });
 
   it('reads tokens from manager instance when `resource_server` is configured', async () => {
@@ -471,6 +474,8 @@ describe.only('serviceRequest', () => {
 
     const TRANSFER_TOKEN = {
       ...TOKEN,
+      access_token: 'transfer-access-token',
+      scope: 'data_access',
       resource_server: 'transfer.api.globus.org',
     };
 
@@ -596,6 +601,7 @@ describe.only('serviceRequest', () => {
         http.post('https://auth.globus.org/v2/oauth2/token', () =>
           HttpResponse.json({
             ...TRANSFER_TOKEN,
+            scope: 'data_access',
             access_token: 'refreshed-access-token',
           }),
         ),
@@ -604,7 +610,7 @@ describe.only('serviceRequest', () => {
       const response = await serviceRequest(
         {
           service: 'TRANSFER',
-          scope: 'some:required:scope',
+          scope: 'data_access',
           path: '/fake-resource',
         },
         {},
