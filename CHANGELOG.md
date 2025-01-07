@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.0](https://github.com/globus/globus-sdk-javascript/compare/v5.2.0...v5.3.0) (2025-01-07)
+
+
+### Features
+
+* **Authorization:** adds support for includeConsentedScopes during token exchange methods ([#405](https://github.com/globus/globus-sdk-javascript/issues/405)) ([5dac9a4](https://github.com/globus/globus-sdk-javascript/commit/5dac9a48766c473429cbee1e8dfebe353ee3f745))
+
+
+### Bug Fixes
+
+* **Auth:** Ensure proper API paths for identity-related Globus Auth resources (e.g. GET /v2/api/identities) ([#403](https://github.com/globus/globus-sdk-javascript/issues/403)) ([9618792](https://github.com/globus/globus-sdk-javascript/commit/96187920ecadf9c61b0d3493cd1ff67f8987d703))
+
 ## [5.2.0](https://github.com/globus/globus-sdk-javascript/compare/v5.1.2...v5.2.0) (2025-01-06)
 
 
