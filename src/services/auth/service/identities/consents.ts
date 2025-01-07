@@ -31,7 +31,7 @@ export const getAll = function (
     {
       service: ID,
       scope: SCOPES.VIEW_IDENTITIES,
-      path: `/identities/${identity_id}/consents`,
+      path: `/v2/api/identities/${identity_id}/consents`,
     },
     options,
     sdkOptions,
