@@ -91,6 +91,23 @@ describe('TokenManager', () => {
       expect(TokenManager.isTokenExpired(tokens.groups)).toBe(undefined);
     });
 
+    it('supports remove', () => {
+      const TOKEN: Token = {
+        resource_server: RESOURCE_SERVERS.AUTH,
+        access_token: 'AUTH',
+        token_type: 'Bearer',
+        scope: 'openid',
+        expires_in: 1000,
+      };
+      tokens.add(TOKEN);
+      tokens.add({ ...TOKEN, resource_server: RESOURCE_SERVERS.FLOWS });
+      expect(tokens.auth).not.toBeNull();
+      expect(tokens.flows).not.toBeNull();
+      tokens.remove(TOKEN);
+      expect(tokens.auth).toBeNull();
+      expect(tokens.flows).not.toBeNull();
+    });
+
     it('supports time augments', () => {
       const TOKEN: Token = {
         resource_server: RESOURCE_SERVERS.AUTH,
