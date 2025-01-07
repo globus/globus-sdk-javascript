@@ -14,7 +14,7 @@ export const get = function (identity_id, options = {}, sdkOptions?) {
     {
       service: ID,
       scope: SCOPES.VIEW_IDENTITIES,
-      path: `/identities/${identity_id}`,
+      path: `/v2/api/identities/${identity_id}`,
     },
     options,
     sdkOptions,
@@ -30,7 +30,7 @@ export const getAll = function (options = {}, sdkOptions?) {
     {
       service: ID,
       scope: SCOPES.VIEW_IDENTITIES,
-      path: `/identities`,
+      path: `/v2/api/identities`,
     },
     options,
     sdkOptions,

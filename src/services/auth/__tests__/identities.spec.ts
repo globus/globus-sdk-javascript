@@ -22,7 +22,7 @@ test('get', async () => {
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
-  "url": "https://auth.globus.org/identities/6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9",
+  "url": "https://auth.globus.org/v2/api/identities/6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9",
 }
 `);
 });
@@ -51,7 +51,7 @@ test('getAll', async () => {
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
-  "url": "https://auth.globus.org/identities?ids=538e096f-0468-4d54-8463-50af72c01f95%2C1e1cac10-b303-48d8-aa81-3b3a592a2564",
+  "url": "https://auth.globus.org/v2/api/identities?ids=538e096f-0468-4d54-8463-50af72c01f95%2C1e1cac10-b303-48d8-aa81-3b3a592a2564",
 }
 `);
 });
@@ -81,7 +81,7 @@ test("getAll – with 'include'", async () => {
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
-  "url": "https://auth.globus.org/identities?ids=538e096f-0468-4d54-8463-50af72c01f95%2C1e1cac10-b303-48d8-aa81-3b3a592a2564&include=identity_provider",
+  "url": "https://auth.globus.org/v2/api/identities?ids=538e096f-0468-4d54-8463-50af72c01f95%2C1e1cac10-b303-48d8-aa81-3b3a592a2564&include=identity_provider",
 }
 `);
 });
@@ -106,7 +106,7 @@ test('consents', async () => {
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
-  "url": "https://auth.globus.org/identities/6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9/consents",
+  "url": "https://auth.globus.org/v2/api/identities/6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9/consents",
 }
 `);
 });
