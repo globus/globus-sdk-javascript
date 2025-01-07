@@ -129,6 +129,10 @@ export class TokenManager {
     }
   }
 
+  remove(token: Token | TokenResponse) {
+    this.#manager.storage.removeItem(`${this.#manager.storageKeyPrefix}${token.resource_server}`);
+  }
+
   /**
    * Determines whether or not a stored token is expired.
    * @param token The token to check.
