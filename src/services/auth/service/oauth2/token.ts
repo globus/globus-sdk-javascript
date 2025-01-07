@@ -92,6 +92,13 @@ export const token = function (options = {}, sdkOptions?) {
   );
 } satisfies ServiceMethod<{
   payload?: ExchangePayload;
+  query?: {
+    /**
+     * Include tokens for all scopes that the user has consented to, for the requesting client.
+     * @private
+     */
+    include_consented_scopes?: boolean;
+  };
 }>;
 
 /**

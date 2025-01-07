@@ -16,6 +16,14 @@ export type GetTokenOptions = {
    * @default true
    */
   shouldReplace?: boolean;
+  /**
+   * When set to `true` in addition to the `scope` values originally requested, Globus Auth
+   * will return tokens for **all** of the scopes that the user has consented to, for
+   * the requesting client.
+   * @default false
+   * @private
+   */
+  includeConsentedScopes?: boolean;
 };
 
 export type RedirectTransportOptions = Pick<
@@ -100,7 +108,9 @@ export class RedirectTransport {
    * Parse the current URL for the authorization code (`?code=...`) and exchange it for an access token when available.
    * - When the URL is processed and exchanged for an access token, the page is redirected to the current URL without the `?code=...&state=...` parameters.
    */
-  async getToken(options: GetTokenOptions = { shouldReplace: true }) {
+  async getToken(
+    options: GetTokenOptions = { shouldReplace: true, includeConsentedScopes: false },
+  ) {
     const url = new URL(window.location.href);
     const params = new URLSearchParams(url.search);
     /**
@@ -161,6 +171,11 @@ export class RedirectTransport {
 
     const response = await (
       await oauth2.token.exchange({
+        query: options.includeConsentedScopes
+          ? {
+              include_consented_scopes: true,
+            }
+          : undefined,
         payload,
       })
     ).json();
