@@ -367,8 +367,6 @@ export class AuthorizationManager {
       scopes: scopesToRequest,
       ...overrides,
       params: {
-        // @todo @todo Decide if we want to include the `include_consented_scopes` parameter by default.
-        // include_consented_scopes: 'true',
         ...overrides?.params,
       },
     });
@@ -405,13 +403,15 @@ export class AuthorizationManager {
    */
   async handleCodeRedirect(
     options: {
-      shouldReplace: GetTokenOptions['shouldReplace'];
+      shouldReplace?: GetTokenOptions['shouldReplace'];
+      includeConsentedScopes?: GetTokenOptions['includeConsentedScopes'];
       additionalParams?: RedirectTransportOptions['params'];
     } = { shouldReplace: true, additionalParams: {} },
   ) {
     log('debug', 'AuthorizationManager.handleCodeRedirect');
     const response = await this.#buildTransport({ params: options?.additionalParams }).getToken({
       shouldReplace: options?.shouldReplace,
+      includeConsentedScopes: options?.includeConsentedScopes,
     });
     if (isGlobusAuthTokenResponse(response)) {
       log(
