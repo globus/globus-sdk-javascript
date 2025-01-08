@@ -55,3 +55,5 @@ export function isGlobusAuthTokenResponse(check: unknown): check is TokenRespons
    */
   return isToken(check) && check !== null && 'resource_server' in check;
 }
+
+export * as utils from './utils.js';
