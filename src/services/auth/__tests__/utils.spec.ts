@@ -1,5 +1,23 @@
 import { Consent } from '../service/identities/consents';
-import { toScopeTree, hasConsentForScope } from '../utils';
+import { toScopeTree, hasConsentForScope, splitScopeString } from '../utils';
+
+describe('splitScopeString', () => {
+  it('should split a single scope', () => {
+    const scope = 'urn:globus:auth:scope:transfer.api.globus.org:all';
+    const result = splitScopeString(scope);
+    expect(result).toEqual(['urn:globus:auth:scope:transfer.api.globus.org:all']);
+  });
+
+  it('should split multiple scopes with multiple dependent scopes', () => {
+    const SCOPES = [
+      'urn:globus:auth:scope:transfer.api.globus.org:all[*https://auth.globus.org/scopes/gcs-endpoint-001/data_access]',
+      'urn:globus:auth:scope:flows.api.globus.org:all',
+      'urn:globus:auth:scope:timer.api.globus.org:all[https://auth.globus.org/scopes/gcs-endpoint-001/data_access https://auth.globus.org/scopes/gcs-endpoint-002/data_access]',
+    ];
+    const result = splitScopeString(SCOPES.join(' '));
+    expect(result).toEqual(SCOPES);
+  });
+});
 
 describe('toScopeTree', () => {
   it('should parse a single scope without children', () => {
@@ -75,6 +93,41 @@ describe('toScopeTree', () => {
                 children: [],
               },
             ],
+          },
+        ],
+      },
+      {
+        scope: 'urn:globus:auth:scope:flows.api.globus.org:all',
+        atomically_revocable: false,
+        children: [],
+      },
+    ]);
+  });
+
+  it.only('should parse a complex scope with nested space-seperated, atomically revocable, dependent scopes', () => {
+    const scope =
+      'urn:globus:auth:scope:transfer.api.globus.org:all[*https://auth.globus.org/scopes/gcs-endpoint-001/data_access[https://auth.globus.org/scopes/gcs-endpoint-001/ls] *https://auth.globus.org/scopes/gcs-endpoint-002/data_access] urn:globus:auth:scope:flows.api.globus.org:all';
+    const result = toScopeTree(scope);
+    expect(result).toEqual([
+      {
+        scope: 'urn:globus:auth:scope:transfer.api.globus.org:all',
+        atomically_revocable: false,
+        children: [
+          {
+            scope: 'https://auth.globus.org/scopes/gcs-endpoint-001/data_access',
+            atomically_revocable: true,
+            children: [
+              {
+                scope: 'https://auth.globus.org/scopes/gcs-endpoint-001/ls',
+                atomically_revocable: false,
+                children: [],
+              },
+            ],
+          },
+          {
+            scope: 'https://auth.globus.org/scopes/gcs-endpoint-002/data_access',
+            atomically_revocable: true,
+            children: [],
           },
         ],
       },

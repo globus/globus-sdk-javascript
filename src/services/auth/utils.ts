@@ -5,6 +5,35 @@ export type ScopeTreeLeaf = {
   atomically_revocable: boolean;
   children: ScopeTreeLeaf[];
 };
+
+/**
+ * Splits a scope string into an array of individual scopes, accounting for nested, space-separated scopes.
+ * @private
+ */
+export function splitScopeString(scope: string): string[] {
+  const scopes: string[] = [];
+  let currentScope = '';
+  let openBrackets = 0;
+  scope.split('').forEach((char, i) => {
+    currentScope += char;
+    if (char === '[') {
+      openBrackets += 1;
+    }
+    if (char === ']') {
+      openBrackets -= 1;
+    }
+    /**
+     * If we encounter a space outside of brackets, or if we're at the end of the string and there is `currentScope`
+     * value, push it to the `scopes` array.
+     */
+    if ((char === ' ' && openBrackets === 0) || (i === scope.length - 1 && currentScope)) {
+      scopes.push(currentScope.trim());
+      currentScope = '';
+    }
+  });
+  return scopes;
+}
+
 /**
  * Parses a scope string into a normalized structure (leaf) for easier comparison.
  */
@@ -33,10 +62,8 @@ function parseScope(s: string): ScopeTreeLeaf {
   /**
    * The children are everything inside the brackets.
    */
-  children = parsedScope
-    .slice(firstBracket + 1, -1)
-    .split(' ')
-    .map(parseScope);
+  const dependentScope = parsedScope.slice(firstBracket + 1, -1);
+  children = splitScopeString(dependentScope).map(parseScope);
   return {
     scope: topLevelScope,
     atomically_revocable: revocable,
@@ -48,8 +75,7 @@ function parseScope(s: string): ScopeTreeLeaf {
  * Converts a scope string into a tree structure for easier comparison.
  */
 export function toScopeTree(scope: string): ScopeTreeLeaf[] {
-  const scopes = scope.split(' ');
-  return scopes.map(parseScope);
+  return splitScopeString(scope).map(parseScope);
 }
 
 /**
