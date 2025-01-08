@@ -104,7 +104,7 @@ describe('toScopeTree', () => {
     ]);
   });
 
-  it.only('should parse a complex scope with nested space-seperated, atomically revocable, dependent scopes', () => {
+  it('should parse a complex scope with nested space-seperated, atomically revocable, dependent scopes', () => {
     const scope =
       'urn:globus:auth:scope:transfer.api.globus.org:all[*https://auth.globus.org/scopes/gcs-endpoint-001/data_access[https://auth.globus.org/scopes/gcs-endpoint-001/ls] *https://auth.globus.org/scopes/gcs-endpoint-002/data_access] urn:globus:auth:scope:flows.api.globus.org:all';
     const result = toScopeTree(scope);
