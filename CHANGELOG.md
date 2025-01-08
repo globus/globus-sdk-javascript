@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.4.0](https://github.com/globus/globus-sdk-javascript/compare/v5.3.0...v5.4.0) (2025-01-08)
+
+
+### Features
+
+* **Auth:** adds Globus Auth `utils`, including `auth.utils.hasConsentForScope` ([#406](https://github.com/globus/globus-sdk-javascript/issues/406)) ([4b35d06](https://github.com/globus/globus-sdk-javascript/commit/4b35d06460770d996deb2d6f728acba738f2a0eb))
+
 ## [5.3.0](https://github.com/globus/globus-sdk-javascript/compare/v5.2.0...v5.3.0) (2025-01-07)
 
 
