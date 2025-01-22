@@ -1,4 +1,4 @@
-import { info } from './service/versioning';
+import { info } from './service/versioning.js';
 
 /**
  * The default domain for a Globus Connect Server instance.
