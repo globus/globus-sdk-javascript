@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.4.1](https://github.com/globus/globus-sdk-javascript/compare/v5.4.0...v5.4.1) (2025-01-22)
+
+
+### Bug Fixes
+
+* **GCS, ESM:** ensure proper file extension is used for ESM imports ([00ec6dd](https://github.com/globus/globus-sdk-javascript/commit/00ec6ddbc2c081e9f490b57276f414c951b1d5d1))
+
 ## [5.4.0](https://github.com/globus/globus-sdk-javascript/compare/v5.3.0...v5.4.0) (2025-01-08)
 
 
