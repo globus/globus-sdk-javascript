@@ -2,8 +2,9 @@ import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 import { getHeadersForService } from '../shared.js';
 import { ID, SCOPES } from '../config.js';
 
-import type { Transfer } from '../types.js';
+import type { Transfer, TransferErrorDocument } from '../types.js';
 import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../types.js';
+import { ConsentRequiredError } from '../../../core/errors.js';
 
 /**
  * @see https://docs.globus.org/api/transfer/file_operations/#file_document
@@ -45,21 +46,24 @@ export type FileListDocument = {
   readonly total: number;
 };
 
-export type DirectoryListingError = {
-  /**
-   * @see https://docs.globus.org/api/transfer/file_operations/#errors
-   */
-  code:
-    | 'NotSupported'
-    | 'ClientError.NotFound'
-    | 'EndpointError'
-    // Encountered Errors (not documented)
-    | 'ExternalError.DirListingFailed.LoginFailed'
-    | string;
-  message: string;
-  request_id: string;
-  resource: string;
-};
+/**
+ * @see https://docs.globus.org/api/transfer/file_operations/#errors
+ */
+export type DirectoryListingError = TransferErrorDocument &
+  (
+    | ConsentRequiredError
+    | {
+        code:
+          | 'ServiceUnavailable'
+          | 'OperationPaused'
+          | 'NotSupported'
+          | 'ClientError.NotFound'
+          | 'EndpointError'
+          // Encountered Errors (not documented)
+          | 'ExternalError.DirListingFailed.LoginFailed'
+          | string;
+      }
+  );
 
 /**
  * List the contents of the directory at the specified path on an endpoint’s filesystem.

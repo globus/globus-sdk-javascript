@@ -22,16 +22,28 @@ export type WellFormedError = {
   message: string;
 };
 
+/**
+ * Test an unknown argument to determine if it can be further parsed as a potentnial known error.
+ */
 export function isErrorWellFormed(test: unknown): test is WellFormedError {
   return typeof test === 'object' && test !== null && 'code' in test && 'message' in test;
 }
 
+/**
+ * An error that indicates that the user must provide consent for additional scopes.
+ * - This error typically encountered when interacting with Globus Transfer or Globus Connect Server.
+ * - Many instances of `code: "ConsentRequire"` in the Globus platform are being migrated to `AuthorizationRequirementsError`.
+ */
 export type ConsentRequiredError = {
   code: 'ConsentRequired';
   required_scopes: string[];
   [key: string]: unknown;
 };
 
+/**
+ * Whether or not the provide object is recognized as a `ConsentRequiredError`.
+ * @see {@link ConsentRequiredError}
+ */
 export function isConsentRequiredError(test: unknown): test is ConsentRequiredError {
   return (
     isErrorWellFormed(test) &&
