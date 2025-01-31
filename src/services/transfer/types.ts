@@ -1,4 +1,19 @@
+import { AuthorizationRequirementsError } from '../../core/errors';
 import { ExtractKeys, Segment } from '../types';
+
+/**
+ * @see https://docs.globus.org/api/transfer/overview/#errors
+ */
+export type TransferErrorDocument = {
+  code: string;
+  message: string;
+  request_id: string;
+  resource: string;
+  /**
+   * If a Globus Auth policy failure was encountered, and caused the error, this property will be present.
+   */
+  authorization_parameters?: AuthorizationRequirementsError;
+};
 
 type EntityType =
   | 'GCSv5_endpoint'
