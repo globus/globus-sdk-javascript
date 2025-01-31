@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.4.2](https://github.com/globus/globus-sdk-javascript/compare/v5.4.1...v5.4.2) (2025-01-31)
+
+
+### Bug Fixes
+
+* **Transfer, Typescript:** Adds TransferErrorDocument type and improves DirectoryListingError types. ([#420](https://github.com/globus/globus-sdk-javascript/issues/420)) ([aadfbdf](https://github.com/globus/globus-sdk-javascript/commit/aadfbdf9c89faa7653732dbe6d89419c4da1042c))
+
 ## [5.4.1](https://github.com/globus/globus-sdk-javascript/compare/v5.4.0...v5.4.1) (2025-01-22)
 
 
