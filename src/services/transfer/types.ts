@@ -12,7 +12,7 @@ export type TransferErrorDocument = {
   /**
    * If a Globus Auth policy failure was encountered, and caused the error, this property will be present.
    */
-  authorization_parameters?: AuthorizationRequirementsError;
+  authorization_parameters?: AuthorizationRequirementsError['authorization_parameters'];
 };
 
 type EntityType =
