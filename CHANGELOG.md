@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.5.0](https://github.com/globus/globus-sdk-javascript/compare/v5.4.1...v5.5.0) (2025-02-06)
+
+
+### Features
+
+* **Search:** Adds support for Search Index Roles CRUD methods. ([#425](https://github.com/globus/globus-sdk-javascript/issues/425)) ([1b40d08](https://github.com/globus/globus-sdk-javascript/commit/1b40d08b53a9060a73760481ea5dc163d3bda8f2))
+
+
+### Bug Fixes
+
+* **Transfer, Typescript:** Adds TransferErrorDocument type and improves DirectoryListingError types. ([#420](https://github.com/globus/globus-sdk-javascript/issues/420)) ([aadfbdf](https://github.com/globus/globus-sdk-javascript/commit/aadfbdf9c89faa7653732dbe6d89419c4da1042c))
+* **Typescript, Search:** Improve the GFacet Search type ([#426](https://github.com/globus/globus-sdk-javascript/issues/426)) ([1b245a5](https://github.com/globus/globus-sdk-javascript/commit/1b245a56e295e4e71e202d0e5e91f63a554a6b28))
+
 ## [5.4.1](https://github.com/globus/globus-sdk-javascript/compare/v5.4.0...v5.4.1) (2025-01-22)
 
 
