@@ -7,6 +7,8 @@ import type {
   ServiceMethodDynamicSegments,
 } from '../../types.js';
 
+export * as roles from './roles.js';
+
 /**
  * @see https://docs.globus.org/api/search/reference/index_list/#indexwithpermissions
  */

@@ -6,9 +6,6 @@
  */
 import * as SEARCH from './config.js';
 
-import * as searchIndex from './service/search-index.js';
-import * as roles from './service/roles.js';
-
 /**
  * @private
  * @internal
@@ -18,7 +15,4 @@ export const CONFIG = SEARCH;
 export * as query from './service/query.js';
 export * as subject from './service/subject.js';
 export * as entry from './service/entry.js';
-export const index = {
-  ...searchIndex,
-  roles,
-};
+export * as index from './service/search-index.js';
