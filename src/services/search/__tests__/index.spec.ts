@@ -87,4 +87,48 @@ describe('search – index', () => {
       headers,
     }).toMatchSnapshot();
   });
+
+  test('get roles', async () => {
+    const request = await index.roles.getAll('some-uuid');
+    const {
+      req: { url, method, headers },
+    } = await mirror(request);
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchSnapshot();
+  });
+
+  test('create role', async () => {
+    const request = await index.roles.create('some-uuid', {
+      payload: {
+        role_name: 'admin',
+        principal: 'some-principal-urn',
+        principal_type: 'identity',
+      },
+    });
+
+    const {
+      req: { url, method, headers, json },
+    } = await mirror(request);
+    expect({
+      url,
+      method,
+      headers,
+      json,
+    }).toMatchSnapshot();
+  });
+
+  test('delete role', async () => {
+    const request = await index.roles.remove({ index_id: 'some-uuid', role_id: 'some-role-id' });
+    const {
+      req: { url, method, headers },
+    } = await mirror(request);
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchSnapshot();
+  });
 });

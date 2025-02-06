@@ -20,6 +20,41 @@ exports[`search – index create 1`] = `
 }
 `;
 
+exports[`search – index create role 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "82",
+    "content-type": "application/json",
+    "host": "search.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "principal": "some-principal-urn",
+    "principal_type": "identity",
+    "role_name": "admin",
+  },
+  "method": "POST",
+  "url": "https://search.api.globus.org/v1/index/some-uuid/role",
+}
+`;
+
+exports[`search – index delete role 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "search.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "DELETE",
+  "url": "https://search.api.globus.org/v1/index/some-uuid/role/some-role-id",
+}
+`;
+
 exports[`search – index get 1`] = `
 {
   "headers": {
@@ -31,6 +66,20 @@ exports[`search – index get 1`] = `
   },
   "method": "GET",
   "url": "https://search.api.globus.org/v1/index/524de2f6-d1a6-4b49-9286-d8dccb4196ae",
+}
+`;
+
+exports[`search – index get roles 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "search.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://search.api.globus.org/v1/index/some-uuid/role_list",
 }
 `;
 
