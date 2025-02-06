@@ -162,11 +162,12 @@ type HistogramRange = { low: number | string; high: number | string };
  * @see https://docs.globus.org/api/search/reference/post_query/#gfacet
  */
 export type GFacet = {
-  name: string;
+  name?: string;
   field_name: string;
 } & (
   | {
       type: 'terms';
+      size?: number;
     }
   | {
       type: 'sum' | 'avg';
@@ -180,7 +181,6 @@ export type GFacet = {
   | {
       type: 'numeric_histogram';
       size: string;
-      interval: number;
       histogram_range: HistogramRange;
     }
 );
