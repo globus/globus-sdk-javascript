@@ -88,7 +88,7 @@ export type SearchIndexRoleDeleted = {
  * @see https://docs.globus.org/api/search/reference/role_delete/
  */
 export const remove = function (
-  { index_id, role_id }: { index_id: string; role_id: string },
+  { index_id, role_id },
   options?,
   sdkOptions?,
 ): Promise<JSONFetchResponse<SearchIndexRoleDeleted>> {
