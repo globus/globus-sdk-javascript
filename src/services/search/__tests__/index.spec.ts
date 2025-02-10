@@ -105,7 +105,6 @@ describe('search – index', () => {
       payload: {
         role_name: 'admin',
         principal: 'some-principal-urn',
-        principal_type: 'identity',
       },
     });
 

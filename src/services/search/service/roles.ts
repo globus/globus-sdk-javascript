@@ -47,7 +47,7 @@ export const getAll = function (
   );
 } satisfies ServiceMethodDynamicSegments<string, {}>;
 
-export type SearchIndexRoleCreate = Pick<IndexRole, 'role_name' | 'principal' | 'principal_type'>;
+export type SearchIndexRoleCreate = Pick<IndexRole, 'role_name' | 'principal'>;
 
 /**
  * Create a new role for a search index as owner or admin only
