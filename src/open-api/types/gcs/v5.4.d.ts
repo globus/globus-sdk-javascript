@@ -5297,7 +5297,7 @@ export interface components {
              * @default normal
              * @enum {string}
              */
-            network_use: "normal" | "minimal" | "aggressive" | "custom";
+            network_use?: "normal" | "minimal" | "aggressive" | "custom";
             /** @description Organization that runs the server(s) represented by the endpoint.
              *     Unicode string, max 1024 characters, no new lines.
              *      */
@@ -5320,7 +5320,7 @@ export interface components {
              *
              * @default true
              */
-            public: boolean;
+            public?: boolean;
             /** @description The id of the subscription that is managing this endpoint.  This may be
              *     the special value `DEFAULT` when using this as input to PATCH or PUT to
              *     use the caller's default subscription id.
@@ -5416,7 +5416,7 @@ export interface components {
              * @default normal
              * @enum {string}
              */
-            network_use: "normal" | "minimal" | "aggressive" | "custom";
+            network_use?: "normal" | "minimal" | "aggressive" | "custom";
             /** @description Organization that runs the server(s) represented by the endpoint.
              *     Unicode string, max 1024 characters, no new lines.
              *      */
@@ -5439,7 +5439,7 @@ export interface components {
              *
              * @default true
              */
-            public: boolean;
+            public?: boolean;
             /** @description The id of the subscription that is managing this endpoint.  This may be
              *     the special value `DEFAULT` when using this as input to PATCH or PUT to
              *     use the caller's default subscription id.
@@ -5545,7 +5545,7 @@ export interface components {
              * @default normal
              * @enum {string}
              */
-            network_use: "normal" | "minimal" | "aggressive" | "custom";
+            network_use?: "normal" | "minimal" | "aggressive" | "custom";
             /** @description Organization that runs the server(s) represented by the endpoint.
              *     Unicode string, max 1024 characters, no new lines.
              *      */
@@ -5568,7 +5568,7 @@ export interface components {
              *
              * @default true
              */
-            public: boolean;
+            public?: boolean;
             /** @description The id of the subscription that is managing this endpoint.  This may be
              *     the special value `DEFAULT` when using this as input to PATCH or PUT to
              *     use the caller's default subscription id.
@@ -6088,7 +6088,7 @@ export interface components {
              *
              * @default false
              */
-            has_next_page: boolean;
+            has_next_page?: boolean;
             /** @description Numeric HTTP response code */
             http_response_code: number;
             /** @description Opaque marker that may be passed to this API call to fetch the next
@@ -6129,7 +6129,7 @@ export interface components {
              *
              * @default false
              */
-            has_next_page: boolean;
+            has_next_page?: boolean;
             /** @description Numeric HTTP response code */
             http_response_code: number;
             /** @description Opaque marker that may be passed to this API call to fetch the next
@@ -6392,7 +6392,7 @@ export interface components {
              *
              * @default false
              */
-            require_mfa: boolean;
+            require_mfa?: boolean;
             /** @description Path restrictions within this storage gateway. Paths are
              *     interpreted as absolute paths in the file namespace of the
              *     connector.
@@ -6441,7 +6441,7 @@ export interface components {
              *
              * @default false
              */
-            admin_managed_credentials: boolean;
+            admin_managed_credentials?: boolean;
             /** @description List of allowed domains. Users creating credentials or collections
              *     on this storage gateway must have an identity in one of these domains.
              *      */
@@ -6504,7 +6504,7 @@ export interface components {
              *
              * @default false
              */
-            require_mfa: boolean;
+            require_mfa?: boolean;
             /** @description Path restrictions within this storage gateway. Paths are
              *     interpreted as absolute paths in the file namespace of the
              *     connector.
@@ -6556,7 +6556,7 @@ export interface components {
              *
              * @default false
              */
-            admin_managed_credentials: boolean;
+            admin_managed_credentials?: boolean;
             /** @description List of allowed domains. Users creating credentials or collections
              *     on this storage gateway must have an identity in one of these domains.
              *      */
@@ -6661,7 +6661,7 @@ export interface components {
              *
              * @default false
              */
-            require_mfa: boolean;
+            require_mfa?: boolean;
             /** @description Path restrictions within this storage gateway. Paths are
              *     interpreted as absolute paths in the file namespace of the
              *     connector.

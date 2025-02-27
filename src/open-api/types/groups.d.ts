@@ -730,7 +730,7 @@ export interface components {
              * @description The type of group (regular or Globus Plus).
              * @default regular
              */
-            group_type: components["schemas"]["GroupTypeEnum"];
+            group_type?: components["schemas"]["GroupTypeEnum"];
             /**
              * Child Ids
              * @description IDs of the children groups (some of the groups in this list might be private).
@@ -740,7 +740,7 @@ export interface components {
              * Enforce Session
              * @default false
              */
-            enforce_session: boolean;
+            enforce_session?: boolean;
             /**
              * Session Limit
              * @description Number of seconds required for most recent authentication token
@@ -751,7 +751,7 @@ export interface components {
              * @description A mapping of identity_ids to data about when that identity's authentication falls out of this group's session limit. Only identities in the session will be included here.
              * @default {}
              */
-            session_timeouts: {
+            session_timeouts?: {
                 [key: string]: components["schemas"]["TimeoutData"];
             };
             /**
@@ -788,43 +788,43 @@ export interface components {
              * @description Count of active group members
              * @default 0
              */
-            active: number;
+            active?: number;
             /**
              * Invited
              * @description Count of identities invited to join the group.
              * @default 0
              */
-            invited: number;
+            invited?: number;
             /**
              * Pending
              * @description Count of identities pending acceptance to join the group.
              * @default 0
              */
-            pending: number;
+            pending?: number;
             /**
              * Rejected
              * @description Count of indentities that were rejected.
              * @default 0
              */
-            rejected: number;
+            rejected?: number;
             /**
              * Removed
              * @description Count of former group members who were removed.
              * @default 0
              */
-            removed: number;
+            removed?: number;
             /**
              * Left
              * @description Count of former group members who left the group.
              * @default 0
              */
-            left: number;
+            left?: number;
             /**
              * Declined
              * @description Count of declined group members.
              * @default 0
              */
-            declined: number;
+            declined?: number;
         };
         /** GroupSubscriptionModel */
         GroupSubscriptionModel: {
@@ -903,7 +903,7 @@ export interface components {
              * @description The membership role for the user that is being added, invited, or changed.
              * @default member
              */
-            role: components["schemas"]["RoleEnum"] | null;
+            role?: components["schemas"]["RoleEnum"] | null;
             /**
              * Identity Id
              * Format: uuid
@@ -927,7 +927,7 @@ export interface components {
              * @description The membership role for the user that is being added, invited, or changed.
              * @default member
              */
-            role: components["schemas"]["RoleEnum"] | null;
+            role?: components["schemas"]["RoleEnum"] | null;
             /**
              * Identity Id
              * Format: uuid
@@ -1059,7 +1059,7 @@ export interface components {
              * @description The additional sign-up fields required by the group.
              * @default {}
              */
-            membership_fields: Record<string, unknown> | null;
+            membership_fields?: Record<string, unknown> | null;
         };
         /** MembershipsActionChangeRoleModel */
         MembershipsActionChangeRoleModel: {
@@ -1067,7 +1067,7 @@ export interface components {
              * @description The membership role for the user that is being added, invited, or changed.
              * @default member
              */
-            role: components["schemas"]["RoleEnum"] | null;
+            role?: components["schemas"]["RoleEnum"] | null;
             /**
              * Identity Id
              * Format: uuid
@@ -1108,19 +1108,19 @@ export interface components {
              * @description True if HA subscriber.
              * @default false
              */
-            is_high_assurance: boolean;
+            is_high_assurance?: boolean;
             /**
              * Is Baa
              * @description True if BAA subscriber.
              * @default false
              */
-            is_baa: boolean;
+            is_baa?: boolean;
             /**
              * Connectors
              * @description A mapping of connector UUIDs to connector subscription data.
              * @default {}
              */
-            connectors: {
+            connectors?: {
                 [key: string]: components["schemas"]["ConnectorSubscriptionInfo"];
             };
         };
@@ -1131,19 +1131,19 @@ export interface components {
              * @description True if HA subscriber.
              * @default false
              */
-            is_high_assurance: boolean;
+            is_high_assurance?: boolean;
             /**
              * Is Baa
              * @description True if BAA subscriber.
              * @default false
              */
-            is_baa: boolean;
+            is_baa?: boolean;
             /**
              * Connectors
              * @description A mapping of connector UUIDs to connector subscription data.
              * @default {}
              */
-            connectors: {
+            connectors?: {
                 [key: string]: components["schemas"]["ConnectorSubscriptionInfo"];
             };
         };
