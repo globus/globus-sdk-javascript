@@ -121,7 +121,7 @@
     "jwt-decode": "^4.0.0"
   },
   "peerDependencies": {
-    "@globus/types": "^0.0.7"
+    "@globus/types": "^0.0.8"
   },
   "peerDependenciesMeta": {
     "@globus/types": {
