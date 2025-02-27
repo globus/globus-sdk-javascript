@@ -1,7 +1,7 @@
-import type { components } from '@globus/types/timer';
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 import { ID } from '../config.js';
 
+import type { OpenAPI } from '../index.js';
 import type { SDKOptions, ServiceMethod } from '../../types.js';
 
 export const create = function (options, sdkOptions?: SDKOptions) {
@@ -16,5 +16,5 @@ export const create = function (options, sdkOptions?: SDKOptions) {
     sdkOptions,
   );
 } satisfies ServiceMethod<{
-  payload: components['schemas']['V2TimerCreate'];
+  payload: OpenAPI.components['schemas']['V2TimerCreate'];
 }>;

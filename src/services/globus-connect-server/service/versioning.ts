@@ -1,7 +1,6 @@
-import type { operations } from '@globus/types/gcs-manager/api';
 import { serviceRequest } from '../../../services/shared.js';
 
-import type { GCSServiceMethod } from '../index';
+import type { OpenAPI, GCSServiceMethod } from '../index';
 import type { JSONFetchResponse } from '../../types';
 
 /**
@@ -13,7 +12,9 @@ export const info = function (
   options?,
   sdkOptions?,
 ): Promise<
-  JSONFetchResponse<operations['getInfo']['responses']['200']['content']['application/json']>
+  JSONFetchResponse<
+    OpenAPI.operations['getInfo']['responses']['200']['content']['application/json']
+  >
 > {
   return serviceRequest(
     {
