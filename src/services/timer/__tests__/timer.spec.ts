@@ -41,7 +41,7 @@ test('create', async () => {
         "accept": "*/*",
         "accept-encoding": "gzip,deflate",
         "connection": "close",
-        "content-length": "323",
+        "content-length": "351",
         "content-type": "application/json",
         "host": "timer.automate.globus.org",
         "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
@@ -51,6 +51,7 @@ test('create', async () => {
           "body": {
             "DATA": [
               {
+                "DATA_TYPE": "transfer_item",
                 "destination_path": "/~/godata",
                 "recursive": true,
                 "source_path": "/share/godata",
