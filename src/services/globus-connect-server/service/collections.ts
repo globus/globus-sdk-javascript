@@ -1,7 +1,6 @@
-import type { operations } from '@globus/types/gcs-manager/api';
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 
-import type { GCSServiceMethod, GCSServiceMethodDynamicSegments } from '../index';
+import type { OpenAPI, GCSServiceMethod, GCSServiceMethodDynamicSegments } from '../index';
 
 import type { JSONFetchResponse } from '../../types';
 
@@ -14,7 +13,7 @@ export const getAll = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations['listCollections']['responses']['200']['content']['application/json']
+    OpenAPI.operations['listCollections']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -27,7 +26,7 @@ export const getAll = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethod<{
-  query?: operations['listCollections']['parameters']['query'];
+  query?: OpenAPI.operations['listCollections']['parameters']['query'];
 }>;
 
 /**
@@ -39,7 +38,9 @@ export const get = function (
   options?,
   sdkOptions?,
 ): Promise<
-  JSONFetchResponse<operations['getCollection']['responses']['200']['content']['application/json']>
+  JSONFetchResponse<
+    OpenAPI.operations['getCollection']['responses']['200']['content']['application/json']
+  >
 > {
   return serviceRequest(
     {
@@ -51,9 +52,9 @@ export const get = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations['getCollection']['parameters']['path']['collection_id'],
+  OpenAPI.operations['getCollection']['parameters']['path']['collection_id'],
   {
-    query?: operations['getCollection']['parameters']['query'];
+    query?: OpenAPI.operations['getCollection']['parameters']['query'];
   }
 >;
 
@@ -67,7 +68,7 @@ export const remove = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations['deleteCollection']['responses']['200']['content']['application/json']
+    OpenAPI.operations['deleteCollection']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -81,7 +82,7 @@ export const remove = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations['deleteCollection']['parameters']['path']['collection_id'],
+  OpenAPI.operations['deleteCollection']['parameters']['path']['collection_id'],
   {
     query?: never;
     payload?: never;
@@ -96,7 +97,9 @@ export const create = function (
   options,
   sdkOptions?,
 ): Promise<
-  JSONFetchResponse<operations['postCollection']['responses']['201']['content']['application/json']>
+  JSONFetchResponse<
+    OpenAPI.operations['postCollection']['responses']['201']['content']['application/json']
+  >
 > {
   return serviceRequest(
     {
@@ -109,7 +112,7 @@ export const create = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethod<{
-  payload: operations['postCollection']['requestBody']['content']['application/json'];
+  payload: OpenAPI.operations['postCollection']['requestBody']['content']['application/json'];
 }>;
 
 /**
@@ -121,7 +124,9 @@ export const update = function (
   options,
   sdkOptions?,
 ): Promise<
-  JSONFetchResponse<operations['putCollection']['responses']['200']['content']['application/json']>
+  JSONFetchResponse<
+    OpenAPI.operations['putCollection']['responses']['200']['content']['application/json']
+  >
 > {
   return serviceRequest(
     {
@@ -134,9 +139,9 @@ export const update = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations['putCollection']['parameters']['path']['collection_id'],
+  OpenAPI.operations['putCollection']['parameters']['path']['collection_id'],
   {
-    payload: operations['putCollection']['requestBody']['content']['application/json'];
+    payload: OpenAPI.operations['putCollection']['requestBody']['content']['application/json'];
   }
 >;
 
@@ -150,7 +155,7 @@ export const patch = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations['patchCollection']['responses']['200']['content']['application/json']
+    OpenAPI.operations['patchCollection']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -164,9 +169,11 @@ export const patch = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations['patchCollection']['parameters']['path']['collection_id'],
+  OpenAPI.operations['patchCollection']['parameters']['path']['collection_id'],
   {
-    payload: Partial<operations['patchCollection']['requestBody']['content']['application/json']>;
+    payload: Partial<
+      OpenAPI.operations['patchCollection']['requestBody']['content']['application/json']
+    >;
   }
 >;
 
@@ -180,7 +187,7 @@ export const updateOwnerString = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations['putCollectionOwnerString']['responses']['200']['content']['application/json']
+    OpenAPI.operations['putCollectionOwnerString']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -194,10 +201,10 @@ export const updateOwnerString = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations['putCollectionOwnerString']['parameters']['path']['collection_id'],
+  OpenAPI.operations['putCollectionOwnerString']['parameters']['path']['collection_id'],
   {
     payload: Partial<
-      operations['putCollectionOwnerString']['requestBody']['content']['application/json']
+      OpenAPI.operations['putCollectionOwnerString']['requestBody']['content']['application/json']
     >;
   }
 >;
@@ -212,7 +219,7 @@ export const resetOwnerString = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations['deleteCollectionOwnerString']['responses']['200']['content']['application/json']
+    OpenAPI.operations['deleteCollectionOwnerString']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -226,6 +233,6 @@ export const resetOwnerString = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations['deleteCollectionOwnerString']['parameters']['path']['collection_id'],
+  OpenAPI.operations['deleteCollectionOwnerString']['parameters']['path']['collection_id'],
   {}
 >;
