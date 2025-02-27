@@ -2,3 +2,6 @@ dist/
 coverage/
 docs/
 node_modules/
+
+# Auto-generated TypeScript files
+src/open-api/types

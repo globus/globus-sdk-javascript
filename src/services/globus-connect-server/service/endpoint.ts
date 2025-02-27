@@ -1,7 +1,6 @@
-import type { operations } from '@globus/types/gcs-manager/api';
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 
-import type { GCSServiceMethod } from '../index';
+import type { OpenAPI, GCSServiceMethod } from '../index';
 import type { JSONFetchResponse } from '../../types';
 
 /**
@@ -12,7 +11,9 @@ export const get = function (
   options?,
   sdkOptions?,
 ): Promise<
-  JSONFetchResponse<operations['getEndpoint']['responses']['200']['content']['application/json']>
+  JSONFetchResponse<
+    OpenAPI.operations['getEndpoint']['responses']['200']['content']['application/json']
+  >
 > {
   return serviceRequest(
     {
@@ -36,7 +37,9 @@ export const update = function (
   options?,
   sdkOptions?,
 ): Promise<
-  JSONFetchResponse<operations['putEndpoint']['responses']['200']['content']['application/json']>
+  JSONFetchResponse<
+    OpenAPI.operations['putEndpoint']['responses']['200']['content']['application/json']
+  >
 > {
   return serviceRequest(
     {
@@ -49,7 +52,7 @@ export const update = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethod<{
-  payload: operations['putEndpoint']['requestBody']['content']['application/json'];
+  payload: OpenAPI.operations['putEndpoint']['requestBody']['content']['application/json'];
 }>;
 
 /**
@@ -60,7 +63,9 @@ export const patch = function (
   options?,
   sdkOptions?,
 ): Promise<
-  JSONFetchResponse<operations['patchEndpoint']['responses']['200']['content']['application/json']>
+  JSONFetchResponse<
+    OpenAPI.operations['patchEndpoint']['responses']['200']['content']['application/json']
+  >
 > {
   return serviceRequest(
     {
@@ -80,7 +85,7 @@ export const patch = function (
    * when the auotgenerated types are corrected.
    */
   payload:
-    | operations['patchEndpoint']['requestBody']['content']['application/json']
+    | OpenAPI.operations['patchEndpoint']['requestBody']['content']['application/json']
     | Record<string, unknown>;
 }>;
 
@@ -93,7 +98,7 @@ export const updateSubscriptionId = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations['putEndpointSubscriptionId']['responses']['200']['content']['application/json']
+    OpenAPI.operations['putEndpointSubscriptionId']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -107,7 +112,7 @@ export const updateSubscriptionId = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethod<{
-  payload: operations['putEndpointSubscriptionId']['requestBody']['content']['application/json'];
+  payload: OpenAPI.operations['putEndpointSubscriptionId']['requestBody']['content']['application/json'];
 }>;
 
 /**
@@ -119,7 +124,7 @@ export const updateOwner = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations['putEndpointOwner']['responses']['200']['content']['application/json']
+    OpenAPI.operations['putEndpointOwner']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -133,7 +138,7 @@ export const updateOwner = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethod<{
-  payload: operations['putEndpointOwner']['requestBody']['content']['application/json'];
+  payload: OpenAPI.operations['putEndpointOwner']['requestBody']['content']['application/json'];
 }>;
 
 /**
@@ -145,7 +150,7 @@ export const updateOwnerString = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations['putEndpointOwnerString']['responses']['200']['content']['application/json']
+    OpenAPI.operations['putEndpointOwnerString']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -159,7 +164,7 @@ export const updateOwnerString = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethod<{
-  payload: operations['putEndpointOwnerString']['requestBody']['content']['application/json'];
+  payload: OpenAPI.operations['putEndpointOwnerString']['requestBody']['content']['application/json'];
 }>;
 
 /**
@@ -171,7 +176,7 @@ export const resetOwnerString = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations['deleteEndpointOwnerString']['responses']['200']['content']['application/json']
+    OpenAPI.operations['deleteEndpointOwnerString']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(

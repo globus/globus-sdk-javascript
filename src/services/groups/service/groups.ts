@@ -1,6 +1,7 @@
-import type { operations, components } from '@globus/types/groups';
 import { ID, SCOPES } from '../config.js';
 import { serviceRequest } from '../../shared.js';
+
+import type { OpenAPI } from '../index.js';
 
 import type {
   JSONFetchResponse,
@@ -16,7 +17,7 @@ export const getMyGroups = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations['get_my_groups_and_memberships_v2_groups_my_groups_get']['responses']['200']['content']['application/json']
+    OpenAPI.operations['get_my_groups_and_memberships_v2_groups_my_groups_get']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -33,7 +34,7 @@ export const getMyGroups = function (
     /**
      * @todo This should probably be replaced with a more specific type for the method's accepted query parameters once available.
      */
-    statuses?: components['schemas']['StatusEnum'][];
+    statuses?: OpenAPI.components['schemas']['StatusEnum'][];
   };
 }>;
 
@@ -46,7 +47,7 @@ export const get = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations['get_group_v2_groups__group_id__get']['responses']['200']['content']['application/json']
+    OpenAPI.operations['get_group_v2_groups__group_id__get']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -59,8 +60,8 @@ export const get = function (
     sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
-  operations['get_group_v2_groups__group_id__get']['parameters']['path']['group_id'],
+  OpenAPI.operations['get_group_v2_groups__group_id__get']['parameters']['path']['group_id'],
   {
-    query?: operations['get_group_v2_groups__group_id__get']['parameters']['query'];
+    query?: OpenAPI.operations['get_group_v2_groups__group_id__get']['parameters']['query'];
   }
 >;

@@ -1,10 +1,8 @@
-import type { operations } from '@globus/types/gcs-manager/api';
 import { HTTP_METHODS, serviceRequest } from '../../../services/shared.js';
 
-import type { GCSServiceMethod, GCSServiceMethodDynamicSegments } from '../index';
+import type { OpenAPI, GCSServiceMethod, GCSServiceMethodDynamicSegments } from '../index';
 
 import type { JSONFetchResponse } from '../../types';
-
 /**
  * @see https://docs.globus.org/globus-connect-server/v5.4/api/openapi_Storage_Gateways/#listStorageGateways
  */
@@ -14,7 +12,7 @@ export const getAll = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations['listStorageGateways']['responses']['200']['content']['application/json']
+    OpenAPI.operations['listStorageGateways']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -27,7 +25,7 @@ export const getAll = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethod<{
-  query?: operations['listStorageGateways']['parameters']['query'];
+  query?: OpenAPI.operations['listStorageGateways']['parameters']['query'];
 }>;
 
 /**
@@ -40,7 +38,7 @@ export const get = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations['getStorageGateway']['responses']['200']['content']['application/json']
+    OpenAPI.operations['getStorageGateway']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -53,9 +51,9 @@ export const get = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations['getStorageGateway']['parameters']['path']['storage_gateway_id'],
+  OpenAPI.operations['getStorageGateway']['parameters']['path']['storage_gateway_id'],
   {
-    query?: operations['getStorageGateway']['parameters']['query'];
+    query?: OpenAPI.operations['getStorageGateway']['parameters']['query'];
   }
 >;
 
@@ -69,7 +67,7 @@ export const remove = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations['deleteStorageGateway']['responses']['200']['content']['application/json']
+    OpenAPI.operations['deleteStorageGateway']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -83,7 +81,7 @@ export const remove = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations['deleteStorageGateway']['parameters']['path']['storage_gateway_id'],
+  OpenAPI.operations['deleteStorageGateway']['parameters']['path']['storage_gateway_id'],
   {
     query?: never;
     payload?: never;
@@ -99,7 +97,7 @@ export const create = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations['postStorageGateway']['responses']['201']['content']['application/json']
+    OpenAPI.operations['postStorageGateway']['responses']['201']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -113,7 +111,7 @@ export const create = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethod<{
-  payload: operations['postStorageGateway']['requestBody']['content']['application/json'];
+  payload: OpenAPI.operations['postStorageGateway']['requestBody']['content']['application/json'];
 }>;
 
 /**
@@ -126,7 +124,7 @@ export const update = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations['putStorageGateway']['responses']['200']['content']['application/json']
+    OpenAPI.operations['putStorageGateway']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -140,9 +138,9 @@ export const update = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations['putStorageGateway']['parameters']['path']['storage_gateway_id'],
+  OpenAPI.operations['putStorageGateway']['parameters']['path']['storage_gateway_id'],
   {
-    payload: operations['putStorageGateway']['requestBody']['content']['application/json'];
+    payload: OpenAPI.operations['putStorageGateway']['requestBody']['content']['application/json'];
   }
 >;
 
@@ -156,7 +154,7 @@ export const patch = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations['patchStorageGateway']['responses']['200']['content']['application/json']
+    OpenAPI.operations['patchStorageGateway']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -170,10 +168,10 @@ export const patch = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations['patchStorageGateway']['parameters']['path']['storage_gateway_id'],
+  OpenAPI.operations['patchStorageGateway']['parameters']['path']['storage_gateway_id'],
   {
     payload: Partial<
-      operations['patchStorageGateway']['requestBody']['content']['application/json']
+      OpenAPI.operations['patchStorageGateway']['requestBody']['content']['application/json']
     >;
   }
 >;

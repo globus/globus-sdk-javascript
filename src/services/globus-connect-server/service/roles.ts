@@ -1,11 +1,8 @@
-import type { operations } from '@globus/types/gcs-manager/api';
-
 import { HTTP_METHODS, serviceRequest } from '../../../services/shared.js';
 
-import type { GCSServiceMethod, GCSServiceMethodDynamicSegments } from '../index';
+import type { OpenAPI, GCSServiceMethod, GCSServiceMethodDynamicSegments } from '../index';
 
 import type { JSONFetchResponse } from '../../types';
-
 /**
  * @see https://docs.globus.org/globus-connect-server/v5.4/api/openapi_Roles/#listRoles
  */
@@ -14,7 +11,9 @@ export const getAll = function (
   options?,
   sdkOptions?,
 ): Promise<
-  JSONFetchResponse<operations['listRoles']['responses']['200']['content']['application/json']>
+  JSONFetchResponse<
+    OpenAPI.operations['listRoles']['responses']['200']['content']['application/json']
+  >
 > {
   return serviceRequest(
     {
@@ -26,7 +25,7 @@ export const getAll = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethod<{
-  query?: operations['listRoles']['parameters']['query'];
+  query?: OpenAPI.operations['listRoles']['parameters']['query'];
 }>;
 
 /**
@@ -38,7 +37,9 @@ export const get = function (
   options?,
   sdkOptions?,
 ): Promise<
-  JSONFetchResponse<operations['getRole']['responses']['200']['content']['application/json']>
+  JSONFetchResponse<
+    OpenAPI.operations['getRole']['responses']['200']['content']['application/json']
+  >
 > {
   return serviceRequest(
     {
@@ -50,7 +51,7 @@ export const get = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations['getRole']['parameters']['path']['role_id'],
+  OpenAPI.operations['getRole']['parameters']['path']['role_id'],
   {
     query?: never;
     payload?: never;
@@ -66,7 +67,9 @@ export const remove = function (
   options?,
   sdkOptions?,
 ): Promise<
-  JSONFetchResponse<operations['deleteRole']['responses']['200']['content']['application/json']>
+  JSONFetchResponse<
+    OpenAPI.operations['deleteRole']['responses']['200']['content']['application/json']
+  >
 > {
   return serviceRequest(
     {
@@ -79,7 +82,7 @@ export const remove = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations['deleteRole']['parameters']['path']['role_id'],
+  OpenAPI.operations['deleteRole']['parameters']['path']['role_id'],
   {
     query?: never;
     payload?: never;
@@ -94,7 +97,9 @@ export const create = function (
   options,
   sdkOptions?,
 ): Promise<
-  JSONFetchResponse<operations['postRoles']['responses']['200']['content']['application/json']>
+  JSONFetchResponse<
+    OpenAPI.operations['postRoles']['responses']['200']['content']['application/json']
+  >
 > {
   return serviceRequest(
     {
@@ -107,5 +112,5 @@ export const create = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethod<{
-  payload: operations['postRoles']['requestBody']['content']['application/json'];
+  payload: OpenAPI.operations['postRoles']['requestBody']['content']['application/json'];
 }>;
