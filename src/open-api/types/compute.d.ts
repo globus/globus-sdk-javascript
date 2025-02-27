@@ -771,7 +771,7 @@ export interface components {
              * @description Whether the user endpoint is active
              * @default true
              */
-            active: boolean;
+            active?: boolean;
             /**
              * Python Version
              * @description User endpoint Python version
@@ -1816,7 +1816,7 @@ export interface components {
              * @description Public function
              * @default false
              */
-            public: boolean;
+            public?: boolean;
         };
         /**
          * RegisterFunctionResponse
@@ -2136,7 +2136,7 @@ export interface components {
              * @description Endpoint multi-user mode
              * @default false
              */
-            multi_user: boolean;
+            multi_user?: boolean;
             /**
              * Allowed Functions
              * @description Functions that are allowed to be run on the endpoint
@@ -2181,7 +2181,7 @@ export interface components {
              * @description Create websocket queue
              * @default true
              */
-            create_websocket_queue: boolean;
+            create_websocket_queue?: boolean;
             /**
              * Tasks
              * @description List of tasks to invoke, each referencing function and endpoint UUIDs.
@@ -2298,13 +2298,13 @@ export interface components {
              * @description Endpoint multi-user mode
              * @default false
              */
-            multi_user: boolean;
+            multi_user?: boolean;
             /**
              * High Assurance
              * @description Endpoint supports high-assurance protocols
              * @default false
              */
-            high_assurance: boolean;
+            high_assurance?: boolean;
             /**
              * Allowed Functions
              * @description Functions that are allowed to be run on the endpoint
@@ -2327,7 +2327,7 @@ export interface components {
              * @description Indicates if all users can discover the multi-user endpoint. Please note that this field does not control access to the endpoint, so it should not be used as a security feature.
              * @default false
              */
-            public: boolean;
+            public?: boolean;
             /**
              * Metadata
              * @description Endpoint metadata
@@ -2385,7 +2385,7 @@ export interface components {
              * @description If `true`, create a Task Group specific AMQP queue for the results.  In addition to the usual longer-term storage, results will also be copied to this AMQP queue, enabling consumers to get event-driven (instant) results.  (See the [Globus Compute SDK Executor](https://globus-compute.readthedocs.io/en/stable/executor.html) for an implementation that uses this feature.)
              * @default false
              */
-            create_queue: boolean;
+            create_queue?: boolean;
             /**
              * Tasks
              * @description Lists of serialized task arguments (strings), grouped by function identifiers

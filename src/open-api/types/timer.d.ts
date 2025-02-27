@@ -180,7 +180,7 @@ export interface components {
              * @default iterations
              * @enum {string}
              */
-            condition: "iterations";
+            condition?: "iterations";
             /** Count */
             count: number;
         };
@@ -194,7 +194,7 @@ export interface components {
              * @default time
              * @enum {string}
              */
-            condition: "time";
+            condition?: "time";
             /**
              * Datetime
              * Format: date-time
@@ -208,7 +208,7 @@ export interface components {
              * @default filter_rule
              * @enum {string}
              */
-            DATA_TYPE: "filter_rule";
+            DATA_TYPE?: "filter_rule";
             /** Name */
             name: string;
             /**
@@ -216,7 +216,7 @@ export interface components {
              * @default exclude
              * @enum {string}
              */
-            method: "include" | "exclude";
+            method?: "include" | "exclude";
             /**
              * Type
              * @enum {string}
@@ -446,7 +446,7 @@ export interface components {
              * @default transfer
              * @enum {string}
              */
-            DATA_TYPE: "transfer";
+            DATA_TYPE?: "transfer";
             /** Source Endpoint */
             source_endpoint: string;
             /** Destination Endpoint */
@@ -459,19 +459,19 @@ export interface components {
              * Delete Destination Extra
              * @default false
              */
-            delete_destination_extra: boolean;
+            delete_destination_extra?: boolean;
             /** Destination Local User */
             destination_local_user?: string;
             /**
              * Encrypt Data
              * @default false
              */
-            encrypt_data: boolean;
+            encrypt_data?: boolean;
             /**
              * Fail On Quota Errors
              * @default false
              */
-            fail_on_quota_errors: boolean;
+            fail_on_quota_errors?: boolean;
             /** Filter Rules */
             filter_rules?: components["schemas"]["FilterRule"][];
             /** Label */
@@ -480,34 +480,34 @@ export interface components {
              * Notify On Failed
              * @default true
              */
-            notify_on_failed: boolean;
+            notify_on_failed?: boolean;
             /**
              * Notify On Inactive
              * @default true
              */
-            notify_on_inactive: boolean;
+            notify_on_inactive?: boolean;
             /**
              * Notify On Succeeded
              * @default true
              */
-            notify_on_succeeded: boolean;
+            notify_on_succeeded?: boolean;
             /**
              * Preserve Timestamp
              * @default false
              */
-            preserve_timestamp: boolean;
+            preserve_timestamp?: boolean;
             /**
              * Skip Source Errors
              * @default false
              */
-            skip_source_errors: boolean;
+            skip_source_errors?: boolean;
             /** Source Local User */
             source_local_user?: string;
             /**
              * Store Base Path Info
              * @default false
              */
-            store_base_path_info: boolean;
+            store_base_path_info?: boolean;
             /**
              * Sync Level
              * @enum {integer}
@@ -517,7 +517,7 @@ export interface components {
              * Verify Checksum
              * @default false
              */
-            verify_checksum: boolean;
+            verify_checksum?: boolean;
         };
         /** TransferTaskItem */
         TransferTaskItem: {
@@ -526,7 +526,7 @@ export interface components {
              * @default transfer_item
              * @enum {string}
              */
-            DATA_TYPE: "transfer_item";
+            DATA_TYPE?: "transfer_item";
             /** Source Path */
             source_path: string;
             /** Destination Path */
@@ -562,7 +562,7 @@ export interface components {
              * @default transfer.api.globus.org
              * @enum {string}
              */
-            resource_server: "transfer.api.globus.org";
+            resource_server?: "transfer.api.globus.org";
             body: components["schemas"]["TransferTaskDocument"];
         };
         /** V2TransferTimerRead */
@@ -603,7 +603,7 @@ export interface components {
              * @default transfer
              * @enum {string}
              */
-            timer_type: "transfer";
+            timer_type?: "transfer";
             body: components["schemas"]["TransferTaskDocument"];
         };
         /** ValidationError */

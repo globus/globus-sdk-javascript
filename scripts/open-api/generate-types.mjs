@@ -28,6 +28,7 @@ function generate() {
   SCHEMAS.forEach(async (schema) => {
     const ast = await openapiTS(new URL(schema.url), {
       emptyObjectsUnknown: true,
+      defaultNonNullable: false,
     });
     const contents = astToString(ast);
     fs.writeFileSync(schema.filename, contents);

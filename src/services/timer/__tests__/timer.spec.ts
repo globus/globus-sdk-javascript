@@ -17,6 +17,7 @@ test('create', async () => {
           DATA_TYPE: 'transfer',
           DATA: [
             {
+              DATA_TYPE: 'transfer_item',
               source_path: '/share/godata',
               destination_path: '/~/godata',
               recursive: true,
