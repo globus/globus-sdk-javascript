@@ -1,6 +1,6 @@
 import { storageGateways } from '..';
 
-import type { MirroredRequest } from '../../../__mocks__/handlers';
+import { mirror } from '../../../__mocks__/handlers';
 
 const GCS_HOST = 'https://fa5e.bd7c.data.globus.org';
 const GCS_CONFIGURATION = {
@@ -10,12 +10,13 @@ const GCS_CONFIGURATION = {
 
 describe('gcs – storageGateways', () => {
   test('getAll', async () => {
-    const result = await storageGateways.getAll(GCS_CONFIGURATION, {
-      query: { include: ['accounts', 'private_policies'] },
-    });
     const {
       req: { url, method, headers },
-    } = (await result.json()) as unknown as MirroredRequest;
+    } = await mirror(
+      await storageGateways.getAll(GCS_CONFIGURATION, {
+        query: { include: ['accounts', 'private_policies'] },
+      }),
+    );
     expect({
       url,
       method,
@@ -36,10 +37,9 @@ describe('gcs – storageGateways', () => {
   });
 
   test('get', async () => {
-    const result = await storageGateways.get(GCS_CONFIGURATION, 'some-uuid');
     const {
       req: { url, method, headers },
-    } = (await result.json()) as unknown as MirroredRequest;
+    } = await mirror(await storageGateways.get(GCS_CONFIGURATION, 'some-uuid'));
     expect({
       url,
       method,
@@ -60,14 +60,15 @@ describe('gcs – storageGateways', () => {
   });
 
   test('remove', async () => {
-    const result = await storageGateways.remove(GCS_CONFIGURATION, 'some-uuid', {
-      headers: {
-        Authorization: 'some-token',
-      },
-    });
     const {
       req: { url, method, headers },
-    } = (await result.json()) as unknown as MirroredRequest;
+    } = await mirror(
+      await storageGateways.remove(GCS_CONFIGURATION, 'some-uuid', {
+        headers: {
+          Authorization: 'some-token',
+        },
+      }),
+    );
     expect({
       url,
       method,
@@ -89,21 +90,24 @@ describe('gcs – storageGateways', () => {
   });
 
   test('create', async () => {
-    const result = await storageGateways.create(GCS_CONFIGURATION, {
-      headers: {
-        Authorization: 'Bearer an-example-token',
-      },
-      payload: {
-        DATA_TYPE: 'storage_gateway#1.2.0',
-        high_assurance: false,
-        allowed_domains: ['example.com'],
-        display_name: 'some name',
-        connector_id: 'some-connector-id',
-      },
-    });
     const {
       req: { url, method, headers, json },
-    } = (await result.json()) as unknown as MirroredRequest;
+    } = await mirror(
+      await storageGateways.create(GCS_CONFIGURATION, {
+        headers: {
+          Authorization: 'Bearer an-example-token',
+        },
+        payload: {
+          DATA_TYPE: 'storage_gateway#1.2.0',
+          admin_managed_credentials: false,
+          require_mfa: false,
+          high_assurance: false,
+          allowed_domains: ['example.com'],
+          display_name: 'some name',
+          connector_id: 'some-connector-id',
+        },
+      }),
+    );
     expect({
       url,
       method,
@@ -116,19 +120,21 @@ describe('gcs – storageGateways', () => {
           "accept-encoding": "gzip,deflate",
           "authorization": "Bearer an-example-token",
           "connection": "close",
-          "content-length": "156",
+          "content-length": "210",
           "content-type": "application/json",
           "host": "fa5e.bd7c.data.globus.org",
           "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
         },
         "json": {
           "DATA_TYPE": "storage_gateway#1.2.0",
+          "admin_managed_credentials": false,
           "allowed_domains": [
             "example.com",
           ],
           "connector_id": "some-connector-id",
           "display_name": "some name",
           "high_assurance": false,
+          "require_mfa": false,
         },
         "method": "POST",
         "url": "https://fa5e.bd7c.data.globus.org/api/storage_gateways",
@@ -137,21 +143,24 @@ describe('gcs – storageGateways', () => {
   });
 
   test('update', async () => {
-    const result = await storageGateways.update(GCS_CONFIGURATION, 'some-uuid', {
-      headers: {
-        Authorization: 'Bearer an-example-token',
-      },
-      payload: {
-        DATA_TYPE: 'storage_gateway#1.2.0',
-        allowed_domains: ['example.com'],
-        connector_id: 'some-connector-id',
-        display_name: 'some updated name',
-        high_assurance: false,
-      },
-    });
     const {
       req: { url, method, headers, json },
-    } = (await result.json()) as unknown as MirroredRequest;
+    } = await mirror(
+      await storageGateways.update(GCS_CONFIGURATION, 'some-uuid', {
+        headers: {
+          Authorization: 'Bearer an-example-token',
+        },
+        payload: {
+          DATA_TYPE: 'storage_gateway#1.2.0',
+          admin_managed_credentials: false,
+          allowed_domains: ['example.com'],
+          connector_id: 'some-connector-id',
+          display_name: 'some updated name',
+          high_assurance: false,
+          require_mfa: false,
+        },
+      }),
+    );
     expect({
       url,
       method,
@@ -164,19 +173,21 @@ describe('gcs – storageGateways', () => {
           "accept-encoding": "gzip,deflate",
           "authorization": "Bearer an-example-token",
           "connection": "close",
-          "content-length": "164",
+          "content-length": "218",
           "content-type": "application/json",
           "host": "fa5e.bd7c.data.globus.org",
           "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
         },
         "json": {
           "DATA_TYPE": "storage_gateway#1.2.0",
+          "admin_managed_credentials": false,
           "allowed_domains": [
             "example.com",
           ],
           "connector_id": "some-connector-id",
           "display_name": "some updated name",
           "high_assurance": false,
+          "require_mfa": false,
         },
         "method": "PUT",
         "url": "https://fa5e.bd7c.data.globus.org/api/storage_gateways/some-uuid",
@@ -185,17 +196,18 @@ describe('gcs – storageGateways', () => {
   });
 
   test('patch', async () => {
-    const result = await storageGateways.patch(GCS_CONFIGURATION, 'some-uuid', {
-      headers: {
-        Authorization: 'Bearer an-example-token',
-      },
-      payload: {
-        display_name: 'some patched name',
-      },
-    });
     const {
       req: { url, method, headers, json },
-    } = (await result.json()) as unknown as MirroredRequest;
+    } = await mirror(
+      await storageGateways.patch(GCS_CONFIGURATION, 'some-uuid', {
+        headers: {
+          Authorization: 'Bearer an-example-token',
+        },
+        payload: {
+          display_name: 'some patched name',
+        },
+      }),
+    );
     expect({
       url,
       method,

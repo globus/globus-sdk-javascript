@@ -67,7 +67,7 @@ export const handlers = [
 
 /**
  * When `msw` is used in a test, the `mirror` method can be used
- * on the Response of a `fetch` to provide prope type information.
+ * on the Response of a `fetch` to provide proper type information.
  *
  * @param response The `Response` object from a `fetch` call that `msw` intercepted.
  */

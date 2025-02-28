@@ -1,18 +1,19 @@
 import { endpoint } from '..';
 
-import type { MirroredRequest } from '../../../__mocks__/handlers';
+import { mirror } from '../../../__mocks__/handlers';
 
 const GCS_HOST = 'https://fa5e.bd7c.data.globus.org';
 
 describe('gcs – endpoint', () => {
   test('get', async () => {
-    const result = await endpoint.get({
-      host: GCS_HOST,
-      endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
-    });
     const {
       req: { url, method, headers },
-    } = (await result.json()) as unknown as MirroredRequest;
+    } = await mirror(
+      await endpoint.get({
+        host: GCS_HOST,
+        endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
+      }),
+    );
     expect({
       url,
       method,
@@ -33,21 +34,24 @@ describe('gcs – endpoint', () => {
   });
 
   test('update', async () => {
-    const result = await endpoint.update(
-      {
-        host: GCS_HOST,
-        endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
-      },
-      {
-        payload: {
-          DATA_TYPE: 'endpoint#1.0.0',
-          display_name: 'My First Endpoint',
-        },
-      },
-    );
     const {
       req: { url, method, headers, json },
-    } = (await result.json()) as unknown as MirroredRequest;
+    } = await mirror(
+      await endpoint.update(
+        {
+          host: GCS_HOST,
+          endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
+        },
+        {
+          payload: {
+            DATA_TYPE: 'endpoint#1.0.0',
+            display_name: 'My First Endpoint',
+            network_use: 'normal',
+            public: true,
+          },
+        },
+      ),
+    );
     expect({
       url,
       method,
@@ -59,7 +63,7 @@ describe('gcs – endpoint', () => {
           "accept": "*/*",
           "accept-encoding": "gzip,deflate",
           "connection": "close",
-          "content-length": "65",
+          "content-length": "102",
           "content-type": "application/json",
           "host": "fa5e.bd7c.data.globus.org",
           "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
@@ -67,6 +71,8 @@ describe('gcs – endpoint', () => {
         "json": {
           "DATA_TYPE": "endpoint#1.0.0",
           "display_name": "My First Endpoint",
+          "network_use": "normal",
+          "public": true,
         },
         "method": "PUT",
         "url": "https://fa5e.bd7c.data.globus.org/api/endpoint",
@@ -75,20 +81,21 @@ describe('gcs – endpoint', () => {
   });
 
   test('patch', async () => {
-    const result = await endpoint.patch(
-      {
-        host: GCS_HOST,
-        endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
-      },
-      {
-        payload: {
-          public: true,
-        },
-      },
-    );
     const {
       req: { url, method, headers, json },
-    } = (await result.json()) as unknown as MirroredRequest;
+    } = await mirror(
+      await endpoint.patch(
+        {
+          host: GCS_HOST,
+          endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
+        },
+        {
+          payload: {
+            public: true,
+          },
+        },
+      ),
+    );
     expect({
       url,
       method,
@@ -115,21 +122,22 @@ describe('gcs – endpoint', () => {
   });
 
   test('updateSubscriptionId', async () => {
-    const result = await endpoint.updateSubscriptionId(
-      {
-        host: GCS_HOST,
-        endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
-      },
-      {
-        payload: {
-          DATA_TYPE: 'endpoint_subscription#1.0.0',
-          subscription_id: 'example-subscription-id',
-        },
-      },
-    );
     const {
       req: { url, method, headers, json },
-    } = (await result.json()) as unknown as MirroredRequest;
+    } = await mirror(
+      await endpoint.updateSubscriptionId(
+        {
+          host: GCS_HOST,
+          endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
+        },
+        {
+          payload: {
+            DATA_TYPE: 'endpoint_subscription#1.0.0',
+            subscription_id: 'example-subscription-id',
+          },
+        },
+      ),
+    );
     expect({
       url,
       method,
@@ -157,21 +165,22 @@ describe('gcs – endpoint', () => {
   });
 
   test('updateOwnerString', async () => {
-    const result = await endpoint.updateOwnerString(
-      {
-        host: GCS_HOST,
-        endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
-      },
-      {
-        payload: {
-          DATA_TYPE: 'owner_string#1.0.0',
-          identity_id: 'example-identity-id',
-        },
-      },
-    );
     const {
       req: { url, method, headers, json },
-    } = (await result.json()) as unknown as MirroredRequest;
+    } = await mirror(
+      await endpoint.updateOwnerString(
+        {
+          host: GCS_HOST,
+          endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
+        },
+        {
+          payload: {
+            DATA_TYPE: 'owner_string#1.0.0',
+            identity_id: 'example-identity-id',
+          },
+        },
+      ),
+    );
     expect({
       url,
       method,
@@ -199,21 +208,22 @@ describe('gcs – endpoint', () => {
   });
 
   test('updateOwner', async () => {
-    const result = await endpoint.updateOwner(
-      {
-        host: GCS_HOST,
-        endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
-      },
-      {
-        payload: {
-          DATA_TYPE: 'endpoint_owner#1.0.0',
-          identity_id: 'example-identity-id',
-        },
-      },
-    );
     const {
       req: { url, method, headers, json },
-    } = (await result.json()) as unknown as MirroredRequest;
+    } = await mirror(
+      await endpoint.updateOwner(
+        {
+          host: GCS_HOST,
+          endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
+        },
+        {
+          payload: {
+            DATA_TYPE: 'endpoint_owner#1.0.0',
+            identity_id: 'example-identity-id',
+          },
+        },
+      ),
+    );
     expect({
       url,
       method,
@@ -241,16 +251,17 @@ describe('gcs – endpoint', () => {
   });
 
   test('resetOwnerString', async () => {
-    const result = await endpoint.resetOwnerString(
-      {
-        host: GCS_HOST,
-        endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
-      },
-      {},
-    );
     const {
       req: { url, method, headers },
-    } = (await result.json()) as unknown as MirroredRequest;
+    } = await mirror(
+      await endpoint.resetOwnerString(
+        {
+          host: GCS_HOST,
+          endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
+        },
+        {},
+      ),
+    );
     expect({
       url,
       method,
