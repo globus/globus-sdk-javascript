@@ -67,7 +67,16 @@ export function readableBytes(bytes: number, truncate = 2) {
 /**
  * Known Globus DNS domains.
  */
-const GLOBUS_DNS_DOMAINS = ['dnsteam.globuscs.info', 'data.globus.org', 'dn.glob.us'];
+export const GLOBUS_DNS_DOMAINS = ['dnsteam.globuscs.info', 'data.globus.org', 'dn.glob.us'];
+
+/**
+ * Check the given hostname to determine if it is one of the known Globus DNS domains.
+ * @param hostname The hostname to check.
+ * @returns `true` if the hostname is a known Globus DNS domain, `false` otherwise.
+ */
+export function isGlobusHostname(hostname: string): boolean {
+  return Boolean(GLOBUS_DNS_DOMAINS.find((d) => hostname.endsWith(d)));
+}
 
 /**
  * Returns DNS domain, if any, for a collection or endpoint.
@@ -87,7 +96,7 @@ export function getDomainFromEndpoint(endpoint: Record<string, unknown>) {
    * Swap the protocol to `https` so we can use the URL API to extract the hostname.
    */
   const { hostname } = new URL(tls.replace('tlsftp', 'https'));
-  const hasCustomDomain = !GLOBUS_DNS_DOMAINS.find((d) => hostname.endsWith(d));
+  const hasCustomDomain = !isGlobusHostname(hostname);
   const customDomain = hasCustomDomain && /(?:[gm]-\w{6}.)?(\w+(\.\w+)+)$/.exec(hostname)?.[1];
 
   return customDomain || hostname || null;
