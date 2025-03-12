@@ -1,4 +1,10 @@
-import { readableBytes, isDirectory, isFileDocument, getDomainFromEndpoint } from '../utils';
+import {
+  readableBytes,
+  isDirectory,
+  isFileDocument,
+  getDomainFromEndpoint,
+  isGlobusHostname,
+} from '../utils';
 
 describe('readableBytes', () => {
   it('should return the correct readable string for bytes', () => {
@@ -55,6 +61,17 @@ describe('isFileDocument', () => {
     expect(isFileDocument(FILE)).toBe(true);
     expect(isFileDocument(DIR)).toBe(true);
     expect(isFileDocument(INVALID_SYMLINK)).toBe(true);
+  });
+});
+
+describe('isGlobusHostname', () => {
+  it('should return true for valid Globus hostnames', () => {
+    expect(isGlobusHostname('collection.dn.glob.us')).toBe(true);
+    expect(isGlobusHostname('m-4d5adb.fa5e.bd7c.data.globus.org')).toBe(true);
+  });
+  it('should return false for invalid Globus hostnames', () => {
+    expect(isGlobusHostname('example.com')).toBe(false);
+    expect(isGlobusHostname('example.org')).toBe(false);
   });
 });
 
