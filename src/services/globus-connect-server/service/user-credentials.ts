@@ -1,10 +1,8 @@
-import type { operations } from '@globus/types/gcs-manager/api';
 import { HTTP_METHODS, serviceRequest } from '../../../services/shared.js';
 
-import type { GCSServiceMethod, GCSServiceMethodDynamicSegments } from '../index';
+import type { OpenAPI, GCSServiceMethod, GCSServiceMethodDynamicSegments } from '../index';
 
 import type { JSONFetchResponse } from '../../types';
-
 /**
  * @see https://docs.globus.org/globus-connect-server/v5.4/api/openapi_User_Credentials/#listUserCredentials
  */
@@ -14,7 +12,7 @@ export const getAll = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations['listUserCredentials']['responses']['200']['content']['application/json']
+    OpenAPI.operations['listUserCredentials']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -27,7 +25,7 @@ export const getAll = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethod<{
-  query?: operations['listUserCredentials']['parameters']['query'];
+  query?: OpenAPI.operations['listUserCredentials']['parameters']['query'];
 }>;
 
 /**
@@ -39,7 +37,9 @@ export const get = function (
   options?,
   sdkOptions?,
 ): Promise<
-  JSONFetchResponse<operations['getCollection']['responses']['200']['content']['application/json']>
+  JSONFetchResponse<
+    OpenAPI.operations['getCollection']['responses']['200']['content']['application/json']
+  >
 > {
   return serviceRequest(
     {
@@ -51,7 +51,7 @@ export const get = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations['getUserCredential']['parameters']['path']['user_credential_id'],
+  OpenAPI.operations['getUserCredential']['parameters']['path']['user_credential_id'],
   {
     query?: never;
     payload?: never;
@@ -68,7 +68,7 @@ export const remove = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations['deleteUserCredential']['responses']['200']['content']['application/json']
+    OpenAPI.operations['deleteUserCredential']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -82,7 +82,7 @@ export const remove = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations['deleteUserCredential']['parameters']['path']['user_credential_id'],
+  OpenAPI.operations['deleteUserCredential']['parameters']['path']['user_credential_id'],
   {
     query?: never;
     payload?: never;
@@ -98,7 +98,7 @@ export const create = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations['postUserCredential']['responses']['201']['content']['application/json']
+    OpenAPI.operations['postUserCredential']['responses']['201']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -112,7 +112,7 @@ export const create = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethod<{
-  payload: operations['postUserCredential']['requestBody']['content']['application/json'];
+  payload: OpenAPI.operations['postUserCredential']['requestBody']['content']['application/json'];
 }>;
 
 /**
@@ -125,7 +125,7 @@ export const update = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations['putUserCredential']['responses']['200']['content']['application/json']
+    OpenAPI.operations['putUserCredential']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -139,9 +139,9 @@ export const update = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations['putUserCredential']['parameters']['path']['user_credential_id'],
+  OpenAPI.operations['putUserCredential']['parameters']['path']['user_credential_id'],
   {
-    payload: operations['putUserCredential']['requestBody']['content']['application/json'];
+    payload: OpenAPI.operations['putUserCredential']['requestBody']['content']['application/json'];
   }
 >;
 
@@ -155,7 +155,7 @@ export const patch = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations['patchUserCredential']['responses']['200']['content']['application/json']
+    OpenAPI.operations['patchUserCredential']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -169,10 +169,10 @@ export const patch = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations['patchUserCredential']['parameters']['path']['user_credential_id'],
+  OpenAPI.operations['patchUserCredential']['parameters']['path']['user_credential_id'],
   {
     payload: Partial<
-      operations['patchUserCredential']['requestBody']['content']['application/json']
+      OpenAPI.operations['patchUserCredential']['requestBody']['content']['application/json']
     >;
   }
 >;
