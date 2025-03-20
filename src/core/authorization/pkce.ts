@@ -82,3 +82,25 @@ export type AuthorizationRequestParameters = {
   code_challenge: string;
   code_challenge_method: 'S256' | 'plain';
 };
+
+/**
+ * @private
+ */
+export const KEYS = {
+  PKCE_STATE: 'pkce_state',
+  PKCE_CODE_VERIFIER: 'pkce_code_verifier',
+};
+
+type Entries = 'state' | 'code_verifier';
+
+export const store = {
+  getKey(key: Entries) {
+    return key === 'state' ? KEYS.PKCE_STATE : KEYS.PKCE_CODE_VERIFIER;
+  },
+  get: (entry: Entries) => sessionStorage.getItem(store.getKey(entry)),
+  set: (entry: Entries, value: string) => sessionStorage.setItem(store.getKey(entry), value),
+  reset: () => {
+    sessionStorage.removeItem(KEYS.PKCE_STATE);
+    sessionStorage.removeItem(KEYS.PKCE_CODE_VERIFIER);
+  },
+};
