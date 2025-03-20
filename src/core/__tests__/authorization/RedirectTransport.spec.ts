@@ -2,8 +2,9 @@ import { version } from 'node:process';
 
 import { mockSessionStorage } from '../../../__mocks__/sessionStorage';
 import '../../../__mocks__/window-location';
-import { KEYS, RedirectTransport } from '../../authorization/RedirectTransport';
+import { RedirectTransport } from '../../authorization/RedirectTransport';
 import { oauth2 } from '../../../services/auth';
+import { store } from '../../authorization/pkce';
 
 const MOCK_CONFIG = {
   client: 'CLIENT_ID',
@@ -65,7 +66,7 @@ describe('RedirectTransport', () => {
       /**
        * Ensure that the state is stored in sessionStorage.
        */
-      expect(sessionStorage.getItem(KEYS.PKCE_STATE)).toBe('CUSTOM_STATE');
+      expect(store.get('state')).toBe('CUSTOM_STATE');
     });
 
     describe('getToken', () => {
@@ -93,7 +94,7 @@ describe('RedirectTransport', () => {
       });
 
       it('throws on "state" mismatch', async () => {
-        sessionStorage.setItem(KEYS.PKCE_STATE, 'ACTUAL_STATE');
+        store.set('state', 'ACTUAL_STATE');
         window.location.href = `${MOCK_CONFIG.redirect}?code=CODE&state=INVALID_STATE`;
         const transport = new RedirectTransport(MOCK_CONFIG);
         await expect(async () => {
@@ -102,7 +103,7 @@ describe('RedirectTransport', () => {
       });
 
       it('throws on missing verifier', async () => {
-        sessionStorage.setItem(KEYS.PKCE_STATE, 'ACTUAL_STATE');
+        store.set('state', 'ACTUAL_STATE');
         window.location.href = `${MOCK_CONFIG.redirect}?code=CODE&state=ACTUAL_STATE`;
         const transport = new RedirectTransport(MOCK_CONFIG);
         await expect(async () => {
@@ -119,8 +120,8 @@ describe('RedirectTransport', () => {
          * Set fake state to be used as part of the OAuth flow.
          */
         const state = 'SOME_STATE';
-        sessionStorage.setItem(KEYS.PKCE_STATE, state);
-        sessionStorage.setItem(KEYS.PKCE_CODE_VERIFIER, 'CODE_VERIFIER');
+        store.set('state', state);
+        store.set('code_verifier', 'CODE_VERIFIER');
 
         const transport = new RedirectTransport(MOCK_CONFIG);
 
@@ -140,8 +141,8 @@ describe('RedirectTransport', () => {
          * Set fake state to be used as part of the OAuth flow.
          */
         const state = 'SOME_STATE';
-        sessionStorage.setItem(KEYS.PKCE_STATE, state);
-        sessionStorage.setItem(KEYS.PKCE_CODE_VERIFIER, 'CODE_VERIFIER');
+        store.set('state', state);
+        store.set('code_verifier', 'CODE_VERIFIER');
 
         const url = `${MOCK_CONFIG.redirect}?code=CODE&state=${state}`;
         const transport = new RedirectTransport(MOCK_CONFIG);

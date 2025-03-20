@@ -10,8 +10,9 @@ import { Event } from '../../authorization/Event';
 import { TRANSFER_CONSENT_REQUIRED_ERROR, TRANSFER_GENERIC_ERROR } from '../errors.spec';
 import { TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR } from '../../../__mocks__/errors/authorization_parameters';
 import { oauth2 } from '../../../services/auth';
-import { KEYS, RedirectTransport } from '../../authorization/RedirectTransport';
+import { RedirectTransport } from '../../authorization/RedirectTransport';
 import { MemoryStorage } from '../../storage/memory';
+import { store } from '../../authorization/pkce';
 
 describe('AuthorizationManager', () => {
   beforeEach(() => {
@@ -230,8 +231,8 @@ describe('AuthorizationManager', () => {
          * Set fake state to be used as part of the OAuth flow.
          */
         const state = 'SOME_STATE';
-        sessionStorage.setItem(KEYS.PKCE_STATE, state);
-        sessionStorage.setItem(KEYS.PKCE_CODE_VERIFIER, 'CODE_VERIFIER');
+        store.set('state', state);
+        store.set('code_verifier', 'CODE_VERIFIER');
 
         const instance = new AuthorizationManager(CONFIG);
         const spy = jest.spyOn(instance.events.authenticated, 'dispatch');
@@ -503,14 +504,14 @@ describe('AuthorizationManager', () => {
     });
 
     it('does not interfere (clear) items in storage it did not set', () => {
-      const store = {
+      const state = {
         'some-entry': 'some-value',
         'client_id:auth.globus.org': JSON.stringify({ resource_server: 'auth.globus.org' }),
         'client_id:foobar': JSON.stringify({ resource_server: 'foobar' }),
         'client_id:baz': JSON.stringify({ resource_server: 'baz' }),
       };
 
-      setInitialLocalStorageState(store);
+      setInitialLocalStorageState(state);
 
       const instance = new AuthorizationManager({
         client: 'client_id',
@@ -521,14 +522,14 @@ describe('AuthorizationManager', () => {
       /**
        * Check values before `reset` to ensure they are present.
        */
-      expect(localStorage.getItem('some-entry')).toBe(store['some-entry']);
-      expect(localStorage.getItem('client_id:foobar')).toBe(store['client_id:foobar']);
-      expect(localStorage.getItem('client_id:baz')).toBe(store['client_id:baz']);
+      expect(localStorage.getItem('some-entry')).toBe(state['some-entry']);
+      expect(localStorage.getItem('client_id:foobar')).toBe(state['client_id:foobar']);
+      expect(localStorage.getItem('client_id:baz')).toBe(state['client_id:baz']);
       instance.reset();
       /**
        * Check values after `reset`...
        */
-      expect(localStorage.getItem('some-entry')).toBe(store['some-entry']);
+      expect(localStorage.getItem('some-entry')).toBe(state['some-entry']);
       expect(localStorage.getItem('client_id:foobar')).toBe(undefined);
       expect(localStorage.getItem('client_id:baz')).toBe(undefined);
     });

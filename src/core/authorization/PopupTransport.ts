@@ -6,6 +6,7 @@ import {
   AuthorizationRequestParameters,
   AuthorizationCodeExchangeParameters,
   isSupported,
+  store,
 } from './pkce.js';
 
 import type { RedirectTransportOptions } from './RedirectTransport.js';
@@ -21,19 +22,6 @@ export type GetTokenOptions = {
 export type PopupTransportOptions = RedirectTransportOptions;
 
 const MESSAGE_SOURCE = 'globus-sdk';
-
-/**
- * @private
- */
-export const KEYS = {
-  PKCE_STATE: 'pkce_state',
-  PKCE_CODE_VERIFIER: 'pkce_code_verifier',
-};
-
-function resetPKCE() {
-  sessionStorage.removeItem(KEYS.PKCE_STATE);
-  sessionStorage.removeItem(KEYS.PKCE_CODE_VERIFIER);
-}
 
 export class PopupTransport {
   #options: PopupTransportOptions;
@@ -67,8 +55,8 @@ export class PopupTransport {
      * The verifier and state are stored in session storage so that we can validate
      * the response when we receive it.
      */
-    sessionStorage.setItem(KEYS.PKCE_CODE_VERIFIER, verifier);
-    sessionStorage.setItem(KEYS.PKCE_STATE, state);
+    store.set('code_verifier', verifier);
+    store.set('state', state);
 
     const params: AuthorizationRequestParameters = {
       response_type: 'code',
@@ -133,12 +121,12 @@ export class PopupTransport {
     /**
      * Grab the PKCE information from session storage.
      */
-    const state = sessionStorage.getItem(KEYS.PKCE_STATE);
-    const verifier = sessionStorage.getItem(KEYS.PKCE_CODE_VERIFIER);
+    const state = store.get('state');
+    const verifier = store.get('code_verifier');
     /**
      * Now that we have the values in memory, we can remove them from session storage.
      */
-    resetPKCE();
+    store.reset();
 
     /**
      * Validate the `state` parameter matches the preserved state (to prevent CSRF attacks).
@@ -175,7 +163,8 @@ export class PopupTransport {
     return response;
   }
 
-  static getToken() {
+  // eslint-disable-next-line class-methods-use-this
+  getToken() {
     if (!window.opener) {
       return;
     }
