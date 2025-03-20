@@ -28,11 +28,11 @@ import type {
   TokenWithRefresh,
 } from '../../services/auth/types.js';
 import { MemoryStorage } from '../storage/memory.js';
-// import { PopupTransport } from './PopupTransport.js';
+import { PopupTransport } from './PopupTransport.js';
 
 const TRANSPORTS = {
   redirect: RedirectTransport,
-  // popup: PopupTransport,
+  popup: PopupTransport,
 };
 
 export type AuthorizationManagerConfiguration = {
@@ -117,7 +117,7 @@ const DEFAULT_HANDLE_ERROR_OPTIONS = {
  * });
  */
 export class AuthorizationManager {
-  #transport!: RedirectTransport;
+  #transport!: RedirectTransport | PopupTransport;
 
   configuration: AuthorizationManagerConfiguration;
 
@@ -386,7 +386,11 @@ export class AuthorizationManager {
      * In the future, it's possible that we may want to support different types of transports.
      */
     const transport = this.#buildTransport({ params: options?.additionalParams });
-    await transport.send();
+    const result = await transport.send();
+    if (isGlobusAuthTokenResponse(result)) {
+      this.addTokenResponse(result);
+    }
+    return result;
   }
 
   /**
@@ -395,7 +399,11 @@ export class AuthorizationManager {
   async prompt(options?: Partial<RedirectTransportOptions>) {
     log('debug', 'AuthorizationManager.prompt');
     const transport = this.#buildTransport(options);
-    await transport.send();
+    const result = await transport.send();
+    if (isGlobusAuthTokenResponse(result)) {
+      this.addTokenResponse(result);
+    }
+    return result;
   }
 
   /**
