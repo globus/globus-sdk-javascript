@@ -35,7 +35,8 @@ export class PopupTransport {
     }
   }
 
-  static supported = isSupported() && window && window.open;
+  static supported =
+    isSupported() && 'window' in globalThis && typeof globalThis.window.open === 'function';
 
   /**
    * For the redirect transport, sending the request will redirect the user to the authorization endpoint, initiating the OAuth flow.
