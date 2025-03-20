@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.6.0](https://github.com/globus/globus-sdk-javascript/compare/v5.5.0...v5.6.0) (2025-03-20)
+
+
+### Features
+
+* **Transfer:** adds `isGlobusHostname` utility ([#458](https://github.com/globus/globus-sdk-javascript/issues/458)) ([9d42388](https://github.com/globus/globus-sdk-javascript/commit/9d4238872eaf9036773dc30ad2bdfef1144d7843))
+
+
+### Bug Fixes
+
+* **Search, Typescript:** `SearchIndexRoleCreate` type no longer includes `principal_type` member. ([#428](https://github.com/globus/globus-sdk-javascript/issues/428)) ([0537ab9](https://github.com/globus/globus-sdk-javascript/commit/0537ab99c45ed0103ced19b7cac1c21453457ad9))
+
 ## [5.5.0](https://github.com/globus/globus-sdk-javascript/compare/v5.4.1...v5.5.0) (2025-02-06)
 
 
