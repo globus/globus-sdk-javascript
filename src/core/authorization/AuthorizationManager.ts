@@ -6,11 +6,7 @@ import { RESOURCE_SERVERS } from '../../services/auth/config.js';
 import { log } from '../logger.js';
 
 import { Event } from './Event.js';
-import {
-  RedirectTransportOptions,
-  GetTokenOptions,
-  RedirectTransport,
-} from './RedirectTransport.js';
+import { GetTokenOptions, RedirectTransport, TransportOptions } from './RedirectTransport.js';
 import { TokenManager } from './TokenManager.js';
 
 import {
@@ -51,6 +47,10 @@ export type AuthorizationManagerConfiguration = {
    * @default MemoryStorage
    */
   storage?: Storage;
+  /**
+   * The transport method to use for the authorization flow.
+   * @default 'redirect'
+   */
   transport?: keyof typeof TRANSPORTS;
   /**
    * @private
@@ -339,7 +339,7 @@ export class AuthorizationManager {
     return `${scopes}${this.configuration.useRefreshTokens ? ' offline_access' : ''}`;
   }
 
-  #buildTransport(options?: Partial<RedirectTransportOptions>) {
+  #buildTransport(options?: Partial<TransportOptions>) {
     const { scopes, ...overrides } = options ?? {};
     const TransportFactory = TRANSPORTS[this.configuration.transport || 'redirect'];
 
@@ -396,7 +396,7 @@ export class AuthorizationManager {
   /**
    * Prompt the user to authenticate with Globus Auth.
    */
-  async prompt(options?: Partial<RedirectTransportOptions>) {
+  async prompt(options?: Partial<TransportOptions>) {
     log('debug', 'AuthorizationManager.prompt');
     const transport = this.#buildTransport(options);
     const result = await transport.send();
@@ -413,7 +413,7 @@ export class AuthorizationManager {
     options: {
       shouldReplace?: GetTokenOptions['shouldReplace'];
       includeConsentedScopes?: GetTokenOptions['includeConsentedScopes'];
-      additionalParams?: RedirectTransportOptions['params'];
+      additionalParams?: TransportOptions['params'];
     } = { shouldReplace: true, additionalParams: {} },
   ) {
     log('debug', 'AuthorizationManager.handleCodeRedirect');
@@ -442,17 +442,15 @@ export class AuthorizationManager {
    */
   async handleErrorResponse(
     response: Record<string, unknown>,
-    options?: { execute?: true; additionalParams?: RedirectTransportOptions['params'] } | true,
+    options?: { execute?: true; additionalParams?: TransportOptions['params'] } | true,
   ): Promise<void>;
   async handleErrorResponse(
     response: Record<string, unknown>,
-    options?: { execute?: false; additionalParams?: RedirectTransportOptions['params'] } | false,
+    options?: { execute?: false; additionalParams?: TransportOptions['params'] } | false,
   ): Promise<() => Promise<void>>;
   async handleErrorResponse(
     response: Record<string, unknown>,
-    options?:
-      | { execute?: boolean; additionalParams?: RedirectTransportOptions['params'] }
-      | boolean,
+    options?: { execute?: boolean; additionalParams?: TransportOptions['params'] } | boolean,
   ) {
     const opts =
       typeof options === 'boolean'
@@ -505,7 +503,7 @@ export class AuthorizationManager {
    */
   async handleAuthorizationRequirementsError(
     response: AuthorizationRequirementsError,
-    options?: { additionalParams?: RedirectTransportOptions['params'] },
+    options?: { additionalParams?: TransportOptions['params'] },
   ) {
     this.#transport = this.#buildTransport({
       params: {
@@ -523,7 +521,7 @@ export class AuthorizationManager {
    */
   async handleConsentRequiredError(
     response: ConsentRequiredError,
-    options?: { additionalParams?: RedirectTransportOptions['params'] },
+    options?: { additionalParams?: TransportOptions['params'] },
   ) {
     this.#transport = this.#buildTransport({
       scopes: this.#withOfflineAccess(response.required_scopes.join(' ')),
