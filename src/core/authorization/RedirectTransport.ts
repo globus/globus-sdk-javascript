@@ -27,20 +27,22 @@ export type GetTokenOptions = {
   includeConsentedScopes?: boolean;
 };
 
-export type RedirectTransportOptions = Pick<
+export type TransportOptions = Pick<
   AuthorizationManagerConfiguration,
   'client' | 'redirect' | 'scopes'
 > & {
   /**
    * Query parameters to include in the authorization request.
    *
-   * The `RedirectTransport` will include all parameters required for a default OAuth PKCE flow, but
+   * The transport will include all parameters required for a default OAuth PKCE flow, but
    * these parameters can be overridden or extended with this option.
    */
   params?: {
     [key: string]: string;
   };
 };
+
+export type RedirectTransportOptions = TransportOptions;
 export class RedirectTransport {
   #options: RedirectTransportOptions;
 

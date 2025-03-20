@@ -9,20 +9,21 @@ import {
   store,
 } from './pkce.js';
 
-import type { RedirectTransportOptions } from './RedirectTransport.js';
+import type { TransportOptions } from './RedirectTransport.js';
 
-export type GetTokenOptions = {
-  /**
-   * Whether or not the URL should be replaced after processing the token.
-   * @default true
-   */
-  shouldReplace?: boolean;
-};
-
-export type PopupTransportOptions = RedirectTransportOptions;
+export type PopupTransportOptions = TransportOptions;
 
 const MESSAGE_SOURCE = 'globus-sdk';
 
+/**
+ * The `PopupTransport` (`popup`) uses a popup window to initiate the OAuth 2.0 using PKCE.
+ *
+ * When using the `PopupTransport`, the `redirect` parameter should be to a location
+ * that will transmit the URL back to the opener. This can be done using `AuthorizationManager.handleCodeRedirect()`, or
+ * manually by calling `window.opener.postMessage()`.
+ *
+ * @experimental
+ */
 export class PopupTransport {
   #options: PopupTransportOptions;
 
@@ -35,6 +36,9 @@ export class PopupTransport {
     }
   }
 
+  /**
+   * The `PopupTransport` is supported in environments where the `window` object is available.
+   */
   static supported =
     isSupported() && 'window' in globalThis && typeof globalThis.window.open === 'function';
 
