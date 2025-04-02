@@ -74,4 +74,15 @@ describe('flows.runs', () => {
       headers,
     }).toMatchSnapshot();
   });
+
+  test('remove', async () => {
+    const {
+      req: { url, method, headers },
+    } = await mirror(await runs.remove('run-id'));
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchSnapshot();
+  });
 });

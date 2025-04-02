@@ -92,3 +92,27 @@ export const update = function (run_id, options?, sdkOptions?) {
     };
   }
 >;
+
+/**
+ * Remove a Run.
+ *
+ * @see https://globusonline.github.io/globus-flows/#tag/Runs/paths/~1runs~1{run_id}~1release/post
+ */
+export const remove = function (run_id, options?, sdkOptions?) {
+  return serviceRequest(
+    {
+      service: ID,
+      scope: SCOPES.RUN_MANAGE,
+      path: `/runs/${run_id}/release`,
+      method: HTTP_METHODS.POST,
+    },
+    options,
+    sdkOptions,
+  );
+} satisfies ServiceMethodDynamicSegments<
+  string,
+  {
+    query?: never;
+    payload?: never;
+  }
+>;
