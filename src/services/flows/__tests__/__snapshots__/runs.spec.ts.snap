@@ -29,6 +29,20 @@ exports[`flows.runs getAll 1`] = `
 }
 `;
 
+exports[`flows.runs getDefinition 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "flows.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://flows.globus.org/runs/run-id/definition",
+}
+`;
+
 exports[`flows.runs getLog basic 1`] = `
 {
   "headers": {
@@ -54,5 +68,36 @@ exports[`flows.runs getLog query 1`] = `
   },
   "method": "GET",
   "url": "https://flows.globus.org/runs/run-id/log?limit=4&pagination_token=abc",
+}
+`;
+
+exports[`flows.runs remove 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "0",
+    "host": "flows.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "POST",
+  "url": "https://flows.globus.org/runs/run-id/release",
+}
+`;
+
+exports[`flows.runs update 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "136",
+    "content-type": "application/json",
+    "host": "flows.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "PUT",
+  "url": "https://flows.globus.org/runs/run-id",
 }
 `;
