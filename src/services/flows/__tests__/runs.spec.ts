@@ -54,4 +54,24 @@ describe('flows.runs', () => {
       }).toMatchSnapshot();
     });
   });
+
+  test('update', async () => {
+    const {
+      req: { url, method, headers },
+    } = await mirror(
+      await runs.update('run-id', {
+        payload: {
+          label: 'abc',
+          run_managers: ['urn:globus:auth:identity:uuid'],
+          run_monitors: ['urn:globus:auth:identity:uuid'],
+          tags: ['tag1', 'tag2'],
+        },
+      }),
+    );
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchSnapshot();
+  });
 });

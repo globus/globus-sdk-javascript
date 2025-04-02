@@ -63,3 +63,32 @@ export const getLog = function (run_id, options?, sdkOptions?) {
     };
   }
 >;
+
+/**
+ * Update a Run's metadata.
+ *
+ * @see https://globusonline.github.io/globus-flows/#tag/Runs/paths/~1runs~1{run_id}/put
+ */
+export const update = function (run_id, options?, sdkOptions?) {
+  return serviceRequest(
+    {
+      service: ID,
+      scope: SCOPES.RUN_MANAGE,
+      path: `/runs/${run_id}`,
+      method: HTTP_METHODS.PUT,
+    },
+    options,
+    sdkOptions,
+  );
+} satisfies ServiceMethodDynamicSegments<
+  string,
+  {
+    query?: never;
+    payload?: {
+      label?: string;
+      run_monitors?: string[];
+      run_managers?: string[];
+      tags?: string[];
+    };
+  }
+>;

@@ -56,3 +56,19 @@ exports[`flows.runs getLog query 1`] = `
   "url": "https://flows.globus.org/runs/run-id/log?limit=4&pagination_token=abc",
 }
 `;
+
+exports[`flows.runs update 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "136",
+    "content-type": "application/json",
+    "host": "flows.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "PUT",
+  "url": "https://flows.globus.org/runs/run-id",
+}
+`;
