@@ -116,3 +116,27 @@ export const remove = function (run_id, options?, sdkOptions?) {
     payload?: never;
   }
 >;
+
+/**
+ * Get the Flow definition and input schema that were used to start a Run
+ *
+ * @see https://globusonline.github.io/globus-flows/#tag/Runs/paths/~1runs~1{run_id}~1definition/get
+ */
+export const getDefinition = function (run_id, options?, sdkOptions?) {
+  return serviceRequest(
+    {
+      service: ID,
+      scope: SCOPES.RUN_MANAGE,
+      path: `/runs/${run_id}/definition`,
+      method: HTTP_METHODS.GET,
+    },
+    options,
+    sdkOptions,
+  );
+} satisfies ServiceMethodDynamicSegments<
+  string,
+  {
+    query?: never;
+    payload?: never;
+  }
+>;

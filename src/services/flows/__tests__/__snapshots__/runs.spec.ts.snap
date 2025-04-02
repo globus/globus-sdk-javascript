@@ -29,6 +29,20 @@ exports[`flows.runs getAll 1`] = `
 }
 `;
 
+exports[`flows.runs getDefinition 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "flows.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://flows.globus.org/runs/run-id/definition",
+}
+`;
+
 exports[`flows.runs getLog basic 1`] = `
 {
   "headers": {

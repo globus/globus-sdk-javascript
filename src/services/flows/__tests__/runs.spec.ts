@@ -85,4 +85,15 @@ describe('flows.runs', () => {
       headers,
     }).toMatchSnapshot();
   });
+
+  test('getDefinition', async () => {
+    const {
+      req: { url, method, headers },
+    } = await mirror(await runs.getDefinition('run-id'));
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchSnapshot();
+  });
 });
