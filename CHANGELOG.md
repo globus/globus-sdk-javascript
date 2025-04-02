@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.7.0](https://github.com/globus/globus-sdk-javascript/compare/v5.6.0...v5.7.0) (2025-04-02)
+
+
+### Features
+
+* **Flows:** Add Run `update`, `remove`, and `getDefinition` methods ([#473](https://github.com/globus/globus-sdk-javascript/issues/473)) ([0712eee](https://github.com/globus/globus-sdk-javascript/commit/0712eeeb57a94c3ef92b41d44607a7c83276ae5d))
+
 ## [5.6.0](https://github.com/globus/globus-sdk-javascript/compare/v5.5.0...v5.6.0) (2025-03-20)
 
 
