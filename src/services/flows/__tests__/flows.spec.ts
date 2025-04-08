@@ -126,4 +126,27 @@ describe('flows.flow', () => {
       }),
     );
   });
+
+  test('update', async () => {
+    const {
+      req: { url, method, headers, json },
+    } = await mirror(
+      await flows.update('flow-id', {
+        payload: {
+          title: 'New title',
+          subtitle: 'New subtitle',
+        },
+        headers: {
+          Authorization: 'Bearer this-is-an-example-token',
+        },
+      }),
+    );
+
+    expect({
+      url,
+      method,
+      headers,
+      json,
+    }).toMatchSnapshot();
+  });
 });
