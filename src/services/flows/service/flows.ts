@@ -181,3 +181,37 @@ export const create = function (options?, sdkOptions?) {
  * An alias for `create` to match the API documentation.
  */
 export const deploy = create;
+
+/**
+ * Update a Flow
+ * @see https://globusonline.github.io/globus-flows/#tag/Flows/paths/~1flows~1{flow_id}/put
+ */
+export const update = function (flow_id, options?, sdkOptions?) {
+  return serviceRequest(
+    {
+      service: ID,
+      scope: SCOPES.MANAGE_FLOWS,
+      path: `/flows/${flow_id}`,
+      method: HTTP_METHODS.PUT,
+    },
+    options,
+    sdkOptions,
+  );
+} satisfies ServiceMethodDynamicSegments<
+  string,
+  {
+    query?: never;
+    payload: {
+      definition?: Record<string, any>;
+      input_schema?: Record<string, any>;
+      title?: string;
+      subtitle?: string;
+      description?: string;
+      keywords?: string[];
+      flow_viewers?: string[];
+      flows_starters?: string[];
+      flow_administrators?: string[];
+      subscription_id?: string;
+    };
+  }
+>;
