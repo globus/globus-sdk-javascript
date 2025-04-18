@@ -185,9 +185,6 @@ export const deploy = create;
 /**
  * Update a Flow
  * @see https://globusonline.github.io/globus-flows/#tag/Flows/paths/~1flows~1{flow_id}/put
- *
- * This is documented as a PUT request in the API documentation, but it allows partial documents
- * as the payload, so it follows the PATCH semantics.
  */
 export const update = function (flow_id, options?, sdkOptions?) {
   return serviceRequest(
