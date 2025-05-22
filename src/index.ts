@@ -77,6 +77,8 @@ export * as gcs from './services/globus-connect-server/index.js';
 export * as timer from './services/timer/index.js';
 export * as compute from './services/compute/index.js';
 
+export { serviceRequest as request } from './services/shared.js';
+
 /**
  * Applications
  */
