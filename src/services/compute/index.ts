@@ -6,7 +6,7 @@
  */
 import * as COMPUTE from './config.js';
 
-export type * as OpenAPI from '../../open-api/types/compute';
+export type * as OpenAPI from '../../open-api/types/compute.js';
 
 /**
  * @private

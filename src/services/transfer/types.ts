@@ -1,5 +1,5 @@
-import { AuthorizationRequirementsError } from '../../core/errors';
-import { ExtractKeys, Segment } from '../types';
+import { AuthorizationRequirementsError } from '../../core/errors.js';
+import { ExtractKeys, Segment } from '../types.js';
 
 /**
  * @see https://docs.globus.org/api/transfer/overview/#errors

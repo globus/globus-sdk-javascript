@@ -1,7 +1,7 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 
-import type { OpenAPI, GCSServiceMethod } from '../index';
-import type { JSONFetchResponse } from '../../types';
+import type { OpenAPI, GCSServiceMethod } from '../index.js';
+import type { JSONFetchResponse } from '../../types.js';
 
 /**
  * @see https://docs.globus.org/globus-connect-server/v5.4/api/openapi_Endpoint/#getEndpoint

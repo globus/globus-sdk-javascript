@@ -8,7 +8,7 @@ import * as TIMER from './config.js';
 
 import { create } from './service/timer.js';
 
-export type * as OpenAPI from '../../open-api/types/timer';
+export type * as OpenAPI from '../../open-api/types/timer.js';
 
 /**
  * @private

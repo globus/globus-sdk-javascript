@@ -1,8 +1,8 @@
 import { HTTP_METHODS, serviceRequest } from '../../../services/shared.js';
 
-import type { OpenAPI, GCSServiceMethod, GCSServiceMethodDynamicSegments } from '../index';
+import type { OpenAPI, GCSServiceMethod, GCSServiceMethodDynamicSegments } from '../index.js';
 
-import type { JSONFetchResponse } from '../../types';
+import type { JSONFetchResponse } from '../../types.js';
 /**
  * @see https://docs.globus.org/globus-connect-server/v5.4/api/openapi_User_Credentials/#listUserCredentials
  */

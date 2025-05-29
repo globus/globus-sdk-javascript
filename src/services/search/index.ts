@@ -12,7 +12,7 @@ import * as SEARCH from './config.js';
  */
 export const CONFIG = SEARCH;
 
-export type * as OpenAPI from '../../open-api/types/search';
+export type * as OpenAPI from '../../open-api/types/search.js';
 
 export * as query from './service/query.js';
 export * as subject from './service/subject.js';

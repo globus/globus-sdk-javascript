@@ -8,7 +8,7 @@ import {
   isSupported,
 } from './pkce.js';
 
-import type { AuthorizationManagerConfiguration } from './AuthorizationManager';
+import type { AuthorizationManagerConfiguration } from './AuthorizationManager.js';
 
 export type GetTokenOptions = {
   /**

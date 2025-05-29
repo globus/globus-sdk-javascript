@@ -7,7 +7,7 @@
 
 import * as GROUPS from './config.js';
 
-export type * as OpenAPI from '../../open-api/types/groups';
+export type * as OpenAPI from '../../open-api/types/groups.js';
 
 /**
  * @private

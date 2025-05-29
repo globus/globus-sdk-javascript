@@ -1,7 +1,7 @@
 import { serviceRequest } from '../../../services/shared.js';
 
-import type { OpenAPI, GCSServiceMethod } from '../index';
-import type { JSONFetchResponse } from '../../types';
+import type { OpenAPI, GCSServiceMethod } from '../index.js';
+import type { JSONFetchResponse } from '../../types.js';
 
 /**
  * **This operation can be performed without an `Authorization` header.**
