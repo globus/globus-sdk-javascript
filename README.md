@@ -22,6 +22,8 @@ npm install @globus/sdk
 
 ### Typescript
 
+**The `@globus/types` package is no longer required for TypeScript suppport when using `@globus/sdk` version 6.0.0 and later.**
+
 `@globus/sdk` is written in Typescript and includes type definitions for its internal types, Globus platform types (i.e., API responses) are provided by the `@globus/types` package and must be installed separately.
 
 ```sh
