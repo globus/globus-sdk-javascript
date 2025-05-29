@@ -2348,6 +2348,11 @@ export interface components {
              */
             subscription_uuid?: string;
             /**
+             * Admins
+             * @description A set of Globus Auth identity IDs that, in addition to the owner, have administrative access to the endpoint. This field requires an active Globus subscription (i.e., `subscription_uuid` field).
+             */
+            admins?: string[];
+            /**
              * Public
              * @description Indicates if all users can discover the multi-user endpoint. Please note that this field does not control access to the endpoint, so it should not be used as a security feature.
              * @default false
