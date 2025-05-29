@@ -132,6 +132,29 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/collections/{collection_id}/subscription_admin_verified": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Set the subscription_admin_verified property for a collection
+         * @description Set the subscription_admin_verified property of the collection. This
+         *     only be invoked if the endpoint is associated with a subscription and
+         *     the caller is a subscription administrator for that subscription.
+         *
+         */
+        put: operations["putSubscriptionAdminVerified"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/collections/{collection_id}/owner_string": {
         parameters: {
             query?: never;
@@ -4228,7 +4251,7 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "collection#1.11.0";
-            /** @description Length of time that guest collection permissions are valid. Only settable on HA guest collections and HA mapped collections and used by guest collections attached to it. When set on both the mapped and guest collections, the lessor value is in effect. Set to null to delete any previously set value. */
+            /** @description Length of time that guest collection permissions are valid. Only settable on HA guest collections and HA mapped collections and used by guest collections attached to it. When set on both the mapped and guest collections, the lesser value is in effect. Set to null to delete any previously set value. */
             acl_expiration_mins?: number | null;
             /** @description Flag indicating if this Collection allows users to create guest
              *     collections on it. This is always false if this is a guest
@@ -4525,7 +4548,7 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "collection#1.12.0";
-            /** @description Length of time that guest collection permissions are valid. Only settable on HA guest collections and HA mapped collections and used by guest collections attached to it. When set on both the mapped and guest collections, the lessor value is in effect. Set to null to delete any previously set value. */
+            /** @description Length of time that guest collection permissions are valid. Only settable on HA guest collections and HA mapped collections and used by guest collections attached to it. When set on both the mapped and guest collections, the lesser value is in effect. Set to null to delete any previously set value. */
             acl_expiration_mins?: number | null;
             /** @description Flag indicating if this Collection allows users to create guest
              *     collections on it. This is always false if this is a guest
@@ -4838,7 +4861,7 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "collection#1.13.0";
-            /** @description Length of time that guest collection permissions are valid. Only settable on HA guest collections and HA mapped collections and used by guest collections attached to it. When set on both the mapped and guest collections, the lessor value is in effect. Set to null to delete any previously set value. */
+            /** @description Length of time that guest collection permissions are valid. Only settable on HA guest collections and HA mapped collections and used by guest collections attached to it. When set on both the mapped and guest collections, the lesser value is in effect. Set to null to delete any previously set value. */
             acl_expiration_mins?: number | null;
             /** @description Flag indicating if this Collection allows users to create guest
              *     collections on it. This is always false if this is a guest
@@ -5106,6 +5129,695 @@ export interface components {
              *      */
             user_message_link?: string | null;
         };
+        /** ActivityNotificationPolicy */
+        ActivityNotificationPolicy: {
+            status: string[];
+            transfer_use: string[];
+        };
+        /**
+         * Collection_1_14_0
+         * @description A collection consists of metadata about the collection, a DNS
+         *     domain for accessing data on the collection, and configuration on
+         *     the Data Transfer Nodes to access the collection data. Globus
+         *     Connect Server version 5 supports two types of collections:
+         *     **mapped** and **guest**.
+         *
+         *     Version 1.1.0 adds support for enabling or disabling https access for
+         *     individual collections, as well as the ability for collection
+         *     administrators to add an optional message and web link to be shown on
+         *     the Globus Web App when users visit the collection.
+         *
+         *     Version 1.2.0 adds the ability to enable or disable sharing by specific
+         *     users.
+         *
+         *     Version 1.3.0 add support for custom DNS domains on collections.
+         *
+         *     Version 1.4.0 allows optional multi-factor authentication requirements to
+         *     high assurance collections and the ability to require checksums when
+         *     transferring data on this collection.
+         *
+         *     Version 1.5.0 allows administrators to disable permissions that would allow
+         *     anonymous users to have write access to an endpoint.
+         *
+         *     Version 1.6.0 allows administrators of mapped collections to associate
+         *     policies that users accessing guest collections must meet beyond the
+         *     guest collection permissions.
+         *
+         *     Version 1.7.0 increases the maximum allowed length of the user_message
+         *     property.
+         *
+         *     Version 1.8.0 adds the delete_protected property. While it is set to true
+         *     on a mapped collection, the collection may not be deleted. As of GCS 5.4.69,
+         *     this is true by default.
+         *
+         *     Version 1.9.0 adds the read-only last_access and created_at properties.
+         *
+         *     Version 1.10.0 adds the acl_expiration_mins property to HA mapped collections.
+         *
+         *     Version 1.11.0 adds the acl_expiration_mins property to HA guest collection.
+         *
+         *     Version 1.12.0 adds the restrict_transfers_to_high_assurance property to HA
+         *     collections.
+         *
+         *     Version 1.13.0 adds the auto_delete_timeout property to mapped collections
+         *     and the skip_auto_delete property to guest collections.
+         *
+         *     Version 1.14.0 adds the subscription_admin_verified property to collections
+         *     and activity_notification_policy to guest collections.
+         *
+         */
+        Collection_1_14_0: {
+            /**
+             * @description Type of this document
+             * @default collection#1.14.0
+             * @enum {string}
+             */
+            DATA_TYPE: "collection#1.14.0";
+            /** @description Length of time that guest collection permissions are valid. Only settable on HA guest collections and HA mapped collections and used by guest collections attached to it. When set on both the mapped and guest collections, the lesser value is in effect. Set to null to delete any previously set value. */
+            acl_expiration_mins?: number | null;
+            activity_notification_policy?: components["schemas"]["ActivityNotificationPolicy"];
+            /** @description Flag indicating if this Collection allows users to create guest
+             *     collections on it. This is always false if this is a guest
+             *     collection. If this is changed to false on a mapped collection with
+             *     associated guest collections, those collections will no longer be
+             *     accessible.
+             *      */
+            allow_guest_collections?: boolean;
+            /** @description Timeout (in minutes) during which a user is required to have
+             *     authenticated in a session to access this storage gateway.
+             *      */
+            readonly authentication_timeout_mins?: number;
+            /** @description Number of days before unused guest collections will be automatically
+             *     deleted. Only settable on mapped collections. Values must be an integer
+             *     greater than 0. Set to null to disable automatic guest collection deletion
+             *     for the mapped collection. Defaults to disabled.
+             *      */
+            auto_delete_timeout?: number | null;
+            /** @description Path to be interpreted as the base path when creating a new
+             *     collection. It is interpreted differently depending on the
+             *     collection type being created. For a mapped collection, this is an
+             *     absolute path on the storage system named by the
+             *     storage_gateway_id.  For a guest collection, this is a relative
+             *     path relative to the value of the `root_path` attribute on the
+             *     mapped collection with the same Id as the `mapped_collection_id`
+             *     property.  This may not be changed once the collection is created.
+             *
+             *     Support for `~` was added in API version 1.21.0.
+             *      */
+            collection_base_path: string;
+            /**
+             * @description Type of collection. A `mapped` collection requires an account on
+             *     the system to access the administrator-defined collection. A
+             *     `guest` collection allows users to share access to their data on a
+             *     Storage Gateway by registering a credential with the GCS Manager.
+             *
+             * @enum {string}
+             */
+            collection_type: "mapped" | "guest";
+            /**
+             * Format: uuid
+             * @description Id of the connector type that is used by this collection.
+             */
+            readonly connector_id?: string;
+            /** @description Email address of the support contact for this collection. This is visible
+             *     to end users so that they may contact your organization for support.
+             *      */
+            contact_email?: string | null;
+            /** @description Other non-email contact information for the collection, e.g.  phone and
+             *     mailing address. This is visible to end users for support.
+             *      */
+            contact_info?: string | null;
+            /**
+             * Format: date
+             * @description Date on which this collection was created
+             */
+            readonly created_at?: string | null;
+            /** @description Default directory when accessing the collection. This may include
+             *     the special string `$USER` which is evaluated at access time to be
+             *     the connector-specific username accessing the data.
+             *
+             *     If the collection is mapped collection with a
+             *     **collection_base_path** value of `/`, this value can also begin
+             *     with the values `/~/` and `$HOME`, which are replaced by the user's
+             *     home directory, or `/` if the connector does not support the
+             *     concept of a home directory.
+             *      */
+            default_directory?: string;
+            /** @description If set to true, this collection can not be deleted. This property
+             *     is available only on mapped collections. As of GCS 5.4.69, this is
+             *     true by default.
+             *      */
+            delete_protected?: boolean;
+            /** @description Flag indicating that this collection has been deleted */
+            readonly deleted?: boolean;
+            /** @description Department within organization that runs the server(s).
+             *     Searchable. Optional. Unicode string, max 1024
+             *     characters, no new lines.
+             *      */
+            department?: string | null;
+            /** @description A description of the collection. */
+            description?: string | null;
+            /** @description Flag indicating if guest collections on this mapped collection
+             *     allow anonymous write permissions or not. This flag is always true for high
+             *     assurance collections. For non-high assurance mapped collections, the
+             *     default value is false.
+             *      */
+            disable_anonymous_writes?: boolean;
+            /** @description Flag indicating that this endpoint does not support computing
+             *     checksums, needed for the verify_checksum option of transfer.
+             *      */
+            disable_verify?: boolean;
+            /** @description Friendly name for the collection. Unicode string, max 128
+             *     characters, no new lines (`\r` or `\n`).
+             *      */
+            display_name: string;
+            domain?: components["schemas"]["Domain"];
+            /** @description DNS name of the virtual host serving this collection. For mapped
+             *     collections which do not have a custom domain, this may be specified as
+             *     part of the input document to create the collection, otherwise this is
+             *     a read-only property. When included in the input, the name is
+             *     restricted to be a subdomain of the endpoint, and the input name label
+             *     may not start with `m-` or `g-`.
+             *      */
+            domain_name?: string;
+            /** @description Boolean flag indicating whether this collection should support
+             *     HTTPS. This value can be set on mapped collections or guest
+             *     collections. However, it may not be set to true on a guest
+             *     collection if the value on the related mapped collection is false.
+             *      */
+            enable_https?: boolean;
+            /** @description Flag indicating whether all data transfers to and from this
+             *     collection are always encrypted.
+             *
+             *     __New in v5.4.17__: If a mapped collection forces encryption, all
+             *     of its guest collections must as well.  If this option is used on a
+             *     mapped collection, the value is propagated to its guest
+             *     collections.
+             *      */
+            force_encryption?: boolean;
+            /** @description Flag indicating that this endpoint requires computing checksums,
+             *     needed for the verify_checksum option of transfer.
+             *      */
+            force_verify?: boolean;
+            /**
+             * Format: uuid
+             * @description Authentication policy set on mapped collections and inherited by its
+             *     guest collections. During authorization, the authentication policy must
+             *     be satisfied before permissions are considered. Read-only on guest
+             *     collections. (**Added in API 1.15.0**)
+             *
+             */
+            guest_auth_policy_id?: string | null;
+            /** @description Flag indicating if this collection is created on a high assurance
+             *     Storage Gateway.
+             *      */
+            readonly high_assurance?: boolean;
+            /** @description HTTPS URL for the data on this collection. */
+            readonly https_url?: string;
+            /**
+             * Format: uuid
+             * @description Unique identifier for this collection. This is assigned
+             *     by the GCS manager when creating a collection.
+             *
+             */
+            readonly id?: string;
+            /**
+             * Format: uuid
+             * @description Globus Auth identity to who acts as the owner of this collection.
+             *     This identity is an `administrator` on the collection.
+             *
+             */
+            identity_id?: string;
+            /** @description Link to a web page with more information about the collection */
+            info_link?: string | null;
+            /** @description List of search keywords for the
+             *     endpoint.  Optional. Unicode string, max 1024
+             *     characters total across all strings.
+             *      */
+            keywords?: string[];
+            /**
+             * Format: date
+             * @description Date on which this collection was last accessed
+             */
+            readonly last_access?: string | null;
+            /** @description URL of the GCS Manager API service for the endpoint hosting this
+             *     collection.
+             *      */
+            readonly manager_url?: string;
+            /**
+             * Format: uuid
+             * @description Unique ID of the Mapped Collection which this guest collection is
+             *     associated with. This is set on creation and may not be changed.
+             *     For a Guest Collection, this must be set, and policies related
+             *     sharing (`allow_guest_collections`, `sharing_restrict_paths`) will
+             *     always reflect the values in the Mapped Collection definition and
+             *     may not be changed on this Guest Collection.
+             *
+             */
+            mapped_collection_id?: string;
+            /** @description Organization that runs the server(s) represented by the endpoint.
+             *     Optional to preserve backward compatibility, but will eventually be
+             *     required and all clients are encouraged to require users to specify
+             *     it.  Unicode string, max 1024 characters, no new lines.
+             *      */
+            organization?: string;
+            /** @description Connector-specific collection policies */
+            policies?: components["schemas"]["S3CollectionPolicies_1_0_0"] | components["schemas"]["AzureBlobCollectionPolicies_1_0_0"] | components["schemas"]["BlackPearlCollectionPolicies_1_0_0"] | components["schemas"]["BoxCollectionPolicies_1_0_0"] | components["schemas"]["CephCollectionPolicies_1_0_0"] | components["schemas"]["DropboxCollectionPolicies_1_0_0"] | components["schemas"]["GoogleCloudStorageCollectionPolicies_1_0_0"] | components["schemas"]["GoogleDriveCollectionPolicies_1_0_0"] | components["schemas"]["HPSSCollectionPolicies_1_0_0"] | components["schemas"]["IrodsCollectionPolicies_1_0_0"] | components["schemas"]["OneDriveCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_1_0"] | components["schemas"]["PosixStagingCollectionPolicies_1_0_0"];
+            /** @description Flag indicating whether this collection is visible to other Globus
+             *     users.
+             *      */
+            public: boolean;
+            /** @description Flag indicating if the storage_gateway requires multi-factor
+             *     authentication. Only applies to high assurance storage gateways.
+             *      */
+            readonly require_mfa?: boolean;
+            /**
+             * @description Flag indicating whether all data transfers to and from this
+             *     collection require the remote collection be HA. This can only be
+             *     assigned on high assurance mapped collections. High assurance
+             *     guest collections inherit the restriction from their associated
+             *     mapped collections. This may be set to null to disable this feature.
+             *
+             *     If a restriction is in place for a collection, then HTTPS access to
+             *     it is disabled.
+             *
+             * @enum {string|null}
+             */
+            restrict_transfers_to_high_assurance?: "inbound" | "outbound" | "all" | null;
+            /** @description Absolute root path of the collection. All data access
+             *     is done relative to this path. On a guest collection,
+             *     this value is only visible if the caller has an
+             *     administrator role on both the guest collection and the
+             *     mapped collection it is created on.
+             *      */
+            readonly root_path?: string;
+            /** @description Restrictions on which paths may be shared in guest collections related
+             *     to this mapped collection. On the mapped collection, these paths are
+             *     relative to the root_path property of the mapped collection. On a guest
+             *     collection, they are absolute paths from the storage root.
+             *      */
+            sharing_restrict_paths?: unknown | components["schemas"]["PathRestrictions"];
+            /** @description List of connector-specific usernames allowed to create new guest
+             *     collections on this mapped collection.
+             *      */
+            sharing_users_allow?: string[] | null;
+            /** @description List of connector-specific usernames denied access to
+             *     create new guest collections on this mapped collection.
+             *      */
+            sharing_users_deny?: string[] | null;
+            /** @description Flag indicating whether the guest collection is subject to automatic
+             *     deletion if auto_delete_timeout is set on its mapped collection. Only
+             *     settable on guest collections. Defaults to false.
+             *      */
+            skip_auto_delete?: boolean;
+            /**
+             * Format: uuid
+             * @description Unique ID of the Storage Gateway which this collection provides
+             *     access to. This value can not change after the collection is
+             *     created.
+             *
+             */
+            storage_gateway_id?: string;
+            /** @description Flag indicating whether the collection has been marked as
+             *     verified by the administrator of the subscription associated
+             *     with this endpoint.
+             *      */
+            readonly subscription_admin_verified?: boolean;
+            /** @description TLSFTP URL for the data on this collection. */
+            readonly tlsftp_url?: string;
+            /**
+             * Format: uuid
+             * @description The ID of the User Credential which is used to access data on this
+             *     collection. This credential must be owned by the collection's
+             *     identity_id.
+             *
+             */
+            user_credential_id?: string;
+            /** @description A message for clients to display to users when interacting with
+             *     this collection. For guest collections, this property is read-only
+             *     and is the same as the value of its related mapped collection. The
+             *     message may be up to 256 characters long.
+             *      */
+            user_message?: string | null;
+            /** @description Link to additional messaging for clients to display to users
+             *     when interacting with this endpoint, linked to an
+             *     HTTP or HTTPS URL. For guest collections, this property is
+             *     read-only and is the same as the value of its related mapped
+             *     collection.
+             *      */
+            user_message_link?: string | null;
+        };
+        /** FlowAssociation */
+        FlowAssociation: {
+            transfer?: unknown | components["schemas"]["FlowTransferAssociation"];
+        };
+        /** FlowTransferAssociation */
+        FlowTransferAssociation: {
+            destination?: unknown | components["schemas"]["Flow"];
+            source?: unknown | components["schemas"]["Flow"];
+        };
+        /** Flow */
+        Flow: {
+            flow: string;
+        };
+        /**
+         * Collection_1_15_0
+         * @description A collection consists of metadata about the collection, a DNS
+         *     domain for accessing data on the collection, and configuration on
+         *     the Data Transfer Nodes to access the collection data. Globus
+         *     Connect Server version 5 supports two types of collections:
+         *     **mapped** and **guest**.
+         *
+         *     Version 1.1.0 adds support for enabling or disabling https access for
+         *     individual collections, as well as the ability for collection
+         *     administrators to add an optional message and web link to be shown on
+         *     the Globus Web App when users visit the collection.
+         *
+         *     Version 1.2.0 adds the ability to enable or disable sharing by specific
+         *     users.
+         *
+         *     Version 1.3.0 add support for custom DNS domains on collections.
+         *
+         *     Version 1.4.0 allows optional multi-factor authentication requirements to
+         *     high assurance collections and the ability to require checksums when
+         *     transferring data on this collection.
+         *
+         *     Version 1.5.0 allows administrators to disable permissions that would allow
+         *     anonymous users to have write access to an endpoint.
+         *
+         *     Version 1.6.0 allows administrators of mapped collections to associate
+         *     policies that users accessing guest collections must meet beyond the
+         *     guest collection permissions.
+         *
+         *     Version 1.7.0 increases the maximum allowed length of the user_message
+         *     property.
+         *
+         *     Version 1.8.0 adds the delete_protected property. While it is set to true
+         *     on a mapped collection, the collection may not be deleted. As of GCS 5.4.69,
+         *     this is true by default.
+         *
+         *     Version 1.9.0 adds the read-only last_access and created_at properties.
+         *
+         *     Version 1.10.0 adds the acl_expiration_mins property to HA mapped collections.
+         *
+         *     Version 1.11.0 adds the acl_expiration_mins property to HA guest collection.
+         *
+         *     Version 1.12.0 adds the restrict_transfers_to_high_assurance property to HA
+         *     collections.
+         *
+         *     Version 1.13.0 adds the auto_delete_timeout property to mapped collections
+         *     and the skip_auto_delete property to guest collections.
+         *
+         *     Version 1.14.0 adds the subscription_admin_verified property to collections
+         *     and activity_notification_policy to guest collections.
+         *
+         *     Version 1.15.0 adds the associated_flow_policy property to the collection.
+         *
+         */
+        Collection_1_15_0: {
+            /**
+             * @description Type of this document
+             * @default collection#1.15.0
+             * @enum {string}
+             */
+            DATA_TYPE: "collection#1.15.0";
+            /** @description Length of time that guest collection permissions are valid. Only settable on HA guest collections and HA mapped collections and used by guest collections attached to it. When set on both the mapped and guest collections, the lesser value is in effect. Set to null to delete any previously set value. */
+            acl_expiration_mins?: number | null;
+            activity_notification_policy?: components["schemas"]["ActivityNotificationPolicy"];
+            /** @description Flag indicating if this Collection allows users to create guest
+             *     collections on it. This is always false if this is a guest
+             *     collection. If this is changed to false on a mapped collection with
+             *     associated guest collections, those collections will no longer be
+             *     accessible.
+             *      */
+            allow_guest_collections?: boolean;
+            /** @description Policy describing Globus flows to run when the collection is accessed.
+             *      */
+            associated_flow_policy?: unknown | components["schemas"]["FlowAssociation"];
+            /** @description Timeout (in minutes) during which a user is required to have
+             *     authenticated in a session to access this storage gateway.
+             *      */
+            readonly authentication_timeout_mins?: number;
+            /** @description Number of days before unused guest collections will be automatically
+             *     deleted. Only settable on mapped collections. Values must be an integer
+             *     greater than 0. Set to null to disable automatic guest collection deletion
+             *     for the mapped collection. Defaults to disabled.
+             *      */
+            auto_delete_timeout?: number | null;
+            /** @description Path to be interpreted as the base path when creating a new
+             *     collection. It is interpreted differently depending on the
+             *     collection type being created. For a mapped collection, this is an
+             *     absolute path on the storage system named by the
+             *     storage_gateway_id.  For a guest collection, this is a relative
+             *     path relative to the value of the `root_path` attribute on the
+             *     mapped collection with the same Id as the `mapped_collection_id`
+             *     property.  This may not be changed once the collection is created.
+             *
+             *     Support for `~` was added in API version 1.21.0.
+             *      */
+            collection_base_path: string;
+            /**
+             * @description Type of collection. A `mapped` collection requires an account on
+             *     the system to access the administrator-defined collection. A
+             *     `guest` collection allows users to share access to their data on a
+             *     Storage Gateway by registering a credential with the GCS Manager.
+             *
+             * @enum {string}
+             */
+            collection_type: "mapped" | "guest";
+            /**
+             * Format: uuid
+             * @description Id of the connector type that is used by this collection.
+             */
+            readonly connector_id?: string;
+            /** @description Email address of the support contact for this collection. This is visible
+             *     to end users so that they may contact your organization for support.
+             *      */
+            contact_email?: string | null;
+            /** @description Other non-email contact information for the collection, e.g.  phone and
+             *     mailing address. This is visible to end users for support.
+             *      */
+            contact_info?: string | null;
+            /**
+             * Format: date
+             * @description Date on which this collection was created
+             */
+            readonly created_at?: string | null;
+            /** @description Default directory when accessing the collection. This may include
+             *     the special string `$USER` which is evaluated at access time to be
+             *     the connector-specific username accessing the data.
+             *
+             *     If the collection is mapped collection with a
+             *     **collection_base_path** value of `/`, this value can also begin
+             *     with the values `/~/` and `$HOME`, which are replaced by the user's
+             *     home directory, or `/` if the connector does not support the
+             *     concept of a home directory.
+             *      */
+            default_directory?: string;
+            /** @description If set to true, this collection can not be deleted. This property
+             *     is available only on mapped collections. As of GCS 5.4.69, this is
+             *     true by default.
+             *      */
+            delete_protected?: boolean;
+            /** @description Flag indicating that this collection has been deleted */
+            readonly deleted?: boolean;
+            /** @description Department within organization that runs the server(s).
+             *     Searchable. Optional. Unicode string, max 1024
+             *     characters, no new lines.
+             *      */
+            department?: string | null;
+            /** @description A description of the collection. */
+            description?: string | null;
+            /** @description Flag indicating if guest collections on this mapped collection
+             *     allow anonymous write permissions or not. This flag is always true for high
+             *     assurance collections. For non-high assurance mapped collections, the
+             *     default value is false.
+             *      */
+            disable_anonymous_writes?: boolean;
+            /** @description Flag indicating that this endpoint does not support computing
+             *     checksums, needed for the verify_checksum option of transfer.
+             *      */
+            disable_verify?: boolean;
+            /** @description Friendly name for the collection. Unicode string, max 128
+             *     characters, no new lines (`\r` or `\n`).
+             *      */
+            display_name: string;
+            domain?: components["schemas"]["Domain"];
+            /** @description DNS name of the virtual host serving this collection. For mapped
+             *     collections which do not have a custom domain, this may be specified as
+             *     part of the input document to create the collection, otherwise this is
+             *     a read-only property. When included in the input, the name is
+             *     restricted to be a subdomain of the endpoint, and the input name label
+             *     may not start with `m-` or `g-`.
+             *      */
+            domain_name?: string;
+            /** @description Boolean flag indicating whether this collection should support
+             *     HTTPS. This value can be set on mapped collections or guest
+             *     collections. However, it may not be set to true on a guest
+             *     collection if the value on the related mapped collection is false.
+             *      */
+            enable_https?: boolean;
+            /** @description Flag indicating whether all data transfers to and from this
+             *     collection are always encrypted.
+             *
+             *     __New in v5.4.17__: If a mapped collection forces encryption, all
+             *     of its guest collections must as well.  If this option is used on a
+             *     mapped collection, the value is propagated to its guest
+             *     collections.
+             *      */
+            force_encryption?: boolean;
+            /** @description Flag indicating that this endpoint requires computing checksums,
+             *     needed for the verify_checksum option of transfer.
+             *      */
+            force_verify?: boolean;
+            /**
+             * Format: uuid
+             * @description Authentication policy set on mapped collections and inherited by its
+             *     guest collections. During authorization, the authentication policy must
+             *     be satisfied before permissions are considered. Read-only on guest
+             *     collections. (**Added in API 1.15.0**)
+             *
+             */
+            guest_auth_policy_id?: string | null;
+            /** @description Flag indicating if this collection is created on a high assurance
+             *     Storage Gateway.
+             *      */
+            readonly high_assurance?: boolean;
+            /** @description HTTPS URL for the data on this collection. */
+            readonly https_url?: string;
+            /**
+             * Format: uuid
+             * @description Unique identifier for this collection. This is assigned
+             *     by the GCS manager when creating a collection.
+             *
+             */
+            readonly id?: string;
+            /**
+             * Format: uuid
+             * @description Globus Auth identity to who acts as the owner of this collection.
+             *     This identity is an `administrator` on the collection.
+             *
+             */
+            identity_id?: string;
+            /** @description Link to a web page with more information about the collection */
+            info_link?: string | null;
+            /** @description List of search keywords for the
+             *     endpoint.  Optional. Unicode string, max 1024
+             *     characters total across all strings.
+             *      */
+            keywords?: string[];
+            /**
+             * Format: date
+             * @description Date on which this collection was last accessed
+             */
+            readonly last_access?: string | null;
+            /** @description URL of the GCS Manager API service for the endpoint hosting this
+             *     collection.
+             *      */
+            readonly manager_url?: string;
+            /**
+             * Format: uuid
+             * @description Unique ID of the Mapped Collection which this guest collection is
+             *     associated with. This is set on creation and may not be changed.
+             *     For a Guest Collection, this must be set, and policies related
+             *     sharing (`allow_guest_collections`, `sharing_restrict_paths`) will
+             *     always reflect the values in the Mapped Collection definition and
+             *     may not be changed on this Guest Collection.
+             *
+             */
+            mapped_collection_id?: string;
+            /** @description Organization that runs the server(s) represented by the endpoint.
+             *     Optional to preserve backward compatibility, but will eventually be
+             *     required and all clients are encouraged to require users to specify
+             *     it.  Unicode string, max 1024 characters, no new lines.
+             *      */
+            organization?: string;
+            /** @description Connector-specific collection policies */
+            policies?: components["schemas"]["S3CollectionPolicies_1_0_0"] | components["schemas"]["AzureBlobCollectionPolicies_1_0_0"] | components["schemas"]["BlackPearlCollectionPolicies_1_0_0"] | components["schemas"]["BoxCollectionPolicies_1_0_0"] | components["schemas"]["CephCollectionPolicies_1_0_0"] | components["schemas"]["DropboxCollectionPolicies_1_0_0"] | components["schemas"]["GoogleCloudStorageCollectionPolicies_1_0_0"] | components["schemas"]["GoogleDriveCollectionPolicies_1_0_0"] | components["schemas"]["HPSSCollectionPolicies_1_0_0"] | components["schemas"]["IrodsCollectionPolicies_1_0_0"] | components["schemas"]["OneDriveCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_1_0"] | components["schemas"]["PosixStagingCollectionPolicies_1_0_0"];
+            /** @description Flag indicating whether this collection is visible to other Globus
+             *     users.
+             *      */
+            public: boolean;
+            /** @description Flag indicating if the storage_gateway requires multi-factor
+             *     authentication. Only applies to high assurance storage gateways.
+             *      */
+            readonly require_mfa?: boolean;
+            /**
+             * @description Flag indicating whether all data transfers to and from this
+             *     collection require the remote collection be HA. This can only be
+             *     assigned on high assurance mapped collections. High assurance
+             *     guest collections inherit the restriction from their associated
+             *     mapped collections. This may be set to null to disable this feature.
+             *
+             *     If a restriction is in place for a collection, then HTTPS access to
+             *     it is disabled.
+             *
+             * @enum {string|null}
+             */
+            restrict_transfers_to_high_assurance?: "inbound" | "outbound" | "all" | null;
+            /** @description Absolute root path of the collection. All data access
+             *     is done relative to this path. On a guest collection,
+             *     this value is only visible if the caller has an
+             *     administrator role on both the guest collection and the
+             *     mapped collection it is created on.
+             *      */
+            readonly root_path?: string;
+            /** @description Restrictions on which paths may be shared in guest collections related
+             *     to this mapped collection. On the mapped collection, these paths are
+             *     relative to the root_path property of the mapped collection. On a guest
+             *     collection, they are absolute paths from the storage root.
+             *      */
+            sharing_restrict_paths?: unknown | components["schemas"]["PathRestrictions"];
+            /** @description List of connector-specific usernames allowed to create new guest
+             *     collections on this mapped collection.
+             *      */
+            sharing_users_allow?: string[] | null;
+            /** @description List of connector-specific usernames denied access to
+             *     create new guest collections on this mapped collection.
+             *      */
+            sharing_users_deny?: string[] | null;
+            /** @description Flag indicating whether the guest collection is subject to automatic
+             *     deletion if auto_delete_timeout is set on its mapped collection. Only
+             *     settable on guest collections. Defaults to false.
+             *      */
+            skip_auto_delete?: boolean;
+            /**
+             * Format: uuid
+             * @description Unique ID of the Storage Gateway which this collection provides
+             *     access to. This value can not change after the collection is
+             *     created.
+             *
+             */
+            storage_gateway_id?: string;
+            /** @description Flag indicating whether the collection has been marked as
+             *     verified by the administrator of the subscription associated
+             *     with this endpoint.
+             *      */
+            readonly subscription_admin_verified?: boolean;
+            /** @description TLSFTP URL for the data on this collection. */
+            readonly tlsftp_url?: string;
+            /**
+             * Format: uuid
+             * @description The ID of the User Credential which is used to access data on this
+             *     collection. This credential must be owned by the collection's
+             *     identity_id.
+             *
+             */
+            user_credential_id?: string;
+            /** @description A message for clients to display to users when interacting with
+             *     this collection. For guest collections, this property is read-only
+             *     and is the same as the value of its related mapped collection. The
+             *     message may be up to 256 characters long.
+             *      */
+            user_message?: string | null;
+            /** @description Link to additional messaging for clients to display to users
+             *     when interacting with this endpoint, linked to an
+             *     HTTP or HTTPS URL. For guest collections, this property is
+             *     read-only and is the same as the value of its related mapped
+             *     collection.
+             *      */
+            user_message_link?: string | null;
+        };
         /**
          * CollectionNotFound_1_0_0
          * @description Error details when a mapped collection no longer exists when accessing a
@@ -5297,7 +6009,7 @@ export interface components {
              * @default normal
              * @enum {string}
              */
-            network_use?: "normal" | "minimal" | "aggressive" | "custom";
+            network_use: "normal" | "minimal" | "aggressive" | "custom";
             /** @description Organization that runs the server(s) represented by the endpoint.
              *     Unicode string, max 1024 characters, no new lines.
              *      */
@@ -5320,7 +6032,7 @@ export interface components {
              *
              * @default true
              */
-            public?: boolean;
+            public: boolean;
             /** @description The id of the subscription that is managing this endpoint.  This may be
              *     the special value `DEFAULT` when using this as input to PATCH or PUT to
              *     use the caller's default subscription id.
@@ -5416,7 +6128,7 @@ export interface components {
              * @default normal
              * @enum {string}
              */
-            network_use?: "normal" | "minimal" | "aggressive" | "custom";
+            network_use: "normal" | "minimal" | "aggressive" | "custom";
             /** @description Organization that runs the server(s) represented by the endpoint.
              *     Unicode string, max 1024 characters, no new lines.
              *      */
@@ -5439,7 +6151,7 @@ export interface components {
              *
              * @default true
              */
-            public?: boolean;
+            public: boolean;
             /** @description The id of the subscription that is managing this endpoint.  This may be
              *     the special value `DEFAULT` when using this as input to PATCH or PUT to
              *     use the caller's default subscription id.
@@ -5545,7 +6257,7 @@ export interface components {
              * @default normal
              * @enum {string}
              */
-            network_use?: "normal" | "minimal" | "aggressive" | "custom";
+            network_use: "normal" | "minimal" | "aggressive" | "custom";
             /** @description Organization that runs the server(s) represented by the endpoint.
              *     Unicode string, max 1024 characters, no new lines.
              *      */
@@ -5568,7 +6280,7 @@ export interface components {
              *
              * @default true
              */
-            public?: boolean;
+            public: boolean;
             /** @description The id of the subscription that is managing this endpoint.  This may be
              *     the special value `DEFAULT` when using this as input to PATCH or PUT to
              *     use the caller's default subscription id.
@@ -6047,6 +6759,22 @@ export interface components {
             id?: string;
         };
         /**
+         * SubscriptionAdminVerified_1_0_0
+         * @description Subscription Admin Verified
+         */
+        SubscriptionAdminVerified_1_0_0: {
+            /**
+             * @description Type of this document
+             * @default subscription_admin_verified#1.0.0
+             * @enum {string}
+             */
+            DATA_TYPE: "subscription_admin_verified#1.0.0";
+            /** @description Value of the subscription_admin_verified property of a collection. This
+             *     can be set or cleared by a subscription group administrator.
+             *      */
+            subscription_admin_verified: boolean;
+        };
+        /**
          * OwnerString_1_0_0
          * @description Owner string document
          *
@@ -6088,7 +6816,7 @@ export interface components {
              *
              * @default false
              */
-            has_next_page?: boolean;
+            has_next_page: boolean;
             /** @description Numeric HTTP response code */
             http_response_code: number;
             /** @description Opaque marker that may be passed to this API call to fetch the next
@@ -6129,7 +6857,7 @@ export interface components {
              *
              * @default false
              */
-            has_next_page?: boolean;
+            has_next_page: boolean;
             /** @description Numeric HTTP response code */
             http_response_code: number;
             /** @description Opaque marker that may be passed to this API call to fetch the next
@@ -6392,7 +7120,7 @@ export interface components {
              *
              * @default false
              */
-            require_mfa?: boolean;
+            require_mfa: boolean;
             /** @description Path restrictions within this storage gateway. Paths are
              *     interpreted as absolute paths in the file namespace of the
              *     connector.
@@ -6441,7 +7169,7 @@ export interface components {
              *
              * @default false
              */
-            admin_managed_credentials?: boolean;
+            admin_managed_credentials: boolean;
             /** @description List of allowed domains. Users creating credentials or collections
              *     on this storage gateway must have an identity in one of these domains.
              *      */
@@ -6504,7 +7232,7 @@ export interface components {
              *
              * @default false
              */
-            require_mfa?: boolean;
+            require_mfa: boolean;
             /** @description Path restrictions within this storage gateway. Paths are
              *     interpreted as absolute paths in the file namespace of the
              *     connector.
@@ -6556,7 +7284,7 @@ export interface components {
              *
              * @default false
              */
-            admin_managed_credentials?: boolean;
+            admin_managed_credentials: boolean;
             /** @description List of allowed domains. Users creating credentials or collections
              *     on this storage gateway must have an identity in one of these domains.
              *      */
@@ -6661,7 +7389,7 @@ export interface components {
              *
              * @default false
              */
-            require_mfa?: boolean;
+            require_mfa: boolean;
             /** @description Path restrictions within this storage gateway. Paths are
              *     interpreted as absolute paths in the file namespace of the
              *     connector.
@@ -8301,8 +9029,13 @@ export interface components {
          *     Version 1.13.0 adds the auto_delete_timeout property to mapped collections
          *     and the skip_auto_delete property to guest collections.
          *
+         *     Version 1.14.0 adds the subscription_admin_verified property to collections
+         *     and activity_notification_policy to guest collections.
+         *
+         *     Version 1.15.0 adds the associated_flow_policy property to the collection.
+         *
          */
-        Collection: components["schemas"]["Collection_1_0_0"] | components["schemas"]["Collection_1_1_0"] | components["schemas"]["Collection_1_2_0"] | components["schemas"]["Collection_1_3_0"] | components["schemas"]["Collection_1_4_0"] | components["schemas"]["Collection_1_5_0"] | components["schemas"]["Collection_1_6_0"] | components["schemas"]["Collection_1_7_0"] | components["schemas"]["Collection_1_8_0"] | components["schemas"]["Collection_1_9_0"] | components["schemas"]["Collection_1_10_0"] | components["schemas"]["Collection_1_11_0"] | components["schemas"]["Collection_1_12_0"] | components["schemas"]["Collection_1_13_0"];
+        Collection: components["schemas"]["Collection_1_0_0"] | components["schemas"]["Collection_1_1_0"] | components["schemas"]["Collection_1_2_0"] | components["schemas"]["Collection_1_3_0"] | components["schemas"]["Collection_1_4_0"] | components["schemas"]["Collection_1_5_0"] | components["schemas"]["Collection_1_6_0"] | components["schemas"]["Collection_1_7_0"] | components["schemas"]["Collection_1_8_0"] | components["schemas"]["Collection_1_9_0"] | components["schemas"]["Collection_1_10_0"] | components["schemas"]["Collection_1_11_0"] | components["schemas"]["Collection_1_12_0"] | components["schemas"]["Collection_1_13_0"] | components["schemas"]["Collection_1_14_0"] | components["schemas"]["Collection_1_15_0"];
         /**
          * CollectionNotFound
          * @description Error details when a mapped collection no longer exists when accessing a
@@ -8432,6 +9165,11 @@ export interface components {
          *
          */
         NotResourceOwner: components["schemas"]["NotResourceOwner_1_0_0"];
+        /**
+         * SubscriptionAdminVerified
+         * @description Subscription Admin Verified
+         */
+        SubscriptionAdminVerified: components["schemas"]["SubscriptionAdminVerified_1_0_0"];
         /**
          * OwnerString
          * @description Owner string document
@@ -9087,6 +9825,53 @@ export interface operations {
                     } & components["schemas"]["Result"];
                 };
             };
+            415: components["responses"]["UnsupportedMediaError"];
+            422: components["responses"]["ValidationError"];
+        };
+    };
+    putSubscriptionAdminVerified: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of the collection */
+                collection_id: string;
+            };
+            cookie?: never;
+        };
+        /** @description New value of the subscription_admin_verified property of this collection */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SubscriptionAdminVerified"];
+            };
+        };
+        responses: {
+            /** @description Set collection subscription admin verified response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Result"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["Unauthorized"];
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code?: "permission_denied";
+                        /** @enum {unknown} */
+                        http_response_code?: 403;
+                    } & components["schemas"]["Result"];
+                };
+            };
+            404: components["responses"]["NotFound"];
             415: components["responses"]["UnsupportedMediaError"];
             422: components["responses"]["ValidationError"];
         };

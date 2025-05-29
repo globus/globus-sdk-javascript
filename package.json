@@ -92,7 +92,6 @@
   },
   "license": "Apache-2.0",
   "devDependencies": {
-    "@globus/types": "^0.0.7",
     "@playwright/test": "^1.46.1",
     "@tsconfig/recommended": "^1.0.7",
     "@types/jest": "29.5.14",
@@ -121,13 +120,5 @@
   "dependencies": {
     "cross-fetch": "^4.0.0",
     "jwt-decode": "^4.0.0"
-  },
-  "peerDependencies": {
-    "@globus/types": "^0.0.7"
-  },
-  "peerDependenciesMeta": {
-    "@globus/types": {
-      "optional": true
-    }
   }
 }

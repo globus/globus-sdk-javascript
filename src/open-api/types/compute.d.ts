@@ -324,7 +324,7 @@ export interface paths {
         };
         /**
          * Get Function
-         * @description Get information about a registered function by providing it's UUID.
+         * @description Get information about a registered function by providing its UUID.
          */
         get: operations["get_function_v2_functions__function_uuid__get"];
         put?: never;
@@ -530,6 +530,26 @@ export interface paths {
         get: operations["get_endpoint_console_info_v3_endpoints__endpoint_uuid__console_get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v3/functions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Register Function
+         * @description Register a function
+         */
+        post: operations["register_function_v3_functions_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -771,7 +791,7 @@ export interface components {
              * @description Whether the user endpoint is active
              * @default true
              */
-            active?: boolean;
+            active: boolean;
             /**
              * Python Version
              * @description User endpoint Python version
@@ -782,6 +802,11 @@ export interface components {
              * @description User endpoint version
              */
             endpoint_version?: string;
+            /**
+             * Client Sdk Versions
+             * @description SDK versions used to submit tasks to the user endpoint
+             */
+            client_sdk_versions?: string[];
             /**
              * Posix Pid
              * @description User endpoint process ID
@@ -1749,75 +1774,6 @@ export interface components {
              */
             queue: string;
         };
-        /** RegisterFunctionMetadata */
-        RegisterFunctionMetadata: {
-            /**
-             * Python Version
-             * @description Python version used to serialize function.
-             */
-            python_version?: string;
-            /**
-             * Sdk Version
-             * @description SDK version used to serialize function.
-             */
-            sdk_version?: string;
-        };
-        /**
-         * RegisterFunctionRequest
-         * @example {
-         *       "function_name": "My Function",
-         *       "function_code": "wuX2RpbGyUjBBfY3JlYXRlX2Z1bmN0 ...",
-         *       "description": "My first function",
-         *       "metadata": {
-         *         "python_version": "3.11.3",
-         *         "sdk_version": "2.3.3"
-         *       },
-         *       "container_uuid": "b7a42fa2-e97f-4061-9e64-2ede22ae7f5e",
-         *       "group": "a2d6feb6-5386-4a06-8a22-99ea5ad7e651",
-         *       "public": false
-         *     }
-         */
-        RegisterFunctionRequest: {
-            /**
-             * Function Name
-             * @description Function name
-             */
-            function_name: string;
-            /**
-             * Entry Point
-             * @description (DEPRECATED) Entry point
-             */
-            entry_point?: string;
-            /**
-             * Function Code
-             * @description Serialized function source code
-             */
-            function_code: string;
-            /**
-             * Description
-             * @description Function description
-             */
-            description?: string;
-            metadata?: components["schemas"]["RegisterFunctionMetadata"];
-            /**
-             * Container Uuid
-             * Format: uuid
-             * @description Container UUID
-             */
-            container_uuid?: string;
-            /**
-             * Group
-             * Format: uuid
-             * @description Globus group UUID
-             */
-            group?: string;
-            /**
-             * Public
-             * @description Public function
-             * @default false
-             */
-            public?: boolean;
-        };
         /**
          * RegisterFunctionResponse
          * @example {
@@ -2136,7 +2092,7 @@ export interface components {
              * @description Endpoint multi-user mode
              * @default false
              */
-            multi_user?: boolean;
+            multi_user: boolean;
             /**
              * Allowed Functions
              * @description Functions that are allowed to be run on the endpoint
@@ -2149,6 +2105,75 @@ export interface components {
              */
             authentication_policy?: string;
             metadata?: components["schemas"]["EndpointRegisterMetadata"];
+        };
+        /** RegisterFunctionMetadata */
+        funcx_web_service__schemas__v2__function__RegisterFunctionMetadata: {
+            /**
+             * Python Version
+             * @description Python version used to serialize function.
+             */
+            python_version?: string;
+            /**
+             * Sdk Version
+             * @description SDK version used to serialize function.
+             */
+            sdk_version?: string;
+        };
+        /**
+         * RegisterFunctionRequest
+         * @example {
+         *       "function_name": "My Function",
+         *       "function_code": "wuX2RpbGyUjBBfY3JlYXRlX2Z1bmN0 ...",
+         *       "description": "My first function",
+         *       "metadata": {
+         *         "python_version": "3.11.3",
+         *         "sdk_version": "2.3.3"
+         *       },
+         *       "container_uuid": "b7a42fa2-e97f-4061-9e64-2ede22ae7f5e",
+         *       "group": "a2d6feb6-5386-4a06-8a22-99ea5ad7e651",
+         *       "public": false
+         *     }
+         */
+        funcx_web_service__schemas__v2__function__RegisterFunctionRequest: {
+            /**
+             * Function Name
+             * @description Function name
+             */
+            function_name: string;
+            /**
+             * Entry Point
+             * @description (DEPRECATED) Entry point
+             */
+            entry_point?: string;
+            /**
+             * Function Code
+             * @description Serialized function source code
+             */
+            function_code: string;
+            /**
+             * Description
+             * @description Function description
+             */
+            description?: string;
+            metadata?: components["schemas"]["funcx_web_service__schemas__v2__function__RegisterFunctionMetadata"];
+            /**
+             * Container Uuid
+             * Format: uuid
+             * @description Container UUID
+             */
+            container_uuid?: string;
+            /**
+             * Group
+             * Format: uuid
+             * @description Globus group UUID
+             */
+            group?: string;
+            /**
+             * Public
+             * @description Public function
+             * @default false
+             */
+            public: boolean;
         };
         /**
          * BatchSubmitRequest
@@ -2181,7 +2206,7 @@ export interface components {
              * @description Create websocket queue
              * @default true
              */
-            create_websocket_queue?: boolean;
+            create_websocket_queue: boolean;
             /**
              * Tasks
              * @description List of tasks to invoke, each referencing function and endpoint UUIDs.
@@ -2298,13 +2323,13 @@ export interface components {
              * @description Endpoint multi-user mode
              * @default false
              */
-            multi_user?: boolean;
+            multi_user: boolean;
             /**
              * High Assurance
              * @description Endpoint supports high-assurance protocols
              * @default false
              */
-            high_assurance?: boolean;
+            high_assurance: boolean;
             /**
              * Allowed Functions
              * @description Functions that are allowed to be run on the endpoint
@@ -2327,12 +2352,84 @@ export interface components {
              * @description Indicates if all users can discover the multi-user endpoint. Please note that this field does not control access to the endpoint, so it should not be used as a security feature.
              * @default false
              */
-            public?: boolean;
+            public: boolean;
             /**
              * Metadata
              * @description Endpoint metadata
              */
             metadata: components["schemas"]["EndpointMetadata"];
+        };
+        /** RegisterFunctionMetadata */
+        funcx_web_service__schemas__v3__function__RegisterFunctionMetadata: {
+            /**
+             * Python Version
+             * @description version used to serialize function
+             */
+            python_version: string;
+            /**
+             * Globus Compute SDK version
+             * @description version used to serialize function
+             */
+            sdk_version: string;
+            /**
+             * Serde Identifier
+             * @description Identifier of SDK method used to serialize the function; the identifiers are not currently specifically documented, but may be found in the [Globus Compute SDK repository](https://github.com/globus/globus-compute) as the `identifier` class variable of the respective [serializers](https://github.com/globus/globus-compute/tree/main/compute_sdk/globus_compute_sdk/serialize)
+             */
+            serde_identifier: string;
+        };
+        /**
+         * RegisterFunctionRequest
+         * @example {
+         *       "function_name": "dot_product",
+         *       "function_code": "850\n01\ngASVZwIAAAAAAACMCmRpbGwuX2RpbGyUjBB...",
+         *       "description": "Dot product of two vectors (unchecked length)",
+         *       "metadata": {
+         *         "python_version": "3.13.3",
+         *         "sdk_version": "3.1.1",
+         *         "serde_identifier": "01"
+         *       },
+         *       "public": true
+         *     }
+         */
+        funcx_web_service__schemas__v3__function__RegisterFunctionRequest: {
+            /**
+             * Function Name
+             * @description Function name
+             */
+            function_name: string;
+            /**
+             * Function Code
+             * @description Serialized function source code
+             */
+            function_code: string;
+            /**
+             * Description
+             * @description Function description
+             */
+            description?: string;
+            /**
+             * Meta
+             * @description Function metadata
+             */
+            meta: components["schemas"]["funcx_web_service__schemas__v3__function__RegisterFunctionMetadata"];
+            /**
+             * Group
+             * Format: uuid
+             * @description If specified, this function will be accessible to members of the [Globus Group](https://docs.globus.org/api/groups/) specified by this identifier
+             */
+            group?: string;
+            /**
+             * Public
+             * @description If true, this function will be accessible to any registered user
+             * @default false
+             */
+            public: boolean;
+            /**
+             * Ha Endpoint Id
+             * Format: uuid
+             * @description Users will only be able to run this function on the specified HA endpoint. Since HA functions cannot be shared, this field is mutually exclusive with the `group` and `public` fields.
+             */
+            ha_endpoint_id?: string;
         };
         /**
          * BatchSubmitRequest
@@ -2349,6 +2446,10 @@ export interface components {
          *         "num_ranks": 4,
          *         "launcher_options": "--cpu-bind quiet --mem 3072"
          *       },
+         *       "result_serializers": [
+         *         "globus_compute_sdk.serialize.JSONData",
+         *         "globus_compute_sdk.serialize.DillDataBase64"
+         *       ],
          *       "create_queue": true,
          *       "tasks": {
          *         "ff960aba-fa23-43d5-9cbe-3f4f91a066e1": [
@@ -2385,7 +2486,7 @@ export interface components {
              * @description If `true`, create a Task Group specific AMQP queue for the results.  In addition to the usual longer-term storage, results will also be copied to this AMQP queue, enabling consumers to get event-driven (instant) results.  (See the [Globus Compute SDK Executor](https://globus-compute.readthedocs.io/en/stable/executor.html) for an implementation that uses this feature.)
              * @default false
              */
-            create_queue?: boolean;
+            create_queue: boolean;
             /**
              * Tasks
              * @description Lists of serialized task arguments (strings), grouped by function identifiers
@@ -2398,6 +2499,11 @@ export interface components {
              * @description Information about the runtime that submitted this batch, such as Python and Globus Compute SDK versions.
              */
             user_runtime?: components["schemas"]["UserRuntime"];
+            /**
+             * Result Serializers
+             * @description A list of import paths to [SerializationStrategy](https://globus-compute.readthedocs.io/en/stable/reference/serialization_strategies.html#globus_compute_sdk.serialize.SerializationStrategy) subclasses that the endpoint is allowed to use when serializing results.
+             */
+            result_serializers?: string[];
         };
         /**
          * BatchSubmitResponse
@@ -3049,7 +3155,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["RegisterFunctionRequest"];
+                "application/json": components["schemas"]["funcx_web_service__schemas__v2__function__RegisterFunctionRequest"];
             };
         };
         responses: {
@@ -3393,6 +3499,7 @@ export interface operations {
         parameters: {
             query?: never;
             header: {
+                "user-agent": string;
                 "content-length": number;
             };
             path: {
@@ -3588,6 +3695,57 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    register_function_v3_functions_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["funcx_web_service__schemas__v3__function__RegisterFunctionRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RegisterFunctionResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"] | components["schemas"]["ValidationErrorResponse"];
                 };
             };
         };
