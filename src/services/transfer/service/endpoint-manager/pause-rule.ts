@@ -9,6 +9,29 @@ import type {
 } from '../../../../services/types.js';
 
 /**
+ * @see https://docs.globus.org/api/transfer/advanced_collection_management/#pause_rule_document
+ */
+export type PauseRuleDocument = {
+  DATA_TYPE: 'pause_rule';
+  id: string;
+  message: string;
+  start_time: string | null;
+  endpoint_id: string;
+  endpoint_display_name: string;
+  identity_id: string;
+  modified_by_id: string;
+  created_by_host_manager: boolean;
+  editable: boolean;
+  pause_ls: boolean;
+  pause_mkdir: boolean;
+  pause_symlink: boolean;
+  pause_rename: boolean;
+  pause_task_delete: boolean;
+  pause_task_transfer_delete: boolean;
+  pause_task_transfer_read: boolean;
+};
+
+/**
  * Get a list of pause rules on endpoints that the current user has the "activity_monitor" role on.
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_pause_rules
  */
@@ -18,7 +41,7 @@ export const getAll = function (
 ): Promise<
   JSONFetchResponse<{
     DATA_TYPE: 'pause_rule_list';
-    DATA: Globus.Transfer.PauseRuleDocument[];
+    DATA: PauseRuleDocument[];
   }>
 > {
   return serviceRequest(
@@ -41,7 +64,7 @@ export const getAll = function (
 export const create = function (
   options,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.PauseRuleDocument>> {
+): Promise<JSONFetchResponse<PauseRuleDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -53,7 +76,7 @@ export const create = function (
     sdkOptions,
   );
 } satisfies ServiceMethod<{
-  payload: Partial<Globus.Transfer.PauseRuleDocument>;
+  payload: Partial<PauseRuleDocument>;
 }>;
 
 /**
@@ -64,7 +87,7 @@ export const get = function (
   pause_rule_id,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.PauseRuleDocument>> {
+): Promise<JSONFetchResponse<PauseRuleDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -89,7 +112,7 @@ export const update = function (
   pause_rule_id,
   options,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.PauseRuleDocument>> {
+): Promise<JSONFetchResponse<PauseRuleDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -104,7 +127,7 @@ export const update = function (
   string,
   {
     query?: never;
-    payload: Partial<Globus.Transfer.PauseRuleDocument>;
+    payload: Partial<PauseRuleDocument>;
   }
 >;
 

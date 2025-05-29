@@ -99,6 +99,8 @@ describe('gcs – storageGateways', () => {
         allowed_domains: ['example.com'],
         display_name: 'some name',
         connector_id: 'some-connector-id',
+        admin_managed_credentials: false,
+        require_mfa: false,
       },
     });
     const {
@@ -116,19 +118,21 @@ describe('gcs – storageGateways', () => {
           "accept-encoding": "gzip,deflate",
           "authorization": "Bearer an-example-token",
           "connection": "close",
-          "content-length": "156",
+          "content-length": "210",
           "content-type": "application/json",
           "host": "fa5e.bd7c.data.globus.org",
           "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
         },
         "json": {
           "DATA_TYPE": "storage_gateway#1.2.0",
+          "admin_managed_credentials": false,
           "allowed_domains": [
             "example.com",
           ],
           "connector_id": "some-connector-id",
           "display_name": "some name",
           "high_assurance": false,
+          "require_mfa": false,
         },
         "method": "POST",
         "url": "https://fa5e.bd7c.data.globus.org/api/storage_gateways",
@@ -147,6 +151,8 @@ describe('gcs – storageGateways', () => {
         connector_id: 'some-connector-id',
         display_name: 'some updated name',
         high_assurance: false,
+        admin_managed_credentials: false,
+        require_mfa: false,
       },
     });
     const {
@@ -164,19 +170,21 @@ describe('gcs – storageGateways', () => {
           "accept-encoding": "gzip,deflate",
           "authorization": "Bearer an-example-token",
           "connection": "close",
-          "content-length": "164",
+          "content-length": "218",
           "content-type": "application/json",
           "host": "fa5e.bd7c.data.globus.org",
           "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
         },
         "json": {
           "DATA_TYPE": "storage_gateway#1.2.0",
+          "admin_managed_credentials": false,
           "allowed_domains": [
             "example.com",
           ],
           "connector_id": "some-connector-id",
           "display_name": "some updated name",
           "high_assurance": false,
+          "require_mfa": false,
         },
         "method": "PUT",
         "url": "https://fa5e.bd7c.data.globus.org/api/storage_gateways/some-uuid",

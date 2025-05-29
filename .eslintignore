@@ -3,3 +3,6 @@ coverage/
 docs/
 node_modules/
 playwright-report/
+
+# Auto-generated TypeScript files
+src/open-api/types

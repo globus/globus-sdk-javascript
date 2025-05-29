@@ -6,8 +6,16 @@ import type {
   JSONFetchResponse,
   ServiceMethod,
 } from '../../../../services/types.js';
+import type { Transfer, Components } from '../../types.js';
+import type { AccessListDocument } from '../access.js';
 
-import type { Transfer } from '../../types.js';
+type EndpointDocument = Components['schemas']['Endpoint'];
+
+type EndpointListDocument = {
+  DATA_TYPE: 'endpoint_list';
+  DATA: EndpointDocument[];
+  length: number;
+};
 
 /**
  * Fetch an endpoint by its UUID as an administrator.
@@ -17,7 +25,7 @@ export const get = function (
   endpoint_xid,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.EndpointDocument>> {
+): Promise<JSONFetchResponse<EndpointDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -42,7 +50,7 @@ export const getHostedEndpoints = function (
   endpoint_xid,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.EndpointListDocument>> {
+): Promise<JSONFetchResponse<EndpointListDocument & Transfer['Paging']['Offset']['Response']>> {
   return serviceRequest(
     {
       service: ID,
@@ -67,7 +75,7 @@ export const getAccessList = function (
   endpoint_xid,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.AccessListDocument>> {
+): Promise<JSONFetchResponse<AccessListDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -93,7 +101,9 @@ export const getMonitoredEndpoints = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    Omit<Globus.Transfer.EndpointListDocument, 'DATA_TYPE'> & { DATA_TYPE: 'monitored_endpoints' }
+    Omit<EndpointListDocument, 'DATA_TYPE'> & {
+      DATA_TYPE: 'monitored_endpoints';
+    } & Transfer['Paging']['Offset']['Response']
   >
 > {
   return serviceRequest(

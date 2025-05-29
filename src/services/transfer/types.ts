@@ -1,5 +1,5 @@
-import { AuthorizationRequirementsError } from '../../core/errors';
-import { ExtractKeys, Segment } from '../types';
+import { AuthorizationRequirementsError } from '../../core/errors.js';
+import { ExtractKeys, Segment } from '../types.js';
 
 /**
  * @see https://docs.globus.org/api/transfer/overview/#errors
@@ -15,7 +15,18 @@ export type TransferErrorDocument = {
   authorization_parameters?: AuthorizationRequirementsError['authorization_parameters'];
 };
 
-type EntityType =
+/**
+ * @see https://docs.globus.org/api/transfer/overview/#common_query_parameters
+ */
+export type CommonQueryParameters = {
+  limit?: number;
+  offset?: number;
+  orderby?: string;
+  fields?: string;
+  filter?: string;
+};
+
+export type EntityType =
   | 'GCSv5_endpoint'
   | 'GCSv5_mapped_collection'
   | 'GCSv5_guest_collection'
@@ -68,6 +79,9 @@ type EndpointRole = 'administrator' | 'access_manager' | 'activity_manager' | 'a
 
 export interface Components {
   schemas: {
+    /**
+     * @see https://docs.globus.org/api/transfer/endpoints_and_collections/#endpoint_or_collection_document
+     */
     Endpoint: {
       DATA_TYPE: 'endpoint';
       DATA?: Components['schemas']['Server'][];

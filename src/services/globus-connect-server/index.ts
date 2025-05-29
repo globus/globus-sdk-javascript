@@ -13,6 +13,8 @@ import type {
   BaseServiceMethodOptions,
 } from '../types.js';
 
+export type * as OpenAPI from '../../open-api/types/gcs/v5.4.js';
+
 /**
  * Service methods for the Globus Connect Server Manager API.
  */

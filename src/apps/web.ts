@@ -4,7 +4,7 @@
  */
 
 import { getEnvironment, type Environment } from '../core/global.js';
-import type { SDKOptions } from '../services/types';
+import type { SDKOptions } from '../services/types.js';
 
 /**
  * The hostnames for the Globus Web App in each environment.

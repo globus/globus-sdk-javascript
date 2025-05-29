@@ -52,11 +52,6 @@
  * const result = await (await flows.flows.get("452bbea3-5e3b-45a5-af08-50179839a4e8")).json();
  */
 
-/// <reference types="@globus/types" />
-/// <reference types="@globus/types/auth" />
-/// <reference types="@globus/types/transfer" />
-/// <reference types="@globus/types/search" />
-
 /**
  * Core
  */

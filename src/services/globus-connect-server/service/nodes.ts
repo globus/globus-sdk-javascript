@@ -1,10 +1,8 @@
-import type { operations } from '@globus/types/gcs-manager/api';
-
 import { HTTP_METHODS, serviceRequest } from '../../../services/shared.js';
 
-import type { GCSServiceMethod, GCSServiceMethodDynamicSegments } from '../index';
+import type { OpenAPI, GCSServiceMethod, GCSServiceMethodDynamicSegments } from '../index.js';
 
-import type { JSONFetchResponse } from '../../types';
+import type { JSONFetchResponse } from '../../types.js';
 
 /**
  * @see https://docs.globus.org/globus-connect-server/v5.4/api/openapi_Nodes/#listNodes
@@ -14,7 +12,9 @@ export const getAll = function (
   options?,
   sdkOptions?,
 ): Promise<
-  JSONFetchResponse<operations['listNodes']['responses']['200']['content']['application/json']>
+  JSONFetchResponse<
+    OpenAPI.operations['listNodes']['responses']['200']['content']['application/json']
+  >
 > {
   return serviceRequest(
     {
@@ -26,7 +26,7 @@ export const getAll = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethod<{
-  query?: operations['listNodes']['parameters']['query'];
+  query?: OpenAPI.operations['listNodes']['parameters']['query'];
 }>;
 
 /**
@@ -38,7 +38,9 @@ export const get = function (
   options?,
   sdkOptions?,
 ): Promise<
-  JSONFetchResponse<operations['getNode']['responses']['200']['content']['application/json']>
+  JSONFetchResponse<
+    OpenAPI.operations['getNode']['responses']['200']['content']['application/json']
+  >
 > {
   return serviceRequest(
     {
@@ -50,7 +52,7 @@ export const get = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations['getNode']['parameters']['path']['node_id'],
+  OpenAPI.operations['getNode']['parameters']['path']['node_id'],
   {
     query?: never;
     payload?: never;
@@ -66,7 +68,9 @@ export const remove = function (
   options?,
   sdkOptions?,
 ): Promise<
-  JSONFetchResponse<operations['deleteNode']['responses']['200']['content']['application/json']>
+  JSONFetchResponse<
+    OpenAPI.operations['deleteNode']['responses']['200']['content']['application/json']
+  >
 > {
   return serviceRequest(
     {
@@ -79,7 +83,7 @@ export const remove = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations['deleteNode']['parameters']['path']['node_id'],
+  OpenAPI.operations['deleteNode']['parameters']['path']['node_id'],
   {
     query?: never;
     payload?: never;
@@ -94,7 +98,9 @@ export const create = function (
   options,
   sdkOptions?,
 ): Promise<
-  JSONFetchResponse<operations['postNode']['responses']['200']['content']['application/json']>
+  JSONFetchResponse<
+    OpenAPI.operations['postNode']['responses']['200']['content']['application/json']
+  >
 > {
   return serviceRequest(
     {
@@ -107,7 +113,7 @@ export const create = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethod<{
-  payload: operations['postNode']['requestBody']['content']['application/json'];
+  payload: OpenAPI.operations['postNode']['requestBody']['content']['application/json'];
 }>;
 
 /**
@@ -119,7 +125,9 @@ export const update = function (
   options,
   sdkOptions?,
 ): Promise<
-  JSONFetchResponse<operations['putNode']['responses']['200']['content']['application/json']>
+  JSONFetchResponse<
+    OpenAPI.operations['putNode']['responses']['200']['content']['application/json']
+  >
 > {
   return serviceRequest(
     {
@@ -132,9 +140,9 @@ export const update = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations['putNode']['parameters']['path']['node_id'],
+  OpenAPI.operations['putNode']['parameters']['path']['node_id'],
   {
-    payload: operations['putNode']['requestBody']['content']['application/json'];
+    payload: OpenAPI.operations['putNode']['requestBody']['content']['application/json'];
   }
 >;
 
@@ -147,7 +155,9 @@ export const patch = function (
   options,
   sdkOptions?,
 ): Promise<
-  JSONFetchResponse<operations['patchNode']['responses']['200']['content']['application/json']>
+  JSONFetchResponse<
+    OpenAPI.operations['patchNode']['responses']['200']['content']['application/json']
+  >
 > {
   return serviceRequest(
     {
@@ -160,8 +170,8 @@ export const patch = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
-  operations['patchNode']['parameters']['path']['node_id'],
+  OpenAPI.operations['patchNode']['parameters']['path']['node_id'],
   {
-    payload: Partial<operations['patchNode']['requestBody']['content']['application/json']>;
+    payload: Partial<OpenAPI.operations['patchNode']['requestBody']['content']['application/json']>;
   }
 >;

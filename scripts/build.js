@@ -1,6 +1,5 @@
 const { join } = require('node:path');
 const fs = require('node:fs');
-// eslint-disable-next-line import/no-extraneous-dependencies
 const { buildSync } = require('esbuild');
 const tsconfig = require('../tsconfig.package.json');
 

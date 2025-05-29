@@ -1,7 +1,7 @@
-import type { operations } from '@globus/types/groups';
 import { ID, SCOPES } from '../config.js';
 import { serviceRequest } from '../../shared.js';
 
+import type { OpenAPI } from '../index.js';
 import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../types.js';
 
 /**
@@ -13,7 +13,7 @@ export const get = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    operations['get_policies_v2_groups__group_id__policies_get']['responses']['200']['content']['application/json']
+    OpenAPI.operations['get_policies_v2_groups__group_id__policies_get']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -26,7 +26,7 @@ export const get = function (
     sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
-  operations['get_policies_v2_groups__group_id__policies_get']['parameters']['path']['group_id'],
+  OpenAPI.operations['get_policies_v2_groups__group_id__policies_get']['parameters']['path']['group_id'],
   {
     query?: never;
     payload?: never;

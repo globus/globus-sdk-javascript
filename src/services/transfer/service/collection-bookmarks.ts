@@ -8,12 +8,28 @@ import type {
 } from '../../types.js';
 
 /**
+ * @see https://docs.globus.org/api/transfer/collection_bookmarks/#bookmark_document
+ */
+export type BookmarkDocument = {
+  DATA_TYPE: 'bookmark';
+  id: string;
+  name: string;
+  endpoint_id: string;
+  path: string;
+};
+
+export type BookmarkListDocument = {
+  DATA_TYPE: 'bookmark_list';
+  DATA: BookmarkDocument[];
+};
+
+/**
  * @see https://docs.globus.org/api/transfer/collection_bookmarks/#get_list_of_bookmarks
  */
 export const getAll = function (
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.BookmarkListDocument>> {
+): Promise<JSONFetchResponse<BookmarkListDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -34,7 +50,7 @@ export const getAll = function (
 export const create = function (
   options,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.BookmarkDocument>> {
+): Promise<JSONFetchResponse<BookmarkDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -46,7 +62,7 @@ export const create = function (
     sdkOptions,
   );
 } satisfies ServiceMethod<{
-  payload: Partial<Globus.Transfer.BookmarkDocument>;
+  payload: Partial<BookmarkDocument>;
 }>;
 
 /**
@@ -56,7 +72,7 @@ export const get = function (
   bookmark_id,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.BookmarkDocument>> {
+): Promise<JSONFetchResponse<BookmarkDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -81,7 +97,7 @@ export const update = function (
   bookmark_id,
   options,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.BookmarkDocument>> {
+): Promise<JSONFetchResponse<BookmarkDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -96,7 +112,7 @@ export const update = function (
   string,
   {
     query?: never;
-    payload: Partial<Globus.Transfer.BookmarkDocument> & { name: string };
+    payload: Partial<BookmarkDocument> & { name: string };
   }
 >;
 

@@ -1,4 +1,4 @@
-import { Consent } from './service/identities/consents';
+import { Consent } from './service/identities/consents.js';
 
 export type ScopeTreeLeaf = {
   scope: string;
