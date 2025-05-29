@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.8.0](https://github.com/globus/globus-sdk-javascript/compare/v5.7.0...v5.8.0) (2025-05-29)
+
+
+### Features
+
+* Adds `request` method for making generic service requests using similar signatures and authorization integration. ([#511](https://github.com/globus/globus-sdk-javascript/issues/511)) ([a77b488](https://github.com/globus/globus-sdk-javascript/commit/a77b48855496c3823747ba6fdb2797557ae0339d))
+* **Flows:** adds `update` method ([#480](https://github.com/globus/globus-sdk-javascript/issues/480)) ([e7e9169](https://github.com/globus/globus-sdk-javascript/commit/e7e9169823a36d83c69a3dcc219e1a80b5e3dfab))
+
 ## [5.7.0](https://github.com/globus/globus-sdk-javascript/compare/v5.6.0...v5.7.0) (2025-04-02)
 
 
