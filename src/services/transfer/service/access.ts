@@ -5,13 +5,38 @@ import { Transfer } from '../types.js';
 import type { ServiceMethodDynamicSegments, JSONFetchResponse } from '../../../services/types.js';
 
 /**
+ * @see https://docs.globus.org/api/transfer/permissions/#permission_document
+ */
+export type AccessDocument = {
+  DATA_TYPE: 'access';
+  id: null | string;
+  role_id: null | string;
+  role_type: null | 'administrator' | 'access_manager';
+  principal_type: 'identity' | 'group' | 'all_authenticated_users' | 'anonymous';
+  principal: '' | string;
+  path: string;
+  permissions: 'r' | 'rw';
+  create_time: null | string;
+  expiration_date: null | string;
+  notify_email?: null | string;
+  notify_message?: null | string;
+};
+
+export type AccessListDocument = {
+  DATA_TYPE: 'access_list';
+  DATA: AccessDocument[];
+  length: number;
+  endpoint: string;
+};
+
+/**
  * @see https://docs.globus.org/api/transfer/acl/#rest_access_get_list
  */
 export const getAll = function (
   endpoint_xid,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.AccessListDocument>> {
+): Promise<JSONFetchResponse<AccessListDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -36,7 +61,7 @@ export const create = function (
   endpoint_xid,
   options,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.AccessDocument>> {
+): Promise<JSONFetchResponse<AccessDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -50,7 +75,7 @@ export const create = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    payload: Partial<Globus.Transfer.AccessDocument>;
+    payload: Partial<AccessDocument>;
   }
 >;
 
@@ -61,7 +86,7 @@ export const get = function (
   { endpoint_xid, id },
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.AccessDocument>> {
+): Promise<JSONFetchResponse<AccessDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -109,7 +134,7 @@ export const update = function (
   { endpoint_xid: string; id: string },
   {
     query?: never;
-    payload: Partial<Globus.Transfer.AccessDocument>;
+    payload: Partial<AccessDocument>;
   }
 >;
 

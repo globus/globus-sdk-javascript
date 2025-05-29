@@ -32,6 +32,7 @@ describe('endpointManager.task', () => {
     } = await mirror(
       await task.cancel({
         payload: {
+          DATA_TYPE: 'admin_cancel',
           task_id_list: ['example-task-id'],
           message: 'a test message',
         },
@@ -128,7 +129,11 @@ describe('endpointManager.task', () => {
       req: { url, method, headers, json },
     } = await mirror(
       await task.pause({
-        payload: { message: 'a test message', task_id_list: ['example-task-id'] },
+        payload: {
+          DATA_TYPE: 'admin_pause',
+          message: 'a test message',
+          task_id_list: ['example-task-id'],
+        },
       }),
     );
     expect({

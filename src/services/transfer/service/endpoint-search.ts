@@ -1,33 +1,45 @@
 import { serviceRequest } from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
 
-import type { BaseServiceMethodOptions, SDKOptions } from '../../../services/types.js';
+import type { ServiceMethod } from '../../../services/types.js';
+import type { EntityType, CommonQueryParameters } from '../types.js';
+
+/**
+ * @see https://docs.globus.org/api/transfer/endpoint_search/#search_scope
+ */
+export type EndpointSearchScope =
+  | 'all'
+  | 'my-endpoints'
+  | 'my-gcp-endpoints'
+  | 'recently-used'
+  | 'in-use'
+  | 'shared-by-me'
+  | 'shared-with-me'
+  | 'hide-no-permissions'
+  | 'administered-by-me';
+
+/**
+ * @see https://docs.globus.org/api/transfer/endpoint_search/#endpoint_search
+ */
+export type EndpointSearchQuery = CommonQueryParameters & {
+  limit: number;
+  filter_scope?: EndpointSearchScope;
+  filter_entity_type?: EntityType;
+  filter_fulltext?: string;
+  filter_owner_id?: string;
+  filter_host_endpoint?: string;
+  filter_non_functional?: 0 | 1 | null;
+  offset?: number;
+};
 
 /**
  * Get a list of endpoints matching the search filters in a given search scope.
  * @see https://docs.globus.org/api/transfer/endpoint_search/#endpoint_search
  */
-export const endpointSearch = function (
-  /**
-   * @see https://docs.globus.org/api/transfer/endpoint_search/#query_parameters
-   */
-  options?: {
-    /**
-     * @todo This type needs to be converted to a record and this method updated
-     * to `satisfies` `ServiceMethod`.
-     */
-    query?: Globus.Transfer.EndpointSearchQuery;
-    headers?: BaseServiceMethodOptions['headers'];
-  },
-  sdkOptions?: SDKOptions,
-) {
+export const endpointSearch = function (options?, sdkOptions?) {
   const serviceRequestOptions = {
     ...options,
-    /**
-     * Since the exported type used here is an `interface`, we effectivley have to
-     * "seal" the type, otherwise the compiler will complain about potentially mismatching index types.
-     */
-    query: options?.query as Readonly<Globus.Transfer.EndpointSearchQuery>,
+    query: options?.query,
   };
   return serviceRequest(
     {
@@ -38,6 +50,8 @@ export const endpointSearch = function (
     serviceRequestOptions,
     sdkOptions,
   );
-};
+} satisfies ServiceMethod<{
+  query?: EndpointSearchQuery;
+}>;
 
 export default endpointSearch;

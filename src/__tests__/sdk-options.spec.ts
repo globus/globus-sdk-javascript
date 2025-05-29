@@ -7,14 +7,25 @@ describe('sdk-options', () => {
       timer: {
         schedule: {
           type: 'once' as const,
+          datetime: '2025-08-24T14:15:22Z',
         },
         timer_type: 'transfer' as const,
         body: {
+          DATA_TYPE: 'transfer' as const,
           source_endpoint: 'endpoint-1',
           destination_endpoint: 'endpoint-2',
-          DATA_TYPE: 'transfer' as const,
-          DATA: [],
+          DATA: [
+            {
+              DATA_TYPE: 'transfer_item' as const,
+              source_path: 'string',
+              destination_path: 'string',
+              recursive: true,
+              external_checksum: 'string',
+              checksum_algorithm: 'string',
+            },
+          ],
         },
+        resource_server: 'transfer.api.globus.org' as const,
       },
     };
 

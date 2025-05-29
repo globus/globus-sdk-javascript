@@ -52,7 +52,7 @@ export const update = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethod<{
-  payload: OpenAPI.operations['putEndpoint']['requestBody']['content']['application/json'];
+  payload: Partial<OpenAPI.operations['putEndpoint']['requestBody']['content']['application/json']>;
 }>;
 
 /**

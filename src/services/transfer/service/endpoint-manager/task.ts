@@ -8,6 +8,50 @@ import type {
 } from '../../../../services/types.js';
 
 import type { Transfer } from '../../types.js';
+import type {
+  SkippedErrorsListDocument,
+  SuccessfulTransfersDocument,
+  TaskDocument,
+  TaskEventListDocument,
+} from '../task.js';
+import { PauseRuleDocument } from './pause-rule.js';
+
+type LocalUserStatus = 'OK' | 'NO_PERMISSION' | 'NOT_SCANNED' | 'ENDPOINT_ERROR' | 'NO_ENDPOINT';
+
+/**
+ * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#task_document
+ */
+export type EndpointManagerTaskDocument = TaskDocument & {
+  source_endpoint_id: string | null;
+  source_endpoint_display_name: string | null;
+  destination_endpoint_id: string | null;
+  destination_endpoint_display_name: string | null;
+  /**
+   * @deprecated
+   */
+  source_host_endpoint: string | null;
+  source_host_endpoint_id: string | null;
+  source_host_endpoint_display_name: string | null;
+  source_mapped_collection_id: string | null;
+  source_mapped_collection_display_name: string | null;
+  /**
+   * @deprecated
+   */
+  destination_host_endpoint: string | null;
+  destination_host_endpoint_id: string | null;
+  destination_host_endpoint_display_name: string | null;
+  destination_mapped_collection_id: string | null;
+  destination_mapped_collection_display_name: string | null;
+
+  source_host_path: string | null;
+  destination_host_path: string | null;
+  is_ok: boolean | null;
+  source_local_user: null;
+  source_local_user_status: LocalUserStatus;
+  destination_local_user: string | null;
+  destination_local_user_status: LocalUserStatus;
+  owner_string: string;
+};
 
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_tasks
@@ -19,7 +63,7 @@ export const getAll = function (
   JSONFetchResponse<
     {
       DATA_TYPE: 'task_list';
-      DATA: Globus.Transfer.EndpointManagerTaskDocument[];
+      DATA: EndpointManagerTaskDocument[];
     } & Transfer['Paging']['LastKey']['Response']
   >
 > {
@@ -33,7 +77,16 @@ export const getAll = function (
     sdkOptions,
   );
 } satisfies ServiceMethod<{
-  query?: Globus.Transfer.AdminTaskQuery;
+  query?: {
+    filter_status?: string;
+    filter_task_id?: string;
+    filter_owner_id?: string;
+    filter_endpoint?: string;
+    filter_is_paused?: boolean;
+    filter_completion_time?: string;
+    filter_min_faults?: number;
+    filter_local_user?: string;
+  } & Transfer['Paging']['LastKey']['Query'];
   payload?: never;
 }>;
 
@@ -44,7 +97,7 @@ export const get = function (
   task_id,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.EndpointManagerTaskDocument>> {
+): Promise<JSONFetchResponse<EndpointManagerTaskDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -63,12 +116,29 @@ export const get = function (
 >;
 
 /**
- * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#admin_cancel
+ * @see https://docs.globus.org/api/transfer/advanced_collection_management/#admin_cancel_document
+ */
+type AdminCancelDocument = {
+  DATA_TYPE: 'admin_cancel';
+  id: number;
+  message: string;
+  task_id_list: string[];
+  done: boolean;
+};
+
+/**
+ * @see https://docs.globus.org/api/transfer/advanced_collection_management/#cancel_tasks
  */
 export const cancel = function (
   options,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.AdminCancelDocumentResponse>> {
+): Promise<
+  JSONFetchResponse<{
+    DATA_TYPE: 'admin_cancel';
+    readonly id?: AdminCancelDocument['id'];
+    readonly done?: AdminCancelDocument['done'];
+  }>
+> {
   return serviceRequest(
     {
       service: ID,
@@ -81,7 +151,11 @@ export const cancel = function (
   );
 } satisfies ServiceMethod<{
   query?: never;
-  payload: Globus.Transfer.AdminCancelDocument;
+  payload: {
+    DATA_TYPE: AdminCancelDocument['DATA_TYPE'];
+    task_id_list: AdminCancelDocument['task_id_list'];
+    message: AdminCancelDocument['message'];
+  };
 }>;
 
 /**
@@ -91,7 +165,7 @@ export const getAdminCancel = function (
   admin_cancel_id,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.AdminCancelDocumentResponse>> {
+): Promise<JSONFetchResponse<AdminCancelDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -117,7 +191,7 @@ export const getEventList = function (
   task_id,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.TaskEventListDocument>> {
+): Promise<JSONFetchResponse<TaskEventListDocument & Transfer['Paging']['Offset']['Response']>> {
   return serviceRequest(
     {
       service: ID,
@@ -142,7 +216,9 @@ export const getSuccessfulTransfers = function (
   task_id,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.SuccessfulTransfersListDocument>> {
+): Promise<
+  JSONFetchResponse<SuccessfulTransfersDocument & Transfer['Paging']['Marker']['Response']>
+> {
   return serviceRequest(
     {
       service: ID,
@@ -167,7 +243,9 @@ export const getSkippedErrors = function (
   task_id,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.SkippedErrorsListDocument>> {
+): Promise<
+  JSONFetchResponse<SkippedErrorsListDocument & Transfer['Paging']['Marker']['Response']>
+> {
   return serviceRequest(
     {
       service: ID,
@@ -186,12 +264,21 @@ export const getSkippedErrors = function (
 >;
 
 /**
+ * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#admin_pause_document
+ */
+export type AdminPauseDocument = {
+  DATA_TYPE: 'admin_pause';
+  task_id_list: string[];
+  message: string;
+};
+
+/**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#pause_tasks_as_admin
  */
 export const pause = function (
   options,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.AdminPauseDocumentResponse>> {
+): Promise<JSONFetchResponse<AdminPauseDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -204,8 +291,15 @@ export const pause = function (
   );
 } satisfies ServiceMethod<{
   query?: never;
-  payload?: Globus.Transfer.AdminPauseDocument;
+  payload?: Pick<AdminPauseDocument, 'task_id_list' | 'message' | 'DATA_TYPE'>;
 }>;
+
+/**
+ * @see https://docs.globus.org/api/transfer/advanced_collection_management/#admin_resume_document
+ */
+export type AdminResumeDocument = {
+  task_id_list: string[];
+};
 
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#resume_tasks_as_admin
@@ -213,7 +307,7 @@ export const pause = function (
 export const resume = function (
   options,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.AdminResumeDocument>> {
+): Promise<JSONFetchResponse<AdminResumeDocument>> {
   return serviceRequest(
     {
       service: ID,
@@ -226,7 +320,7 @@ export const resume = function (
   );
 } satisfies ServiceMethod<{
   query?: never;
-  payload?: Globus.Transfer.AdminResumeDocument;
+  payload?: AdminResumeDocument;
 }>;
 
 /**
@@ -236,7 +330,7 @@ export const getPauseInfo = function (
   task_id,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<Globus.Transfer.PauseInfoLimitedDocument>> {
+): Promise<JSONFetchResponse<PauseRuleDocument>> {
   return serviceRequest(
     {
       service: ID,
