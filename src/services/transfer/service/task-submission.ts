@@ -90,8 +90,8 @@ export type CommonTransferAndDeleteFields = {
  */
 export type FilterRule = {
   DATA_TYPE: 'filter_rule';
-  method: 'include' | 'exclude';
-  type?: 'file' | 'dir';
+  method: 'exclude' | 'include';
+  type?: 'file' | 'dir' | undefined | null;
   name: string;
 };
 
