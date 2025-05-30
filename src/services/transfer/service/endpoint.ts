@@ -5,8 +5,24 @@ import type {
   ServiceMethodDynamicSegments,
   JSONFetchResponse,
   ServiceMethod,
+  ExtractKeys,
 } from '../../../services/types.js';
-import type { EndpointRole, EntityType, Operations } from '../types.js';
+
+/**
+ * @see https://docs.globus.org/api/transfer/endpoint_roles/
+ */
+export type EndpointRole =
+  | 'administrator'
+  | 'access_manager'
+  | 'activity_manager'
+  | 'activity_monitor';
+
+export type EntityType =
+  | 'GCSv5_endpoint'
+  | 'GCSv5_mapped_collection'
+  | 'GCSv5_guest_collection'
+  | 'GCP_mapped_collection'
+  | 'GCP_guest_collection';
 
 /**
  * @see https://docs.globus.org/api/transfer/endpoints_and_collections/#server_document
@@ -198,8 +214,40 @@ export const get = function (
   }
 >;
 
-export type CreatePayload = Operations['CreateEndpoint']['payload'];
-export type CreateResponse = Operations['CreateEndpoint']['response'];
+/**
+ * @see https://docs.globus.org/api/transfer/gcp_management/#update_collection_by_id
+ */
+type GuestCollectionUpdatableField = ExtractKeys<
+  EndpointDocument,
+  | 'acl_max_expiration_period_mins'
+  | 'display_name'
+  | 'organization'
+  | 'department'
+  | 'keywords'
+  | 'description'
+  | 'contact_email'
+  | 'contact_info'
+  | 'info_link'
+  | 'owner_string'
+  | 'default_directory'
+  | 'force_encryption'
+  | 'disable_verify'
+>;
+
+export type CreatePayload = Partial<Pick<EndpointDocument, GuestCollectionUpdatableField>> & {
+  DATA_TYPE?: 'shared_endpoint';
+  host_endpoint_id: string;
+  host_path: string;
+};
+export type CreateResponse = {
+  DATA_TYPE: 'endpoint_create_result';
+  code: 'Created';
+  globus_connect_setup_key: string | null;
+  id: string;
+  message: string;
+  request_id: string;
+  resource: '/shared_endpoint';
+};
 /**
  * Create a Globus Connect Personal guest collection.
  * As of 2024-04-17, this method (and the Transfer API) only supports creating Globus Connect Personal guest collections.
@@ -228,8 +276,35 @@ export const create = function (options?, sdkOptions?): Promise<JSONFetchRespons
   payload?: CreatePayload;
 }>;
 
-export type UpdatePayload = Operations['UpdateEndpoint']['payload'];
-export type UpdateResponse = Operations['UpdateEndpoint']['response'];
+/**
+ * @see https://docs.globus.org/api/transfer/gcp_management/#update_collection_by_id
+ */
+type MappedCollectionUpdatableField = ExtractKeys<
+  EndpointDocument,
+  | GuestCollectionUpdatableField
+  | 'authentication_timeout_mins'
+  | 'subscription_id'
+  | 'public'
+  | 'location'
+  | 'network_use'
+  | 'max_concurrency'
+  | 'preferred_concurrency'
+  | 'max_parallelism'
+  | 'preferred_parallelism'
+  | 'user_message'
+  | 'user_message_link'
+>;
+
+export type UpdatePayload = Partial<
+  Pick<EndpointDocument, MappedCollectionUpdatableField | 'DATA_TYPE'>
+>;
+export type UpdateResponse = {
+  DATA_TYPE: 'result';
+  code: 'Updated';
+  message: string;
+  request_id: string;
+  resource: `/endpoint/${string}`;
+};
 /**
  * Update a Globus Connect Personal collection.
  * As of 2024-04-17, this method (and the Transfer API) only supports updating Globus Connect Personal collections.
@@ -265,7 +340,13 @@ export const update = function (
   }
 >;
 
-export type RemoveResponse = Operations['RemoveEndpoint']['response'];
+export type RemoveResponse = {
+  DATA_TYPE: 'result';
+  code: 'Deleted';
+  message: string;
+  request_id: string;
+  resource: `/endpoint/${string}`;
+};
 /**
  * Delete a Globus Connect Personal entity by its UUID.
  * As of 2024-01-08, this method (and the Transfer API) only supports deleting Globus Connect Personal entities.
