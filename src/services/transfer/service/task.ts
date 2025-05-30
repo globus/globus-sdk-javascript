@@ -365,7 +365,7 @@ export const getSkippedErrors = function (
 /**
  * @see https://docs.globus.org/api/transfer/task/#limited_pause_rule_document
  */
-type PauseRuleLimitedDocument = Omit<
+export type PauseRuleLimitedDocument = Omit<
   PauseRuleDocument,
   'modified_by' | 'modified_by_id' | 'created_by_host_manager' | 'editable' | 'DATA_TYPE'
 > & {
