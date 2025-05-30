@@ -2,7 +2,7 @@ import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 import { getHeadersForService } from '../shared.js';
 import { ID, SCOPES } from '../config.js';
 
-import type { ErrorDocument, Transfer, QueryParameters } from '../types.js';
+import type { ErrorDocument, QueryParameters } from '../types.js';
 import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../types.js';
 import { ConsentRequiredError } from '../../../core/errors.js';
 
@@ -130,7 +130,7 @@ export const mkdir = function (endpoint_xid, options, sdkOptions?) {
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    payload: Omit<Transfer['Request']['Mkdir'], 'DATA_TYPE'>;
+    payload: { path: string };
   }
 >;
 
@@ -166,7 +166,10 @@ export const rename = function (endpoint_xid, options, sdkOptions?) {
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    payload: Omit<Transfer['Request']['Rename'], 'DATA_TYPE'>;
+    payload: {
+      old_path: string;
+      new_path: string;
+    };
   }
 >;
 
@@ -200,7 +203,10 @@ export const symlink = function (endpoint_xid, options, sdkOptions?) {
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    payload: Omit<Transfer['Request']['Symlink'], 'DATA_TYPE'>;
+    payload: {
+      path: string;
+      symlink_target: string;
+    };
   }
 >;
 

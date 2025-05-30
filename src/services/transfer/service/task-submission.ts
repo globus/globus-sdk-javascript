@@ -3,7 +3,6 @@ import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 import { getHeadersForService } from '../shared.js';
 import { ID, SCOPES } from '../config.js';
 
-import type { Transfer } from '../types.js';
 import type { JSONFetchResponse, SDKOptions, ServiceMethod } from '../../types.js';
 
 type TaskLink = {
@@ -74,6 +73,95 @@ export type DeleteError = TaskSubmissionError & {
 };
 
 /**
+ * Common fields for Transfer and Delete requests.
+ * @see https://docs.globus.org/api/transfer/task_submit/#common_transfer_and_delete_fields
+ */
+export type CommonTransferAndDeleteFields = {
+  submission_id: string;
+  label?: string;
+  notify_on_succeeded?: boolean;
+  notify_on_failed?: boolean;
+  deadline?: string;
+  store_base_path_info?: boolean;
+};
+
+/**
+ * @see https://docs.globus.org/api/transfer/task_submit/#filter_rules
+ */
+export type FilterRule = {
+  DATA_TYPE: 'filter_rule';
+  method: 'include' | 'exclude';
+  type?: 'file' | 'dir';
+  name: string;
+};
+
+/**
+ * @see https://docs.globus.org/api/transfer/task_submit/#transfer_item_fields
+ */
+export type TransferItem = {
+  DATA_TYPE: 'transfer_item';
+  source_path: string;
+  destination_path: string;
+  recursive?: boolean;
+  external_checksum?: string;
+  checksum_algorithm?: string;
+};
+
+/**
+ * @see https://docs.globus.org/api/transfer/task_submit/#transfer_symlink_item_fields
+ */
+export type TransferSymlinkItem = {
+  DATA_TYPE: 'transfer_symlink_item';
+  source_path: string;
+  destination_path: string;
+};
+
+/**
+ * https://docs.globus.org/api/transfer/task_submit/#transfer_specific_fields
+ */
+export type TransferFields = CommonTransferAndDeleteFields & {
+  DATA_TYPE: 'transfer';
+  DATA: (TransferItem | TransferSymlinkItem)[];
+  source_endpoint: string;
+  destination_endpoint: string;
+  filter_rules?: FilterRule[];
+  encrypt_data?: boolean;
+  sync_level?: 0 | 1 | 2 | 3;
+  verify_checksum?: boolean;
+  preserve_timestamp?: boolean;
+  delete_destination_extra?: boolean;
+  /**
+   * @beta
+   */
+  recursive_symlinks?: 'ignore' | 'keep' | 'copy';
+  skip_source_errors?: boolean;
+  fail_on_quota_errors?: boolean;
+  source_local_user?: string;
+  destination_local_user?: string;
+};
+
+/**
+ * @see https://docs.globus.org/api/transfer/task_submit/#delete_item_fields
+ */
+export type DeleteItem = {
+  DATA_TYPE: 'delete_item';
+  path: string;
+};
+
+/**
+ * @see https://docs.globus.org/api/transfer/task_submit/#delete_specific_fields
+ */
+export type DeleteFields = CommonTransferAndDeleteFields & {
+  DATA_TYPE: 'delete';
+  DATA: DeleteItem[];
+  endpoint: string;
+  ignore_missing?: boolean;
+  recursive?: boolean;
+  interpret_globs?: boolean;
+  local_user?: string;
+};
+
+/**
  * Submit a delete task. A delete submission contains a single endpoint and a
  * list of paths to delete.
  *
@@ -104,7 +192,7 @@ export const submitDelete = function (
     sdkOptions,
   );
 } satisfies ServiceMethod<{
-  payload: Omit<Transfer['Request']['Delete'], 'DATA_TYPE'>;
+  payload: Omit<DeleteFields, 'DATA_TYPE'>;
 }>;
 
 /**
@@ -135,7 +223,7 @@ export const submitTransfer = function (
     sdkOptions,
   );
 } satisfies ServiceMethod<{
-  payload: Omit<Transfer['Request']['Transfer'], 'DATA_TYPE'>;
+  payload: Omit<TransferFields, 'DATA_TYPE'>;
 }>;
 
 type SubmissionId = {
