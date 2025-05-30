@@ -67,7 +67,10 @@ exports[`compute.endpoints update 1`] = `
     "host": "compute.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
+  "json": {
+    "display_name": "New Display Name",
+  },
   "method": "PUT",
-  "url": "https://compute.api.globus.org/v2/endpoints/some-uuid",
+  "url": "https://compute.api.globus.org/v3/endpoints/some-uuid",
 }
 `;

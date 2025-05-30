@@ -38,7 +38,7 @@ describe('compute.endpoints', () => {
 
   test('update', async () => {
     const {
-      req: { url, method, headers },
+      req: { url, method, headers, json },
     } = await mirror(
       await endpoints.update('some-uuid', {
         payload: {
@@ -50,6 +50,7 @@ describe('compute.endpoints', () => {
       url,
       method,
       headers,
+      json,
     }).toMatchSnapshot();
   });
 

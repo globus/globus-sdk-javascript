@@ -109,7 +109,7 @@ export const update = function (
     {
       service: ID,
       scope: SCOPES.ALL,
-      path: `/v2/endpoints/${endpoint_uuid}`,
+      path: `/v3/endpoints/${endpoint_uuid}`,
       method: HTTP_METHODS.PUT,
     },
     options,
