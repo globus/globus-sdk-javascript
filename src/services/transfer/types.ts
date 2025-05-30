@@ -5,7 +5,7 @@ import { EndpointDocument } from './service/endpoint.js';
 /**
  * @see https://docs.globus.org/api/transfer/overview/#errors
  */
-export type TransferErrorDocument = {
+export type ErrorDocument = {
   code: string;
   message: string;
   request_id: string;
@@ -87,6 +87,7 @@ export type EndpointRole =
  * service methods that use them, and should not be defined here.
  *
  * @deprecated Use service method co-located types instead.
+ * @private
  */
 export interface Operations
   extends Record<
@@ -134,83 +135,109 @@ export interface Operations
   };
 }
 
+/**
+ * Used to define query parameter types for the Transfer service.
+ * @private **Intended for internal service method definition only.**
+ *
+ * @param Parameters The allowed query parameters for the request.
+ * @param PaginationType The type of pagination the request uses, if any.
+ *                       If not specified, no pagination query parameters will be included.
+ * @param IncludeCommon Whether to include Transfer common query parameters as allowed query parameters.
+ *                      Defaults to `true`, which includes common query parameters.
+ *                      Set to `false` to exclude common query parameters.
+ *
+ * @example `TransferQueryParameters<{ endpoint_id: string }, 'Offset'>`
+ */
+export type TransferQueryParameters<
+  Parameters extends Record<string, unknown>,
+  PaginationType extends keyof Pagination | undefined = undefined,
+  IncludeCommon extends boolean = true,
+> = Parameters &
+  (PaginationType extends keyof Pagination ? Pagination[PaginationType]['Query'] : {}) &
+  (IncludeCommon extends true ? CommonQueryParameters : {});
+
+/**
+ * Add pagination response members to an object; Use for creating paginated responses in the Transfer service.
+ * @private **Intended for internal service method definition only.**
+ * @param PaginationType The type of pagination the response uses.
+ * @param Response The response to extend with the pagination response.
+ * @example `PaginatedResponse<'Offset', { DATA_TYPE: 'task_list'; tasks: TaskDocument[] }>`
+ */
+export type PaginatedResponse<PaginationType, Response> = Response &
+  (PaginationType extends keyof Pagination ? Pagination[PaginationType]['Response'] : {});
+
+/**
+ * Pagination used by the Transfer service.
+ *
+ * Each pagination definition contains a `Query` and `Response` type.
+ * - The `Query` type is used to define the query parameters used by the pagination method.
+ * - The `Response` type is used to define the response properties returned by the pagination method (usually as
+ * top-level keys in the response body).
+ *
+ * Service methods **SHOULD** include the supported pagination members in their query parameters and response types, these
+ * are just made available as a convenience.
+ *
+ * @see https://docs.globus.org/api/transfer/overview/#paging
+ */
+export type Pagination = {
+  /**
+   * @see https://docs.globus.org/api/transfer/overview/#offset_paging
+   */
+  Offset: {
+    Query: {
+      limit?: `${number}` | number;
+      offset?: `${number}` | number;
+    };
+    Response: {
+      limit: number;
+      offset: number;
+      has_next_page: `${boolean}` | boolean;
+    };
+  };
+  /**
+   * @see https://docs.globus.org/api/transfer/overview/#marker_paging
+   */
+  Marker: {
+    Query: {
+      marker?: `${number}` | number;
+    };
+    Response: {
+      next_marker: number | null;
+    };
+  };
+  /**
+   * @see https://docs.globus.org/api/transfer/overview/#last_key_paging
+   */
+  LastKey: {
+    Query: {
+      limit?: `${number}` | number;
+      last_key: string;
+    };
+    Response: {
+      has_next_page: `${boolean}` | boolean;
+      last_key: string | null;
+      limit: number;
+    };
+  };
+  /**
+   * @see https://docs.globus.org/api/transfer/overview/#next_token_paging
+   */
+  NextToken: {
+    Query: {
+      next_token?: string;
+      max_results?: `${number}` | number;
+    };
+    Response: {
+      next_token: string | null;
+    };
+  };
+};
+
+/**
+ * @private
+ * @deprecated Move to co-located service method types.
+ */
 export interface Transfer {
-  /**
-   * Pagination used by the Transfer service.
-   *
-   * Each pagination definition contains a `Query` and `Response` type.
-   * - The `Query` type is used to define the query parameters used by the pagination method.
-   * - The `Response` type is used to define the response properties returned by the pagination method (usually as
-   * top-level keys in the response body).
-   *
-   * @see https://docs.globus.org/api/transfer/overview/#paging
-   */
-  Paging: {
-    /**
-     * @see https://docs.globus.org/api/transfer/overview/#offset_paging
-     */
-    Offset: {
-      Query: {
-        limit?: `${number}` | number;
-        offset?: `${number}` | number;
-      };
-      Response: {
-        limit: number;
-        offset: number;
-        has_next_page: `${boolean}` | boolean;
-      };
-    };
-    /**
-     * @see https://docs.globus.org/api/transfer/overview/#marker_paging
-     */
-    Marker: {
-      Query: {
-        marker?: `${number}` | number;
-      };
-      Response: {
-        next_marker: number | null;
-      };
-    };
-    /**
-     * @see https://docs.globus.org/api/transfer/overview/#last_key_paging
-     */
-    LastKey: {
-      Query: {
-        limit?: `${number}` | number;
-        last_key: string;
-      };
-      Response: {
-        has_next_page: `${boolean}` | boolean;
-        last_key: string | null;
-        limit: number;
-      };
-    };
-    /**
-     * @see https://docs.globus.org/api/transfer/overview/#next_token_paging
-     */
-    NextToken: {
-      Query: {
-        next_token?: string;
-        max_results?: `${number}` | number;
-      };
-      Response: {
-        next_token: string | null;
-      };
-    };
-  };
-
-  /**
-   * @see https://docs.globus.org/api/transfer/file_operations/#list_directory_contents
-   */
-  DirectoryListingQuery: {
-    path?: string;
-    show_hidden?: 'true' | 'false';
-    limit?: `${number}` | number;
-    offset?: `${number}` | number;
-    orderby?: string;
-    filter?: string;
-  };
-
   Request: {
     /**
      * Common fields for Transfer and Delete requests.

@@ -1,6 +1,6 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
-import { Transfer } from '../types.js';
+import { TransferQueryParameters } from '../types.js';
 
 import type { ServiceMethodDynamicSegments, JSONFetchResponse } from '../../../services/types.js';
 
@@ -30,7 +30,7 @@ export type AccessListDocument = {
 };
 
 /**
- * @see https://docs.globus.org/api/transfer/acl/#rest_access_get_list
+ * @see https://docs.globus.org/api/transfer/permissions/#get_permission_list
  */
 export const getAll = function (
   endpoint_xid,
@@ -49,13 +49,13 @@ export const getAll = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Transfer['Paging']['Offset']['Query'];
+    query?: TransferQueryParameters<{}, 'Offset'>;
     payload?: never;
   }
 >;
 
 /**
- * @see https://docs.globus.org/api/transfer/acl/#rest_access_create
+ * @see https://docs.globus.org/api/transfer/permissions/#create_permission
  */
 export const create = function (
   endpoint_xid,
@@ -80,7 +80,7 @@ export const create = function (
 >;
 
 /**
- * @see https://docs.globus.org/api/transfer/acl/#get_access_rule_by_id
+ * @see https://docs.globus.org/api/transfer/permissions/#get_permission_by_id
  */
 export const get = function (
   { endpoint_xid, id },
@@ -105,7 +105,7 @@ export const get = function (
 >;
 
 /**
- * @see https://docs.globus.org/api/transfer/acl/#update_access_rule
+ * @see https://docs.globus.org/api/transfer/permissions/#update_permission
  */
 export const update = function (
   { endpoint_xid, id },
@@ -139,7 +139,7 @@ export const update = function (
 >;
 
 /**
- * @see https://docs.globus.org/api/transfer/acl/#delete_access_rule
+ * @see https://docs.globus.org/api/transfer/permissions/#delete_permissoin
  */
 export const remove = function (
   { endpoint_xid, id },

@@ -8,7 +8,7 @@ import type {
   JSONFetchResponse,
 } from '../../../services/types.js';
 
-import type { Transfer } from '../types.js';
+import type { PaginatedResponse, TransferQueryParameters } from '../types.js';
 import { PauseRuleDocument } from './endpoint-manager/pause-rule.js';
 
 export type TaskDocument = {
@@ -91,7 +91,7 @@ export type TaskListDocument = {
 export const getAll = function (
   options = {},
   sdkOptions?,
-): Promise<JSONFetchResponse<TaskListDocument & Transfer['Paging']['Offset']['Response']>> {
+): Promise<JSONFetchResponse<PaginatedResponse<TaskListDocument, 'Offset'>>> {
   return serviceRequest(
     {
       service: ID,
@@ -102,7 +102,7 @@ export const getAll = function (
     sdkOptions,
   );
 } satisfies ServiceMethod<{
-  query?: Transfer['Paging']['Offset']['Query'];
+  query?: TransferQueryParameters<{}, 'Offset'>;
   headers?: Record<string, string>;
   payload?: never;
 }>;
@@ -243,7 +243,7 @@ export const getEventList = function (
   task_id,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<TaskEventListDocument & Transfer['Paging']['Offset']['Response']>> {
+): Promise<JSONFetchResponse<PaginatedResponse<TaskEventListDocument, 'Offset'>>> {
   return serviceRequest(
     {
       service: ID,
@@ -256,7 +256,7 @@ export const getEventList = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Transfer['Paging']['Offset']['Query'];
+    query?: TransferQueryParameters<{}, 'Offset'>;
     headers?: Record<string, string>;
     payload?: never;
   }
@@ -304,7 +304,7 @@ export const getSuccessfulTransfers = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Transfer['Paging']['Marker']['Query'];
+    query?: TransferQueryParameters<{}, 'Marker'>;
     headers?: Record<string, string>;
     payload?: never;
   }
@@ -343,9 +343,7 @@ export const getSkippedErrors = function (
   task_id,
   options?,
   sdkOptions?,
-): Promise<
-  JSONFetchResponse<SkippedErrorsListDocument & Transfer['Paging']['Marker']['Response']>
-> {
+): Promise<JSONFetchResponse<PaginatedResponse<SkippedErrorsListDocument, 'Marker'>>> {
   return serviceRequest(
     {
       service: ID,
@@ -358,7 +356,7 @@ export const getSkippedErrors = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Transfer['Paging']['Marker']['Query'];
+    query?: TransferQueryParameters<{}, 'Marker'>;
     headers?: Record<string, string>;
     payload?: never;
   }

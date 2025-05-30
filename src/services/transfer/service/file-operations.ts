@@ -2,7 +2,7 @@ import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 import { getHeadersForService } from '../shared.js';
 import { ID, SCOPES } from '../config.js';
 
-import type { Transfer, TransferErrorDocument } from '../types.js';
+import type { ErrorDocument, Transfer, TransferQueryParameters } from '../types.js';
 import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../types.js';
 import { ConsentRequiredError } from '../../../core/errors.js';
 
@@ -49,7 +49,7 @@ export type FileListDocument = {
 /**
  * @see https://docs.globus.org/api/transfer/file_operations/#errors
  */
-export type DirectoryListingError = TransferErrorDocument &
+export type DirectoryListingError = ErrorDocument &
   (
     | ConsentRequiredError
     | {
@@ -64,6 +64,14 @@ export type DirectoryListingError = TransferErrorDocument &
           | string;
       }
   );
+
+export type DirectoryListingQuery = TransferQueryParameters<
+  {
+    path?: string;
+    show_hidden?: 'true' | 'false';
+  },
+  'Offset'
+>;
 
 /**
  * List the contents of the directory at the specified path on an endpoint’s filesystem.
@@ -88,7 +96,7 @@ export const ls = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Transfer['DirectoryListingQuery'];
+    query?: DirectoryListingQuery;
   }
 >;
 

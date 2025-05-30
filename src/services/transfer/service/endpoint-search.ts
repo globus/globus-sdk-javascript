@@ -2,7 +2,7 @@ import { serviceRequest } from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
 
 import type { ServiceMethod } from '../../../services/types.js';
-import type { EntityType, Transfer, CommonQueryParameters } from '../types.js';
+import type { EntityType, TransferQueryParameters } from '../types.js';
 
 /**
  * @see https://docs.globus.org/api/transfer/endpoint_search/#search_scope
@@ -21,15 +21,17 @@ export type EndpointSearchScope =
 /**
  * @see https://docs.globus.org/api/transfer/endpoint_search/#endpoint_search
  */
-export type EndpointSearchQuery = CommonQueryParameters &
-  Transfer['Paging']['Offset']['Query'] & {
+export type EndpointSearchQuery = TransferQueryParameters<
+  {
     filter_scope?: EndpointSearchScope;
     filter_entity_type?: EntityType;
     filter_fulltext?: string;
     filter_owner_id?: string;
     filter_host_endpoint?: string;
     filter_non_functional?: 0 | 1 | null;
-  };
+  },
+  'Offset'
+>;
 
 /**
  * Get a list of endpoints matching the search filters in a given search scope.
