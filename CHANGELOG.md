@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.9.0](https://github.com/globus/globus-sdk-javascript/compare/v5.8.0...v5.9.0) (2025-05-30)
+
+
+### Features
+
+* **Compute:** Adds `endpoint.update` and `remove` methods ([#524](https://github.com/globus/globus-sdk-javascript/issues/524)) ([6ee61ff](https://github.com/globus/globus-sdk-javascript/commit/6ee61ffb64cdbc9c76615605bef5d6054f45e992))
+* **Typescript:** Use internal, OpenAPI-generated, types for Compute, GCS, Groups, and Timer. ([#447](https://github.com/globus/globus-sdk-javascript/issues/447)) ([7c98b08](https://github.com/globus/globus-sdk-javascript/commit/7c98b08d4ea6f684e46b40904f1a432a56b9d629))
+
 ## [5.8.0](https://github.com/globus/globus-sdk-javascript/compare/v5.7.0...v5.8.0) (2025-05-29)
 
 
