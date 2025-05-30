@@ -52,6 +52,11 @@ export type ServerDocument = {
   is_paused: boolean;
 };
 
+type GuestCollectionActivityNotificationPolicy = {
+  status: Array<'SUCCEEDED' | 'FAILED'>;
+  transfer_use: Array<'source' | 'destination'>;
+};
+
 /**
  * @see https://docs.globus.org/api/transfer/endpoints_and_collections/#endpoint_or_collection_document
  */
@@ -66,7 +71,7 @@ export type EndpointDocument = {
   /**
    * @deprecated
    */
-  name: string | null;
+  name: string;
   /**
    * @deprecated use `id` instead in API requests, and use `display_name`
    *             to display to users.
@@ -86,8 +91,10 @@ export type EndpointDocument = {
   user_message_link: string | null;
   public: boolean;
   subscription_id: string | null;
+  subscription_admin_verified: boolean;
   french_english_bilingual: boolean;
   default_directory: string | null;
+  guest_collection_activity_notification_policy: GuestCollectionActivityNotificationPolicy | null;
   force_encryption: boolean;
   disable_verify: boolean;
   disable_anonymous_writes: boolean;
@@ -97,11 +104,11 @@ export type EndpointDocument = {
   /**
    * @deprecated GCSv4-specific property - no longer supported
    */
-  expire_time: null;
+  expire_time: null | string;
   /**
    * @deprecated GCSv4-specific property - no longer supported
    */
-  expires_in: null;
+  expires_in: -1 | 0 | number;
   /**
    * @deprecated GCSv4-specific property - no longer supported
    */
@@ -120,7 +127,9 @@ export type EndpointDocument = {
   oauth_server: string | null;
   requester_pays: boolean;
   /**
-   * @deprecated - use entity_type intead
+   * `true` if the endpoint was created for Globus Connect Personal, `false` otherwise.
+   *
+   *  @deprecated use `entity_type` instead.
    */
   is_globus_connect: boolean;
   gcs_version: string | null;
@@ -144,7 +153,7 @@ export type EndpointDocument = {
    */
   s3_owner_activated: false;
   /**
-   * @deprecated GCSv4-specific property - use entity_type instead
+   * @deprecated GCSv4-specific property - no longer supported
    */
   acl_available: boolean;
   /**
@@ -155,32 +164,70 @@ export type EndpointDocument = {
   my_effective_roles: Array<EndpointRole | 'restricted_administrator'>;
   gcp_connected: boolean | null;
   gcp_paused: boolean | null;
-  network_use: 'normal' | 'minimal' | 'aggressive' | 'custom' | null;
+  network_use: null | 'normal' | 'minimal' | 'aggressive' | 'custom';
   location: string | null;
-  max_concurrency: number | null;
-  preferred_concurrency: number | null;
-  max_parallelism: number | null;
-  preferred_parallelism: number | null;
+  max_concurrency: null | number;
+  preferred_concurrency: null | number;
+  max_parallelism: null | number;
+  preferred_parallelism: null | number;
   /**
    * @deprecated GCSv4-specific property - no longer supported
    */
-  local_user_info_available: boolean | null;
-  https_server: string | null;
-  gcs_manager_url: `${string}://${string}` | null;
-  tlsftp_server: `tlsftp://${string}:${string}` | null;
+  local_user_info_available: null | boolean;
+  https_server: null | string;
+  tlsftp_server: null | string;
+  gcs_manager_url: null | `${string}://${string}`;
   high_assurance: boolean;
-  acl_max_expiration_period_mins: number | null;
   authentication_timeout_mins: number | null;
+  authentication_policy_id: string | null;
+  acl_max_expiration_period_mins: number | null;
   /**
    * @deprecated use `high_assurance` and `authentication_timeout_mins` instead.
    */
-  authentication_assurance_timeout: number;
+  authentication_assurance_timeout: number | null;
+  /**
+   * The number of days the endpoint has been configured to be auto-deleted after.
+   * **NOT** the number of days until deletion (must be calculated).
+   *
+   * - Set on Mapped Collections
+   * - Readable on Mapped and Guest Collections (inherited from Mapped Collection)
+   * @example 2
+   */
+  auto_delete_timeout: number | null;
+  /**
+   * @example 2025-03-06T00:00:00+00:00
+   */
+  last_accessed_time: string | null;
   non_functional: boolean;
   non_functional_endpoint_id: string | null;
   non_functional_endpoint_display_name: string | null;
   mapped_collection_id: string | null;
   mapped_collection_display_name: string | null;
-  last_accessed_time: string | null;
+  /**
+   * @deprecated use `entity_type` instead.
+   */
+  shareable: boolean;
+  /**
+   * @deprecated use `host_endpoint_id` instead.
+   */
+  sharing_target_endpoint: string | null;
+  /**
+   * @deprecated use `host_path` instead.
+   */
+  sharing_target_root_path: string | null;
+  /**
+   * Whether or not this endpoint will be skipped during auto-deletion.
+   * If this is specified, `auto_delete_timeout` should be ignored.
+   * - Only set on Guest Collections
+   */
+  skip_auto_delete: boolean | null;
+  restrict_transfers_to_high_assurance: 'inbound' | 'outbound' | 'all' | null;
+  associated_flow_policy: {
+    transfer?: {
+      destination?: { flow?: string | null };
+      source?: { flow?: string | null };
+    };
+  } | null;
 };
 
 export type EndpointListDocument = {
