@@ -267,7 +267,7 @@ export const getEventList = function (
  * role permissions for either side of the transfer.
  * @see https://docs.globus.org/api/transfer/task/#successful_transfer_fields
  */
-export type SuccessfulTransfersDocument = {
+export type SuccessfulTransferDocument = {
   DATA_TYPE: 'successful_transfer';
   source_path: string | null;
   destination_path: string | null;
@@ -281,7 +281,7 @@ export type SuccessfulTransfersListDocument = {
   DATA_TYPE: 'successful_transfers';
   marker: number;
   next_marker: null | number;
-  DATA: SuccessfulTransfersDocument[];
+  DATA: SuccessfulTransferDocument[];
 };
 
 /**
@@ -315,7 +315,7 @@ export const getSuccessfulTransfers = function (
  * role permissions for either side of the transfer.
  * @see https://docs.globus.org/api/transfer/task/#skipped_error_fields
  */
-export type SkippedErrorsDocument = {
+export type SkippedErrorDocument = {
   DATA_TYPE: 'skipped_error';
   error_code: 'PERMISSION_DENIED' | 'FILE_NOT_FOUND';
   error_details: string;
@@ -333,7 +333,7 @@ export type SkippedErrorsListDocument = {
   DATA_TYPE: 'skipped_errors';
   marker: number;
   next_marker: null | number;
-  DATA: SkippedErrorsDocument[];
+  DATA: SkippedErrorDocument[];
 };
 
 /**
