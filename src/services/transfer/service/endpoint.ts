@@ -6,9 +6,173 @@ import type {
   JSONFetchResponse,
   ServiceMethod,
 } from '../../../services/types.js';
-import type { Operations } from '../types.js';
+import type { EndpointRole, EntityType, Operations } from '../types.js';
 
-export type GetResponse = Operations['GetEndpoint']['response'];
+/**
+ * @see https://docs.globus.org/api/transfer/endpoints_and_collections/#server_document
+ */
+export type ServerDocument = {
+  DATA_TYPE: 'server';
+  id: number;
+  hostname: null | string;
+  port: null | number;
+  scheme: null | 'ftp' | 'gsiftp';
+  subject: null | string;
+  incoming_data_port_start: null | number;
+  incoming_data_port_end: null | number;
+  outgoing_data_port_start: null | number;
+  outgoing_data_port_end: null | number;
+  /**
+   * @deprecated
+   */
+  uri: string;
+  /**
+   * @deprecated
+   */
+  is_connected: boolean;
+  /**
+   * @deprecated
+   */
+  is_paused: boolean;
+};
+
+/**
+ * @see https://docs.globus.org/api/transfer/endpoints_and_collections/#endpoint_or_collection_document
+ */
+export type EndpointDocument = {
+  DATA_TYPE: 'endpoint';
+  DATA?: ServerDocument[];
+  id: string;
+  display_name: string;
+  organization: string | null;
+  department: string | null;
+  keywords: string | null;
+  /**
+   * @deprecated
+   */
+  name: string | null;
+  /**
+   * @deprecated use `id` instead in API requests, and use `display_name`
+   *             to display to users.
+   */
+  canonical_name: string;
+  /**
+   * @deprecated use `owner_id` or `owner_string` instead.
+   */
+  username: string;
+  owner_id: string;
+  owner_string: string;
+  description: string | null;
+  contact_email: string | null;
+  contact_info: string | null;
+  info_link: string | null;
+  user_message: string | null;
+  user_message_link: string | null;
+  public: boolean;
+  subscription_id: string | null;
+  french_english_bilingual: boolean;
+  default_directory: string | null;
+  force_encryption: boolean;
+  disable_verify: boolean;
+  disable_anonymous_writes: boolean;
+  entity_type: EntityType;
+  force_verify: boolean;
+  mfa_required: boolean;
+  /**
+   * @deprecated GCSv4-specific property - no longer supported
+   */
+  expire_time: null;
+  /**
+   * @deprecated GCSv4-specific property - no longer supported
+   */
+  expires_in: null;
+  /**
+   * @deprecated GCSv4-specific property - no longer supported
+   */
+  activated: boolean;
+  /**
+   * @deprecated GCSv4-specific property - no longer supported
+   */
+  myproxy_server: string | null;
+  /**
+   * @deprecated GCSv4-specific property - no longer supported
+   */
+  myproxy_dn: string | null;
+  /**
+   * @deprecated GCSv4-specific property - no longer supported
+   */
+  oauth_server: string | null;
+  requester_pays: boolean;
+  /**
+   * @deprecated - use entity_type intead
+   */
+  is_globus_connect: boolean;
+  gcs_version: string | null;
+  globus_connect_setup_key: string | null;
+  /**
+   * @deprecated use `host_endpoint_id` and `host_endpoint_display_name`
+   */
+  host_endpoint: string | null;
+  /**
+   * UUID of standard endpoint hosting the shared endpoint; `null` for non-shared endpoints.
+   */
+  host_endpoint_id: string | null;
+  host_endpoint_display_name: string | null;
+  host_path: string | null;
+  /**
+   * @deprecated
+   */
+  s3_url: null;
+  /**
+   * @deprecated
+   */
+  s3_owner_activated: false;
+  /**
+   * @deprecated GCSv4-specific property - use entity_type instead
+   */
+  acl_available: boolean;
+  /**
+   * @deprecated use `my_effective_roles` instead.
+   */
+  acl_editable: boolean;
+  in_use: boolean;
+  my_effective_roles: Array<EndpointRole | 'restricted_administrator'>;
+  gcp_connected: boolean | null;
+  gcp_paused: boolean | null;
+  network_use: 'normal' | 'minimal' | 'aggressive' | 'custom' | null;
+  location: string | null;
+  max_concurrency: number | null;
+  preferred_concurrency: number | null;
+  max_parallelism: number | null;
+  preferred_parallelism: number | null;
+  /**
+   * @deprecated GCSv4-specific property - no longer supported
+   */
+  local_user_info_available: boolean | null;
+  https_server: string | null;
+  gcs_manager_url: `${string}://${string}` | null;
+  tlsftp_server: `tlsftp://${string}:${string}` | null;
+  high_assurance: boolean;
+  acl_max_expiration_period_mins: number | null;
+  authentication_timeout_mins: number | null;
+  /**
+   * @deprecated use `high_assurance` and `authentication_timeout_mins` instead.
+   */
+  authentication_assurance_timeout: number;
+  non_functional: boolean;
+  non_functional_endpoint_id: string | null;
+  non_functional_endpoint_display_name: string | null;
+  mapped_collection_id: string | null;
+  mapped_collection_display_name: string | null;
+  last_accessed_time: string | null;
+};
+
+export type EndpointListDocument = {
+  DATA_TYPE: 'endpoint_list';
+  DATA: EndpointDocument[];
+  length: number;
+};
+
 /**
  * Fetch an endpoint by its UUID.
  */
@@ -16,7 +180,7 @@ export const get = function (
   endpoint_xid,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<GetResponse>> {
+): Promise<JSONFetchResponse<EndpointDocument>> {
   return serviceRequest(
     {
       service: ID,

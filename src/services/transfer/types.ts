@@ -1,5 +1,6 @@
 import { AuthorizationRequirementsError } from '../../core/errors.js';
 import { ExtractKeys, Segment } from '../types.js';
+import { EndpointDocument } from './service/endpoint.js';
 
 /**
  * @see https://docs.globus.org/api/transfer/overview/#errors
@@ -19,8 +20,6 @@ export type TransferErrorDocument = {
  * @see https://docs.globus.org/api/transfer/overview/#common_query_parameters
  */
 export type CommonQueryParameters = {
-  limit?: number;
-  offset?: number;
   orderby?: string;
   fields?: string;
   filter?: string;
@@ -37,7 +36,7 @@ export type EntityType =
  * @see https://docs.globus.org/api/transfer/gcp_management/#update_collection_by_id
  */
 type GuestCollectionUpdatableField = ExtractKeys<
-  Components['schemas']['Endpoint'],
+  EndpointDocument,
   | 'acl_max_expiration_period_mins'
   | 'display_name'
   | 'organization'
@@ -57,7 +56,7 @@ type GuestCollectionUpdatableField = ExtractKeys<
  * @see https://docs.globus.org/api/transfer/gcp_management/#update_collection_by_id
  */
 type MappedCollectionUpdatableField = ExtractKeys<
-  Components['schemas']['Endpoint'],
+  EndpointDocument,
   | GuestCollectionUpdatableField
   | 'authentication_timeout_mins'
   | 'subscription_id'
@@ -75,168 +74,20 @@ type MappedCollectionUpdatableField = ExtractKeys<
 /**
  * @see https://docs.globus.org/api/transfer/endpoint_roles/
  */
-type EndpointRole = 'administrator' | 'access_manager' | 'activity_manager' | 'activity_monitor';
+export type EndpointRole =
+  | 'administrator'
+  | 'access_manager'
+  | 'activity_manager'
+  | 'activity_monitor';
 
-export interface Components {
-  schemas: {
-    /**
-     * @see https://docs.globus.org/api/transfer/endpoints_and_collections/#endpoint_or_collection_document
-     */
-    Endpoint: {
-      DATA_TYPE: 'endpoint';
-      DATA?: Components['schemas']['Server'][];
-      id: string;
-      display_name: string;
-      organization: string | null;
-      department: string | null;
-      keywords: string | null;
-      /**
-       * @deprecated
-       */
-      name: string | null;
-      /**
-       * @deprecated use `id` instead in API requests, and use `display_name`
-       *             to display to users.
-       */
-      canonical_name: string;
-      /**
-       * @deprecated use `owner_id` or `owner_string` instead.
-       */
-      username: string;
-      owner_id: string;
-      owner_string: string;
-      description: string | null;
-      contact_email: string | null;
-      contact_info: string | null;
-      info_link: string | null;
-      user_message: string | null;
-      user_message_link: string | null;
-      public: boolean;
-      subscription_id: string | null;
-      french_english_bilingual: boolean;
-      default_directory: string | null;
-      force_encryption: boolean;
-      disable_verify: boolean;
-      disable_anonymous_writes: boolean;
-      entity_type: EntityType;
-      force_verify: boolean;
-      mfa_required: boolean;
-      /**
-       * @deprecated GCSv4-specific property - no longer supported
-       */
-      expire_time: null;
-      /**
-       * @deprecated GCSv4-specific property - no longer supported
-       */
-      expires_in: null;
-      /**
-       * @deprecated GCSv4-specific property - no longer supported
-       */
-      activated: boolean;
-      /**
-       * @deprecated GCSv4-specific property - no longer supported
-       */
-      myproxy_server: string | null;
-      /**
-       * @deprecated GCSv4-specific property - no longer supported
-       */
-      myproxy_dn: string | null;
-      /**
-       * @deprecated GCSv4-specific property - no longer supported
-       */
-      oauth_server: string | null;
-      requester_pays: boolean;
-      /**
-       * @deprecated - use entity_type intead
-       */
-      is_globus_connect: boolean;
-      gcs_version: string | null;
-      globus_connect_setup_key: string | null;
-      /**
-       * @deprecated use `host_endpoint_id` and `host_endpoint_display_name`
-       */
-      host_endpoint: string | null;
-      /**
-       * UUID of standard endpoint hosting the shared endpoint; `null` for non-shared endpoints.
-       */
-      host_endpoint_id: string | null;
-      host_endpoint_display_name: string | null;
-      host_path: string | null;
-      /**
-       * @deprecated
-       */
-      s3_url: null;
-      /**
-       * @deprecated
-       */
-      s3_owner_activated: false;
-      /**
-       * @deprecated GCSv4-specific property - use entity_type instead
-       */
-      acl_available: boolean;
-      /**
-       * @deprecated use `my_effective_roles` instead.
-       */
-      acl_editable: boolean;
-      in_use: boolean;
-      my_effective_roles: Array<EndpointRole | 'restricted_administrator'>;
-      gcp_connected: boolean | null;
-      gcp_paused: boolean | null;
-      network_use: 'normal' | 'minimal' | 'aggressive' | 'custom' | null;
-      location: string | null;
-      max_concurrency: number | null;
-      preferred_concurrency: number | null;
-      max_parallelism: number | null;
-      preferred_parallelism: number | null;
-      /**
-       * @deprecated GCSv4-specific property - no longer supported
-       */
-      local_user_info_available: boolean | null;
-      https_server: string | null;
-      gcs_manager_url: `${string}://${string}` | null;
-      tlsftp_server: `tlsftp://${string}:${string}` | null;
-      high_assurance: boolean;
-      acl_max_expiration_period_mins: number | null;
-      authentication_timeout_mins: number | null;
-      /**
-       * @deprecated use `high_assurance` and `authentication_timeout_mins` instead.
-       */
-      authentication_assurance_timeout: number;
-      non_functional: boolean;
-      non_functional_endpoint_id: string | null;
-      non_functional_endpoint_display_name: string | null;
-      mapped_collection_id: string | null;
-      mapped_collection_display_name: string | null;
-      last_accessed_time: string | null;
-    };
-
-    Server: {
-      DATA_TYPE: 'server';
-      id: number;
-      hostname: null | string;
-      port: null | number;
-      scheme: null | 'ftp' | 'gsiftp';
-      subject: null | string;
-      incoming_data_port_start: null | number;
-      incoming_data_port_end: null | number;
-      outgoing_data_port_start: null | number;
-      outgoing_data_port_end: null | number;
-      /**
-       * @deprecated
-       */
-      uri: string;
-      /**
-       * @deprecated
-       */
-      is_connected: boolean;
-      /**
-       * @deprecated
-       */
-      is_paused: boolean;
-    };
-  };
-}
-
+/**
+ * Mimics the OpenAPI generated types for Transfer (does not provide OpenAPI spec).
+ *
+ * The usage (and expansion) of this interface is deprecated. Types should be defined, and exported, in the
+ * service methods that use them, and should not be defined here.
+ *
+ * @deprecated Use service method co-located types instead.
+ */
 export interface Operations
   extends Record<
     string,
@@ -246,12 +97,8 @@ export interface Operations
       payload?: any;
     }
   > {
-  GetEndpoint: {
-    parameters: string;
-    response: Components['schemas']['Endpoint'];
-  };
   CreateEndpoint: {
-    payload: Partial<Pick<Components['schemas']['Endpoint'], GuestCollectionUpdatableField>> & {
+    payload: Partial<Pick<EndpointDocument, GuestCollectionUpdatableField>> & {
       DATA_TYPE?: 'shared_endpoint';
       host_endpoint_id: string;
       host_path: string;
@@ -267,9 +114,7 @@ export interface Operations
     };
   };
   UpdateEndpoint: {
-    payload: Partial<
-      Pick<Components['schemas']['Endpoint'], MappedCollectionUpdatableField | 'DATA_TYPE'>
-    >;
+    payload: Partial<Pick<EndpointDocument, MappedCollectionUpdatableField | 'DATA_TYPE'>>;
     response: {
       DATA_TYPE: 'result';
       code: 'Updated';

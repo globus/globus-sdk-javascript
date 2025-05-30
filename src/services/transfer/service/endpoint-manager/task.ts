@@ -118,7 +118,7 @@ export const get = function (
 /**
  * @see https://docs.globus.org/api/transfer/advanced_collection_management/#admin_cancel_document
  */
-type AdminCancelDocument = {
+export type AdminCancelDocument = {
   DATA_TYPE: 'admin_cancel';
   id: number;
   message: string;

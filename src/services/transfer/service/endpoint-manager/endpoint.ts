@@ -6,16 +6,9 @@ import type {
   JSONFetchResponse,
   ServiceMethod,
 } from '../../../../services/types.js';
-import type { Transfer, Components } from '../../types.js';
+import type { Transfer } from '../../types.js';
 import type { AccessListDocument } from '../access.js';
-
-type EndpointDocument = Components['schemas']['Endpoint'];
-
-type EndpointListDocument = {
-  DATA_TYPE: 'endpoint_list';
-  DATA: EndpointDocument[];
-  length: number;
-};
+import { EndpointDocument, EndpointListDocument } from '../endpoint.js';
 
 /**
  * Fetch an endpoint by its UUID as an administrator.
