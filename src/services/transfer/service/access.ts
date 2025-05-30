@@ -1,6 +1,6 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
-import { TransferQueryParameters } from '../types.js';
+import { QueryParameters } from '../types.js';
 
 import type { ServiceMethodDynamicSegments, JSONFetchResponse } from '../../../services/types.js';
 
@@ -49,7 +49,7 @@ export const getAll = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: TransferQueryParameters<{}, 'Offset'>;
+    query?: QueryParameters<{}, 'Offset'>;
     payload?: never;
   }
 >;

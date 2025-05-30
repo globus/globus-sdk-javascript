@@ -146,9 +146,9 @@ export interface Operations
  *                      Defaults to `true`, which includes common query parameters.
  *                      Set to `false` to exclude common query parameters.
  *
- * @example `TransferQueryParameters<{ endpoint_id: string }, 'Offset'>`
+ * @example `QueryParameters<{ endpoint_id: string }, 'Offset'>`
  */
-export type TransferQueryParameters<
+export type QueryParameters<
   Parameters extends Record<string, unknown>,
   PaginationType extends keyof Pagination | undefined = undefined,
   IncludeCommon extends boolean = true,

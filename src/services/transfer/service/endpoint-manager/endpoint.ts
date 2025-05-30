@@ -6,7 +6,7 @@ import type {
   JSONFetchResponse,
   ServiceMethod,
 } from '../../../../services/types.js';
-import type { PaginatedResponse, TransferQueryParameters } from '../../types.js';
+import type { PaginatedResponse, QueryParameters } from '../../types.js';
 import type { AccessListDocument } from '../access.js';
 import { EndpointDocument, EndpointListDocument } from '../endpoint.js';
 
@@ -56,7 +56,7 @@ export const getHostedEndpoints = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: TransferQueryParameters<{}, 'Offset'>;
+    query?: QueryParameters<{}, 'Offset'>;
     payload?: never;
   }
 >;
@@ -81,7 +81,7 @@ export const getAccessList = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: TransferQueryParameters<{}, 'Offset'>;
+    query?: QueryParameters<{}, 'Offset'>;
     payload?: never;
   }
 >;
@@ -112,6 +112,6 @@ export const getMonitoredEndpoints = function (
     sdkOptions,
   );
 } satisfies ServiceMethod<{
-  query?: TransferQueryParameters<{}, 'Offset'>;
+  query?: QueryParameters<{}, 'Offset'>;
   payload?: never;
 }>;

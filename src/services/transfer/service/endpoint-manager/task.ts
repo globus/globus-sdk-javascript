@@ -7,7 +7,7 @@ import type {
   JSONFetchResponse,
 } from '../../../../services/types.js';
 
-import type { PaginatedResponse, TransferQueryParameters } from '../../types.js';
+import type { PaginatedResponse, QueryParameters } from '../../types.js';
 import type {
   SkippedErrorsListDocument,
   SuccessfulTransfersDocument,
@@ -80,7 +80,7 @@ export const getAll = function (
     sdkOptions,
   );
 } satisfies ServiceMethod<{
-  query?: TransferQueryParameters<
+  query?: QueryParameters<
     {
       filter_status?: string;
       filter_task_id?: string;
@@ -210,7 +210,7 @@ export const getEventList = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: TransferQueryParameters<{ filter_is_error?: 1 }, 'Offset'>;
+    query?: QueryParameters<{ filter_is_error?: 1 }, 'Offset'>;
     payload?: never;
   }
 >;
@@ -235,7 +235,7 @@ export const getSuccessfulTransfers = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: TransferQueryParameters<{}, 'Marker'>;
+    query?: QueryParameters<{}, 'Marker'>;
     payload?: never;
   }
 >;
@@ -260,7 +260,7 @@ export const getSkippedErrors = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: TransferQueryParameters<{}, 'Marker'>;
+    query?: QueryParameters<{}, 'Marker'>;
     payload?: never;
   }
 >;

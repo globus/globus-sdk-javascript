@@ -2,7 +2,7 @@ import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 import { getHeadersForService } from '../shared.js';
 import { ID, SCOPES } from '../config.js';
 
-import type { ErrorDocument, Transfer, TransferQueryParameters } from '../types.js';
+import type { ErrorDocument, Transfer, QueryParameters } from '../types.js';
 import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../types.js';
 import { ConsentRequiredError } from '../../../core/errors.js';
 
@@ -65,7 +65,7 @@ export type DirectoryListingError = ErrorDocument &
       }
   );
 
-export type DirectoryListingQuery = TransferQueryParameters<
+export type DirectoryListingQuery = QueryParameters<
   {
     path?: string;
     show_hidden?: 'true' | 'false';

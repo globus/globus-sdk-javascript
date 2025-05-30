@@ -2,7 +2,7 @@ import { serviceRequest } from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
 
 import type { ServiceMethod } from '../../../services/types.js';
-import type { EntityType, TransferQueryParameters } from '../types.js';
+import type { EntityType, QueryParameters } from '../types.js';
 
 /**
  * @see https://docs.globus.org/api/transfer/endpoint_search/#search_scope
@@ -21,7 +21,7 @@ export type EndpointSearchScope =
 /**
  * @see https://docs.globus.org/api/transfer/endpoint_search/#endpoint_search
  */
-export type EndpointSearchQuery = TransferQueryParameters<
+export type EndpointSearchQuery = QueryParameters<
   {
     filter_scope?: EndpointSearchScope;
     filter_entity_type?: EntityType;

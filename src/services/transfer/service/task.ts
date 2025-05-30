@@ -8,7 +8,7 @@ import type {
   JSONFetchResponse,
 } from '../../../services/types.js';
 
-import type { PaginatedResponse, TransferQueryParameters } from '../types.js';
+import type { PaginatedResponse, QueryParameters } from '../types.js';
 import { PauseRuleDocument } from './endpoint-manager/pause-rule.js';
 
 export type TaskDocument = {
@@ -102,7 +102,7 @@ export const getAll = function (
     sdkOptions,
   );
 } satisfies ServiceMethod<{
-  query?: TransferQueryParameters<{}, 'Offset'>;
+  query?: QueryParameters<{}, 'Offset'>;
   headers?: Record<string, string>;
   payload?: never;
 }>;
@@ -256,7 +256,7 @@ export const getEventList = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: TransferQueryParameters<{}, 'Offset'>;
+    query?: QueryParameters<{}, 'Offset'>;
     headers?: Record<string, string>;
     payload?: never;
   }
@@ -304,7 +304,7 @@ export const getSuccessfulTransfers = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: TransferQueryParameters<{}, 'Marker'>;
+    query?: QueryParameters<{}, 'Marker'>;
     headers?: Record<string, string>;
     payload?: never;
   }
@@ -356,7 +356,7 @@ export const getSkippedErrors = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: TransferQueryParameters<{}, 'Marker'>;
+    query?: QueryParameters<{}, 'Marker'>;
     headers?: Record<string, string>;
     payload?: never;
   }
