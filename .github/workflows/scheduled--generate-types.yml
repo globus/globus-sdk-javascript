@@ -20,6 +20,7 @@ jobs:
         with:
           node-version: lts/iron
           cache: 'npm'
+      - run: npm ci
       - name: Generate Types
         run: npm run generate:types
       - name: Check for Changes
