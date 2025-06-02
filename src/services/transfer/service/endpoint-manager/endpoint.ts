@@ -56,7 +56,7 @@ export const getHostedEndpoints = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: QueryParameters<{}, 'Offset'>;
+    query?: QueryParameters<'Offset'>;
     payload?: never;
   }
 >;
@@ -81,7 +81,7 @@ export const getAccessList = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: QueryParameters<{}, 'Offset'>;
+    query?: QueryParameters<'Offset'>;
     payload?: never;
   }
 >;
@@ -112,6 +112,6 @@ export const getMonitoredEndpoints = function (
     sdkOptions,
   );
 } satisfies ServiceMethod<{
-  query?: QueryParameters<{}, 'Offset'>;
+  query?: QueryParameters<'Offset'>;
   payload?: never;
 }>;

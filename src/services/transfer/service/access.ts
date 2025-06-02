@@ -49,7 +49,7 @@ export const getAll = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: QueryParameters<{}, 'Offset'>;
+    query?: QueryParameters<'Offset'>;
     payload?: never;
   }
 >;

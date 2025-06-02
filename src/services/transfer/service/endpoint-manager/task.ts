@@ -235,7 +235,7 @@ export const getSuccessfulTransfers = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: QueryParameters<{}, 'Marker'>;
+    query?: QueryParameters<'Marker'>;
     payload?: never;
   }
 >;
@@ -260,7 +260,7 @@ export const getSkippedErrors = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: QueryParameters<{}, 'Marker'>;
+    query?: QueryParameters<'Marker'>;
     payload?: never;
   }
 >;

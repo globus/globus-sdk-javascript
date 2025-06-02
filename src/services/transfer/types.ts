@@ -27,20 +27,30 @@ export type CommonQueryParameters = {
  * Used to define query parameter types for the Transfer service.
  * @private **Intended for internal service method definition only.**
  *
- * @param Parameters The allowed query parameters for the request.
+ * @param Parameters The allowed query parameters for the request, `PaginationType` (if no custom parameters are supported), or `undefined` if only the common query parameters are supported.
  * @param PaginationType The type of pagination the request uses, if any.
  *                       If not specified, no pagination query parameters will be included.
  * @param IncludeCommon Whether to include Transfer common query parameters as allowed query parameters.
  *                      Defaults to `true`, which includes common query parameters.
  *                      Set to `false` to exclude common query parameters.
  *
- * @example `QueryParameters<{ endpoint_id: string }, 'Offset'>`
+ * @example `QueryParameters<'Marker'>` Supports marker pagination query parameters and common query parameters.
+ * @example `QueryParameters<{ endpoint_id: string }, 'Offset'>` Supports a custom query parameter `endpoint_id`, offset pagination, and common query parameters.
  */
 export type QueryParameters<
-  Parameters extends Record<string, unknown>,
+  Parameters extends Record<string, unknown> | keyof Pagination | undefined = Record<
+    string,
+    unknown
+  >,
   PaginationType extends keyof Pagination | undefined = undefined,
   IncludeCommon extends boolean = true,
-> = Parameters &
+> = (Parameters extends keyof Pagination
+  ? Pagination[Parameters] extends { Query: infer Q }
+    ? Q
+    : {}
+  : Parameters extends Record<string, unknown>
+    ? Parameters
+    : {}) &
   (PaginationType extends keyof Pagination ? Pagination[PaginationType]['Query'] : {}) &
   (IncludeCommon extends true ? CommonQueryParameters : {});
 
@@ -51,8 +61,8 @@ export type QueryParameters<
  * @param Response The response to extend with the pagination response.
  * @example `PaginatedResponse<'Offset', { DATA_TYPE: 'task_list'; tasks: TaskDocument[] }>`
  */
-export type PaginatedResponse<PaginationType, Response> = Response &
-  (PaginationType extends keyof Pagination ? Pagination[PaginationType]['Response'] : {});
+export type PaginatedResponse<Type, Response> = Response &
+  (Type extends keyof Pagination ? Pagination[Type]['Response'] : {});
 
 /**
  * Pagination used by the Transfer service.

@@ -102,7 +102,7 @@ export const getAll = function (
     sdkOptions,
   );
 } satisfies ServiceMethod<{
-  query?: QueryParameters<{}, 'Offset'>;
+  query?: QueryParameters<'Offset'>;
   headers?: Record<string, string>;
   payload?: never;
 }>;
@@ -256,7 +256,7 @@ export const getEventList = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: QueryParameters<{}, 'Offset'>;
+    query?: QueryParameters<'Offset'>;
     headers?: Record<string, string>;
     payload?: never;
   }
@@ -304,7 +304,7 @@ export const getSuccessfulTransfers = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: QueryParameters<{}, 'Marker'>;
+    query?: QueryParameters<'Marker'>;
     headers?: Record<string, string>;
     payload?: never;
   }
@@ -356,7 +356,7 @@ export const getSkippedErrors = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: QueryParameters<{}, 'Marker'>;
+    query?: QueryParameters<'Marker'>;
     headers?: Record<string, string>;
     payload?: never;
   }
