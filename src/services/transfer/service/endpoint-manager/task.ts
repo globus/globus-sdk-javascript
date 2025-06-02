@@ -7,10 +7,10 @@ import type {
   JSONFetchResponse,
 } from '../../../../services/types.js';
 
-import type { Transfer } from '../../types.js';
+import type { PaginatedResponse, QueryParameters } from '../../types.js';
 import type {
   SkippedErrorsListDocument,
-  SuccessfulTransfersDocument,
+  SuccessfulTransferDocument,
   TaskDocument,
   TaskEventListDocument,
 } from '../task.js';
@@ -61,10 +61,13 @@ export const getAll = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    {
-      DATA_TYPE: 'task_list';
-      DATA: EndpointManagerTaskDocument[];
-    } & Transfer['Paging']['LastKey']['Response']
+    PaginatedResponse<
+      'LastKey',
+      {
+        DATA_TYPE: 'task_list';
+        DATA: EndpointManagerTaskDocument[];
+      }
+    >
   >
 > {
   return serviceRequest(
@@ -77,16 +80,19 @@ export const getAll = function (
     sdkOptions,
   );
 } satisfies ServiceMethod<{
-  query?: {
-    filter_status?: string;
-    filter_task_id?: string;
-    filter_owner_id?: string;
-    filter_endpoint?: string;
-    filter_is_paused?: boolean;
-    filter_completion_time?: string;
-    filter_min_faults?: number;
-    filter_local_user?: string;
-  } & Transfer['Paging']['LastKey']['Query'];
+  query?: QueryParameters<
+    {
+      filter_status?: string;
+      filter_task_id?: string;
+      filter_owner_id?: string;
+      filter_endpoint?: string;
+      filter_is_paused?: boolean;
+      filter_completion_time?: string;
+      filter_min_faults?: number;
+      filter_local_user?: string;
+    },
+    'LastKey'
+  >;
   payload?: never;
 }>;
 
@@ -118,7 +124,7 @@ export const get = function (
 /**
  * @see https://docs.globus.org/api/transfer/advanced_collection_management/#admin_cancel_document
  */
-type AdminCancelDocument = {
+export type AdminCancelDocument = {
   DATA_TYPE: 'admin_cancel';
   id: number;
   message: string;
@@ -191,7 +197,7 @@ export const getEventList = function (
   task_id,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<TaskEventListDocument & Transfer['Paging']['Offset']['Response']>> {
+): Promise<JSONFetchResponse<PaginatedResponse<'Offset', TaskEventListDocument>>> {
   return serviceRequest(
     {
       service: ID,
@@ -204,7 +210,7 @@ export const getEventList = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Transfer['Paging']['Offset']['Query'] & { filter_is_error?: 1 };
+    query?: QueryParameters<{ filter_is_error?: 1 }, 'Offset'>;
     payload?: never;
   }
 >;
@@ -216,9 +222,7 @@ export const getSuccessfulTransfers = function (
   task_id,
   options?,
   sdkOptions?,
-): Promise<
-  JSONFetchResponse<SuccessfulTransfersDocument & Transfer['Paging']['Marker']['Response']>
-> {
+): Promise<JSONFetchResponse<PaginatedResponse<'Marker', SuccessfulTransferDocument>>> {
   return serviceRequest(
     {
       service: ID,
@@ -231,7 +235,7 @@ export const getSuccessfulTransfers = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Transfer['Paging']['Marker']['Query'];
+    query?: QueryParameters<'Marker'>;
     payload?: never;
   }
 >;
@@ -243,9 +247,7 @@ export const getSkippedErrors = function (
   task_id,
   options?,
   sdkOptions?,
-): Promise<
-  JSONFetchResponse<SkippedErrorsListDocument & Transfer['Paging']['Marker']['Response']>
-> {
+): Promise<JSONFetchResponse<PaginatedResponse<'Marker', SkippedErrorsListDocument>>> {
   return serviceRequest(
     {
       service: ID,
@@ -258,7 +260,7 @@ export const getSkippedErrors = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Transfer['Paging']['Marker']['Query'];
+    query?: QueryParameters<'Marker'>;
     payload?: never;
   }
 >;

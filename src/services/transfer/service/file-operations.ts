@@ -2,7 +2,7 @@ import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 import { getHeadersForService } from '../shared.js';
 import { ID, SCOPES } from '../config.js';
 
-import type { Transfer, TransferErrorDocument } from '../types.js';
+import type { ErrorDocument, QueryParameters } from '../types.js';
 import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../types.js';
 import { ConsentRequiredError } from '../../../core/errors.js';
 
@@ -49,7 +49,7 @@ export type FileListDocument = {
 /**
  * @see https://docs.globus.org/api/transfer/file_operations/#errors
  */
-export type DirectoryListingError = TransferErrorDocument &
+export type DirectoryListingError = ErrorDocument &
   (
     | ConsentRequiredError
     | {
@@ -64,6 +64,18 @@ export type DirectoryListingError = TransferErrorDocument &
           | string;
       }
   );
+
+/**
+ * @see https://docs.globus.org/api/transfer/file_operations/#directory_listing_query_parameters
+ */
+export type DirectoryListingQuery = QueryParameters<
+  {
+    path?: string;
+    show_hidden?: 'true' | 'false';
+    local_user?: string;
+  },
+  'Offset'
+>;
 
 /**
  * List the contents of the directory at the specified path on an endpoint’s filesystem.
@@ -88,7 +100,7 @@ export const ls = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Transfer['DirectoryListingQuery'];
+    query?: DirectoryListingQuery;
   }
 >;
 
@@ -122,7 +134,7 @@ export const mkdir = function (endpoint_xid, options, sdkOptions?) {
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    payload: Omit<Transfer['Request']['Mkdir'], 'DATA_TYPE'>;
+    payload: { path: string };
   }
 >;
 
@@ -158,7 +170,10 @@ export const rename = function (endpoint_xid, options, sdkOptions?) {
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    payload: Omit<Transfer['Request']['Rename'], 'DATA_TYPE'>;
+    payload: {
+      old_path: string;
+      new_path: string;
+    };
   }
 >;
 
@@ -192,7 +207,10 @@ export const symlink = function (endpoint_xid, options, sdkOptions?) {
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    payload: Omit<Transfer['Request']['Symlink'], 'DATA_TYPE'>;
+    payload: {
+      path: string;
+      symlink_target: string;
+    };
   }
 >;
 

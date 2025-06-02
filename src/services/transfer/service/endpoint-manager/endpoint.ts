@@ -6,16 +6,9 @@ import type {
   JSONFetchResponse,
   ServiceMethod,
 } from '../../../../services/types.js';
-import type { Transfer, Components } from '../../types.js';
+import type { PaginatedResponse, QueryParameters } from '../../types.js';
 import type { AccessListDocument } from '../access.js';
-
-type EndpointDocument = Components['schemas']['Endpoint'];
-
-type EndpointListDocument = {
-  DATA_TYPE: 'endpoint_list';
-  DATA: EndpointDocument[];
-  length: number;
-};
+import { EndpointDocument, EndpointListDocument } from '../endpoint.js';
 
 /**
  * Fetch an endpoint by its UUID as an administrator.
@@ -50,7 +43,7 @@ export const getHostedEndpoints = function (
   endpoint_xid,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<EndpointListDocument & Transfer['Paging']['Offset']['Response']>> {
+): Promise<JSONFetchResponse<PaginatedResponse<EndpointListDocument, 'Offset'>>> {
   return serviceRequest(
     {
       service: ID,
@@ -63,7 +56,7 @@ export const getHostedEndpoints = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Transfer['Paging']['Offset']['Query'];
+    query?: QueryParameters<'Offset'>;
     payload?: never;
   }
 >;
@@ -88,7 +81,7 @@ export const getAccessList = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Transfer['Paging']['Offset']['Query'];
+    query?: QueryParameters<'Offset'>;
     payload?: never;
   }
 >;
@@ -101,9 +94,12 @@ export const getMonitoredEndpoints = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    Omit<EndpointListDocument, 'DATA_TYPE'> & {
-      DATA_TYPE: 'monitored_endpoints';
-    } & Transfer['Paging']['Offset']['Response']
+    PaginatedResponse<
+      Omit<EndpointListDocument, 'DATA_TYPE'> & {
+        DATA_TYPE: 'monitored_endpoints';
+      },
+      'Offset'
+    >
   >
 > {
   return serviceRequest(
@@ -116,6 +112,6 @@ export const getMonitoredEndpoints = function (
     sdkOptions,
   );
 } satisfies ServiceMethod<{
-  query?: Transfer['Paging']['Offset']['Query'];
+  query?: QueryParameters<'Offset'>;
   payload?: never;
 }>;
