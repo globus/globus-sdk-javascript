@@ -65,10 +65,14 @@ export type DirectoryListingError = ErrorDocument &
       }
   );
 
+/**
+ * @see https://docs.globus.org/api/transfer/file_operations/#directory_listing_query_parameters
+ */
 export type DirectoryListingQuery = QueryParameters<
   {
     path?: string;
     show_hidden?: 'true' | 'false';
+    local_user?: string;
   },
   'Offset'
 >;
