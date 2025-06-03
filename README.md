@@ -9,25 +9,16 @@ The Globus SDK for JavaScript provides first class TypeScript support and makes 
 - [@globus/sdk API Documentation](https://globus.github.io/globus-sdk-javascript/)
 - [Examples](https://github.com/globus/globus-sdk-javascript/blob/main/examples/README.md)
 - [Upgrading](https://github.com/globus/globus-sdk-javascript/blob/main/UPGRADING.md)
+  - [Migrating from `v5` to `v6`](https://github.com/globus/globus-sdk-javascript/blob/main/UPGRADING.md#migrating-from-v5-to-v6)
   - [Migrating from `v4` to `v5`](https://github.com/globus/globus-sdk-javascript/blob/main/UPGRADING.md#migrating-from-v4-to-v5)
   - [Migrating from `v3` to `v4`](https://github.com/globus/globus-sdk-javascript/blob/main/UPGRADING.md#migrating-from-v3-to-v4)
 
 ## Installation
 
-If you are not using Typescript, you can install the SDK with the following command:
+You can install the SDK with the following command:
 
 ```sh
 npm install @globus/sdk
-```
-
-### Typescript
-
-**The `@globus/types` package is no longer required for TypeScript suppport when using `@globus/sdk` version 6.0.0 and later.**
-
-`@globus/sdk` is written in Typescript and includes type definitions for its internal types, Globus platform types (i.e., API responses) are provided by the `@globus/types` package and must be installed separately.
-
-```sh
-npm install @globus/sdk @globus/types
 ```
 
 ## Supported Platforms
