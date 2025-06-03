@@ -24,7 +24,7 @@ jobs:
         if: ${{ steps.release.outputs.releases_created == 'true' }}
       - uses: actions/setup-node@v4
         with:
-          node-version: lts/hydrogen
+          node-version: lts/jod
           registry-url: 'https://registry.npmjs.org'
           scope: '@globus'
         if: ${{ steps.release.outputs.releases_created == 'true' }}
