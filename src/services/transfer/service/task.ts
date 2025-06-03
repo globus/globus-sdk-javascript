@@ -8,7 +8,7 @@ import type {
   JSONFetchResponse,
 } from '../../../services/types.js';
 
-import type { Transfer } from '../types.js';
+import type { PaginatedResponse, QueryParameters } from '../types.js';
 import { PauseRuleDocument } from './endpoint-manager/pause-rule.js';
 
 export type TaskDocument = {
@@ -91,7 +91,7 @@ export type TaskListDocument = {
 export const getAll = function (
   options = {},
   sdkOptions?,
-): Promise<JSONFetchResponse<TaskListDocument & Transfer['Paging']['Offset']['Response']>> {
+): Promise<JSONFetchResponse<PaginatedResponse<TaskListDocument, 'Offset'>>> {
   return serviceRequest(
     {
       service: ID,
@@ -102,7 +102,7 @@ export const getAll = function (
     sdkOptions,
   );
 } satisfies ServiceMethod<{
-  query?: Transfer['Paging']['Offset']['Query'];
+  query?: QueryParameters<'Offset'>;
   headers?: Record<string, string>;
   payload?: never;
 }>;
@@ -243,7 +243,7 @@ export const getEventList = function (
   task_id,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<TaskEventListDocument & Transfer['Paging']['Offset']['Response']>> {
+): Promise<JSONFetchResponse<PaginatedResponse<TaskEventListDocument, 'Offset'>>> {
   return serviceRequest(
     {
       service: ID,
@@ -256,7 +256,7 @@ export const getEventList = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Transfer['Paging']['Offset']['Query'];
+    query?: QueryParameters<'Offset'>;
     headers?: Record<string, string>;
     payload?: never;
   }
@@ -267,7 +267,7 @@ export const getEventList = function (
  * role permissions for either side of the transfer.
  * @see https://docs.globus.org/api/transfer/task/#successful_transfer_fields
  */
-export type SuccessfulTransfersDocument = {
+export type SuccessfulTransferDocument = {
   DATA_TYPE: 'successful_transfer';
   source_path: string | null;
   destination_path: string | null;
@@ -281,7 +281,7 @@ export type SuccessfulTransfersListDocument = {
   DATA_TYPE: 'successful_transfers';
   marker: number;
   next_marker: null | number;
-  DATA: SuccessfulTransfersDocument[];
+  DATA: SuccessfulTransferDocument[];
 };
 
 /**
@@ -304,7 +304,7 @@ export const getSuccessfulTransfers = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Transfer['Paging']['Marker']['Query'];
+    query?: QueryParameters<'Marker'>;
     headers?: Record<string, string>;
     payload?: never;
   }
@@ -315,7 +315,7 @@ export const getSuccessfulTransfers = function (
  * role permissions for either side of the transfer.
  * @see https://docs.globus.org/api/transfer/task/#skipped_error_fields
  */
-export type SkippedErrorsDocument = {
+export type SkippedErrorDocument = {
   DATA_TYPE: 'skipped_error';
   error_code: 'PERMISSION_DENIED' | 'FILE_NOT_FOUND';
   error_details: string;
@@ -333,7 +333,7 @@ export type SkippedErrorsListDocument = {
   DATA_TYPE: 'skipped_errors';
   marker: number;
   next_marker: null | number;
-  DATA: SkippedErrorsDocument[];
+  DATA: SkippedErrorDocument[];
 };
 
 /**
@@ -343,9 +343,7 @@ export const getSkippedErrors = function (
   task_id,
   options?,
   sdkOptions?,
-): Promise<
-  JSONFetchResponse<SkippedErrorsListDocument & Transfer['Paging']['Marker']['Response']>
-> {
+): Promise<JSONFetchResponse<PaginatedResponse<SkippedErrorsListDocument, 'Marker'>>> {
   return serviceRequest(
     {
       service: ID,
@@ -358,7 +356,7 @@ export const getSkippedErrors = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: Transfer['Paging']['Marker']['Query'];
+    query?: QueryParameters<'Marker'>;
     headers?: Record<string, string>;
     payload?: never;
   }
@@ -367,7 +365,7 @@ export const getSkippedErrors = function (
 /**
  * @see https://docs.globus.org/api/transfer/task/#limited_pause_rule_document
  */
-type PauseRuleLimitedDocument = Omit<
+export type PauseRuleLimitedDocument = Omit<
   PauseRuleDocument,
   'modified_by' | 'modified_by_id' | 'created_by_host_manager' | 'editable' | 'DATA_TYPE'
 > & {

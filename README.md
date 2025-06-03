@@ -9,23 +9,16 @@ The Globus SDK for JavaScript provides first class TypeScript support and makes 
 - [@globus/sdk API Documentation](https://globus.github.io/globus-sdk-javascript/)
 - [Examples](https://github.com/globus/globus-sdk-javascript/blob/main/examples/README.md)
 - [Upgrading](https://github.com/globus/globus-sdk-javascript/blob/main/UPGRADING.md)
+  - [Migrating from `v5` to `v6`](https://github.com/globus/globus-sdk-javascript/blob/main/UPGRADING.md#migrating-from-v5-to-v6)
   - [Migrating from `v4` to `v5`](https://github.com/globus/globus-sdk-javascript/blob/main/UPGRADING.md#migrating-from-v4-to-v5)
   - [Migrating from `v3` to `v4`](https://github.com/globus/globus-sdk-javascript/blob/main/UPGRADING.md#migrating-from-v3-to-v4)
 
 ## Installation
 
-If you are not using Typescript, you can install the SDK with the following command:
+You can install the SDK with the following command:
 
 ```sh
 npm install @globus/sdk
-```
-
-### Typescript
-
-`@globus/sdk` is written in Typescript and includes type definitions for its internal types, Globus platform types (i.e., API responses) are provided by the `@globus/types` package and must be installed separately.
-
-```sh
-npm install @globus/sdk @globus/types
 ```
 
 ## Supported Platforms
@@ -34,12 +27,11 @@ npm install @globus/sdk @globus/types
 
 We aim to support all Active LTS [Node.js releases](https://nodejs.org/en/about/previous-releases). We intend to support all Maintenance LTS versions until their official end-of-life. Removal of support for a Node.js version will be considered a breaking change and result in a major version bump of the SDK.
 
-| Version                     |                                                                                                                                                                                                                 |
-| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ⚠️ Node.js 18 (END-OF-LIFE) | [![lts/hydrogen](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/ci.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/ci.yml) |
-| Node.js 20                  | [![lts/iron](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/ci.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/ci.yml)     |
-| Node.js 22                  | [![lts/jod](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/ci.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/ci.yml)      |
-| Node.js 24                  | [![24.x](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/ci.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/ci.yml)         |
+| Version    |                                                                                                                                                                                                             |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Node.js 20 | [![lts/iron](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/ci.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/ci.yml) |
+| Node.js 22 | [![lts/jod](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/ci.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/ci.yml)  |
+| Node.js 24 | [![24.x](https://img.shields.io/github/actions/workflow/status/globus/globus-sdk-javascript/ci.yml?style=flat-square&label=)](https://github.com/globus/globus-sdk-javascript/actions/workflows/ci.yml)     |
 
 ### Browser Support
 

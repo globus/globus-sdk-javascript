@@ -1,22 +1,50 @@
 # Upgrading
 
+## Migrating from `v5` to `v6`
+
+**For most users, this upgrade will not require any changes to your application code.** The `v6` release of `@globus/sdk` was considered a breaking change based on the following:
+
+- **Deprecation of support for Node.js 18.** This version of Node.js has reached its end-of-life. The `@globus/sdk` has been updated to support Node.js 20 and later.
+- **Removal of the `@globus/types` package.** The `@globus/types` package has been removed from the SDK, and all types are now included in the main `@globus/sdk` package. This change was made to simplify the installation process and reduce confusion about which package to use for type definitions as the source of truth. See the section below for more details on this change.
+
+### Removal of `@globus/types`
+
+1. Remove the `@globus/types` package from your project dependencies.
+2. Address any import statements that reference `@globus/types`; These should be updated to import from `@globus/sdk` instead.
+
+- If you were using the OpenAPI types from the `@globus/types` package, you can now import them directly from the `@globus/sdk` package.
+- For all other types, they have been co-located with their respective modules; **The global **Globus** namespace should no longer be used.**
+
+```diff
+-import type { components, operations } from '@globus/types/compute';
+import {type OpenAPI } from '@globus/sdk/services/compute';
+// OpenAPI.components === components
+// OpenAPI.operations === operations
+```
+
+```diff
+-Globus.Transfer.EndpointDocument
+import type { EndpointDocument } from '@globus/sdk/services/transfer/service/endpoint';
+```
+
 ## Migrating from `v4` to `v5`
 
 ### In-Memory Storage by Default
 
-The `v5` release of `@globus/sdk` updates the `AuthorizationManager` to use an in-memory storage mechanism for tokens,  moving the implementation to "secure by default".
+The `v5` release of `@globus/sdk` updates the `AuthorizationManager` to use an in-memory storage mechanism for tokens, moving the implementation to "secure by default".
 
 The `v4` behavior of using `localStorage` as the storage mecanism is now opt-in and should only be enabled when following [security best practices related to Storage APIs](https://cheatsheetseries.owasp.org/cheatsheets/HTML5_Security_Cheat_Sheet.html#storage-apis).
 
 To use a different storage mechanism, a well-known storage system (i.e., `localStorage`, `sessionStorage`) can be provided as the `storage` configuration option on creation.
+
 ```ts
 authorization.create({
   // ...
- storage: localStorage
+  storage: localStorage,
 });
 ```
 
-Any implementation of  [`Storage`](https://developer.mozilla.org/en-US/docs/Web/API/Storage) can be provided to use a custom storage mechanism.
+Any implementation of [`Storage`](https://developer.mozilla.org/en-US/docs/Web/API/Storage) can be provided to use a custom storage mechanism.
 
 ```ts
 class MyCustomStorage implements Storage {};
@@ -35,7 +63,6 @@ The `TokenLookup` class has been renamed to `TokenManager` to better reflect the
 -import { TokenLookup } from '@globus/sdk/core/authorization/TokenLookup';
 +import { TokenManager } from '@globus/sdk/core/authorization/TokenManager';
 ```
-
 
 ## Migrating from `v3` to `v4`
 

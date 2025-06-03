@@ -17,7 +17,7 @@ describe('transfer.task-submission', () => {
     const payload = {
       endpoint: 'e434fe90-591f-40d9-8d34-3016b6237046',
       submission_id: '65d1dc8c-5ebb-487e-8990-e5a25e3cf1d4',
-      DATA: [{ DATA_TYPE: 'delete_item', path: '/' }],
+      DATA: [{ DATA_TYPE: 'delete_item' as const, path: '/' }],
     };
 
     const {
