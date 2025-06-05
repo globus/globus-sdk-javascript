@@ -13,6 +13,17 @@ describe('flows.runs', () => {
     }).toMatchSnapshot();
   });
 
+  test('get', async () => {
+    const {
+      req: { url, method, headers },
+    } = await mirror(await runs.get('run-id'));
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchSnapshot();
+  });
+
   test('cancel', async () => {
     const {
       req: { url, method, headers },
