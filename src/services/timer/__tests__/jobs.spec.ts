@@ -90,7 +90,7 @@ test('jobs.patch', async () => {
 });
 
 test('jobs.pause', async () => {
-  const result = await jobs.pause('example-job-id', {});
+  const result = await jobs.pause('example-job-id');
   const json = await mirror(result);
   expect(json).toMatchInlineSnapshot(`
     {
@@ -140,7 +140,7 @@ test('jobs.resume', async () => {
 });
 
 test('jobs.remove', async () => {
-  const result = await jobs.remove('example-job-id', {});
+  const result = await jobs.remove('example-job-id');
   const json = await mirror(result);
   expect(json).toMatchInlineSnapshot(`
     {

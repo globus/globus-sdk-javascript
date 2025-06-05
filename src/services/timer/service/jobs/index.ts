@@ -1,9 +1,9 @@
 import { HTTP_METHODS, serviceRequest } from '../../../shared.js';
 import { ID } from '../../config.js';
+import { RESOURCE_SERVERS } from '../../../auth/config.js';
 
 import type { OpenAPI } from '../../index.js';
 import type {
-  SDKOptions,
   ServiceMethod,
   ServiceMethodDynamicSegments,
   JSONFetchResponse,
@@ -13,8 +13,8 @@ import type {
  * @see https://timer.automate.globus.org/redoc#tag/jobs/operation/list_jobs_jobs__get
  */
 export const getAll = function (
-  options,
-  sdkOptions?: SDKOptions,
+  options?,
+  sdkOptions?,
 ): Promise<
   JSONFetchResponse<
     OpenAPI.operations['list_jobs_jobs__get']['responses']['200']['content']['application/json']
@@ -23,7 +23,7 @@ export const getAll = function (
   return serviceRequest(
     {
       service: ID,
-      scope: 'https://auth.globus.org/scopes/524230d7-ea86-4a52-8312-86065a9e0417/timer',
+      resource_server: RESOURCE_SERVERS[ID],
       path: '/jobs',
       method: HTTP_METHODS.GET,
     },
@@ -40,8 +40,8 @@ export const getAll = function (
  */
 export const get = function (
   job_id,
-  options,
-  sdkOptions?: SDKOptions,
+  options?,
+  sdkOptions?,
 ): Promise<
   JSONFetchResponse<
     OpenAPI.operations['read_job_jobs__job_id__get']['responses']['200']['content']['application/json']
@@ -50,7 +50,7 @@ export const get = function (
   return serviceRequest(
     {
       service: ID,
-      scope: 'https://auth.globus.org/scopes/524230d7-ea86-4a52-8312-86065a9e0417/timer',
+      resource_server: RESOURCE_SERVERS[ID],
       path: `/jobs/${job_id}`,
       method: HTTP_METHODS.GET,
     },
@@ -70,8 +70,8 @@ export const get = function (
  */
 export const patch = function (
   job_id,
-  options,
-  sdkOptions?: SDKOptions,
+  options?,
+  sdkOptions?,
 ): Promise<
   JSONFetchResponse<
     OpenAPI.operations['update_job_jobs__job_id__patch']['responses']['200']['content']['application/json']
@@ -80,7 +80,7 @@ export const patch = function (
   return serviceRequest(
     {
       service: ID,
-      scope: 'https://auth.globus.org/scopes/524230d7-ea86-4a52-8312-86065a9e0417/timer',
+      resource_server: RESOURCE_SERVERS[ID],
       path: `/jobs/${job_id}`,
       method: HTTP_METHODS.PATCH,
     },
@@ -99,8 +99,8 @@ export const patch = function (
  */
 export const pause = function (
   job_id,
-  options,
-  sdkOptions?: SDKOptions,
+  options?,
+  sdkOptions?,
 ): Promise<
   JSONFetchResponse<
     OpenAPI.operations['pause_job_jobs__job_id__pause_post']['responses']['200']['content']['application/json']
@@ -109,7 +109,7 @@ export const pause = function (
   return serviceRequest(
     {
       service: ID,
-      scope: 'https://auth.globus.org/scopes/524230d7-ea86-4a52-8312-86065a9e0417/timer',
+      resource_server: RESOURCE_SERVERS[ID],
       path: `/jobs/${job_id}/pause`,
       method: HTTP_METHODS.POST,
     },
@@ -130,8 +130,8 @@ export const pause = function (
  */
 export const resume = function (
   job_id,
-  options,
-  sdkOptions?: SDKOptions,
+  options?,
+  sdkOptions?,
 ): Promise<
   JSONFetchResponse<
     OpenAPI.operations['resume_job_jobs__job_id__resume_post']['responses']['200']['content']['application/json']
@@ -140,7 +140,7 @@ export const resume = function (
   return serviceRequest(
     {
       service: ID,
-      scope: 'https://auth.globus.org/scopes/524230d7-ea86-4a52-8312-86065a9e0417/timer',
+      resource_server: RESOURCE_SERVERS[ID],
       path: `/jobs/${job_id}/resume`,
       method: HTTP_METHODS.POST,
     },
@@ -161,8 +161,8 @@ export const resume = function (
  */
 export const remove = function (
   job_id,
-  options,
-  sdkOptions?: SDKOptions,
+  options?,
+  sdkOptions?,
 ): Promise<
   JSONFetchResponse<
     OpenAPI.operations['delete_timer_jobs__timer_id__delete']['responses']['200']['content']['application/json']
@@ -171,7 +171,7 @@ export const remove = function (
   return serviceRequest(
     {
       service: ID,
-      scope: 'https://auth.globus.org/scopes/524230d7-ea86-4a52-8312-86065a9e0417/timer',
+      resource_server: RESOURCE_SERVERS[ID],
       path: `/jobs/${job_id}`,
       method: HTTP_METHODS.DELETE,
     },
