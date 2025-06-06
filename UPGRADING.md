@@ -6,6 +6,7 @@
 
 - **Deprecation of support for Node.js 18.** This version of Node.js has reached its end-of-life. The `@globus/sdk` has been updated to support Node.js 20 and later.
 - **Removal of the `@globus/types` package.** The `@globus/types` package has been removed from the SDK, and all types are now included in the main `@globus/sdk` package. This change was made to simplify the installation process and reduce confusion about which package to use for type definitions as the source of truth. See the section below for more details on this change.
+- **"Timer" service renamed to "Timer*s*".** The `@globus/sdk/services/timer` service has been renamed to `@globus/sdk/services/timers` to better reflect the rest of th Globus ecosystem.
 
 ### Removal of `@globus/types`
 
@@ -25,6 +26,24 @@ import {type OpenAPI } from '@globus/sdk/services/compute';
 ```diff
 -Globus.Transfer.EndpointDocument
 import type { EndpointDocument } from '@globus/sdk/services/transfer/service/endpoint';
+```
+
+### `Timer` Service Renamed to `Timers`
+
+The `@globus/sdk/services/timer` service has been renamed to `@globus/sdk/services/timers`. This change was made to align with the naming conventions used in the rest of the Globus ecosystem.
+
+```diff
+-import { timer } from '@globus/sdk';
++import { timers } from '@globus/sdk';
+```
+
+#### `create` Service Method
+
+```
+-import { timer } from '@globus/sdk';
+-timer.create({ /* ... */ });
++import { timers } from '@globus/sdk';
++timers.timer.create({ /* ... */ });
 ```
 
 ## Migrating from `v4` to `v5`

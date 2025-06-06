@@ -2,7 +2,8 @@ import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 import { ID } from '../config.js';
 
 import type { OpenAPI } from '../index.js';
-import type { SDKOptions, ServiceMethod } from '../../types.js';
+import type { ServiceMethod } from '../../types.js';
+import { RESOURCE_SERVERS } from '../../auth/config.js';
 
 /**
  * The Timer OpenAPI definitions include default vaules which will present as **required** in
@@ -45,11 +46,11 @@ type TimerCreatePayload = {
   };
 };
 
-export const create = function (options, sdkOptions?: SDKOptions) {
+export const create = function (options, sdkOptions?) {
   return serviceRequest(
     {
       service: ID,
-      scope: 'https://auth.globus.org/scopes/524230d7-ea86-4a52-8312-86065a9e0417/timer',
+      resource_server: RESOURCE_SERVERS.TIMERS,
       path: '/v2/timer',
       method: HTTP_METHODS.POST,
     },

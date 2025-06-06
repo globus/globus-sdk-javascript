@@ -1,6 +1,6 @@
 import type { Environment } from '../../core/global.js';
 
-export const ID = 'TIMER' as const;
+export const ID = 'TIMERS' as const;
 export const HOSTS: Partial<Record<Environment, string>> = {
   sandbox: 'sandbox.timer.automate.globus.org',
   production: 'timer.automate.globus.org',

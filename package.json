@@ -57,10 +57,10 @@
       "import": "./dist/esm/services/search/index.js",
       "default": "./dist/esm/services/search/index.js"
     },
-    "./services/timer": {
-      "types": "./dist/esm/services/timer/index.d.ts",
-      "import": "./dist/esm/services/timer/index.js",
-      "default": "./dist/esm/services/timer/index.js"
+    "./services/timers": {
+      "types": "./dist/esm/services/timers/index.d.ts",
+      "import": "./dist/esm/services/timers/index.js",
+      "default": "./dist/esm/services/timers/index.js"
     },
     "./services/transfer": {
       "types": "./dist/esm/services/transfer/index.d.ts",
