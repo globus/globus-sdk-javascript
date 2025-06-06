@@ -7,6 +7,7 @@
 import * as TIMER from './config.js';
 
 import { create } from './service/timer.js';
+import * as jobs from './service/jobs/index.js';
 
 export type * as OpenAPI from '../../open-api/types/timer.js';
 
@@ -15,4 +16,4 @@ export type * as OpenAPI from '../../open-api/types/timer.js';
  * @internal
  */
 export const CONFIG = TIMER;
-export { create };
+export { create, jobs };
