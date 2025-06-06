@@ -1,5 +1,5 @@
 import { timer } from '../index';
-import type { MirroredRequest } from '../__mocks__/handlers';
+import { mirror } from '../__mocks__/handlers';
 
 describe('sdk-options', () => {
   test('environment', async () => {
@@ -29,7 +29,7 @@ describe('sdk-options', () => {
       },
     };
 
-    const withEnvironment = await timer.create(
+    const withEnvironment = await timer.timer.create(
       {
         headers: {
           Authorization: 'Bearer example',
@@ -43,11 +43,11 @@ describe('sdk-options', () => {
 
     const {
       req: { headers: withEnvironmentHeaders },
-    } = (await withEnvironment.json()) as MirroredRequest;
+    } = await mirror(withEnvironment);
 
     expect(withEnvironmentHeaders['host']).toEqual('sandbox.timer.automate.globus.org');
 
-    const withoutEnvironment = await timer.create({
+    const withoutEnvironment = await timer.timer.create({
       headers: {
         Authorization: 'Bearer example',
       },
@@ -56,7 +56,7 @@ describe('sdk-options', () => {
 
     const {
       req: { headers: withoutEnvironmentHeaders },
-    } = (await withoutEnvironment.json()) as MirroredRequest;
+    } = await mirror(withoutEnvironment);
 
     expect(withoutEnvironmentHeaders['host']).toEqual('timer.automate.globus.org');
   });
