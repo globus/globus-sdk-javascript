@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.0](https://github.com/globus/globus-sdk-javascript/compare/v5.8.0...v6.0.0) (2025-06-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* **Timers:** Timer renamed to Timer*s*, Moves `timer.create` export to `timers.timer.create` to better reflect API. ([#533](https://github.com/globus/globus-sdk-javascript/issues/533))
+* Drops support for Node.js 18 ([#520](https://github.com/globus/globus-sdk-javascript/issues/520))
+
+### Features
+
+* **Compute:** Adds `endpoint.update` and `remove` methods ([#524](https://github.com/globus/globus-sdk-javascript/issues/524)) ([6ee61ff](https://github.com/globus/globus-sdk-javascript/commit/6ee61ffb64cdbc9c76615605bef5d6054f45e992))
+* Drops support for Node.js 18 ([#520](https://github.com/globus/globus-sdk-javascript/issues/520)) ([ae67d68](https://github.com/globus/globus-sdk-javascript/commit/ae67d6836bf8e39405e19d653598ac68fdcd07de))
+* **Flows:** add `runs.get` method for retrieving specific run details ([#534](https://github.com/globus/globus-sdk-javascript/issues/534)) ([64a28a2](https://github.com/globus/globus-sdk-javascript/commit/64a28a25f566a623fabd33b2c376a3738cbf65f5))
+* **Timer:** add Timer Jobs methods ([#531](https://github.com/globus/globus-sdk-javascript/issues/531)) ([392035b](https://github.com/globus/globus-sdk-javascript/commit/392035b88e31931e1838429b9cc71e0169d67cca))
+* **Typescript:** Use internal, OpenAPI-generated, types for Compute, GCS, Groups, and Timer. ([#447](https://github.com/globus/globus-sdk-javascript/issues/447)) ([7c98b08](https://github.com/globus/globus-sdk-javascript/commit/7c98b08d4ea6f684e46b40904f1a432a56b9d629))
+
+
+### Code Refactoring
+
+* **Timers:** Timer renamed to Timer*s*, Moves `timer.create` export to `timers.timer.create` to better reflect API. ([#533](https://github.com/globus/globus-sdk-javascript/issues/533)) ([d8fc964](https://github.com/globus/globus-sdk-javascript/commit/d8fc964e1d1883071854d1b552ba87bdf4477a2f))
+
 ## [5.8.0](https://github.com/globus/globus-sdk-javascript/compare/v5.7.0...v5.8.0) (2025-05-29)
 
 
