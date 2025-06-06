@@ -50,7 +50,7 @@ export const create = function (options, sdkOptions?) {
   return serviceRequest(
     {
       service: ID,
-      resource_server: RESOURCE_SERVERS.TIMER,
+      resource_server: RESOURCE_SERVERS.TIMERS,
       path: '/v2/timer',
       method: HTTP_METHODS.POST,
     },

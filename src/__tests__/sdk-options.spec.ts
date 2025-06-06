@@ -1,4 +1,4 @@
-import { timer } from '../index';
+import { timers } from '../index';
 import { mirror } from '../__mocks__/handlers';
 
 describe('sdk-options', () => {
@@ -29,7 +29,7 @@ describe('sdk-options', () => {
       },
     };
 
-    const withEnvironment = await timer.timer.create(
+    const withEnvironment = await timers.timer.create(
       {
         headers: {
           Authorization: 'Bearer example',
@@ -47,7 +47,7 @@ describe('sdk-options', () => {
 
     expect(withEnvironmentHeaders['host']).toEqual('sandbox.timer.automate.globus.org');
 
-    const withoutEnvironment = await timer.timer.create({
+    const withoutEnvironment = await timers.timer.create({
       headers: {
         Authorization: 'Bearer example',
       },

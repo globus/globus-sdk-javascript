@@ -3,7 +3,7 @@ import * as TRANSFER from '../services/transfer/config.js';
 import * as FLOWS from '../services/flows/config.js';
 import * as GROUPS from '../services/groups/config.js';
 import * as SEARCH from '../services/search/config.js';
-import * as TIMER from '../services/timer/config.js';
+import * as TIMERS from '../services/timers/config.js';
 import * as COMPUTE from '../services/compute/config.js';
 
 import { EnvironmentConfigurationError } from './errors.js';
@@ -52,7 +52,7 @@ export const SERVICES = {
   [FLOWS.ID]: FLOWS.ID,
   [GROUPS.ID]: GROUPS.ID,
   [SEARCH.ID]: SEARCH.ID,
-  [TIMER.ID]: TIMER.ID,
+  [TIMERS.ID]: TIMERS.ID,
   [COMPUTE.ID]: COMPUTE.ID,
 };
 
@@ -64,7 +64,7 @@ export const SERVICE_HOSTS: Record<Service, Partial<Record<Environment, string>>
   [FLOWS.ID]: FLOWS.HOSTS,
   [GROUPS.ID]: GROUPS.HOSTS,
   [SEARCH.ID]: SEARCH.HOSTS,
-  [TIMER.ID]: TIMER.HOSTS,
+  [TIMERS.ID]: TIMERS.HOSTS,
   [COMPUTE.ID]: COMPUTE.HOSTS,
 };
 
