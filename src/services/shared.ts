@@ -33,6 +33,7 @@ type ServiceRequestDSL = {
    * A specific scope that is required for the request. If a scope is provided,
    * the `serviceRequest` function will attempt to get a token for the request
    * based on the the `service` => `resource_server` mapping.
+   * @deprecated Define using `resource_server` instead.
    */
   scope?: string;
   /**

@@ -79,7 +79,7 @@ export class TokenManager {
   }
 
   get timer(): StoredToken | null {
-    return this.#getTokenForService(SERVICES.TIMER);
+    return this.#getTokenForService(SERVICES.TIMERS);
   }
 
   get compute(): StoredToken | null {

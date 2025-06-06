@@ -1,9 +1,9 @@
-import { create } from '../index';
+import { timer } from '../index';
 
-import type { MirroredRequest } from '../../../__mocks__/handlers';
+import { mirror } from '../../../__mocks__/handlers';
 
 test('create', async () => {
-  const result = await create({
+  const result = await timer.create({
     payload: {
       timer: {
         name: 'SDK testing',
@@ -27,9 +27,11 @@ test('create', async () => {
       },
     },
   });
+
   const {
     req: { url, method, headers, json },
-  } = (await result.json()) as MirroredRequest;
+  } = await mirror(result);
+
   expect({
     url,
     method,

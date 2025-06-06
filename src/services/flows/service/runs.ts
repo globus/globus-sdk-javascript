@@ -23,6 +23,30 @@ export const getAll = function (options = {}, sdkOptions?) {
 }>;
 
 /**
+ * Get details about a run
+ * @see https://globusonline.github.io/globus-flows/#tag/Runs/paths/~1runs~1{run_id}/get
+ */
+export const get = function (run_id, options?, sdkOptions?) {
+  return serviceRequest(
+    {
+      service: ID,
+      scope: SCOPES.RUN_MANAGE,
+      path: `/runs/${run_id}`,
+    },
+    options,
+    sdkOptions,
+  );
+} satisfies ServiceMethodDynamicSegments<
+  string,
+  {
+    query?: {
+      include_flow_description?: boolean;
+    };
+    payload?: never;
+  }
+>;
+
+/**
  * Cancel the execution for a particular Run of a Flow.
  * https://globusonline.github.io/globus-flows/#tag/Runs/paths/~1runs~1%7Brun_id%7D~1cancel/post
  */

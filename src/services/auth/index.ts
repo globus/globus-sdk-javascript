@@ -16,6 +16,8 @@ import type { Token, TokenWithRefresh, TokenResponse } from './types.js';
  */
 export const CONFIG = AUTH;
 
+export type * from './types.js';
+
 /**
  * Query parameters that can be passed to the authorization endpoint.
  * @see https://docs.globus.org/api/auth/reference/#authorization_code_grant_preferred

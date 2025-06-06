@@ -16,7 +16,7 @@ const SCHEMAS = [
   },
   {
     url: 'https://timer.automate.globus.org/openapi.json',
-    filename: path.join(OPEN_API_TYPES_DIR, `timer.ts`),
+    filename: path.join(OPEN_API_TYPES_DIR, `timers.ts`),
   },
   {
     url: 'https://api2.funcx.org/openapi.json',

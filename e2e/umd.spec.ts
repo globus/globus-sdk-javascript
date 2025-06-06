@@ -13,7 +13,7 @@ test('exports as "globus"', async ({ page }) => {
   expect(await page.evaluate(() => window.globus.search)).toBeDefined();
   expect(await page.evaluate(() => window.globus.flows)).toBeDefined();
   expect(await page.evaluate(() => window.globus.gcs)).toBeDefined();
-  expect(await page.evaluate(() => window.globus.timer)).toBeDefined();
+  expect(await page.evaluate(() => window.globus.timers)).toBeDefined();
   expect(await page.evaluate(() => window.globus.compute)).toBeDefined();
 
   expect(await page.evaluate(() => window.globus.webapp)).toBeDefined();
