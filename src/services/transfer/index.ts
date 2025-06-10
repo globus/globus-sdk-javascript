@@ -22,6 +22,7 @@ export * as taskSubmission from './service/task-submission.js';
 export * as endpoint from './service/endpoint.js';
 export * as task from './service/task.js';
 export * as access from './service/access.js';
+export * as roles from './service/roles.js';
 export * as collectionBookmarks from './service/collection-bookmarks.js';
 
 export * as endpointManager from './service/endpoint-manager/index.js';

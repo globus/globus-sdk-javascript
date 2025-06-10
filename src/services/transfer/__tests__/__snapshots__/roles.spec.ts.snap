@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`roles create 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "108",
+    "content-type": "application/json",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "DATA_TYPE": "role",
+    "principal": "example-identity-id",
+    "principal_type": "identity",
+    "role": "activity_manager",
+  },
+  "method": "POST",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint/example-collection-id/role",
+}
+`;
+
+exports[`roles get 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint/example-endpoint-id/role/example-role-id",
+}
+`;
+
+exports[`roles getAll 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint/example-endpoint-id/role_list",
+}
+`;
+
+exports[`roles remove 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": undefined,
+  "method": "DELETE",
+  "url": "https://transfer.api.globusonline.org/v0.10/endpoint/example-collection-id/role/example-role-id",
+}
+`;
