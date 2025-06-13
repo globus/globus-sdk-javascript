@@ -56,7 +56,7 @@ export const getAll = function (
  * @see https://docs.globus.org/api/transfer/roles/#get_role_by_id
  */
 export const get = function (
-  { endpoint_xid, role_id },
+  { endpoint_id, role_id },
   options?,
   sdkOptions?,
 ): Promise<JSONFetchResponse<RoleDocument>> {
