@@ -9,51 +9,38 @@ import {
   store,
 } from './pkce.js';
 
-import type { AuthorizationManagerConfiguration } from './AuthorizationManager.js';
+import type { TransportOptions } from './RedirectTransport.js';
 
-export type GetTokenOptions = {
-  /**
-   * Whether or not the URL should be replaced after processing the token.
-   * @default true
-   */
-  shouldReplace?: boolean;
-  /**
-   * When set to `true` in addition to the `scope` values originally requested, Globus Auth
-   * will return tokens for **all** of the scopes that the user has consented to, for
-   * the requesting client.
-   * @default false
-   * @private
-   */
-  includeConsentedScopes?: boolean;
-};
+export type PopupTransportOptions = TransportOptions;
 
-export type TransportOptions = Pick<
-  AuthorizationManagerConfiguration,
-  'client' | 'redirect' | 'scopes'
-> & {
-  /**
-   * Query parameters to include in the authorization request.
-   *
-   * The transport will include all parameters required for a default OAuth PKCE flow, but
-   * these parameters can be overridden or extended with this option.
-   */
-  params?: {
-    [key: string]: string;
-  };
-};
+const MESSAGE_SOURCE = 'globus-sdk';
 
-export type RedirectTransportOptions = TransportOptions;
-export class RedirectTransport {
-  #options: RedirectTransportOptions;
+/**
+ * The `PopupTransport` (`popup`) uses a popup window to initiate the OAuth 2.0 using PKCE.
+ *
+ * When using the `PopupTransport`, the `redirect` parameter should be to a location
+ * that will transmit the URL back to the opener. This can be done using `AuthorizationManager.handleCodeRedirect()`, or
+ * manually by calling `window.opener.postMessage()`.
+ *
+ * @experimental
+ */
+export class PopupTransport {
+  #options: PopupTransportOptions;
 
-  constructor(options: RedirectTransportOptions) {
+  #window: Window | null = null;
+
+  constructor(options: PopupTransportOptions) {
     this.#options = options;
-    if (RedirectTransport.supported === false) {
-      throw new Error('RedirectTransport is not supported in this environment.');
+    if (PopupTransport.supported === false) {
+      throw new Error('PopupTransport is not supported in this environment.');
     }
   }
 
-  static supported = isSupported();
+  /**
+   * The `PopupTransport` is supported in environments where the `window` object is available.
+   */
+  static supported =
+    isSupported() && 'window' in globalThis && typeof globalThis.window.open === 'function';
 
   /**
    * For the redirect transport, sending the request will redirect the user to the authorization endpoint, initiating the OAuth flow.
@@ -90,17 +77,34 @@ export class RedirectTransport {
     const url = new URL(getAuthorizationEndpoint());
     url.search = new URLSearchParams(params).toString();
 
-    window.location.assign(url.toString());
+    const promise = new Promise((resolve) => {
+      window.addEventListener(
+        'message',
+        async (e) => {
+          const { data } = e;
+          if (e.origin !== window.location.origin || data?.source !== MESSAGE_SOURCE) {
+            return;
+          }
+          this.#window?.close();
+          const response = await this.#getToken(data.url);
+          resolve(response);
+        },
+        false,
+      );
+    });
+
+    this.#window = window.open(url.toString(), '_blank', 'width=800,height=600');
+
+    if (!this.#window) {
+      throw new Error('Unable to open window for PopupTransport.');
+    }
+
+    this.#window.focus();
+    return promise;
   }
 
-  /**
-   * Parse the current URL for the authorization code (`?code=...`) and exchange it for an access token when available.
-   * - When the URL is processed and exchanged for an access token, the page is redirected to the current URL without the `?code=...&state=...` parameters.
-   */
-  async getToken(
-    options: GetTokenOptions = { shouldReplace: true, includeConsentedScopes: false },
-  ) {
-    const url = new URL(window.location.href);
+  async #getToken(href: string) {
+    const url = new URL(href);
     const params = new URLSearchParams(url.search);
     /**
      * Check for an error in the OAuth flow.
@@ -143,7 +147,6 @@ export class RedirectTransport {
     if (!verifier) {
       throw new Error('Invalid Code Verifier');
     }
-
     /**
      * Prepare the payload for the PKCE token exchange.
      */
@@ -157,33 +160,26 @@ export class RedirectTransport {
       redirect_uri: this.#options.redirect,
       grant_type: 'authorization_code',
     };
-
     const response = await (
       await oauth2.token.exchange({
-        query: options.includeConsentedScopes
-          ? {
-              include_consented_scopes: true,
-            }
-          : undefined,
         payload,
       })
     ).json();
-
-    if (options.shouldReplace) {
-      /**
-       * Remove the `code` and `state` parameters from the URL.
-       */
-      params.delete('code');
-      params.delete('state');
-      /**
-       * Update the URL with the new query string.
-       */
-      url.search = params.toString();
-      /**
-       * Redirect the page to the new URL (without the `code` and `state` parameters)/
-       */
-      window.location.replace(url);
-    }
     return response;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  getToken() {
+    if (!window.opener) {
+      return;
+    }
+
+    window.opener.postMessage(
+      {
+        source: MESSAGE_SOURCE,
+        url: window.location.href,
+      },
+      window.location.origin,
+    );
   }
 }
