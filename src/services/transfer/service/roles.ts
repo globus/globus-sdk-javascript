@@ -30,7 +30,7 @@ export type RoleListDocument = {
  * @see https://docs.globus.org/api/transfer/roles/#role_list
  */
 export const getAll = function (
-  endpoint_xid: string,
+  endpoint_id: string,
   options = {},
   sdkOptions?,
 ): Promise<JSONFetchResponse<RoleListDocument>> {
@@ -38,7 +38,7 @@ export const getAll = function (
     {
       service: ID,
       scope: SCOPES.ALL,
-      path: `/v0.10/endpoint/${endpoint_xid}/role_list`,
+      path: `/v0.10/endpoint/${endpoint_id}/role_list`,
     },
     options,
     sdkOptions,
@@ -64,13 +64,13 @@ export const get = function (
     {
       service: ID,
       scope: SCOPES.ALL,
-      path: `/v0.10/endpoint/${endpoint_xid}/role/${role_id}`,
+      path: `/v0.10/endpoint/${endpoint_id}/role/${role_id}`,
     },
     options,
     sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
-  { endpoint_xid: string; role_id: string },
+  { endpoint_id: string; role_id: string },
   {
     query?: never;
     payload?: never;

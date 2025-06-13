@@ -38,7 +38,7 @@ describe('roles', () => {
     const {
       req: { url, method, headers },
     } = await mirror(
-      await roles.get({ endpoint_xid: 'example-endpoint-id', role_id: 'example-role-id' }),
+      await roles.get({ endpoint_id: 'example-endpoint-id', role_id: 'example-role-id' }),
     );
     expect({
       url,
