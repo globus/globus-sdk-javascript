@@ -94,7 +94,7 @@
   "devDependencies": {
     "@playwright/test": "^1.46.1",
     "@tsconfig/recommended": "^1.0.7",
-    "@types/jest": "29.5.14",
+    "@types/jest": "30.0.0",
     "@types/node": "^22.5.2",
     "dotenv": "^16.4.5",
     "esbuild": "0.25.5",
