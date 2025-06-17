@@ -95,7 +95,7 @@
     "@playwright/test": "^1.46.1",
     "@tsconfig/recommended": "^1.0.7",
     "@types/jest": "29.5.14",
-    "@types/node": "^22.5.2",
+    "@types/node": "^24.0.3",
     "dotenv": "^16.4.5",
     "esbuild": "0.25.5",
     "eslint": "^8.57.0",
