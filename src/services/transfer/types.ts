@@ -61,8 +61,8 @@ export type QueryParameters<
  * @param Response The response to extend with the pagination response.
  * @example `PaginatedResponse<'Offset', { DATA_TYPE: 'task_list'; tasks: TaskDocument[] }>`
  */
-export type PaginatedResponse<Type, Response> = Response &
-  (Type extends keyof Pagination ? Pagination[Type]['Response'] : {});
+export type PaginatedResponse<Type extends keyof Pagination, Response> = Response &
+  Pagination[Type]['Response'];
 
 /**
  * Pagination used by the Transfer service.

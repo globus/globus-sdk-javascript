@@ -91,7 +91,7 @@ export type TaskListDocument = {
 export const getAll = function (
   options = {},
   sdkOptions?,
-): Promise<JSONFetchResponse<PaginatedResponse<TaskListDocument, 'Offset'>>> {
+): Promise<JSONFetchResponse<PaginatedResponse<'Offset', TaskListDocument>>> {
   return serviceRequest(
     {
       service: ID,
@@ -243,7 +243,7 @@ export const getEventList = function (
   task_id,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<PaginatedResponse<TaskEventListDocument, 'Offset'>>> {
+): Promise<JSONFetchResponse<PaginatedResponse<'Offset', TaskEventListDocument>>> {
   return serviceRequest(
     {
       service: ID,
@@ -343,7 +343,7 @@ export const getSkippedErrors = function (
   task_id,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<PaginatedResponse<SkippedErrorsListDocument, 'Marker'>>> {
+): Promise<JSONFetchResponse<PaginatedResponse<'Marker', SkippedErrorsListDocument>>> {
   return serviceRequest(
     {
       service: ID,
