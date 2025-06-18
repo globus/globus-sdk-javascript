@@ -43,7 +43,7 @@ export const getHostedEndpoints = function (
   endpoint_xid,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<PaginatedResponse<EndpointListDocument, 'Offset'>>> {
+): Promise<JSONFetchResponse<PaginatedResponse<'Offset', EndpointListDocument>>> {
   return serviceRequest(
     {
       service: ID,
@@ -95,10 +95,10 @@ export const getMonitoredEndpoints = function (
 ): Promise<
   JSONFetchResponse<
     PaginatedResponse<
+      'Offset',
       Omit<EndpointListDocument, 'DATA_TYPE'> & {
         DATA_TYPE: 'monitored_endpoints';
-      },
-      'Offset'
+      }
     >
   >
 > {
