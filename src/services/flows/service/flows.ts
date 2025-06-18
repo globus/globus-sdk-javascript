@@ -1,5 +1,8 @@
 import { ID, SCOPES } from '../config.js';
 import { HTTP_METHODS, serviceRequest } from '../../../services/shared.js';
+
+import type { OpenAPI } from '../index.js';
+
 import type {
   JSONFetchResponse,
   ServiceMethod,
@@ -19,10 +22,14 @@ export const getAll = function (options?, sdkOptions?) {
     options,
     sdkOptions,
   );
-} satisfies ServiceMethod<{
-  query?: Record<string, string>;
-  headers?: Record<string, string>;
-}>;
+} satisfies ServiceMethod<
+  {
+    query?: OpenAPI.paths['/flows']['get']['parameters']['query'];
+  },
+  JSONFetchResponse<
+    OpenAPI.paths['/flows']['get']['responses']['200']['content']['application/json']
+  >
+>;
 
 /**
  * @see https://globusonline.github.io/globus-flows/#tag/Flows/paths/~1flows~1{flow_id}/get
@@ -37,7 +44,15 @@ export const get = function (flow_id, options?, sdkOptions?) {
     options,
     sdkOptions,
   );
-} satisfies ServiceMethodDynamicSegments<string, Record<string, any>>;
+} satisfies ServiceMethodDynamicSegments<
+  string,
+  {
+    query?: OpenAPI.paths['/flows/{flow_id}']['get']['parameters']['query'];
+  },
+  JSONFetchResponse<
+    OpenAPI.paths['/flows/{flow_id}']['get']['responses']['200']['content']['application/json']
+  >
+>;
 
 /**
  * @see https://globusonline.github.io/globus-flows/#tag/Flows/paths/~1flows~1{flow_id}/delete
@@ -58,7 +73,10 @@ export const remove = function (flow_id, options?, sdkOptions?) {
   {
     query?: never;
     payload?: never;
-  }
+  },
+  JSONFetchResponse<
+    OpenAPI.paths['/flows/{flow_id}']['delete']['responses']['200']['content']['application/json']
+  >
 >;
 
 /**
@@ -80,54 +98,23 @@ export const run = function (flow_id, options?, sdkOptions?) {
   string,
   {
     query?: never;
-    payload: {
-      label?: string;
-      body: Record<string, any>;
-      tags?: string[];
-    };
-  }
+    payload: OpenAPI.paths['/flows/{flow_id}/run']['post']['requestBody']['content']['application/json'];
+  },
+  JSONFetchResponse<
+    OpenAPI.paths['/flows/{flow_id}/run']['post']['responses']['201']['content']['application/json']
+  >
 >;
-
-type ValidateSuccessResponse = {
-  scopes: Record<string, any>;
-};
 
 /**
  * An error that was generated during validation that includes the location of the error.
  */
-export type ValidationLocationError = {
-  /**
-   * The location of the error represents the path to the property that caused the error.
-   */
-  loc: string[];
-  msg: string;
-  type: string;
-};
-
-type ValidateErrorResponse = {
-  error: {
-    code: string;
-    /**
-     * When `detail` is a string, it is a general error message and cannot be mapped to a specific location
-     * in the provided payload.
-     */
-    detail: string | ValidationLocationError[];
-    /**
-     * `message` being available is dependent on the error code.
-     */
-    message?: string;
-  };
-  debug_id: string;
-};
+export type ValidationLocationError = OpenAPI.components['schemas']['LocationErrorList'][number];
 
 /**
  * Validate a flow definition and its schema.
  * @see https://globusonline.github.io/globus-flows/#tag/Flows/paths/~1flows~1validate/post
  */
-export const validate = function (
-  options,
-  sdkOptions?,
-): Promise<JSONFetchResponse<ValidateSuccessResponse | ValidateErrorResponse>> {
+export const validate = function (options, sdkOptions?) {
   return serviceRequest(
     {
       service: ID,
@@ -138,13 +125,16 @@ export const validate = function (
     options,
     sdkOptions,
   );
-} satisfies ServiceMethod<{
-  query?: never;
-  payload: {
-    definition: Record<string, any>;
-    input_schema?: Record<string, any>;
-  };
-}>;
+} satisfies ServiceMethod<
+  {
+    query?: never;
+    payload: OpenAPI.paths['/flows/validate']['post']['requestBody']['content']['application/json'];
+  },
+  JSONFetchResponse<
+    | OpenAPI.paths['/flows/validate']['post']['responses']['200']['content']['application/json']
+    | OpenAPI.paths['/flows/validate']['post']['responses']['422']['content']['application/json']
+  >
+>;
 
 /**
  * Create a Flow
@@ -163,18 +153,7 @@ export const create = function (options?, sdkOptions?) {
   );
 } satisfies ServiceMethod<{
   query?: never;
-  payload: {
-    definition: Record<string, any>;
-    input_schema?: Record<string, any>;
-    title?: string;
-    subtitle?: string;
-    description?: string;
-    keywords?: string[];
-    flow_viewers?: string[];
-    flows_starters?: string[];
-    flow_administrators?: string[];
-    subscription_id?: string;
-  };
+  payload: OpenAPI.paths['/flows']['post']['requestBody']['content']['application/json'];
 }>;
 
 /**
@@ -201,17 +180,6 @@ export const update = function (flow_id, options?, sdkOptions?) {
   string,
   {
     query?: never;
-    payload: {
-      definition?: Record<string, any>;
-      input_schema?: Record<string, any>;
-      title?: string;
-      subtitle?: string;
-      description?: string;
-      keywords?: string[];
-      flow_viewers?: string[];
-      flows_starters?: string[];
-      flow_administrators?: string[];
-      subscription_id?: string;
-    };
+    payload: OpenAPI.paths['/flows/{flow_id}']['put']['requestBody']['content']['application/json'];
   }
 >;

@@ -11,6 +11,10 @@ const OPEN_API_TYPES_DIR = path.resolve(import.meta.dirname, '../../src/open-api
  */
 const SCHEMAS = [
   {
+    url: 'https://globusonline.github.io/globus-flows/openapi-spec/flows.openapi.yml',
+    filename: path.join(OPEN_API_TYPES_DIR, `flows.ts`),
+  },
+  {
     url: 'https://groups.api.globus.org/openapi.json',
     filename: path.join(OPEN_API_TYPES_DIR, `groups.ts`),
   },
