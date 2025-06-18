@@ -1081,6 +1081,10 @@ export interface components {
             subject?: string;
             entries?: components["schemas"]["ResultEntry"][];
         };
+        ApproximateMetricFacetResult: {
+            readonly name?: string;
+            approximate_value?: number;
+        };
         MetricFacetResult: {
             readonly name?: string;
             value?: number;
@@ -1093,7 +1097,7 @@ export interface components {
             readonly name?: string;
             buckets?: components["schemas"]["GBucket"][];
         };
-        GFacetResult: components["schemas"]["MetricFacetResult"] | components["schemas"]["BucketFacetResult"];
+        GFacetResult: components["schemas"]["ApproximateMetricFacetResult"] | components["schemas"]["MetricFacetResult"] | components["schemas"]["BucketFacetResult"];
         GSearchResult: {
             total?: number;
             /** @description The length of the 'gmeta' array. */
@@ -1120,7 +1124,8 @@ export interface components {
              * @enum {string}
              */
             type: "terms";
-            size?: number;
+            /** @default 10 */
+            size: number;
         };
         MetricFacet: {
             /**
@@ -1772,7 +1777,8 @@ export interface components {
              */
             type: "terms";
             additional_filters?: components["schemas"]["GFilterV1"][];
-            size?: number;
+            /** @default 10 */
+            size: number;
         };
         MetricFacetV1: {
             /**
@@ -1792,6 +1798,24 @@ export interface components {
             type: "sum" | "avg";
             additional_filters?: components["schemas"]["GFilterV1"][];
             missing?: number;
+        };
+        DistinctCountFacetV1: {
+            /**
+             * @description The field to which the facet refers.
+             *     Any dots (`.`) must be escaped with a preceding backslash (`\`) character.
+             * @example my_field_name
+             */
+            field_name: string;
+            /** @description A name for this facet which is referenced in the results.
+             *
+             *     If `name` is omitted, it will default to the value of the `field_name` property. If more than one facet in a single search request references the same field, a name *must* be provided. */
+            name?: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "distinct_count";
+            additional_filters?: components["schemas"]["GFilterV1"][];
         };
         DateHistogramRangeV1: {
             low?: unknown;
@@ -1842,7 +1866,7 @@ export interface components {
             size: number;
             histogram_range: components["schemas"]["NumericHistogramRangeV1"];
         };
-        GFacetV1: components["schemas"]["TermsFacetV1"] | components["schemas"]["MetricFacetV1"] | components["schemas"]["MetricFacetV1"] | components["schemas"]["DateHistogramFacetV1"] | components["schemas"]["NumericHistogramFacetV1"];
+        GFacetV1: components["schemas"]["TermsFacetV1"] | components["schemas"]["MetricFacetV1"] | components["schemas"]["MetricFacetV1"] | components["schemas"]["DistinctCountFacetV1"] | components["schemas"]["DateHistogramFacetV1"] | components["schemas"]["NumericHistogramFacetV1"];
         GBoostV1: {
             /** @example my_field_name */
             field_name: string;
