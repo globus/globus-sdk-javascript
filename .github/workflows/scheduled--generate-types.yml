@@ -14,6 +14,9 @@ jobs:
     # automated tests in the core repository (not forks)
     if: ${{github.repository == 'globus/globus-sdk-javascript'}}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
