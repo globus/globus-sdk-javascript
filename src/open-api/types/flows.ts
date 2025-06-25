@@ -39,7 +39,10 @@ export interface paths {
                      *     multiple roles are specified, the user will have at least one of the
                      *     specified roles on each Flow returned.
                      *
-                     * @example flow_owner,flow_viewers
+                     * @example [
+                     *       "flow_owner",
+                     *       "flow_viewers"
+                     *     ]
                      */
                     filter_roles?: ("flow_owner" | "flow_viewers" | "flow_starters" | "flow_administrators" | "run_managers" | "run_monitors")[];
                     /**
@@ -62,7 +65,10 @@ export interface paths {
                      *     returned is guaranteed to contain at least one of the strings in its
                      *     scope strings.
                      *
-                     * @example 0abc,100
+                     * @example [
+                     *       "0abc",
+                     *       "100"
+                     *     ]
                      */
                     filter_scope_string?: string[];
                     /**
@@ -70,7 +76,10 @@ export interface paths {
                      *     field. If multiple values are specified, each Flow returned
                      *     is guaranteed to contain at least one of the strings in its title.
                      *
-                     * @example hello,science
+                     * @example [
+                     *       "hello",
+                     *       "science"
+                     *     ]
                      */
                     filter_title?: string[];
                     /**
@@ -79,7 +88,10 @@ export interface paths {
                      *     is guaranteed to contain at least one of the strings in its
                      *     subtitle.
                      *
-                     * @example hello,science
+                     * @example [
+                     *       "hello",
+                     *       "science"
+                     *     ]
                      */
                     filter_subtitle?: string[];
                     /**
@@ -88,7 +100,10 @@ export interface paths {
                      *     is guaranteed to contain at least one of the strings in its
                      *     description.
                      *
-                     * @example hello,science
+                     * @example [
+                     *       "hello",
+                     *       "science"
+                     *     ]
                      */
                     filter_description?: string[];
                     /**
@@ -97,7 +112,10 @@ export interface paths {
                      *     is guaranteed to contain at least one of the substrings as a
                      *     keyword.
                      *
-                     * @example hello,science
+                     * @example [
+                     *       "hello",
+                     *       "science"
+                     *     ]
                      */
                     filter_keywords?: string[];
                     /**
@@ -113,7 +131,9 @@ export interface paths {
                      *       - id
                      *       - flow_administrators
                      *
-                     * @example globus
+                     * @example [
+                     *       "globus"
+                     *     ]
                      */
                     filter_fulltext?: string[];
                     /**
@@ -154,10 +174,10 @@ export interface paths {
                      *     - `ASC`
                      *     - `DESC`
                      *
-                     *     By default, the list of flows is sorted by the flows' `id` field
-                     *     in ascending order, which is equivalent to `id ASC`.
-                     *
-                     * @example title ASC,id DESC
+                     * @example [
+                     *       "title ASC",
+                     *       "id DESC"
+                     *     ]
                      */
                     orderby?: components["parameters"]["list_flows_orderby"];
                 };
@@ -651,7 +671,10 @@ export interface paths {
                      * @description Return Flow's for which the user has the supplied role. The role the
                      *     user has on the Flow dictates the operations they can perform.
                      *
-                     * @example flow_owner,flow_viewers
+                     * @example [
+                     *       "flow_owner",
+                     *       "flow_viewers"
+                     *     ]
                      */
                     roles?: ("flow_owner" | "flow_viewers" | "flow_starters" | "flow_administrators")[];
                 };
@@ -1420,7 +1443,9 @@ export interface paths {
                      *     If multiple roles are specified, the user will have at least one of
                      *     the specified roles on each Action returned.
                      *
-                     * @example run_manager
+                     * @example [
+                     *       "run_manager"
+                     *     ]
                      */
                     filter_roles?: ("run_owner" | "run_manager" | "run_monitor" | "flow_run_manager" | "flow_run_monitor")[];
                     /**
@@ -1434,7 +1459,9 @@ export interface paths {
                      *     has "run_monitor" role as well. If not provided, only Actions
                      *     for which the caller has "run_owner" role will be returned.
                      *
-                     * @example run_manager
+                     * @example [
+                     *       "run_manager"
+                     *     ]
                      */
                     filter_role?: "run_monitor" | "run_manager" | "run_owner" | "flow_run_manager" | "flow_run_monitor";
                     /**
@@ -1444,7 +1471,10 @@ export interface paths {
                      *     of the specified states. By default, Actions in any state will be
                      *     returned.
                      *
-                     * @example FAILED,INACTIVE
+                     * @example [
+                     *       "FAILED",
+                     *       "INACTIVE"
+                     *     ]
                      */
                     filter_status?: ("SUCCEEDED" | "FAILED" | "ENDED" | "ACTIVE" | "INACTIVE")[];
                     /**
@@ -1452,7 +1482,10 @@ export interface paths {
                      *     label fields. If multiple values are specified, each Action returned
                      *     is guaranteed to contain at least one of the strings in its label.
                      *
-                     * @example science,tests
+                     * @example [
+                     *       "science",
+                     *       "tests"
+                     *     ]
                      */
                     filter_label?: string[];
                     /**
@@ -1530,10 +1563,10 @@ export interface paths {
                      *     - `ASC`
                      *     - `DESC`
                      *
-                     *     By default, the list of runs is sorted by the runs' `start_time` field
-                     *     in descending order, which is equivalent to `start_time DESC`.
-                     *
-                     * @example start_time ASC,id DESC
+                     * @example [
+                     *       "start_time ASC",
+                     *       "id DESC"
+                     *     ]
                      */
                     orderby?: components["parameters"]["list_runs_orderby"];
                 };
@@ -1644,7 +1677,10 @@ export interface paths {
                      *     If multiple roles are specified, the user will have at least one of
                      *     the specified roles on each Action returned.
                      *
-                     * @example run_owner,run_managers
+                     * @example [
+                     *       "run_owner",
+                     *       "run_managers"
+                     *     ]
                      */
                     filter_roles?: ("run_owner" | "run_managers" | "run_monitors" | "flow_run_managers" | "flow_run_monitors")[];
                     /**
@@ -1668,7 +1704,10 @@ export interface paths {
                      *     of the specified states. By default, Actions in any state will be
                      *     returned.
                      *
-                     * @example FAILED,INACTIVE
+                     * @example [
+                     *       "FAILED",
+                     *       "INACTIVE"
+                     *     ]
                      */
                     filter_status?: ("SUCCEEDED" | "FAILED" | "ENDED" | "ACTIVE" | "INACTIVE")[];
                     /**
@@ -1676,7 +1715,10 @@ export interface paths {
                      *     label fields. If multiple values are specified, each Action returned
                      *     is guaranteed to contain at least one of the strings in its label.
                      *
-                     * @example science,tests
+                     * @example [
+                     *       "science",
+                     *       "tests"
+                     *     ]
                      */
                     filter_label?: string[];
                     /**
@@ -1685,7 +1727,10 @@ export interface paths {
                      *     multiple values are specified, each Action returned will have a
                      *     parent Flow with a title matching at least one of the strings.
                      *
-                     * @example globus,tests
+                     * @example [
+                     *       "globus",
+                     *       "tests"
+                     *     ]
                      */
                     filter_flow_title?: string[];
                     /**
@@ -1694,7 +1739,10 @@ export interface paths {
                      *     specified, each Run returned will have been initiated from at least
                      *     one of the specified Flow IDs.
                      *
-                     * @example 6086d817-19d9-4f5b-9329-22ed12d4d3dd,71a70751-19a5-4d19-998e-0709c40321e9
+                     * @example [
+                     *       "00000000-19d9-4f5b-9329-22ed12d4d3dd",
+                     *       "11111111-19a5-4d19-998e-0709c40321e9"
+                     *     ]
                      */
                     filter_flow_id?: string[];
                     /**
@@ -1772,10 +1820,10 @@ export interface paths {
                      *     - `ASC`
                      *     - `DESC`
                      *
-                     *     By default, the list of runs is sorted by the runs' `start_time` field
-                     *     in descending order, which is equivalent to `start_time DESC`.
-                     *
-                     * @example start_time ASC,id DESC
+                     * @example [
+                     *       "start_time ASC",
+                     *       "id DESC"
+                     *     ]
                      */
                     orderby?: components["parameters"]["list_runs_orderby"];
                 };
@@ -2710,10 +2758,10 @@ export interface components {
          *     - `ASC`
          *     - `DESC`
          *
-         *     By default, the list of flows is sorted by the flows' `id` field
-         *     in ascending order, which is equivalent to `id ASC`.
-         *
-         * @example title ASC,id DESC
+         * @example [
+         *       "title ASC",
+         *       "id DESC"
+         *     ]
          */
         list_flows_orderby: string[];
         /**
@@ -2752,10 +2800,10 @@ export interface components {
          *     - `ASC`
          *     - `DESC`
          *
-         *     By default, the list of runs is sorted by the runs' `start_time` field
-         *     in descending order, which is equivalent to `start_time DESC`.
-         *
-         * @example start_time ASC,id DESC
+         * @example [
+         *       "start_time ASC",
+         *       "id DESC"
+         *     ]
          */
         list_runs_orderby: string[];
     };
