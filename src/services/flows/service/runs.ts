@@ -1,7 +1,13 @@
 import { ID, SCOPES } from '../config.js';
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 
-import type { ServiceMethod, ServiceMethodDynamicSegments } from '../../../services/types.js';
+import type {
+  ServiceMethod,
+  ServiceMethodDynamicSegments,
+  JSONFetchResponse,
+} from '../../../services/types.js';
+
+import type { OpenAPI } from '../index.js';
 
 /**
  * @see https://globusonline.github.io/globus-flows/#tag/Runs/paths/~1runs/get
@@ -16,11 +22,15 @@ export const getAll = function (options = {}, sdkOptions?) {
     options,
     sdkOptions,
   );
-} satisfies ServiceMethod<{
-  query?: Record<string, string>;
-  headers?: Record<string, string>;
-  payload?: never;
-}>;
+} satisfies ServiceMethod<
+  {
+    query?: OpenAPI.paths['/runs']['get']['parameters']['query'];
+    payload?: never;
+  },
+  JSONFetchResponse<
+    OpenAPI.paths['/runs']['get']['responses']['200']['content']['application/json']
+  >
+>;
 
 /**
  * Get details about a run
@@ -39,11 +49,12 @@ export const get = function (run_id, options?, sdkOptions?) {
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: {
-      include_flow_description?: boolean;
-    };
+    query?: OpenAPI.paths['/runs/{run_id}']['get']['parameters']['query'];
     payload?: never;
-  }
+  },
+  JSONFetchResponse<
+    OpenAPI.paths['/runs/{run_id}']['get']['responses']['200']['content']['application/json']
+  >
 >;
 
 /**
@@ -61,7 +72,16 @@ export const cancel = function (run_id, options?, sdkOptions?) {
     options,
     sdkOptions,
   );
-} satisfies ServiceMethodDynamicSegments<string, Record<string, any>>;
+} satisfies ServiceMethodDynamicSegments<
+  string,
+  {
+    query?: never;
+    payload?: never;
+  },
+  JSONFetchResponse<
+    OpenAPI.paths['/runs/{run_id}/cancel']['post']['responses']['202']['content']['application/json']
+  >
+>;
 
 /**
  * Retrieve detailed execution information for a particular Flow Run.
@@ -80,12 +100,11 @@ export const getLog = function (run_id, options?, sdkOptions?) {
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: {
-      limit?: number | string;
-      reverse_order?: boolean;
-      pagination_token?: string;
-    };
-  }
+    query?: OpenAPI.paths['/runs/{run_id}/log']['get']['parameters']['query'];
+  },
+  JSONFetchResponse<
+    OpenAPI.paths['/runs/{run_id}/log']['get']['responses']['200']['content']['application/json']
+  >
 >;
 
 /**
@@ -108,13 +127,11 @@ export const update = function (run_id, options?, sdkOptions?) {
   string,
   {
     query?: never;
-    payload?: {
-      label?: string;
-      run_monitors?: string[];
-      run_managers?: string[];
-      tags?: string[];
-    };
-  }
+    payload?: OpenAPI.paths['/runs/{run_id}']['put']['requestBody']['content']['application/json'];
+  },
+  JSONFetchResponse<
+    OpenAPI.paths['/runs/{run_id}']['put']['responses']['200']['content']['application/json']
+  >
 >;
 
 /**
@@ -138,7 +155,10 @@ export const remove = function (run_id, options?, sdkOptions?) {
   {
     query?: never;
     payload?: never;
-  }
+  },
+  JSONFetchResponse<
+    OpenAPI.paths['/runs/{run_id}/release']['post']['responses']['200']['content']['application/json']
+  >
 >;
 
 /**
@@ -162,5 +182,8 @@ export const getDefinition = function (run_id, options?, sdkOptions?) {
   {
     query?: never;
     payload?: never;
-  }
+  },
+  JSONFetchResponse<
+    OpenAPI.paths['/runs/{run_id}/definition']['get']['responses']['200']['content']['application/json']
+  >
 >;
