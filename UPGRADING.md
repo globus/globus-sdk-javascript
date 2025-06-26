@@ -2,12 +2,13 @@
 
 ## Migrating from `v5` to `v6`
 
-**For most users, this upgrade will not require any changes to your application code.** The `v6` release of `@globus/sdk` was considered a breaking change based on the following:
+**For many users, this upgrade will not require any changes to your application code.** The `v6` release of `@globus/sdk` was considered a breaking change based on the following:
 
 - **Deprecation of support for Node.js 18.** This version of Node.js has reached its end-of-life. The `@globus/sdk` has been updated to support Node.js 20 and later.
-- **Removal of the `@globus/types` package.** The `@globus/types` package has been removed from the SDK, and all types are now included in the main `@globus/sdk` package. This change was made to simplify the installation process and reduce confusion about which package to use for type definitions as the source of truth. See the section below for more details on this change.
-- **"Timer" service renamed to "Timer*s*".** The `@globus/sdk/services/timer` service has been renamed to `@globus/sdk/services/timers` to better reflect the rest of th Globus ecosystem.
-
+- **"Timer" service renamed to "Timer*s*".** The `@globus/sdk/services/timer` service has been renamed to `@globus/sdk/services/timers` to better reflect the rest of the Globus ecosystem.
+- **Typescript**
+  - **Removal of the `@globus/types` package.** The `@globus/types` package has been removed from the SDK, and all types are now included in the main `@globus/sdk` package. This change was made to simplify the installation process and reduce confusion about which package to use for type definitions as the source of truth. 
+  - **More complete, and accurate, service types.** With service types colocated in the SDK, we've been able to utilize types generated directly from the OpenAPI specifications published by the various services. 
 ### Removal of `@globus/types`
 
 1. Remove the `@globus/types` package from your project dependencies.
@@ -39,7 +40,7 @@ The `@globus/sdk/services/timer` service has been renamed to `@globus/sdk/servic
 
 #### `create` Service Method
 
-```
+```diff
 -import { timer } from '@globus/sdk';
 -timer.create({ /* ... */ });
 +import { timers } from '@globus/sdk';
