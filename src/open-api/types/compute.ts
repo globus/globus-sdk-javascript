@@ -1774,20 +1774,6 @@ export interface components {
              */
             queue: string;
         };
-        /**
-         * RegisterFunctionResponse
-         * @example {
-         *       "function_uuid": "11291b86-4f9c-47cb-848e-d3c06285951c"
-         *     }
-         */
-        RegisterFunctionResponse: {
-            /**
-             * Function Uuid
-             * Format: uuid
-             * @description Function UUID
-             */
-            function_uuid: string;
-        };
         /** ResourceSpecification */
         ResourceSpecification: {
             /**
@@ -2176,6 +2162,20 @@ export interface components {
             public: boolean;
         };
         /**
+         * RegisterFunctionResponse
+         * @example {
+         *       "function_uuid": "11291b86-4f9c-47cb-848e-d3c06285951c"
+         *     }
+         */
+        funcx_web_service__schemas__v2__function__RegisterFunctionResponse: {
+            /**
+             * Function Uuid
+             * Format: uuid
+             * @description Function UUID
+             */
+            function_uuid: string;
+        };
+        /**
          * BatchSubmitRequest
          * @example {
          *       "task_group_id": "97241626-8ff4-4550-9938-5909bd221869",
@@ -2437,6 +2437,25 @@ export interface components {
             ha_endpoint_id?: string;
         };
         /**
+         * RegisterFunctionResponse
+         * @example {
+         *       "function_uuid": "11291b86-4f9c-47cb-848e-d3c06285951c"
+         *     }
+         */
+        funcx_web_service__schemas__v3__function__RegisterFunctionResponse: {
+            /**
+             * Function Uuid
+             * Format: uuid
+             * @description Function UUID
+             */
+            function_uuid: string;
+            /**
+             * Ha Warning
+             * @description Populated when a function is registered to an HA endpoint.  If present, the SDK will emit the text to the user as a warning.
+             */
+            ha_warning?: string;
+        };
+        /**
          * BatchSubmitRequest
          * @example {
          *       "task_group_id": "97241626-8ff4-4550-9938-5909bd221869",
@@ -2554,6 +2573,11 @@ export interface components {
             tasks: {
                 [key: string]: string[];
             };
+            /**
+             * Ha Warning
+             * @description Populated when a task is submitted to an HA endpoint.  If present, the SDK will emit the text to the user as a warning.
+             */
+            ha_warning?: string;
         };
     };
     responses: never;
@@ -3170,7 +3194,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["RegisterFunctionResponse"];
+                    "application/json": components["schemas"]["funcx_web_service__schemas__v2__function__RegisterFunctionResponse"];
                 };
             };
             /** @description Validation Error */
@@ -3723,7 +3747,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["RegisterFunctionResponse"];
+                    "application/json": components["schemas"]["funcx_web_service__schemas__v3__function__RegisterFunctionResponse"];
                 };
             };
             /** @description Unauthorized */
