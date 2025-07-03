@@ -12,7 +12,14 @@ import type { OpenAPI } from '../index.js';
 /**
  * @see https://globusonline.github.io/globus-flows/#tag/Runs/paths/~1runs/get
  */
-export const getAll = function (options = {}, sdkOptions?) {
+export const getAll = function (
+  options = {},
+  sdkOptions?,
+): Promise<
+  JSONFetchResponse<
+    OpenAPI.paths['/runs']['get']['responses']['200']['content']['application/json']
+  >
+> {
   return serviceRequest(
     {
       service: ID,
@@ -22,21 +29,24 @@ export const getAll = function (options = {}, sdkOptions?) {
     options,
     sdkOptions,
   );
-} satisfies ServiceMethod<
-  {
-    query?: OpenAPI.paths['/runs']['get']['parameters']['query'];
-    payload?: never;
-  },
-  JSONFetchResponse<
-    OpenAPI.paths['/runs']['get']['responses']['200']['content']['application/json']
-  >
->;
+} satisfies ServiceMethod<{
+  query?: OpenAPI.paths['/runs']['get']['parameters']['query'];
+  payload?: never;
+}>;
 
 /**
  * Get details about a run
  * @see https://globusonline.github.io/globus-flows/#tag/Runs/paths/~1runs~1{run_id}/get
  */
-export const get = function (run_id, options?, sdkOptions?) {
+export const get = function (
+  run_id,
+  options?,
+  sdkOptions?,
+): Promise<
+  JSONFetchResponse<
+    OpenAPI.paths['/runs/{run_id}']['get']['responses']['200']['content']['application/json']
+  >
+> {
   return serviceRequest(
     {
       service: ID,
@@ -51,17 +61,22 @@ export const get = function (run_id, options?, sdkOptions?) {
   {
     query?: OpenAPI.paths['/runs/{run_id}']['get']['parameters']['query'];
     payload?: never;
-  },
-  JSONFetchResponse<
-    OpenAPI.paths['/runs/{run_id}']['get']['responses']['200']['content']['application/json']
-  >
+  }
 >;
 
 /**
  * Cancel the execution for a particular Run of a Flow.
  * https://globusonline.github.io/globus-flows/#tag/Runs/paths/~1runs~1%7Brun_id%7D~1cancel/post
  */
-export const cancel = function (run_id, options?, sdkOptions?) {
+export const cancel = function (
+  run_id,
+  options?,
+  sdkOptions?,
+): Promise<
+  JSONFetchResponse<
+    OpenAPI.paths['/runs/{run_id}/cancel']['post']['responses']['202']['content']['application/json']
+  >
+> {
   return serviceRequest(
     {
       service: ID,
@@ -77,17 +92,22 @@ export const cancel = function (run_id, options?, sdkOptions?) {
   {
     query?: never;
     payload?: never;
-  },
-  JSONFetchResponse<
-    OpenAPI.paths['/runs/{run_id}/cancel']['post']['responses']['202']['content']['application/json']
-  >
+  }
 >;
 
 /**
  * Retrieve detailed execution information for a particular Flow Run.
  * @see https://globusonline.github.io/globus-flows/#tag/Runs/paths/~1runs~1%7Baction_id%7D~1log/get
  */
-export const getLog = function (run_id, options?, sdkOptions?) {
+export const getLog = function (
+  run_id,
+  options?,
+  sdkOptions?,
+): Promise<
+  JSONFetchResponse<
+    OpenAPI.paths['/runs/{run_id}/log']['get']['responses']['200']['content']['application/json']
+  >
+> {
   return serviceRequest(
     {
       service: ID,
@@ -101,10 +121,7 @@ export const getLog = function (run_id, options?, sdkOptions?) {
   string,
   {
     query?: OpenAPI.paths['/runs/{run_id}/log']['get']['parameters']['query'];
-  },
-  JSONFetchResponse<
-    OpenAPI.paths['/runs/{run_id}/log']['get']['responses']['200']['content']['application/json']
-  >
+  }
 >;
 
 /**
@@ -112,7 +129,15 @@ export const getLog = function (run_id, options?, sdkOptions?) {
  *
  * @see https://globusonline.github.io/globus-flows/#tag/Runs/paths/~1runs~1{run_id}/put
  */
-export const update = function (run_id, options?, sdkOptions?) {
+export const update = function (
+  run_id,
+  options?,
+  sdkOptions?,
+): Promise<
+  JSONFetchResponse<
+    OpenAPI.paths['/runs/{run_id}']['put']['responses']['200']['content']['application/json']
+  >
+> {
   return serviceRequest(
     {
       service: ID,
@@ -128,10 +153,7 @@ export const update = function (run_id, options?, sdkOptions?) {
   {
     query?: never;
     payload?: OpenAPI.paths['/runs/{run_id}']['put']['requestBody']['content']['application/json'];
-  },
-  JSONFetchResponse<
-    OpenAPI.paths['/runs/{run_id}']['put']['responses']['200']['content']['application/json']
-  >
+  }
 >;
 
 /**
@@ -139,7 +161,15 @@ export const update = function (run_id, options?, sdkOptions?) {
  *
  * @see https://globusonline.github.io/globus-flows/#tag/Runs/paths/~1runs~1{run_id}~1release/post
  */
-export const remove = function (run_id, options?, sdkOptions?) {
+export const remove = function (
+  run_id,
+  options?,
+  sdkOptions?,
+): Promise<
+  JSONFetchResponse<
+    OpenAPI.paths['/runs/{run_id}/release']['post']['responses']['200']['content']['application/json']
+  >
+> {
   return serviceRequest(
     {
       service: ID,
@@ -155,10 +185,7 @@ export const remove = function (run_id, options?, sdkOptions?) {
   {
     query?: never;
     payload?: never;
-  },
-  JSONFetchResponse<
-    OpenAPI.paths['/runs/{run_id}/release']['post']['responses']['200']['content']['application/json']
-  >
+  }
 >;
 
 /**
@@ -166,7 +193,15 @@ export const remove = function (run_id, options?, sdkOptions?) {
  *
  * @see https://globusonline.github.io/globus-flows/#tag/Runs/paths/~1runs~1{run_id}~1definition/get
  */
-export const getDefinition = function (run_id, options?, sdkOptions?) {
+export const getDefinition = function (
+  run_id,
+  options?,
+  sdkOptions?,
+): Promise<
+  JSONFetchResponse<
+    OpenAPI.paths['/runs/{run_id}/definition']['get']['responses']['200']['content']['application/json']
+  >
+> {
   return serviceRequest(
     {
       service: ID,
@@ -182,8 +217,5 @@ export const getDefinition = function (run_id, options?, sdkOptions?) {
   {
     query?: never;
     payload?: never;
-  },
-  JSONFetchResponse<
-    OpenAPI.paths['/runs/{run_id}/definition']['get']['responses']['200']['content']['application/json']
-  >
+  }
 >;
