@@ -68,10 +68,13 @@ describe('isGlobusHostname', () => {
   it('should return true for valid Globus hostnames', () => {
     expect(isGlobusHostname('collection.dn.glob.us')).toBe(true);
     expect(isGlobusHostname('m-4d5adb.fa5e.bd7c.data.globus.org')).toBe(true);
+    expect(isGlobusHostname('m-4d5adb.fa5e.bd7c.gaccess.io')).toBe(true);
   });
   it('should return false for invalid Globus hostnames', () => {
     expect(isGlobusHostname('example.com')).toBe(false);
     expect(isGlobusHostname('example.org')).toBe(false);
+    // A hostname that ends with a Globus domain (gaccess.io) but is **not** a valid Globus hostname.
+    expect(isGlobusHostname('www.sendingaccess.io')).toBe(false);
   });
 });
 
