@@ -67,7 +67,12 @@ export function readableBytes(bytes: number, truncate = 2) {
 /**
  * Known Globus DNS domains.
  */
-export const GLOBUS_DNS_DOMAINS = ['dnsteam.globuscs.info', 'data.globus.org', 'dn.glob.us'];
+export const GLOBUS_DNS_DOMAINS = [
+  'dnsteam.globuscs.info',
+  'data.globus.org',
+  'dn.glob.us',
+  'gaccess.io',
+];
 
 /**
  * Check the given hostname to determine if it is one of the known Globus DNS domains.
@@ -75,7 +80,7 @@ export const GLOBUS_DNS_DOMAINS = ['dnsteam.globuscs.info', 'data.globus.org', '
  * @returns `true` if the hostname is a known Globus DNS domain, `false` otherwise.
  */
 export function isGlobusHostname(hostname: string): boolean {
-  return Boolean(GLOBUS_DNS_DOMAINS.find((d) => hostname.endsWith(d)));
+  return Boolean(GLOBUS_DNS_DOMAINS.find((d) => hostname.endsWith(`.${d}`)));
 }
 
 /**
