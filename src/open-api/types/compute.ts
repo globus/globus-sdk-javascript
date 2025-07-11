@@ -2388,7 +2388,7 @@ export interface components {
          *       "function_name": "dot_product",
          *       "function_code": "850\n01\ngASVZwIAAAAAAACMCmRpbGwuX2RpbGyUjBB...",
          *       "description": "Dot product of two vectors (unchecked length)",
-         *       "metadata": {
+         *       "meta": {
          *         "python_version": "3.13.3",
          *         "sdk_version": "3.1.1",
          *         "serde_identifier": "01"
