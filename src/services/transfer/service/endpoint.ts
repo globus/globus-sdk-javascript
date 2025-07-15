@@ -228,6 +228,7 @@ export type EndpointDocument = {
       source?: { flow?: string | null };
     };
   } | null;
+  preserve_modtime: 'inbound' | 'outbound' | 'all' | null;
 };
 
 export type EndpointListDocument = {
