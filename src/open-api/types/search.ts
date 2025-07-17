@@ -1082,18 +1082,26 @@ export interface components {
             entries?: components["schemas"]["ResultEntry"][];
         };
         ApproximateMetricFacetResult: {
+            /** @default 2017-09-01 */
+            readonly "@version": unknown;
             readonly name?: string;
             approximate_value?: number;
         };
         MetricFacetResult: {
+            /** @default 2017-09-01 */
+            readonly "@version": unknown;
             readonly name?: string;
             value?: number;
         };
         GBucket: {
+            /** @default 2017-09-01 */
+            readonly "@version": unknown;
             value?: unknown;
             count?: number;
         };
         BucketFacetResult: {
+            /** @default 2017-09-01 */
+            readonly "@version": unknown;
             readonly name?: string;
             buckets?: components["schemas"]["GBucket"][];
         };
@@ -1105,10 +1113,14 @@ export interface components {
             gmeta?: components["schemas"]["GMetaResult"][];
             /** @description True if another page of results is available with pagination. */
             has_next_page?: boolean;
+            /** @default 2017-09-01 */
+            readonly "@version": unknown;
             offset?: number;
             facet_results?: components["schemas"]["GFacetResult"][];
         };
         TermsFacet: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description The field to which the facet refers.
              *     Any dots (`.`) must be escaped with a preceding backslash (`\`) character.
@@ -1128,6 +1140,8 @@ export interface components {
             size: number;
         };
         MetricFacet: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description The field to which the facet refers.
              *     Any dots (`.`) must be escaped with a preceding backslash (`\`) character.
@@ -1150,6 +1164,8 @@ export interface components {
             high?: unknown;
         };
         DateHistogramFacet: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description The field to which the facet refers.
              *     Any dots (`.`) must be escaped with a preceding backslash (`\`) character.
@@ -1174,6 +1190,8 @@ export interface components {
             high: number;
         };
         NumericHistogramFacet: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description The field to which the facet refers.
              *     Any dots (`.`) must be escaped with a preceding backslash (`\`) character.
@@ -1194,6 +1212,8 @@ export interface components {
         };
         GFacet: components["schemas"]["TermsFacet"] | components["schemas"]["MetricFacet"] | components["schemas"]["MetricFacet"] | components["schemas"]["DateHistogramFacet"] | components["schemas"]["NumericHistogramFacet"];
         GFilterMatchAll: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1214,6 +1234,8 @@ export interface components {
             values: unknown[];
         };
         GFilterMatchAny: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1242,6 +1264,8 @@ export interface components {
             lt?: unknown;
         };
         GFilterRange: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1266,6 +1290,8 @@ export interface components {
             lon: number;
         };
         GFilterBoundingBox: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1318,6 +1344,8 @@ export interface components {
         };
         GeoShape: components["schemas"]["GeoPolygon"];
         GFilterGeoShape: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1348,6 +1376,8 @@ export interface components {
             relation: "intersects" | "within";
         };
         GFilterExists: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1367,6 +1397,8 @@ export interface components {
             field_name: string;
         };
         GFilterLike: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1391,6 +1423,8 @@ export interface components {
             value: string;
         };
         GFilterMatchAllNested: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1401,6 +1435,8 @@ export interface components {
             values: unknown[];
         };
         GFilterMatchAnyNested: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1411,6 +1447,8 @@ export interface components {
             values: unknown[];
         };
         GFilterRangeNested: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1421,6 +1459,8 @@ export interface components {
             values: components["schemas"]["RangeFilterValue"][];
         };
         GFilterBoundingBoxNested: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1454,6 +1494,8 @@ export interface components {
             bottom_right: components["schemas"]["Coordinate"];
         };
         GFilterGeoShapeNested: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1474,6 +1516,8 @@ export interface components {
             relation: "intersects" | "within";
         };
         GFilterExistsNested: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1483,6 +1527,8 @@ export interface components {
             field_name: string;
         };
         GFilterLikeNested: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1497,6 +1543,8 @@ export interface components {
             value: string;
         };
         GFilterNotNested: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1505,6 +1553,8 @@ export interface components {
             filter: components["schemas"]["GFilterNested"];
         };
         GFilterOrNested: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1513,6 +1563,8 @@ export interface components {
             filters: components["schemas"]["GFilterNested"][];
         };
         GFilterAndNested: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1522,6 +1574,8 @@ export interface components {
         };
         GFilterNested: components["schemas"]["GFilterMatchAllNested"] | components["schemas"]["GFilterMatchAnyNested"] | components["schemas"]["GFilterRangeNested"] | components["schemas"]["GFilterBoundingBoxNested"] | components["schemas"]["GFilterGeoShapeNested"] | components["schemas"]["GFilterExistsNested"] | components["schemas"]["GFilterLikeNested"] | components["schemas"]["GFilterNotNested"] | components["schemas"]["GFilterOrNested"] | components["schemas"]["GFilterAndNested"];
         GFilterNot: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1540,6 +1594,8 @@ export interface components {
             filter: components["schemas"]["GFilterNested"];
         };
         GFilterOr: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1558,6 +1614,8 @@ export interface components {
             filters: components["schemas"]["GFilterNested"][];
         };
         GFilterAnd: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1577,11 +1635,15 @@ export interface components {
         };
         GFilter: components["schemas"]["GFilterMatchAll"] | components["schemas"]["GFilterMatchAny"] | components["schemas"]["GFilterRange"] | components["schemas"]["GFilterBoundingBox"] | components["schemas"]["GFilterGeoShape"] | components["schemas"]["GFilterExists"] | components["schemas"]["GFilterLike"] | components["schemas"]["GFilterNot"] | components["schemas"]["GFilterOr"] | components["schemas"]["GFilterAnd"];
         GBoost: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /** @example my_field_name */
             field_name: string;
             factor: number;
         };
         GSort: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /** @example my_field_name */
             field_name: string;
             /**
@@ -1601,16 +1663,16 @@ export interface components {
              */
             bypass_visible_to: boolean;
             filter_principal_sets?: string[];
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            "@version": "2017-09-01";
             offset?: number;
             facets?: components["schemas"]["GFacet"][];
             filters?: components["schemas"]["GFilter"][];
             boosts?: components["schemas"]["GBoost"][];
             sort?: components["schemas"]["GSort"][];
-            /**
-             * @description discriminator enum property added by openapi-typescript
-             * @enum {string}
-             */
-            "@version": "2017-09-01" | "2016-11-09";
         };
         GFilterMatchAllV1: {
             /**
@@ -1922,7 +1984,7 @@ export interface components {
             q_settings?: components["schemas"]["QSettings"];
             post_facet_filters?: components["schemas"]["GFilterV1"][];
         };
-        GSearchRequestBody: components["schemas"]["GSearchRequestBody2017"] | components["schemas"]["GSearchRequestBody2017"] | components["schemas"]["GSearchRequestBodyV1"];
+        GSearchRequestBody: components["schemas"]["GSearchRequestBody2017"] | components["schemas"]["GSearchRequestBodyV1"];
         GScrollRequest2017: {
             marker?: unknown;
             q?: string;
@@ -1973,6 +2035,8 @@ export interface components {
             marker?: unknown;
         };
         GMetaEntry: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             subject: string;
             /** @default null */
             id: string | null;
@@ -1985,6 +2049,8 @@ export interface components {
             };
         };
         GIngestEntry: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -2009,9 +2075,13 @@ export interface components {
             ingest_data: components["schemas"]["GMetaEntry"];
         };
         GMetaList: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             gmeta: components["schemas"]["GMetaEntry"][];
         };
         GIngestList: {
+            /** @default 2017-09-01 */
+            "@version": unknown;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -2067,6 +2137,8 @@ export interface components {
             tasks?: components["schemas"]["Task"][];
         };
         IndexWithPermissions: {
+            /** @default 2017-09-01 */
+            readonly "@version": unknown;
             display_name?: string;
             description?: string;
             /** Format: uuid */
@@ -2084,6 +2156,8 @@ export interface components {
             subscription_id?: string;
             is_trial?: boolean;
             status?: string;
+            /** @description The 'available' field indicates whether or not an index is available to serve queries and process tasks. It is `true` for active indices, but `false` when an index is being deleted or Globus Search is unable to access the index data. */
+            available?: boolean;
             permissions?: ("owner" | "admin" | "writer")[];
         };
         IndexDeleteResponse: {
@@ -2105,6 +2179,8 @@ export interface components {
             description: string;
         };
         IndexInfo: {
+            /** @default 2017-09-01 */
+            readonly "@version": unknown;
             display_name?: string;
             description?: string;
             /** Format: uuid */
@@ -2122,6 +2198,8 @@ export interface components {
             subscription_id?: string;
             is_trial?: boolean;
             status?: string;
+            /** @description The 'available' field indicates whether or not an index is available to serve queries and process tasks. It is `true` for active indices, but `false` when an index is being deleted or Globus Search is unable to access the index data. */
+            available?: boolean;
         };
         IndexReopenResponse: {
             /** @description Always true for successful index reopen. */
@@ -2182,8 +2260,10 @@ export interface components {
             q_settings?: components["schemas"]["QSettings"];
             filters?: components["schemas"]["GFilterV1"][];
         };
-        DeleteByQuery: components["schemas"]["GSearchRequestBody2017"] | components["schemas"]["GSearchRequestBody2017"] | components["schemas"]["DeleteByQueryV1"];
+        DeleteByQuery: components["schemas"]["GSearchRequestBody2017"] | components["schemas"]["DeleteByQueryV1"];
         UGFieldMappings: {
+            /** @default 2017-09-01 */
+            readonly "@version": unknown;
             /**
              * @description A mapping from full field names to their types.
              * @example {
