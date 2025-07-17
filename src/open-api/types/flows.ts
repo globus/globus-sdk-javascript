@@ -650,86 +650,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/mine": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Retrieve all Flows
-         * @deprecated
-         * @description Query the Flows service for a listing of Flows available to a user
-         *     according to the permissions (role) they have on the Flow.
-         *
-         */
-        get: {
-            parameters: {
-                query?: {
-                    /**
-                     * @description Return Flow's for which the user has the supplied role. The role the
-                     *     user has on the Flow dictates the operations they can perform.
-                     *
-                     * @example [
-                     *       "flow_owner",
-                     *       "flow_viewers"
-                     *     ]
-                     */
-                    roles?: ("flow_owner" | "flow_viewers" | "flow_starters" | "flow_administrators")[];
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description The requestor has successfully authenticated and queried the Flow's
-                 *     service for the Flows available for them.
-                 *      */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            flows?: components["schemas"]["FlowResponse"][];
-                            /** @description The number of Flows returned. */
-                            limit?: number;
-                            /** @description An opaque pagination token for iterating through returned
-                             *     Flows.
-                             *      */
-                            marker?: string;
-                            has_next_page?: boolean;
-                        };
-                    };
-                };
-                /** @description There was an issue parsing the query parameters.
-                 *      */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description The requestor presented a token with insufficient scopes.
-                 *      */
-                403: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/flows/{flow_id}/run": {
         parameters: {
             query?: never;
@@ -769,13 +689,6 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description The Run inputs were successfully validated during a dry-run. */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
                 /** @description The Run was successfully started. */
                 201: {
                     headers: {
@@ -927,117 +840,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/flows/{flow_id}/start": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description The flow ID */
-                flow_id: components["parameters"]["flow_id"];
-            };
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Start a Flow
-         * @deprecated
-         * @description Start a particular Flow, which creates a Run.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description The flow ID */
-                    flow_id: components["parameters"]["flow_id"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": {
-                        body: components["schemas"]["InputBody"];
-                        tags?: components["schemas"]["Tags"];
-                    };
-                };
-            };
-            responses: {
-                /** @description The Run inputs were successfully validated during a dry-run. */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description The Run was successfully started. */
-                201: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["FlowRun"];
-                    };
-                };
-                /** @description The Run's input failed validation against the Flow's input schema.
-                 *      */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description The requestor presented a token with insufficient scopes.
-                 *      */
-                403: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description The requestor did not have access to run the provided Flow, or the
-                 *     Flow does not exist.
-                 *      */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description The input tags did not pass validation. */
-                422: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description An upstream service has imposed rate limiting.
-                 *     The requestor may resubmit the API request.
-                 *      */
-                429: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description An upstream service returned an uncorrectable error.
-                 *     The error may or may not occur if the API request is submitted again.
-                 *     It may be possible to resubmit the API request.
-                 *      */
-                502: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/runs/{run_id}/release": {
         parameters: {
             query?: never;
@@ -1137,7 +939,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/flows/{flow_id}/runs/{run_id}/resume": {
+    "/flows/{flow_id}/{run_id}/resume": {
         parameters: {
             query?: never;
             header?: never;
@@ -1223,9 +1025,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/flows/{flow_id}/actions/{run_id}/resume": paths["/flows/{flow_id}/runs/{run_id}/resume"];
-    "/runs/{run_id}/resume": paths["/flows/{flow_id}/runs/{run_id}/resume"];
-    "/flows/{flow_id}/{run_id}/resume": paths["/flows/{flow_id}/runs/{run_id}/resume"];
+    "/runs/{run_id}/resume": paths["/flows/{flow_id}/{run_id}/resume"];
     "/runs/{run_id}/cancel": {
         parameters: {
             query?: never;
@@ -1384,9 +1184,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/flows/{flow_id}/actions/{run_id}/log": paths["/flows/{flow_id}/{run_id}/log"];
-    "/runs/{run_id}/log": paths["/flows/{flow_id}/{run_id}/log"];
-    "/flows/{flow_id}/{run_id}/log": paths["/flows/{flow_id}/runs/{run_id}/log"];
+    "/runs/{run_id}/log": paths["/flows/{flow_id}/runs/{run_id}/log"];
     "/flows/{flow_id}/runs": {
         parameters: {
             query?: never;
@@ -1623,7 +1421,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/flows/{flow_id}/actions": paths["/flows/{flow_id}/runs"];
     "/runs": {
         parameters: {
             query?: never;
