@@ -2149,6 +2149,8 @@ export interface components {
             num_entries?: number;
             /** Format: date */
             creation_date?: string;
+            /** Format: date */
+            content_last_modified_date?: string | null;
             entry_schema?: {
                 [key: string]: unknown;
             };
@@ -2191,6 +2193,8 @@ export interface components {
             num_entries?: number;
             /** Format: date */
             creation_date?: string;
+            /** Format: date */
+            content_last_modified_date?: string | null;
             entry_schema?: {
                 [key: string]: unknown;
             };
