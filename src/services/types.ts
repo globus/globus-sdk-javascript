@@ -74,6 +74,10 @@ export type BaseServiceMethodOptions = {
    * The headers to send with the request.
    */
   headers?: Headers;
+  /**
+   * `AuthorizationManager` instance to use for this request.
+   */
+  manager?: AuthorizationManager;
 };
 
 /**

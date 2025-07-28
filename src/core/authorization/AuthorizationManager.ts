@@ -104,7 +104,8 @@ const DEFAULT_HANDLE_ERROR_OPTIONS = {
  * The `AuthorizationManager` expects your Globus Application to be registered as an OAuth public client.
  * In this Globus Web Application, this option is referenced as "_Register a thick client or script that will be installed and run by users on their devices_".
  *
- * @example <caption>Creating an AuthorizationManager instance.</caption>
+ * @example Creating an AuthorizationManager instance.
+ * ```ts
  * import { authorization } from "globus/sdk";
  *
  * const manager = authorization.create({
@@ -115,6 +116,24 @@ const DEFAULT_HANDLE_ERROR_OPTIONS = {
  *  // Known scopes required by your application.
  *  scopes: 'urn:globus:auth:scope:transfer.api.globus.org:all',
  * });
+ * ```
+ *
+ * ### Usage with Service Methods
+ *
+ * Once you have an instance of an `AuthorizationManager`, it can be passed to any service method as `ServiceMethodOptions.manager` or `SDKOptions.manager` option.
+ * The service method will determine if a token is required to make the request and will use the `AuthorizationManager` to retrieve the token.
+ *
+ * @example Using the AuthorizationManager with a service method.
+ *```ts
+ * import { transfer } from "globus/sdk";
+ * const manager = authorization.create({ ... });
+ * const result = await (
+ *  await globus.transfer.endpointSearch({
+ *    query: { filter_fulltext: "Globus"},
+ *    manager
+ *  })
+ * ).json();
+ *```
  */
 export class AuthorizationManager {
   #transport!: RedirectTransport | PopupTransport;
@@ -375,9 +394,16 @@ export class AuthorizationManager {
   /**
    * Initiate the login process by redirecting to the Globus Auth login page.
    *
-   * **IMPORTANT**: This method will reset the instance state before initiating the login process,
-   * including clearing all tokens from storage. If you need to maintain the current state,
-   * use the `AuthorizationManager.prompt` method.
+   * **IMPORTANT**: This method will **reset the instance state before initiating the login process,
+   * including clearing all tokens from storage**. If you need to maintain the current state,
+   * use the `AuthorizationManager.prompt()` method.
+   *
+   * @example Passing parameters to the transport.
+   * const result = await manager.login({
+   *   additionalParams: {
+   *     redirect_uri: '/oauth/redirect-uri-runtime-override',
+   *   },
+   * });
    */
   async login(options = { additionalParams: {} }) {
     log('debug', 'AuthorizationManager.login');
@@ -395,6 +421,13 @@ export class AuthorizationManager {
 
   /**
    * Prompt the user to authenticate with Globus Auth.
+   *
+   * @example Passing parameters to the transport.
+   * const result = await manager.prompt({
+   *   additionalParams: {
+   *     redirect_uri: '/oauth/redirect-uri-runtime-override',
+   *   },
+   * });
    */
   async prompt(options?: Partial<TransportOptions>) {
     log('debug', 'AuthorizationManager.prompt');
@@ -438,7 +471,7 @@ export class AuthorizationManager {
    * @param response The error response from a Globus service.
    * @param {object|boolean} options Options for handling the error response. If a boolean is provided, this will be treated as the `options.execute` value.
    * @param options.execute Whether to execute the handler immediately.
-   * @param options.additionalParms Additional query parameters to be included with the transport generated URL.
+   * @param options.additionalParams Additional query parameters to be included with the transport generated URL.
    */
   async handleErrorResponse(
     response: Record<string, unknown>,

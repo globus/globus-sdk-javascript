@@ -206,6 +206,62 @@ describe.only('serviceRequest', () => {
     });
   });
 
+  it('"manager" can be passed as an ServiceMethodOption (and takes precedence over SDKOptions.manager)', async () => {
+    const TOKEN = {
+      access_token: 'access-token',
+      scope: 'profile email openid',
+      expires_in: 172800,
+      token_type: 'Bearer',
+      resource_server: 'auth.globus.org',
+      refresh_token: 'refresh-token',
+      other_tokens: [],
+    };
+
+    setInitialLocalStorageState({
+      'client_id:auth.globus.org': JSON.stringify(TOKEN),
+      'client_id:transfer.api.globus.org': JSON.stringify({
+        ...TOKEN,
+        resource_server: 'transfer.api.globus.org',
+      }),
+    });
+
+    const manager = new AuthorizationManager({
+      client: 'client_id',
+      redirect: 'https://redirect_uri',
+      storage: localStorage,
+    });
+
+    const sdkOptionsManager = new AuthorizationManager({
+      client: 'client_id',
+      redirect: 'https://redirect_uri',
+    });
+    jest.spyOn(sdkOptionsManager.tokens, 'getByResourceServer').mockReturnValue(null);
+
+    const request = await serviceRequest(
+      {
+        service: 'TRANSFER',
+        scope: 'some:required:scope',
+        path: '/some-path',
+      },
+      {
+        manager,
+        query: {
+          foo: 'bar',
+        },
+      },
+      {
+        manager: sdkOptionsManager,
+      },
+    );
+
+    const {
+      req: { headers },
+    } = await mirror(request);
+
+    expect(sdkOptionsManager.tokens.getByResourceServer).not.toHaveBeenCalled();
+    expect(headers['authorization']).toEqual(`Bearer ${TOKEN.access_token}`);
+  });
+
   it('reads tokens from manager instance when `scope` is configured', async () => {
     const TOKEN = {
       access_token: 'access-token',

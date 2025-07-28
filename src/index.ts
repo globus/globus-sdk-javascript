@@ -23,7 +23,8 @@
  *
  * Methods that do not map to obvious CRUD operations are named according to the resource. i.e., `groups.groups.getMyGroups()`, `transfer.endpointSearch()`, `search.query.post()`
  *
- * @example <caption>Using the SDK to search for endpoints via Transfer API.</caption>
+ * @example Using the SDK to search for endpoints via Transfer API.
+ * ```ts
  * import { transfer } from "@globus/sdk";
  *
  * const result = await (
@@ -45,11 +46,32 @@
  *     }
  *   )
  * ).json();
+ * ```
  *
- * @example <caption>Using the SDK to fetch a single flow from the Flows API.</caption>
+ * @example Using the SDK to fetch a single flow from the Flows API.
+ * ```ts
  * import { flows } from "@globus/sdk";
  *
  * const result = await (await flows.flows.get("452bbea3-5e3b-45a5-af08-50179839a4e8")).json();
+ *```
+ *
+ * ### Authorization
+ *
+ * While all methods support passing of `headers` and direct modification of the underlying `fetch` call, the SDK provides an {@link Authorization.AuthorizationManager | `AuthorizationManager`} that can be used to manage access tokens and handle the authorization process.
+ *
+ * @example Using the AuthorizationManager with a service method.
+ * ```ts
+ * import { transfer, authorization } from "@globus/sdk";
+ * const manager = authorization.create({ ... });
+ * const result = await (
+ *   await globus.transfer.endpointSearch(
+ *     {
+ *        query: { filter_fulltext: "Globus Tutorial" },
+ *        manager
+ *     }
+ *   )
+ * ).json();
+ *```
  */
 
 /**

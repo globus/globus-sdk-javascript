@@ -6,6 +6,10 @@
 
 The Globus SDK for JavaScript provides first class TypeScript support and makes it easy to call Globus services using idiomatic JavaScript APIs to build Node.js and web applications.
 
+The primary goal of the SDK is to simplify the process of integrating with various [Globus service REST APIs](https://docs.globus.org/api/), using [consistent patterns](https://globus.github.io/globus-sdk-javascript/modules/_globus_sdk.html#key-concepts).
+
+Integrating the optional [`AuthorizationManager`](https://globus.github.io/globus-sdk-javascript/classes/Authorization.AuthorizationManager.html) allows for further abstraction, by managing the [Globus Auth](https://docs.globus.org/api/auth/) authorization process and providing an easy way to manage access tokens used by Globus services.
+
 - [@globus/sdk API Documentation](https://globus.github.io/globus-sdk-javascript/)
 - [Examples](https://github.com/globus/globus-sdk-javascript/blob/main/examples/README.md)
 - [Upgrading](https://github.com/globus/globus-sdk-javascript/blob/main/UPGRADING.md)

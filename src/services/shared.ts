@@ -105,7 +105,7 @@ export async function serviceRequest(
   /**
    * The `AuthorizationManager` instance provided with the call.
    */
-  const manager = sdkOptions?.manager;
+  const manager = options?.manager || sdkOptions?.manager;
 
   let token;
   /**
