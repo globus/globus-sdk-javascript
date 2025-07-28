@@ -14,6 +14,8 @@ import type { AuthorizationManagerConfiguration } from './AuthorizationManager.j
 export type GetTokenOptions = {
   /**
    * Whether or not the URL should be replaced after processing the token.
+   * This is used to remove the `?code=...&state=...` parameters from the URL after the token is retrieved.
+   * If set to `false`, the URL will remain unchanged.
    * @default true
    */
   shouldReplace?: boolean;
