@@ -151,13 +151,7 @@ export interface paths {
         put?: never;
         /**
          * Create Timer
-         * @description Create a new Timer.
-         *
-         *     If the job is set to stop after exactly 1 run then the interval must be null.
-         *     Otherwise, the job interval must be between 60 seconds and 365 days.
-         *
-         *     The timer must specify a type.
-         *     Currently, only the "transfer" type is supported.
+         * @description Create a new timer.
          */
         post: operations["create_timer_v2_timer_post"];
         delete?: never;
@@ -222,6 +216,104 @@ export interface components {
              * @enum {string}
              */
             type?: "file" | "dir";
+        };
+        /** FlowStartDocument */
+        FlowStartDocument: {
+            /**
+             * Body
+             * @description Input variables to pass to the flow each time it is started.
+             */
+            body: Record<string, unknown>;
+            /**
+             * Run Monitors
+             * @description Principals (identities or groups) which are allowed to monitor each run.
+             */
+            run_monitors?: string[];
+            /**
+             * Run Managers
+             * @description Principals (identities or groups) which are allowed to manage each run.
+             */
+            run_managers?: string[];
+            /**
+             * Tags
+             * @description Tags that will be added to each run.
+             */
+            tags?: string[];
+        };
+        /** FlowTimerRead */
+        FlowTimerRead: {
+            /** Name */
+            name?: string;
+            stop_after?: components["schemas"]["StopAfter"];
+            /**
+             * Interval
+             * Format: time-delta
+             */
+            interval?: number;
+            /**
+             * Scope
+             * @example https://auth.globus.org/scopes/actions.globus.org/transfer/transfer
+             */
+            scope?: string;
+            timer_type: components["schemas"]["SupportedTimerType"];
+            /**
+             * Callback Url
+             * Format: uri
+             * @example [
+             *       "https://actions.automate.globus.org/transfer/transfer/run"
+             *     ]
+             */
+            callback_url: string;
+            /**
+             * Callback Body
+             * @example {
+             *       "request_id": "a403b459-376e-47a2-a55d-30e7ddbcc3d2",
+             *       "body": {
+             *         "source_endpoint_id": "just_an_example"
+             *       }
+             *     }
+             */
+            callback_body: Record<string, unknown>;
+            /**
+             * Start
+             * Format: date-time
+             */
+            start: string;
+            inactive_reason?: components["schemas"]["JobInactiveReason"];
+            /**
+             * Job Id
+             * Format: uuid
+             */
+            job_id: string;
+            /** Status */
+            status: string;
+            /**
+             * Submitted At
+             * Format: date-time
+             */
+            submitted_at: string;
+            /**
+             * Last Ran At
+             * Format: date-time
+             */
+            last_ran_at?: string;
+            /**
+             * Next Run
+             * Format: date-time
+             */
+            next_run?: string;
+            /** N Runs */
+            n_runs: number;
+            /** N Errors */
+            n_errors: number;
+            results: components["schemas"]["JobResultPage"];
+            /** Schedule */
+            schedule: components["schemas"]["OnceSchedule"] | components["schemas"]["RecurringSchedule"];
+            /**
+             * Flow Id
+             * Format: uuid
+             */
+            flow_id: string;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -294,6 +386,7 @@ export interface components {
              * @example https://auth.globus.org/scopes/actions.globus.org/transfer/transfer
              */
             scope?: string;
+            timer_type: components["schemas"]["SupportedTimerType"];
             /**
              * Callback Url
              * Format: uri
@@ -467,6 +560,14 @@ export interface components {
             /** N Runs */
             n_runs?: number;
         };
+        /**
+         * SupportedTimerType
+         * @description Supported values for the `timer_type` of a Timer.
+         *
+         *     As Timers are modeled under the name `Job`, this is `Job.timer_type`.
+         * @enum {string}
+         */
+        SupportedTimerType: "generic" | "transfer" | "flow";
         /** TransferTaskDocument */
         TransferTaskDocument: {
             /**
@@ -566,13 +667,78 @@ export interface components {
             /** Checksum Algorithm */
             checksum_algorithm?: string;
         };
+        /** V2FlowTimerCreate */
+        V2FlowTimerCreate: {
+            /** Name */
+            name?: string;
+            /** Schedule */
+            schedule: components["schemas"]["OnceSchedule"] | components["schemas"]["RecurringSchedule"];
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            timer_type: "flow";
+            /**
+             * Flow Id
+             * Format: uuid
+             */
+            flow_id: string;
+            body: components["schemas"]["FlowStartDocument"];
+        };
+        /** V2FlowTimerRead */
+        V2FlowTimerRead: {
+            /** Name */
+            name?: string;
+            /** Schedule */
+            schedule: components["schemas"]["OnceSchedule"] | components["schemas"]["RecurringSchedule"];
+            inactive_reason?: components["schemas"]["JobInactiveReason"];
+            /**
+             * Job Id
+             * Format: uuid
+             */
+            job_id: string;
+            /** Status */
+            status: string;
+            /**
+             * Submitted At
+             * Format: date-time
+             */
+            submitted_at: string;
+            /**
+             * Last Ran At
+             * Format: date-time
+             */
+            last_ran_at?: string;
+            /**
+             * Next Run
+             * Format: date-time
+             */
+            next_run?: string;
+            /** Number Of Runs */
+            number_of_runs: number;
+            /** Number Of Errors */
+            number_of_errors: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            timer_type: "flow";
+            /**
+             * Flow Id
+             * Format: uuid
+             */
+            flow_id: string;
+            body: components["schemas"]["FlowStartDocument"];
+        };
         /** V2TimerCreate */
         V2TimerCreate: {
-            timer: components["schemas"]["V2TransferTimerCreate"];
+            /** Timer */
+            timer: components["schemas"]["V2TransferTimerCreate"] | components["schemas"]["V2FlowTimerCreate"];
         };
         /** V2TimerRead */
         V2TimerRead: {
-            timer: components["schemas"]["V2TransferTimerRead"];
+            /** Timer */
+            timer: components["schemas"]["V2TransferTimerRead"] | components["schemas"]["V2FlowTimerRead"];
         };
         /** V2TransferTimerCreate */
         V2TransferTimerCreate: {
@@ -581,7 +747,7 @@ export interface components {
             /** Schedule */
             schedule: components["schemas"]["OnceSchedule"] | components["schemas"]["RecurringSchedule"];
             /**
-             * Timer Type
+             * @description discriminator enum property added by openapi-typescript
              * @enum {string}
              */
             timer_type: "transfer";
@@ -627,8 +793,7 @@ export interface components {
             /** Number Of Errors */
             number_of_errors: number;
             /**
-             * Timer Type
-             * @default transfer
+             * @description discriminator enum property added by openapi-typescript
              * @enum {string}
              */
             timer_type: "transfer";
@@ -693,7 +858,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        jobs?: components["schemas"]["JobRead"][];
+                        jobs?: (components["schemas"]["FlowTimerRead"] | components["schemas"]["JobRead"])[];
                     };
                 };
             };
@@ -761,7 +926,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["JobRead"];
+                    "application/json": components["schemas"]["FlowTimerRead"] | components["schemas"]["JobRead"];
                 };
             };
             /** @description Validation Error */
@@ -796,7 +961,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["JobRead"];
+                    "application/json": components["schemas"]["JobRead"] | components["schemas"]["FlowTimerRead"];
                 };
             };
             /** @description Validation Error */
