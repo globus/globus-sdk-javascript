@@ -1988,7 +1988,10 @@ export interface components {
              */
             status: "SUCCEEDED" | "FAILED" | "ENDED" | "ACTIVE" | "INACTIVE";
             display_status?: string;
-            details: Record<string, unknown>;
+            /** @description Details about the run execution. This is null for runs of High Assurance
+             *     flows when listing runs.
+             *      */
+            details: Record<string, unknown> | null;
             run_owner: components["schemas"]["PrincipalURN"];
             run_monitors?: components["schemas"]["RunMonitors"];
             run_managers?: components["schemas"]["RunManagers"];
@@ -2276,11 +2279,13 @@ export interface components {
         FlowResponse: {
             /** @description The unique identifier for the Flow. */
             id?: string;
+            /** @description The flow definition. This is null for High Assurance flows when listing flows.
+             *      */
             definition?: components["schemas"]["FlowDefinition"];
             /** @description A JSON Schema compliant definition of the format of the `body` field
-             *     when requesting a Flow be run.
+             *     when requesting a Flow be run. This is null for High Assurance flows when listing flows.
              *      */
-            input_schema?: Record<string, unknown>;
+            input_schema?: Record<string, unknown> | null;
             /**
              * Format: uri
              * @description The scope of any bearer token to be used on authenticated accesses
@@ -2377,6 +2382,11 @@ export interface components {
              *
              */
             flow_url?: string;
+            /** @description Indicates whether this flow is High Assurance. High Assurance flows have
+             *     sensitive fields (definition, input_schema) omitted from list responses
+             *     for security purposes.
+             *      */
+            is_high_assurance?: boolean;
             /**
              * Format: uuid
              * @description A subscription_id associated with this Flow. If no
