@@ -237,8 +237,10 @@ export interface paths {
         put?: never;
         /**
          * Register Endpoint
-         * @description Register an endpoint by associating it with the authenticated user and
-         *     saving it to the database.
+         * @deprecated
+         * @description Register a Compute endpoint.
+         *
+         *     Deprecated; POST to `/v3/endpoints` instead.
          */
         post: operations["register_endpoint_v2_endpoints_post"];
         delete?: never;
@@ -522,9 +524,9 @@ export interface paths {
         };
         /**
          * Get Endpoint Console Info
-         * @description Get operational information about a running multi-user endpoint.
+         * @description Get operational information about a running templating endpoint.
          *
-         *     This route can only be accessed by the owner of the multi-user endpoint,
+         *     This route can only be accessed by the owner of the templating endpoint,
          *     which must have an associated Globus subscription.
          */
         get: operations["get_endpoint_console_info_v3_endpoints__endpoint_uuid__console_get"];
