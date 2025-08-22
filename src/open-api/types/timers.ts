@@ -244,7 +244,6 @@ export interface components {
         FlowTimerRead: {
             /** Name */
             name?: string;
-            stop_after?: components["schemas"]["StopAfter"];
             /**
              * Interval
              * Format: time-delta
@@ -309,6 +308,7 @@ export interface components {
             results: components["schemas"]["JobResultPage"];
             /** Schedule */
             schedule: components["schemas"]["OnceSchedule"] | components["schemas"]["RecurringSchedule"];
+            stop_after: components["schemas"]["StopAfter"];
             /**
              * Flow Id
              * Format: uuid
@@ -324,7 +324,6 @@ export interface components {
         JobCreate: {
             /** Name */
             name?: string;
-            stop_after?: components["schemas"]["StopAfter"];
             /**
              * Interval
              * Format: time-delta
@@ -335,6 +334,10 @@ export interface components {
              * @example https://auth.globus.org/scopes/actions.globus.org/transfer/transfer
              */
             scope?: string;
+            /** Stop After */
+            stop_after?: components["schemas"]["StopAfter"] | string;
+            /** Stop After N */
+            stop_after_n?: number;
             /** Refresh Token */
             refresh_token?: string;
             /**
@@ -375,7 +378,6 @@ export interface components {
         JobRead: {
             /** Name */
             name?: string;
-            stop_after?: components["schemas"]["StopAfter"];
             /**
              * Interval
              * Format: time-delta
@@ -440,6 +442,7 @@ export interface components {
             results: components["schemas"]["JobResultPage"];
             /** Schedule */
             schedule: components["schemas"]["OnceSchedule"] | components["schemas"]["RecurringSchedule"];
+            stop_after: components["schemas"]["StopAfter"];
         };
         /** JobResult */
         JobResult: {
