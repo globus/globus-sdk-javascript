@@ -94,6 +94,12 @@ describe('getDomainFromEndpoint', () => {
         tlsftp_server: 'tlsftp://m-4d5adb.fa5e.bd7c.data.globus.org:443',
       }),
     ).toBe('m-4d5adb.fa5e.bd7c.data.globus.org');
+
+    expect(
+      getDomainFromEndpoint({
+        tlsftp_server: 'tlsftp://research-data-b.dtn.rc.university.edu.tld',
+      }),
+    ).toBe('research-data-b.dtn.rc.university.edu.tld');
   });
 
   it('should return null for invalid objects', () => {

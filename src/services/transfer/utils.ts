@@ -102,7 +102,8 @@ export function getDomainFromEndpoint(endpoint: Record<string, unknown>) {
    */
   const { hostname } = new URL(tls.replace('tlsftp', 'https'));
   const hasCustomDomain = !isGlobusHostname(hostname);
-  const customDomain = hasCustomDomain && /(?:[gm]-\w{6}.)?(\w+(\.\w+)+)$/.exec(hostname)?.[1];
+  const customDomain =
+    hasCustomDomain && /(?:[gm]-\w{6}.)?([\w-]+(\.[\w-]+)+)$/.exec(hostname)?.[1];
 
   return customDomain || hostname || null;
 }
