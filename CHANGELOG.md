@@ -3,6 +3,40 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.0](https://github.com/globus/globus-sdk-javascript/compare/v5.8.0...v6.0.0) (2025-09-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* **Timers:** Timer renamed to Timer*s*, Moves `timer.create` export to `timers.timer.create` to better reflect API. ([#533](https://github.com/globus/globus-sdk-javascript/issues/533))
+* Drops support for Node.js 18 ([#520](https://github.com/globus/globus-sdk-javascript/issues/520))
+
+### Features
+
+* Allows passing `manager` as ServiceMethodOptions ([#597](https://github.com/globus/globus-sdk-javascript/issues/597)) ([d99703d](https://github.com/globus/globus-sdk-javascript/commit/d99703dbe4caad2d17dd7ec88a316477eba4e136))
+* **Authorization:** adds experimental `PopupTransport` for AuthorizationManager ([#461](https://github.com/globus/globus-sdk-javascript/issues/461)) ([94d87fb](https://github.com/globus/globus-sdk-javascript/commit/94d87fb0b68e402dcaf2aa22d4104a5fd5ef7db8))
+* **Compute:** Adds `endpoint.update` and `remove` methods ([#524](https://github.com/globus/globus-sdk-javascript/issues/524)) ([6ee61ff](https://github.com/globus/globus-sdk-javascript/commit/6ee61ffb64cdbc9c76615605bef5d6054f45e992))
+* Drops support for Node.js 18 ([#520](https://github.com/globus/globus-sdk-javascript/issues/520)) ([ae67d68](https://github.com/globus/globus-sdk-javascript/commit/ae67d6836bf8e39405e19d653598ac68fdcd07de))
+* **Flows:** add `runs.get` method for retrieving specific run details ([#534](https://github.com/globus/globus-sdk-javascript/issues/534)) ([64a28a2](https://github.com/globus/globus-sdk-javascript/commit/64a28a25f566a623fabd33b2c376a3738cbf65f5))
+* **Flows:** Adds OpenAPI type generation and export for Flows service ([#548](https://github.com/globus/globus-sdk-javascript/issues/548)) ([6bdd0c4](https://github.com/globus/globus-sdk-javascript/commit/6bdd0c42b94a6d9082a425544773a8b70030560c))
+* **Flows:** use `OpenAPI` specs for Run method types ([#556](https://github.com/globus/globus-sdk-javascript/issues/556)) ([4dac4d3](https://github.com/globus/globus-sdk-javascript/commit/4dac4d38e45e58d83d0aca1085ac5ddce84f26dc))
+* **Timer:** add Timer Jobs methods ([#531](https://github.com/globus/globus-sdk-javascript/issues/531)) ([392035b](https://github.com/globus/globus-sdk-javascript/commit/392035b88e31931e1838429b9cc71e0169d67cca))
+* **Transfer:** Adds support for roles operations. ([#537](https://github.com/globus/globus-sdk-javascript/issues/537)) ([1fc00e0](https://github.com/globus/globus-sdk-javascript/commit/1fc00e07a75fc693ac48fb9f1eeedf9936086442))
+* **Typescript:** Use internal, OpenAPI-generated, types for Compute, GCS, Groups, and Timer. ([#447](https://github.com/globus/globus-sdk-javascript/issues/447)) ([7c98b08](https://github.com/globus/globus-sdk-javascript/commit/7c98b08d4ea6f684e46b40904f1a432a56b9d629))
+
+
+### Bug Fixes
+
+* **Flows:** Ensure OpenAPI types are included as return types to service methods ([#564](https://github.com/globus/globus-sdk-javascript/issues/564)) ([9e19a8e](https://github.com/globus/globus-sdk-javascript/commit/9e19a8ebc28e92db31926c85796552906c833343))
+* **Transfer:** Updates `getDomainFromEndpoint` to ensure support for custom (sub)domains with dashes. ([#621](https://github.com/globus/globus-sdk-javascript/issues/621)) ([c10e24d](https://github.com/globus/globus-sdk-javascript/commit/c10e24d8ef489a2a069a9564446c6dae88d1df84))
+* **Typescript, Flows:** Updates OpenAPI URL and regenerates types. ([#554](https://github.com/globus/globus-sdk-javascript/issues/554)) ([c960bad](https://github.com/globus/globus-sdk-javascript/commit/c960bad94e88441add92d007b8dbf23953012569))
+* **Typescript:** Fix incorrect calls to `PaginatedResponse` and improve the generic. ([#550](https://github.com/globus/globus-sdk-javascript/issues/550)) ([294d9f4](https://github.com/globus/globus-sdk-javascript/commit/294d9f43fadc15f821331e6e1dc785ce23d90586))
+
+
+### Code Refactoring
+
+* **Timers:** Timer renamed to Timer*s*, Moves `timer.create` export to `timers.timer.create` to better reflect API. ([#533](https://github.com/globus/globus-sdk-javascript/issues/533)) ([d8fc964](https://github.com/globus/globus-sdk-javascript/commit/d8fc964e1d1883071854d1b552ba87bdf4477a2f))
+
 ## [5.8.0](https://github.com/globus/globus-sdk-javascript/compare/v5.7.0...v5.8.0) (2025-05-29)
 
 
