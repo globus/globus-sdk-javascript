@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.1](https://github.com/globus/globus-sdk-javascript/compare/v6.0.0...v6.0.1) (2025-09-05)
+
+
+### Miscellaneous Chores
+
+* disable Slack notification on release ([#630](https://github.com/globus/globus-sdk-javascript/issues/630)) ([73078cf](https://github.com/globus/globus-sdk-javascript/commit/73078cf034d017e92330b83b9364857273a13ba0))
+
 ## [6.0.0](https://github.com/globus/globus-sdk-javascript/compare/v5.8.0...v6.0.0) (2025-09-02)
 
 
