@@ -165,6 +165,76 @@ export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         /**
+         * ApiTimerActivityAwaiting
+         * @description A timer activity describing when a timer is waiting for the next scheduled run.
+         */
+        ApiTimerActivityAwaiting: {
+            /**
+             * Code
+             * @default awaiting_next_run
+             * @enum {string}
+             */
+            code: "awaiting_next_run";
+            /**
+             * Next Run
+             * Format: date-time
+             */
+            next_run: string;
+        };
+        /**
+         * ApiTimerActivityInProgress
+         * @description A timer activity describing when a timer is currently waiting for a run to complete.
+         */
+        ApiTimerActivityInProgress: {
+            /**
+             * Code
+             * @default run_in_progress
+             * @enum {string}
+             */
+            code: "run_in_progress";
+            /**
+             * Start Timestamp
+             * Format: date-time
+             */
+            start_timestamp: string;
+            /** Duration Seconds */
+            duration_seconds: number;
+        };
+        /**
+         * ApiTimerActivityPaused
+         * @description A timer activity describing when a timer is paused.
+         */
+        ApiTimerActivityPaused: {
+            /**
+             * Code
+             * @default paused
+             * @enum {string}
+             */
+            code: "paused";
+            /**
+             * Reason
+             * @enum {string}
+             */
+            reason: "user" | "globus_auth_requirements" | "other";
+        };
+        /**
+         * ApiTimerActivityRetrying
+         * @description A timer activity describing when a timer is currently retrying the scheduled run.
+         */
+        ApiTimerActivityRetrying: {
+            /**
+             * Code
+             * @default retrying
+             * @enum {string}
+             */
+            code: "retrying";
+            /**
+             * Start Timestamp
+             * Format: date-time
+             */
+            start_timestamp: string;
+        };
+        /**
          * EndConditionIterations
          * @description The condition for a timer which stops running after a number of calls.
          */
@@ -309,6 +379,8 @@ export interface components {
             /** Schedule */
             schedule: components["schemas"]["OnceSchedule"] | components["schemas"]["RecurringSchedule"];
             stop_after: components["schemas"]["StopAfter"];
+            /** Activity */
+            activity?: components["schemas"]["ApiTimerActivityAwaiting"] | components["schemas"]["ApiTimerActivityInProgress"] | components["schemas"]["ApiTimerActivityRetrying"] | components["schemas"]["ApiTimerActivityPaused"];
             /**
              * Flow Id
              * Format: uuid
@@ -443,6 +515,8 @@ export interface components {
             /** Schedule */
             schedule: components["schemas"]["OnceSchedule"] | components["schemas"]["RecurringSchedule"];
             stop_after: components["schemas"]["StopAfter"];
+            /** Activity */
+            activity?: components["schemas"]["ApiTimerActivityAwaiting"] | components["schemas"]["ApiTimerActivityInProgress"] | components["schemas"]["ApiTimerActivityRetrying"] | components["schemas"]["ApiTimerActivityPaused"];
         };
         /** JobResult */
         JobResult: {
@@ -721,6 +795,8 @@ export interface components {
             number_of_runs: number;
             /** Number Of Errors */
             number_of_errors: number;
+            /** Activity */
+            activity?: components["schemas"]["ApiTimerActivityAwaiting"] | components["schemas"]["ApiTimerActivityInProgress"] | components["schemas"]["ApiTimerActivityRetrying"] | components["schemas"]["ApiTimerActivityPaused"];
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -795,6 +871,8 @@ export interface components {
             number_of_runs: number;
             /** Number Of Errors */
             number_of_errors: number;
+            /** Activity */
+            activity?: components["schemas"]["ApiTimerActivityAwaiting"] | components["schemas"]["ApiTimerActivityInProgress"] | components["schemas"]["ApiTimerActivityRetrying"] | components["schemas"]["ApiTimerActivityPaused"];
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
