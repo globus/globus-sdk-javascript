@@ -94,3 +94,15 @@ test('remove', async () => {
     headers,
   }).toMatchSnapshot();
 });
+
+test('getStatuses', async () => {
+  const {
+    req: { url, method, headers },
+  } = await mirror(await groups.getStatuses());
+
+  expect({
+    url,
+    method,
+    headers,
+  }).toMatchSnapshot();
+});

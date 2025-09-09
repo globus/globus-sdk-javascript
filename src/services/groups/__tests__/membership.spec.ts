@@ -32,15 +32,3 @@ test('membership - act', async () => {
     json,
   }).toMatchSnapshot();
 });
-
-test('getStatuses', async () => {
-  const {
-    req: { url, method, headers },
-  } = await mirror(await membership.getStatuses());
-
-  expect({
-    url,
-    method,
-    headers,
-  }).toMatchSnapshot();
-});
