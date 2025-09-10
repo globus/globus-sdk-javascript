@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`create 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "61",
+    "content-type": "application/json",
+    "host": "groups.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "description": "This is my new group.",
+    "name": "My New Group",
+  },
+  "method": "POST",
+  "url": "https://groups.api.globus.org/v2/groups",
+}
+`;
+
+exports[`get 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "groups.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://groups.api.globus.org/v2/groups/6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9",
+}
+`;
+
+exports[`getStatuses 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "groups.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://groups.api.globus.org/v2/groups/statuses",
+}
+`;
+
+exports[`remove 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "groups.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "DELETE",
+  "url": "https://groups.api.globus.org/v2/groups/6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9",
+}
+`;
+
+exports[`update 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "69",
+    "content-type": "application/json",
+    "host": "groups.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "description": "This is my updated group.",
+    "name": "My Updated Group",
+  },
+  "method": "PUT",
+  "url": "https://groups.api.globus.org/v2/groups/6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9",
+}
+`;
