@@ -1,20 +1,22 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 
-import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../types.js';
+import type { JSONFetchResponse, SDKOptions, ServiceMethodDynamicSegments } from '../../types.js';
 
 import { ID, SCOPES } from '../config.js';
 import { ResultFormatVersion } from '../types.js';
 
 export type MatchedPrincipalSets = string[];
 
+type Content = Record<string, unknown>;
+
 /**
  * @see https://docs.globus.org/api/search/reference/post_query/#gmetaresult
  */
-export type GMetaResult = {
+export type GMetaResult<C extends Content = Content> = {
   subject: string;
   entries: {
     entry_id: string;
-    content: Record<string, unknown>;
+    content: C;
     matched_principal_sets: MatchedPrincipalSets;
   }[];
 };
@@ -39,8 +41,8 @@ export type GBucket = {
 /**
  * @see https://docs.globus.org/api/search/reference/post_query/#gsearchresult
  */
-export type GSearchResult = {
-  gmeta: GMetaResult[];
+export type GSearchResult<C extends Content = Content> = {
+  gmeta: GMetaResult<C>[];
   facet_results?: GFacetResult[];
   offset: number;
   count: number;
@@ -53,23 +55,9 @@ export type GSearchResult = {
  *
  * @see https://docs.globus.org/api/search/reference/get_query/
  */
-export const get = function (
-  index_id,
-  options?,
-  sdkOptions?,
-): Promise<JSONFetchResponse<GSearchResult>> {
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.SEARCH,
-      path: `/v1/index/${index_id}/search`,
-    },
-    options,
-    sdkOptions,
-  );
-} satisfies ServiceMethodDynamicSegments<
-  string,
-  {
+export const get = function <C extends Content = Content>(
+  index_id: string,
+  options?: {
     /**
      * @see https://docs.globus.org/api/search/reference/get_query/#parameters
      */
@@ -82,8 +70,19 @@ export const get = function (
       result_format_version?: string;
       filter_principal_sets?: string;
     };
-  }
->;
+  },
+  sdkOptions?: SDKOptions,
+): Promise<JSONFetchResponse<GSearchResult<C>>> {
+  return serviceRequest(
+    {
+      service: ID,
+      scope: SCOPES.SEARCH,
+      path: `/v1/index/${index_id}/search`,
+    },
+    options,
+    sdkOptions,
+  );
+};
 
 /**
  * @see https://docs.globus.org/api/search/reference/post_query/#gsearchrequest
