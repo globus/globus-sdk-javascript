@@ -1,24 +1,21 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
+import { ID, SCOPES } from '../config.js';
 
 import type { JSONFetchResponse, SDKOptions, ServiceMethodDynamicSegments } from '../../types.js';
+import type { OpenAPI } from '../index.js';
+import type { ResultFormatVersion } from '../types.js';
 
-import { ID, SCOPES } from '../config.js';
-import { ResultFormatVersion } from '../types.js';
-
-export type MatchedPrincipalSets = string[];
-
-type Content = Record<string, unknown>;
-
+type Content = NonNullable<OpenAPI.components['schemas']['ResultEntry']['content']>;
+export type MatchedPrincipalSets =
+  OpenAPI.components['schemas']['ResultEntry']['matched_principal_sets'];
 /**
  * @see https://docs.globus.org/api/search/reference/post_query/#gmetaresult
  */
-export type GMetaResult<C extends Content = Content> = {
-  subject: string;
-  entries: {
-    entry_id: string;
-    content: C;
-    matched_principal_sets: MatchedPrincipalSets;
-  }[];
+export type GMetaResult<C extends Content = Content> = Omit<
+  OpenAPI.components['schemas']['GMetaResult'],
+  'entries'
+> & {
+  entries: (Omit<OpenAPI.components['schemas']['ResultEntry'], 'content'> & { content: C })[];
 };
 
 /**
