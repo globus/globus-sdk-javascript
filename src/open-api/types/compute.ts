@@ -1578,7 +1578,13 @@ export interface components {
             error_args: unknown[];
             /** Http Status Code */
             http_status_code: number;
-            /** Reason */
+            /** Detail */
+            detail: string;
+            /**
+             * Reason
+             * @deprecated
+             * @description Deprecated; use `detail` instead
+             */
             reason: string;
         };
         /**
@@ -1951,7 +1957,13 @@ export interface components {
             error_args: unknown[];
             /** Http Status Code */
             http_status_code: number;
-            /** Reason */
+            /** Detail */
+            detail: components["schemas"]["ValidationError"][];
+            /**
+             * Reason
+             * @deprecated
+             * @description Deprecated; use `detail` instead
+             */
             reason: components["schemas"]["ValidationError"][];
         };
         /**

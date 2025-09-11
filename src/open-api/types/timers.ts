@@ -97,11 +97,15 @@ export interface paths {
         put?: never;
         /**
          * Resume Job
-         * @description Resume an inactive job.
+         * @description Resume an inactive timer.
          *
          *     This will set the job's status to 'active', allowing
          *     execution on its schedule. If a run was missed, it will run once
          *     immediately upon resuming.
+         *
+         *     If the timer has a current run which is inactive, that run will be resumed
+         *     as part of this process. Failure to resume the run may cause the timer to
+         *     remain inactive.
          *
          *     If the `update_credentials` query parameter is set to `true`, the timer's
          *     refresh token will be replaced with a new one.
