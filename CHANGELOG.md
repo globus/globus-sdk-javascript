@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.0](https://github.com/globus/globus-sdk-javascript/compare/v6.0.1...v6.1.0) (2025-09-11)
+
+
+### Features
+
+* **Groups:** Adds `groups.create`, `groups.update`, `groups.remove`, `groups.getStatuses`, and `policies.update` service methods. ([#632](https://github.com/globus/globus-sdk-javascript/issues/632)) ([9cac72e](https://github.com/globus/globus-sdk-javascript/commit/9cac72ecd79e4dbfc80bc5c7e70fb7ff3af83d59))
+* **Search, Typescript:** Adds optional generics to search `query` types ([#634](https://github.com/globus/globus-sdk-javascript/issues/634)) ([1cb61df](https://github.com/globus/globus-sdk-javascript/commit/1cb61df6c041aace90c85cfdba896e8214b8f47d))
+
 ## [6.0.1](https://github.com/globus/globus-sdk-javascript/compare/v6.0.0...v6.0.1) (2025-09-05)
 
 
