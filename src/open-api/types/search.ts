@@ -495,7 +495,38 @@ export interface paths {
         };
         options?: never;
         head?: never;
-        patch?: never;
+        /**
+         * Index Update Metadata
+         * @description Update an index's display_name and description. Only index owners and admins
+         *     can update an index's metadata. Only indexes with the open status can be updated.
+         *
+         *     Returns the updated index metadata in the response.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    index_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["IndexUpdate"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["IndexInfo"];
+                    };
+                };
+            };
+        };
         trace?: never;
     };
     "/v1/index_list": {
@@ -2162,23 +2193,17 @@ export interface components {
             available?: boolean;
             permissions?: ("owner" | "admin" | "writer")[];
         };
-        IndexDeleteResponse: {
-            /** @description Always true for successful index deletion. */
-            acknowledged?: boolean;
+        IndexUpdate: {
             /**
-             * Format: uuid
-             * @description The ID of the index which was marked for deletion.
+             * @description The name of the index
+             * @default null
              */
-            index_id?: string;
-        };
-        IndexListWPermissions: {
-            index_list?: components["schemas"]["IndexWithPermissions"][];
-        };
-        IndexCreate: {
-            /** @description The name of the index */
-            display_name: string;
-            /** @description A description of the index */
-            description: string;
+            display_name: string | null;
+            /**
+             * @description A description of the index
+             * @default null
+             */
+            description: string | null;
         };
         IndexInfo: {
             /** @default 2017-09-01 */
@@ -2204,6 +2229,24 @@ export interface components {
             status?: string;
             /** @description The 'available' field indicates whether or not an index is available to serve queries and process tasks. It is `true` for active indices, but `false` when an index is being deleted or Globus Search is unable to access the index data. */
             available?: boolean;
+        };
+        IndexDeleteResponse: {
+            /** @description Always true for successful index deletion. */
+            acknowledged?: boolean;
+            /**
+             * Format: uuid
+             * @description The ID of the index which was marked for deletion.
+             */
+            index_id?: string;
+        };
+        IndexListWPermissions: {
+            index_list?: components["schemas"]["IndexWithPermissions"][];
+        };
+        IndexCreate: {
+            /** @description The name of the index */
+            display_name: string;
+            /** @description A description of the index */
+            description: string;
         };
         IndexReopenResponse: {
             /** @description Always true for successful index reopen. */
