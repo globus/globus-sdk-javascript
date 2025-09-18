@@ -538,6 +538,35 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v3/endpoints/{endpoint_uuid}/subscription-admin-verified": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Verify Endpoint Organization
+         * @description Globus subscription administrators may use this route to identify (or
+         *     disassociate) specific Compute endpoints as officially sanctioned resources
+         *     for their organization.
+         *
+         *     Note:
+         *     - The endpoint must be associated with an active Globus Subscription
+         *     - Only subscription administrators (not managers or members) may change the
+         *       verification status.
+         *     - Changes to the status of the subscription admin's identity that verified the
+         *       endpoint will not affect the endpoint's verification status.
+         */
+        put: operations["verify_endpoint_organization_v3_endpoints__endpoint_uuid__subscription_admin_verified_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v3/functions": {
         parameters: {
             query?: never;
@@ -1098,7 +1127,8 @@ export interface components {
          *       "endpoint_version": "1.0.10",
          *       "sdk_version": "1.0.10",
          *       "python_version": "3.12.7",
-         *       "subscription_uuid": "b0b7b089-707a-4d90-a036-05b7964d6b60"
+         *       "subscription_uuid": "b0b7b089-707a-4d90-a036-05b7964d6b60",
+         *       "subscription_admin_verified": false
          *     }
          */
         Endpoint: {
@@ -1196,6 +1226,12 @@ export interface components {
              * @description Globus subscription UUID
              */
             subscription_uuid?: string;
+            /**
+             * Subscription Admin Verified
+             * @description Indicates that the endpoint has been verified as a valid organizational resource by a Globus subscription administrator.
+             * @default false
+             */
+            subscription_admin_verified: boolean;
         };
         /**
          * EndpointConfig
@@ -1764,6 +1800,85 @@ export interface components {
              */
             warnings?: string[];
         };
+        /** PlatformInfo */
+        PlatformInfo: {
+            /**
+             * Architecture
+             * @description Submit [host architecture tuple](https://docs.python.org/3/library/platform.html#platform.architecture) (e.g., `["64bit", "ELF"]`)
+             */
+            architecture?: [
+                string,
+                string
+            ];
+            /**
+             * Machine
+             * @description Submit [host machine type](https://docs.python.org/3/library/platform.html#platform.machine) (e.g., `x86_64`)
+             */
+            machine?: string;
+            /**
+             * Node
+             * @description Submit [host node name](https://docs.python.org/3/library/platform.html#platform.node) (e.g., `login03`)
+             */
+            node?: string;
+            /**
+             * Platform
+             * @description Submit [host platform](https://docs.python.org/3/library/platform.html#platform.platform) (e.g., `Linux-6.14.0-29-generic-x86_64-with-glibc2.39`)
+             */
+            platform?: string;
+            /**
+             * Processor
+             * @description Submit [host processor name](https://docs.python.org/3/library/platform.html#platform.processor) (e.g., `x86_64`)
+             */
+            processor?: string;
+            /**
+             * Release
+             * @description Submit [host os release](https://docs.python.org/3/library/platform.html#platform.release) (e.g., `6.16.5-2-generic`)
+             */
+            release?: string;
+        };
+        /** PythonInfo */
+        PythonInfo: {
+            /**
+             * Version
+             * @description Python [version as a dotted triple](https://docs.python.org/3/library/platform.html#platform.python_version) (e.g., `3.13.7`)
+             */
+            version?: string;
+            /**
+             * Version Tuple
+             * @description Python version as a tuple (major, minor, micro)
+             */
+            version_tuple?: [
+                number,
+                number,
+                number
+            ];
+            /**
+             * Version Info
+             * @description Python [version info](https://docs.python.org/3/library/sys.html#sys.version_info) from `list(sys.version_info)` (e.g., `[3, 13, 7, 'final', 0]`)
+             */
+            version_info?: [
+                number,
+                number,
+                number,
+                string,
+                number
+            ];
+            /**
+             * Version Description
+             * @description Python [version string](https://docs.python.org/3/library/sys.html#sys.version) from `sys.version` (e.g., `3.13.7 (main, Aug 21 2025, 13:50:03) [GCC 13.3.0]`)
+             */
+            version_description?: string;
+            /**
+             * Implementation
+             * @description Python [implementation](https://docs.python.org/3/library/platform.html#platform.python_implementation) (e.g., `CPython`)
+             */
+            implementation?: string;
+            /**
+             * Compiler
+             * @description String [identifying the compiler](https://docs.python.org/3/library/platform.html#platform.python_compiler) used for compiling Python
+             */
+            compiler?: string;
+        };
         /** ReadQueueInfo */
         ReadQueueInfo: {
             /**
@@ -1824,6 +1939,19 @@ export interface components {
              * @description Connection URL
              */
             connection_url: string;
+        };
+        /**
+         * SubscriptionAdminVerified
+         * @example {
+         *       "subscription_admin_verified": true
+         *     }
+         */
+        SubscriptionAdminVerified: {
+            /**
+             * Subscription Admin Verified
+             * @description Indicates that the endpoint has been verified as a valid organizational resource by a Globus subscription administrator.
+             */
+            subscription_admin_verified: boolean;
         };
         /**
          * TaskGroupResponse
@@ -1924,19 +2052,30 @@ export interface components {
         UserRuntime: {
             /**
              * Globus Compute Sdk Version
-             * @description Version of the Globus Compute SDK used to submit this batch.
+             * @description Globus Compute SDK version (e.g., `4.1.0`)
              */
             globus_compute_sdk_version?: string;
             /**
              * Globus Sdk Version
-             * @description Version of the Globus SDK used to submit this batch.
+             * @description Globus SDK version (e.g., `3.63.0`)
              */
             globus_sdk_version?: string;
             /**
              * Python Version
-             * @description Python version that ran the SDK and submitted this batch.
+             * @deprecated
+             * @description [use `python` instead] Python version string from `sys.version`
              */
             python_version?: string;
+            /**
+             * Python
+             * @description Information about the submitting user's Python runtime
+             */
+            python?: components["schemas"]["PythonInfo"];
+            /**
+             * Platform
+             * @description General platform information from the user's installation
+             */
+            platform?: components["schemas"]["PlatformInfo"];
         };
         /** ValidationError */
         ValidationError: {
@@ -2483,6 +2622,39 @@ export interface components {
          *         "ranks_per_node": 2,
          *         "num_ranks": 4,
          *         "launcher_options": "--cpu-bind quiet --mem 3072"
+         *       },
+         *       "user_runtime": {
+         *         "globus_compute_sdk_version": "3.14.0",
+         *         "globus_sdk_version": "3.60.0",
+         *         "python": {
+         *           "version": "3.13.5",
+         *           "version_tuple": [
+         *             3,
+         *             13,
+         *             5
+         *           ],
+         *           "version_info": [
+         *             3,
+         *             13,
+         *             5,
+         *             "final",
+         *             0
+         *           ],
+         *           "version_description": "3.13.7 (main, Aug 21 2025, 13:50:03) [GCC 13.3.0]",
+         *           "implementation": "CPython",
+         *           "compiler": "Clang 14.0.6"
+         *         },
+         *         "platform": {
+         *           "architecture": [
+         *             "64bit",
+         *             "ELF"
+         *           ],
+         *           "machine": "x86_64",
+         *           "node": "login02",
+         *           "platform": "Linux-6.16.5-2-generic-x86_64-with-glibc2.39",
+         *           "processor": "x86_64",
+         *           "release": "6.16.5-2-generic"
+         *         }
          *       },
          *       "result_serializers": [
          *         "globus_compute_sdk.serialize.JSONData",
@@ -3729,6 +3901,93 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    verify_endpoint_organization_v3_endpoints__endpoint_uuid__subscription_admin_verified_put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SubscriptionAdminVerified"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SubscriptionAdminVerified"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
             /** @description Internal Server Error */
