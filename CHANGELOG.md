@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.0](https://github.com/globus/globus-sdk-javascript/compare/v6.1.0...v6.2.0) (2025-09-24)
+
+
+### Features
+
+* **Search, Typescript:** add type generic to search.query.post ([#647](https://github.com/globus/globus-sdk-javascript/issues/647)) ([94133f2](https://github.com/globus/globus-sdk-javascript/commit/94133f2815bb02c6290a01030a6fe836f93190a3))
+
 ## [6.1.0](https://github.com/globus/globus-sdk-javascript/compare/v6.0.1...v6.1.0) (2025-09-11)
 
 
