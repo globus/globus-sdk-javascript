@@ -1,7 +1,7 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
 
-import type { JSONFetchResponse, SDKOptions, ServiceMethodDynamicSegments } from '../../types.js';
+import type { JSONFetchResponse, SDKOptions } from '../../types.js';
 import type { OpenAPI } from '../index.js';
 import type { ResultFormatVersion } from '../types.js';
 
@@ -103,11 +103,13 @@ export type GSearchRequest = {
  *
  * @see https://docs.globus.org/api/search/reference/post_query/
  */
-export const post = function (
-  index_id,
-  options,
-  sdkOptions?,
-): Promise<JSONFetchResponse<GSearchResult>> {
+export const post = function <C extends Content = Content>(
+  index_id: string,
+  options: {
+    payload: GSearchRequest;
+  },
+  sdkOptions?: SDKOptions,
+): Promise<JSONFetchResponse<GSearchResult<C>>> {
   return serviceRequest(
     {
       service: ID,
@@ -118,12 +120,7 @@ export const post = function (
     options,
     sdkOptions,
   );
-} satisfies ServiceMethodDynamicSegments<
-  string,
-  {
-    payload: GSearchRequest;
-  }
->;
+};
 
 /**
  * @see https://docs.globus.org/api/search/reference/post_query/#gfilter
