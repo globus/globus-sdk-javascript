@@ -23,7 +23,7 @@ const SCHEMAS = [
     filename: path.join(OPEN_API_TYPES_DIR, `timers.ts`),
   },
   {
-    url: 'https://api2.funcx.org/openapi.json',
+    url: 'https://compute.api.globus.org/openapi.json',
     filename: path.join(OPEN_API_TYPES_DIR, `compute.ts`),
   },
   {
