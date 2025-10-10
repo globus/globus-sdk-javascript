@@ -1,7 +1,7 @@
 /**
  * @description A wrapper around the Globus Compute service.
  * @group Service
- * @see [Globus Compute API Documentation](https://api2.funcx.org/redoc)
+ * @see [Globus Compute API Documentation](https://compute.api.globus.org/redoc)
  * @module
  */
 import * as COMPUTE from './config.js';
