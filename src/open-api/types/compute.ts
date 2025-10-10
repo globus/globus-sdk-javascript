@@ -51,10 +51,10 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get Funcx Stats
+         * Get Compute Stats
          * @description Get various usage stats.
          */
-        get: operations["get_funcx_stats_v2_stats_get"];
+        get: operations["get_compute_stats_v2_stats_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -734,6 +734,56 @@ export interface components {
          * @enum {string}
          */
         BuildStatus: "provided" | "submitted" | "initialized" | "queued" | "building" | "ready" | "failed";
+        /**
+         * ComputeStatsResponse
+         * @example {
+         *       "total_function_invocations": 100
+         *     }
+         */
+        ComputeStatsResponse: {
+            /**
+             * Total Function Invocations
+             * @description Total function invocations
+             */
+            total_function_invocations: number;
+        };
+        /**
+         * ComputeVersionResponse
+         * @example {
+         *       "api": "1.0.9",
+         *       "min_sdk_version": "1.0.10",
+         *       "min_ep_version": "1.0.10",
+         *       "git_sha": "3ae0ff6bc42b6d5f9d92f3c426fe9e535a841hb6",
+         *       "container_service": "0.0.1"
+         *     }
+         */
+        ComputeVersionResponse: {
+            /**
+             * Api
+             * @description API version
+             */
+            api: string;
+            /**
+             * Min Sdk Version
+             * @description Minimum SDK version
+             */
+            min_sdk_version?: string;
+            /**
+             * Min Ep Version
+             * @description Minimum endpoint version
+             */
+            min_ep_version?: string;
+            /**
+             * Git Sha
+             * @description Git SHA of the latest commit
+             */
+            git_sha?: string;
+            /**
+             * Container Service
+             * @description Container service version
+             */
+            container_service?: string;
+        };
         /** ConsoleNodeInfo */
         ConsoleNodeInfo: {
             /**
@@ -1677,56 +1727,6 @@ export interface components {
              */
             sdk_version?: string;
         };
-        /**
-         * FuncxStatsResponse
-         * @example {
-         *       "total_function_invocations": 100
-         *     }
-         */
-        FuncxStatsResponse: {
-            /**
-             * Total Function Invocations
-             * @description Total function invocations
-             */
-            total_function_invocations: number;
-        };
-        /**
-         * FuncxVersionResponse
-         * @example {
-         *       "api": "1.0.9",
-         *       "min_sdk_version": "1.0.10",
-         *       "min_ep_version": "1.0.10",
-         *       "git_sha": "3ae0ff6bc42b6d5f9d92f3c426fe9e535a841hb6",
-         *       "container_service": "0.0.1"
-         *     }
-         */
-        FuncxVersionResponse: {
-            /**
-             * Api
-             * @description API version
-             */
-            api: string;
-            /**
-             * Min Sdk Version
-             * @description Minimum SDK version
-             */
-            min_sdk_version?: string;
-            /**
-             * Min Ep Version
-             * @description Minimum endpoint version
-             */
-            min_ep_version?: string;
-            /**
-             * Git Sha
-             * @description Git SHA of the latest commit
-             */
-            git_sha?: string;
-            /**
-             * Container Service
-             * @description Container service version
-             */
-            container_service?: string;
-        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
@@ -2164,7 +2164,7 @@ export interface components {
          *       "lock_expiration_timestamp": "2021-07-01T00:00:00.000000"
          *     }
          */
-        funcx_web_service__schemas__v2__endpoint__EndpointLockResponse: {
+        compute_web_service__schemas__v2__endpoint__EndpointLockResponse: {
             /**
              * Endpoint Id
              * Format: uuid
@@ -2204,7 +2204,7 @@ export interface components {
          *       }
          *     }
          */
-        funcx_web_service__schemas__v2__endpoint__EndpointRegisterRequest: {
+        compute_web_service__schemas__v2__endpoint__EndpointRegisterRequest: {
             /**
              * Endpoint Name
              * @description Endpoint name
@@ -2246,7 +2246,7 @@ export interface components {
             metadata?: components["schemas"]["EndpointRegisterMetadata"];
         };
         /** RegisterFunctionMetadata */
-        funcx_web_service__schemas__v2__function__RegisterFunctionMetadata: {
+        compute_web_service__schemas__v2__function__RegisterFunctionMetadata: {
             /**
              * Python Version
              * @description Python version used to serialize function.
@@ -2273,7 +2273,7 @@ export interface components {
          *       "public": false
          *     }
          */
-        funcx_web_service__schemas__v2__function__RegisterFunctionRequest: {
+        compute_web_service__schemas__v2__function__RegisterFunctionRequest: {
             /**
              * Function Name
              * @description Function name
@@ -2294,7 +2294,7 @@ export interface components {
              * @description Function description
              */
             description?: string;
-            metadata?: components["schemas"]["funcx_web_service__schemas__v2__function__RegisterFunctionMetadata"];
+            metadata?: components["schemas"]["compute_web_service__schemas__v2__function__RegisterFunctionMetadata"];
             /**
              * Container Uuid
              * Format: uuid
@@ -2320,7 +2320,7 @@ export interface components {
          *       "function_uuid": "11291b86-4f9c-47cb-848e-d3c06285951c"
          *     }
          */
-        funcx_web_service__schemas__v2__function__RegisterFunctionResponse: {
+        compute_web_service__schemas__v2__function__RegisterFunctionResponse: {
             /**
              * Function Uuid
              * Format: uuid
@@ -2347,7 +2347,7 @@ export interface components {
          *       ]
          *     }
          */
-        funcx_web_service__schemas__v2__task__BatchSubmitRequest: {
+        compute_web_service__schemas__v2__task__BatchSubmitRequest: {
             /**
              * Task Group Id
              * Format: uuid
@@ -2389,7 +2389,7 @@ export interface components {
          *       ]
          *     }
          */
-        funcx_web_service__schemas__v2__task__BatchSubmitResponse: {
+        compute_web_service__schemas__v2__task__BatchSubmitResponse: {
             /**
              * Response
              * @description Response
@@ -2414,7 +2414,7 @@ export interface components {
          *       "lock_expiration_timestamp": "1687531403.0434475"
          *     }
          */
-        funcx_web_service__schemas__v3__endpoints__EndpointLockResponse: {
+        compute_web_service__schemas__v3__endpoints__EndpointLockResponse: {
             /**
              * Endpoint Id
              * Format: uuid
@@ -2455,7 +2455,7 @@ export interface components {
          *       }
          *     }
          */
-        funcx_web_service__schemas__v3__endpoints__EndpointRegisterRequest: {
+        compute_web_service__schemas__v3__endpoints__EndpointRegisterRequest: {
             /**
              * Endpoint Name
              * @description Endpoint name
@@ -2518,7 +2518,7 @@ export interface components {
             metadata: components["schemas"]["EndpointMetadata"];
         };
         /** RegisterFunctionMetadata */
-        funcx_web_service__schemas__v3__function__RegisterFunctionMetadata: {
+        compute_web_service__schemas__v3__function__RegisterFunctionMetadata: {
             /**
              * Python Version
              * @description version used to serialize function
@@ -2549,7 +2549,7 @@ export interface components {
          *       "public": true
          *     }
          */
-        funcx_web_service__schemas__v3__function__RegisterFunctionRequest: {
+        compute_web_service__schemas__v3__function__RegisterFunctionRequest: {
             /**
              * Function Name
              * @description Function name
@@ -2569,7 +2569,7 @@ export interface components {
              * Meta
              * @description Function metadata
              */
-            meta: components["schemas"]["funcx_web_service__schemas__v3__function__RegisterFunctionMetadata"];
+            meta: components["schemas"]["compute_web_service__schemas__v3__function__RegisterFunctionMetadata"];
             /**
              * Group
              * Format: uuid
@@ -2595,7 +2595,7 @@ export interface components {
          *       "function_uuid": "11291b86-4f9c-47cb-848e-d3c06285951c"
          *     }
          */
-        funcx_web_service__schemas__v3__function__RegisterFunctionResponse: {
+        compute_web_service__schemas__v3__function__RegisterFunctionResponse: {
             /**
              * Function Uuid
              * Format: uuid
@@ -2674,7 +2674,7 @@ export interface components {
          *       }
          *     }
          */
-        funcx_web_service__schemas__v3__tasks__BatchSubmitRequest: {
+        compute_web_service__schemas__v3__tasks__BatchSubmitRequest: {
             /**
              * Task Group Id
              * Format: uuid
@@ -2734,7 +2734,7 @@ export interface components {
          *       }
          *     }
          */
-        funcx_web_service__schemas__v3__tasks__BatchSubmitResponse: {
+        compute_web_service__schemas__v3__tasks__BatchSubmitResponse: {
             /**
              * Request Id
              * @description A unique string to identify the request; currently this is mainly to aid debugging efforts&nbsp;&mdash;&nbsp;such as if a user needs to verify an interaction with Globus Support&nbsp;&mdash;&nbsp;and has no automated API hookup or use elsewhere in the Compute ecosystem
@@ -2792,7 +2792,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": string | components["schemas"]["FuncxVersionResponse"];
+                    "application/json": string | components["schemas"]["ComputeVersionResponse"];
                 };
             };
             /** @description Validation Error */
@@ -2858,7 +2858,7 @@ export interface operations {
             };
         };
     };
-    get_funcx_stats_v2_stats_get: {
+    get_compute_stats_v2_stats_get: {
         parameters: {
             query?: never;
             header?: never;
@@ -2873,7 +2873,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["FuncxStatsResponse"];
+                    "application/json": components["schemas"]["ComputeStatsResponse"];
                 };
             };
         };
@@ -2942,7 +2942,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["funcx_web_service__schemas__v2__task__BatchSubmitRequest"];
+                "application/json": components["schemas"]["compute_web_service__schemas__v2__task__BatchSubmitRequest"];
             };
         };
         responses: {
@@ -2952,7 +2952,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["funcx_web_service__schemas__v2__task__BatchSubmitResponse"];
+                    "application/json": components["schemas"]["compute_web_service__schemas__v2__task__BatchSubmitResponse"];
                 };
             };
             /** @description Validation Error */
@@ -3143,7 +3143,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["funcx_web_service__schemas__v2__endpoint__EndpointRegisterRequest"];
+                "application/json": components["schemas"]["compute_web_service__schemas__v2__endpoint__EndpointRegisterRequest"];
             };
         };
         responses: {
@@ -3281,7 +3281,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["funcx_web_service__schemas__v2__endpoint__EndpointLockResponse"];
+                    "application/json": components["schemas"]["compute_web_service__schemas__v2__endpoint__EndpointLockResponse"];
                 };
             };
             /** @description Validation Error */
@@ -3370,7 +3370,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["funcx_web_service__schemas__v2__function__RegisterFunctionRequest"];
+                "application/json": components["schemas"]["compute_web_service__schemas__v2__function__RegisterFunctionRequest"];
             };
         };
         responses: {
@@ -3380,7 +3380,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["funcx_web_service__schemas__v2__function__RegisterFunctionResponse"];
+                    "application/json": components["schemas"]["compute_web_service__schemas__v2__function__RegisterFunctionResponse"];
                 };
             };
             /** @description Validation Error */
@@ -3471,7 +3471,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["funcx_web_service__schemas__v3__endpoints__EndpointRegisterRequest"];
+                "application/json": components["schemas"]["compute_web_service__schemas__v3__endpoints__EndpointRegisterRequest"];
             };
         };
         responses: {
@@ -3555,7 +3555,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["funcx_web_service__schemas__v3__endpoints__EndpointRegisterRequest"];
+                "application/json": components["schemas"]["compute_web_service__schemas__v3__endpoints__EndpointRegisterRequest"];
             };
         };
         responses: {
@@ -3660,7 +3660,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["funcx_web_service__schemas__v3__endpoints__EndpointLockResponse"];
+                    "application/json": components["schemas"]["compute_web_service__schemas__v3__endpoints__EndpointLockResponse"];
                 };
             };
             /** @description Unauthorized */
@@ -3725,7 +3725,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["funcx_web_service__schemas__v3__tasks__BatchSubmitRequest"];
+                "application/json": components["schemas"]["compute_web_service__schemas__v3__tasks__BatchSubmitRequest"];
             };
         };
         responses: {
@@ -3735,7 +3735,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["funcx_web_service__schemas__v3__tasks__BatchSubmitResponse"];
+                    "application/json": components["schemas"]["compute_web_service__schemas__v3__tasks__BatchSubmitResponse"];
                 };
             };
             /** @description Unauthorized */
@@ -4010,7 +4010,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["funcx_web_service__schemas__v3__function__RegisterFunctionRequest"];
+                "application/json": components["schemas"]["compute_web_service__schemas__v3__function__RegisterFunctionRequest"];
             };
         };
         responses: {
@@ -4020,7 +4020,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["funcx_web_service__schemas__v3__function__RegisterFunctionResponse"];
+                    "application/json": components["schemas"]["compute_web_service__schemas__v3__function__RegisterFunctionResponse"];
                 };
             };
             /** @description Unauthorized */

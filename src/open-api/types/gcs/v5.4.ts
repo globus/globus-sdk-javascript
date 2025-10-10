@@ -1,56 +1,4 @@
 export interface paths {
-    "/api/collections/batch_delete": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Delete multiple guest collections
-         * @description Initiate the deletion of multiple guest collections. The input document
-         *     contains a list of the IDs of collections to delete.
-         *
-         *     If any of the collections have collection_type of "mapped", then this
-         *     operation returns an error indicating which ones were not valid or this
-         *     operation.
-         *
-         *     If any of the collections do not exist or are already deleted, then they
-         *     are silently ignored.
-         *
-         *     Deletion does not happen immediately; it is handled in the background by
-         *     the GCS Manager Assistant process.
-         *
-         *     On success, this operation returns a message body containing the list of
-         *     collections from the input that this GCS manager node will delete.
-         *
-         */
-        post: operations["postCollectionsBatchDelete"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/collections/check": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Check the collections on this endpoint */
-        get: operations["checkCollections"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/collections": {
         parameters: {
             query?: never;
@@ -132,158 +80,16 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/collections/{collection_id}/subscription_admin_verified": {
+    "/api/collections/check": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get?: never;
-        /**
-         * Set the subscription_admin_verified property for a collection
-         * @description Set the subscription_admin_verified property of the collection. This
-         *     only be invoked if the endpoint is associated with a subscription and
-         *     the caller is a subscription administrator for that subscription.
-         *
-         */
-        put: operations["putSubscriptionAdminVerified"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/collections/{collection_id}/owner_string": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Set advertised owner of collection
-         * @description Update the advertised owner string of the collection
-         *
-         *     Modify the collection's advertised owner to match the username of one of
-         *     the caller's linked identities.  The identity must have an administrator
-         *     role on the collection.
-         *
-         */
-        put: operations["putCollectionOwnerString"];
-        post?: never;
-        /**
-         * Reset advertised owner of collection
-         * @description Reset the advertised owner string of the collection to the endpoint's client_id.
-         *
-         */
-        delete: operations["deleteCollectionOwnerString"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/collections/{collection_id}/domain": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get custom domain for a collection
-         * @description Get the custom domain document associated with this collection.
-         *
-         *     This requires an `administrator` role on the Endpoint
-         *
-         */
-        get: operations["getCollectionDomain"];
-        /**
-         * Set custom domain for a collection
-         * @description Register a new custom domain and certificate to to be used to serve
-         *     this collection.
-         *
-         *     The domain is used for the collection. If this is a mapped collection
-         *     and the `wildcard` property is set to true, then all all guest collections
-         *     associated with this collection that do not have a custom domain will be
-         *     updated to use subdomains of that domain. Otherwise, only this collection
-         *     will use that domain.
-         *
-         *     This requires an `administrator` role on the Endpoint
-         *
-         */
-        put: operations["putCollectionDomain"];
-        post?: never;
-        /**
-         * Delete custom domain for a collection
-         * @description Delete the custom collection domain.
-         *
-         *     If this is a mapped collection, this will cause the collection to revert to
-         *     a subdomain of the endpoint's default domain issued at creation time or
-         *     the endpoint's custom wildcard domain if it has one. If this mapped collection
-         *     has a wildcard domain when this is called, then all guest collections without
-         *     custom domains will have their domains changed as well.
-         *
-         *     If this is a guest collection, and the mapped collection it was created from
-         *     has a custom wildcard domain, then this collection will become a subdomain
-         *     of that domain; otherwise it will revert to a subdomain of the
-         *     endpoint's default domain issued at creation time or the endpoint's
-         *     custom wildcard domain if it has one.
-         *
-         *     This requires an `administrator` role on the Endpoint.
-         *
-         */
-        delete: operations["deleteCollectionDomain"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/collections/{collection_id}/check": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Check a collection for configuration problems
-         * @description Check the configuration of a collection for configuration problems. Returns
-         *     a list of configuration error details.
-         *
-         *     This operation requires the caller to have an endpoint owner or
-         *     administrator role, or a collection administrator role.
-         *
-         */
-        get: operations["checkCollection"];
+        /** Check the collections on this endpoint */
+        get: operations["checkCollections"];
         put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/collections/{collection_id}/owner": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Set collection owner
-         * @description Assign a new identity to act as the mapped collection owner. Caller must have
-         *     an endpoint admin or owner role.
-         *
-         *     - This is only allowed for mapped collections
-         *     - Owner ID can not be the endpoint client ID
-         *
-         */
-        put: operations["setCollectionOwner"];
         post?: never;
         delete?: never;
         options?: never;
@@ -348,6 +154,286 @@ export interface paths {
         patch: operations["patchCollection"];
         trace?: never;
     };
+    "/api/collections/{collection_id}/check": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Check a collection for configuration problems
+         * @description Check the configuration of a collection for configuration problems. Returns
+         *     a list of configuration error details.
+         *
+         *     This operation requires the caller to have an endpoint owner or
+         *     administrator role, or a collection administrator role.
+         *
+         */
+        get: operations["checkCollection"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/collections/{collection_id}/domain": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get custom domain for a collection
+         * @description Get the custom domain document associated with this collection.
+         *
+         *     This requires an `administrator` role on the Endpoint
+         *
+         */
+        get: operations["getCollectionDomain"];
+        /**
+         * Set custom domain for a collection
+         * @description Register a new custom domain and certificate to to be used to serve
+         *     this collection.
+         *
+         *     The domain is used for the collection. If this is a mapped collection
+         *     and the `wildcard` property is set to true, then all all guest collections
+         *     associated with this collection that do not have a custom domain will be
+         *     updated to use subdomains of that domain. Otherwise, only this collection
+         *     will use that domain.
+         *
+         *     This requires an `administrator` role on the Endpoint
+         *
+         */
+        put: operations["putCollectionDomain"];
+        post?: never;
+        /**
+         * Delete custom domain for a collection
+         * @description Delete the custom collection domain.
+         *
+         *     If this is a mapped collection, this will cause the collection to revert to
+         *     a subdomain of the endpoint's default domain issued at creation time or
+         *     the endpoint's custom wildcard domain if it has one. If this mapped collection
+         *     has a wildcard domain when this is called, then all guest collections without
+         *     custom domains will have their domains changed as well.
+         *
+         *     If this is a guest collection, and the mapped collection it was created from
+         *     has a custom wildcard domain, then this collection will become a subdomain
+         *     of that domain; otherwise it will revert to a subdomain of the
+         *     endpoint's default domain issued at creation time or the endpoint's
+         *     custom wildcard domain if it has one.
+         *
+         *     This requires an `administrator` role on the Endpoint.
+         *
+         */
+        delete: operations["deleteCollectionDomain"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/collections/{collection_id}/owner_string": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Set advertised owner of collection
+         * @description Update the advertised owner string of the collection
+         *
+         *     Modify the collection's advertised owner to match the username of one of
+         *     the caller's linked identities.  The identity must have an administrator
+         *     role on the collection.
+         *
+         */
+        put: operations["putCollectionOwnerString"];
+        post?: never;
+        /**
+         * Reset advertised owner of collection
+         * @description Reset the advertised owner string of the collection to the endpoint's client_id.
+         *
+         */
+        delete: operations["deleteCollectionOwnerString"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/collections/batch_delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Delete multiple guest collections
+         * @description Initiate the deletion of multiple guest collections. The input document
+         *     contains a list of the IDs of collections to delete.
+         *
+         *     If any of the collections have collection_type of "mapped", then this
+         *     operation returns an error indicating which ones were not valid or this
+         *     operation.
+         *
+         *     If any of the collections do not exist or are already deleted, then they
+         *     are silently ignored.
+         *
+         *     Deletion does not happen immediately; it is handled in the background by
+         *     the GCS Manager Assistant process.
+         *
+         *     On success, this operation returns a message body containing the list of
+         *     collections from the input that this GCS manager node will delete.
+         *
+         */
+        post: operations["postCollectionsBatchDelete"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/collections/{collection_id}/owner": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Set collection owner
+         * @description Assign a new identity to act as the mapped collection owner. Caller must have
+         *     an endpoint admin or owner role.
+         *
+         *     - This is only allowed for mapped collections
+         *     - Owner ID can not be the endpoint client ID
+         *
+         */
+        put: operations["setCollectionOwner"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/collections/{collection_id}/subscription_admin_verified": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Set the subscription_admin_verified property for a collection
+         * @description Set the subscription_admin_verified property of the collection. This
+         *     only be invoked if the endpoint is associated with a subscription and
+         *     the caller is a subscription administrator for that subscription.
+         *
+         */
+        put: operations["putSubscriptionAdminVerified"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/endpoint": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get endpoint definition
+         * @description Get the endpoint.
+         *
+         */
+        get: operations["getEndpoint"];
+        /**
+         * Update an endpoint
+         * @description Update the endpoint document, replacing all properties with those in the
+         *     input. This operation optionally returns the Endpoint after the update if
+         *     the include=endpoint query parameter is passed to this operation.
+         *
+         */
+        put: operations["putEndpoint"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update an endpoint
+         * @description Update the Endpoint document, changing only the properties included in the
+         *     input. Items explicitly set to null in the input are removed from the
+         *     endpoint document. This operation optionally returns the endpoint after
+         *     applying the changes in the input if the include=endpoint query parameter
+         *     is passed to this operation.
+         *
+         */
+        patch: operations["patchEndpoint"];
+        trace?: never;
+    };
+    "/api/endpoint/owner": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Set endpoint owner
+         * @description Assign a new identity to act as the endpoint owner.
+         *
+         */
+        put: operations["putEndpointOwner"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/endpoint/owner_string": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Set endpoint owner string
+         * @description Modify the endpoint's advertised owner to match the username of one of the
+         *     caller's linked identities.  The identity must have an administrator role
+         *     on the endpoint.
+         *
+         */
+        put: operations["putEndpointOwnerString"];
+        post?: never;
+        /**
+         * Reset advertised owner string
+         * @description Reset the endpoint's advertised owner to the client_id of the endpoint.
+         *
+         */
+        delete: operations["deleteEndpointOwnerString"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/endpoint/subscription_id": {
         parameters: {
             query?: never;
@@ -386,34 +472,6 @@ export interface paths {
         put: operations["putEndpointSubscriptionId"];
         post?: never;
         delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/endpoint/owner_string": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Set endpoint owner string
-         * @description Modify the endpoint's advertised owner to match the username of one of the
-         *     caller's linked identities.  The identity must have an administrator role
-         *     on the endpoint.
-         *
-         */
-        put: operations["putEndpointOwnerString"];
-        post?: never;
-        /**
-         * Reset advertised owner string
-         * @description Reset the endpoint's advertised owner to the client_id of the endpoint.
-         *
-         */
-        delete: operations["deleteEndpointOwnerString"];
         options?: never;
         head?: never;
         patch?: never;
@@ -462,64 +520,6 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
-        trace?: never;
-    };
-    "/api/endpoint/owner": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /**
-         * Set endpoint owner
-         * @description Assign a new identity to act as the endpoint owner.
-         *
-         */
-        put: operations["putEndpointOwner"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/endpoint": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get endpoint definition
-         * @description Get the endpoint.
-         *
-         */
-        get: operations["getEndpoint"];
-        /**
-         * Update an endpoint
-         * @description Update the endpoint document, replacing all properties with those in the
-         *     input. This operation optionally returns the Endpoint after the update if
-         *     the include=endpoint query parameter is passed to this operation.
-         *
-         */
-        put: operations["putEndpoint"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Update an endpoint
-         * @description Update the Endpoint document, changing only the properties included in the
-         *     input. Items explicitly set to null in the input are removed from the
-         *     endpoint document. This operation optionally returns the endpoint after
-         *     applying the changes in the input if the include=endpoint query parameter
-         *     is passed to this operation.
-         *
-         */
-        patch: operations["patchEndpoint"];
         trace?: never;
     };
     "/api/info": {
@@ -984,26 +984,6 @@ export interface paths {
         patch: operations["patchUserCredential"];
         trace?: never;
     };
-    "/api/v1/authcallback_google": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * OAuth callback
-         * @deprecated
-         */
-        get: operations["getAuthcallbackGoogle"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/v1/user_credentials": {
         parameters: {
             query?: never;
@@ -1028,7 +1008,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/authclicomplete": {
+    "/api/v1/authcallback_google": {
         parameters: {
             query?: never;
             header?: never;
@@ -1036,12 +1016,10 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * OAuth callback for CLI apps
-         * @description Landing page for auth flow completion, suitable for use with a
-         *     non-web application that uses a browser to complete the flow.
-         *
+         * OAuth callback
+         * @deprecated
          */
-        get: operations["getAuthclicomplete"];
+        get: operations["getAuthcallbackGoogle"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1059,6 +1037,28 @@ export interface paths {
         };
         /** OAuth callback */
         get: operations["getAuthcallback"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/authclicomplete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * OAuth callback for CLI apps
+         * @description Landing page for auth flow completion, suitable for use with a
+         *     non-web application that uses a browser to complete the flow.
+         *
+         */
+        get: operations["getAuthclicomplete"];
         put?: never;
         post?: never;
         delete?: never;
@@ -7317,7 +7317,7 @@ export interface components {
              *      */
             load_dsi_module?: string | null;
             /** @description Connector-specific storage policies */
-            policies?: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["AzureBlobStoragePolicies_1_0_0"] | components["schemas"]["AzureBlobStoragePolicies_1_1_0"] | components["schemas"]["BlackPearlStoragePolicies_1_0_0"] | components["schemas"]["BoxStorage_1_0_0"] | components["schemas"]["BoxStorage_1_1_0"] | components["schemas"]["BoxStorage_1_2_0"] | components["schemas"]["CephStoragePolicies_1_0_0"] | components["schemas"]["DropboxStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_1_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_0_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_1_0"] | components["schemas"]["HPSSStoragePolicies_1_0_0"] | components["schemas"]["HPSSStoragePolicies_1_1_0"] | components["schemas"]["IrodsStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_1_0"] | components["schemas"]["PosixStoragePolicies_1_0_0"] | components["schemas"]["PosixStagingStoragePolicies_1_0_0"];
+            policies?: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["S3StoragePolicies_1_3_0"] | components["schemas"]["AzureBlobStoragePolicies_1_0_0"] | components["schemas"]["AzureBlobStoragePolicies_1_1_0"] | components["schemas"]["BlackPearlStoragePolicies_1_0_0"] | components["schemas"]["BoxStorage_1_0_0"] | components["schemas"]["BoxStorage_1_1_0"] | components["schemas"]["BoxStorage_1_2_0"] | components["schemas"]["CephStoragePolicies_1_0_0"] | components["schemas"]["DropboxStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_1_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_0_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_1_0"] | components["schemas"]["HPSSStoragePolicies_1_0_0"] | components["schemas"]["HPSSStoragePolicies_1_1_0"] | components["schemas"]["IrodsStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_1_0"] | components["schemas"]["PosixStoragePolicies_1_0_0"] | components["schemas"]["PosixStagingStoragePolicies_1_0_0"];
             /** @description Local POSIX user the GridFTP server should run as when accessing
              *     this storage gateway.
              *      */
@@ -7412,7 +7412,7 @@ export interface components {
              *      */
             load_dsi_module?: string | null;
             /** @description Connector-specific storage policies */
-            policies?: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["AzureBlobStoragePolicies_1_0_0"] | components["schemas"]["AzureBlobStoragePolicies_1_1_0"] | components["schemas"]["BlackPearlStoragePolicies_1_0_0"] | components["schemas"]["BoxStorage_1_0_0"] | components["schemas"]["BoxStorage_1_1_0"] | components["schemas"]["BoxStorage_1_2_0"] | components["schemas"]["CephStoragePolicies_1_0_0"] | components["schemas"]["DropboxStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_1_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_0_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_1_0"] | components["schemas"]["HPSSStoragePolicies_1_0_0"] | components["schemas"]["HPSSStoragePolicies_1_1_0"] | components["schemas"]["IrodsStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_1_0"] | components["schemas"]["PosixStoragePolicies_1_0_0"] | components["schemas"]["PosixStagingStoragePolicies_1_0_0"];
+            policies?: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["S3StoragePolicies_1_3_0"] | components["schemas"]["AzureBlobStoragePolicies_1_0_0"] | components["schemas"]["AzureBlobStoragePolicies_1_1_0"] | components["schemas"]["BlackPearlStoragePolicies_1_0_0"] | components["schemas"]["BoxStorage_1_0_0"] | components["schemas"]["BoxStorage_1_1_0"] | components["schemas"]["BoxStorage_1_2_0"] | components["schemas"]["CephStoragePolicies_1_0_0"] | components["schemas"]["DropboxStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_1_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_0_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_1_0"] | components["schemas"]["HPSSStoragePolicies_1_0_0"] | components["schemas"]["HPSSStoragePolicies_1_1_0"] | components["schemas"]["IrodsStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_1_0"] | components["schemas"]["PosixStoragePolicies_1_0_0"] | components["schemas"]["PosixStagingStoragePolicies_1_0_0"];
             /** @description Local POSIX user the GridFTP server should run as when accessing
              *     this storage gateway.
              *      */
@@ -7523,7 +7523,7 @@ export interface components {
              *      */
             load_dsi_module?: string | null;
             /** @description Connector-specific storage policies */
-            policies?: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["AzureBlobStoragePolicies_1_0_0"] | components["schemas"]["AzureBlobStoragePolicies_1_1_0"] | components["schemas"]["BlackPearlStoragePolicies_1_0_0"] | components["schemas"]["BoxStorage_1_0_0"] | components["schemas"]["BoxStorage_1_1_0"] | components["schemas"]["BoxStorage_1_2_0"] | components["schemas"]["CephStoragePolicies_1_0_0"] | components["schemas"]["DropboxStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_1_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_0_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_1_0"] | components["schemas"]["HPSSStoragePolicies_1_0_0"] | components["schemas"]["HPSSStoragePolicies_1_1_0"] | components["schemas"]["IrodsStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_1_0"] | components["schemas"]["PosixStoragePolicies_1_0_0"] | components["schemas"]["PosixStagingStoragePolicies_1_0_0"];
+            policies?: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["S3StoragePolicies_1_3_0"] | components["schemas"]["AzureBlobStoragePolicies_1_0_0"] | components["schemas"]["AzureBlobStoragePolicies_1_1_0"] | components["schemas"]["BlackPearlStoragePolicies_1_0_0"] | components["schemas"]["BoxStorage_1_0_0"] | components["schemas"]["BoxStorage_1_1_0"] | components["schemas"]["BoxStorage_1_2_0"] | components["schemas"]["CephStoragePolicies_1_0_0"] | components["schemas"]["DropboxStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_1_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_0_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_1_0"] | components["schemas"]["HPSSStoragePolicies_1_0_0"] | components["schemas"]["HPSSStoragePolicies_1_1_0"] | components["schemas"]["IrodsStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_1_0"] | components["schemas"]["PosixStoragePolicies_1_0_0"] | components["schemas"]["PosixStagingStoragePolicies_1_0_0"];
             /** @description Local POSIX user the GridFTP server should run as when accessing
              *     this storage gateway.
              *      */
@@ -7668,7 +7668,7 @@ export interface components {
              */
             network_use?: "normal" | "minimal" | "aggressive" | "custom" | null;
             /** @description Connector-specific storage policies */
-            policies?: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["AzureBlobStoragePolicies_1_0_0"] | components["schemas"]["AzureBlobStoragePolicies_1_1_0"] | components["schemas"]["BlackPearlStoragePolicies_1_0_0"] | components["schemas"]["BoxStorage_1_0_0"] | components["schemas"]["BoxStorage_1_1_0"] | components["schemas"]["BoxStorage_1_2_0"] | components["schemas"]["CephStoragePolicies_1_0_0"] | components["schemas"]["DropboxStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_1_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_0_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_1_0"] | components["schemas"]["HPSSStoragePolicies_1_0_0"] | components["schemas"]["HPSSStoragePolicies_1_1_0"] | components["schemas"]["IrodsStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_1_0"] | components["schemas"]["PosixStoragePolicies_1_0_0"] | components["schemas"]["PosixStagingStoragePolicies_1_0_0"];
+            policies?: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["S3StoragePolicies_1_3_0"] | components["schemas"]["AzureBlobStoragePolicies_1_0_0"] | components["schemas"]["AzureBlobStoragePolicies_1_1_0"] | components["schemas"]["BlackPearlStoragePolicies_1_0_0"] | components["schemas"]["BoxStorage_1_0_0"] | components["schemas"]["BoxStorage_1_1_0"] | components["schemas"]["BoxStorage_1_2_0"] | components["schemas"]["CephStoragePolicies_1_0_0"] | components["schemas"]["DropboxStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_1_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_0_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_1_0"] | components["schemas"]["HPSSStoragePolicies_1_0_0"] | components["schemas"]["HPSSStoragePolicies_1_1_0"] | components["schemas"]["IrodsStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_1_0"] | components["schemas"]["PosixStoragePolicies_1_0_0"] | components["schemas"]["PosixStagingStoragePolicies_1_0_0"];
             /** @description Admin-specified value when the **network_use** property's value is
              *     `custom`; otherwise the preset value for the specified **network_use**.
              *      */
@@ -7894,6 +7894,56 @@ export interface components {
              *     they also have this property set to true as an acknowledgement.
              *      */
             s3_requester_pays?: boolean;
+            /** @description Flag indicating if a Globus User must register a user credential in
+             *     order to create a guest collection on this storage gateway.
+             *      */
+            s3_user_credential_required?: boolean;
+        };
+        /**
+         * S3StoragePolicies_1_3_0
+         * @description Connector-specific storage gateway policies for the S3 connector
+         *
+         *     Version 1.1.0 adds support for the s3_requester_pays property
+         *
+         *     Version 1.2.0 adds support for the s3_allow_multi_keys property
+         *
+         *     Version 1.3.0 adds support for the s3_storage_class and s3_restore properties
+         *
+         */
+        S3StoragePolicies_1_3_0: {
+            /**
+             * @description Type of this document
+             * @default s3_storage_policies#1.3.0
+             * @enum {string}
+             */
+            DATA_TYPE: "s3_storage_policies#1.3.0";
+            /** @description Allow users of this gateway to add multiple s3 IAM keys to their
+             *     credentials
+             *      */
+            s3_allow_multi_keys?: boolean;
+            /** @description List of buckets not owned by the collection owner that will be shown
+             *     in the root of collections created at the base of this storage gateway.
+             *      */
+            s3_buckets?: string[];
+            /**
+             * @description URL of the S3 API endpoint
+             * @example https://s3.amazonaws.com
+             */
+            s3_endpoint?: string;
+            /** @description Flag indicating that S3 operations will be charged to the account of
+             *     the registered credentials. Credentials used with a storage gateway
+             *     that has the s3_requester_pays property set to true are invalid unless
+             *     they also have this property set to true as an acknowledgement.
+             *      */
+            s3_requester_pays?: boolean;
+            /** @description Allow transfer attempts to automatically restore objects from
+             *     Glacier and other archival storage classes.
+             *      */
+            s3_restore?: boolean;
+            /** @description The storage class set for newly created objects.  When not set,
+             *     objects will be written to the default storage class of the bucket.
+             *      */
+            s3_storage_class?: string;
             /** @description Flag indicating if a Globus User must register a user credential in
              *     order to create a guest collection on this storage gateway.
              *      */
@@ -9567,8 +9617,10 @@ export interface components {
          *
          *     Version 1.2.0 adds support for the s3_allow_multi_keys property
          *
+         *     Version 1.3.0 adds support for the s3_storage_class and s3_restore properties
+         *
          */
-        S3StoragePolicies: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"];
+        S3StoragePolicies: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["S3StoragePolicies_1_3_0"];
         /**
          * S3CollectionPolicies
          * @description Connector-specific collection policies for the S3 connector
@@ -9827,6 +9879,35 @@ export interface components {
         PosixStagingUserCredentialPolicies: components["schemas"]["PosixStagingUserCredentialPolicies_1_0_0"];
     };
     responses: {
+        /** @description Unauthorized */
+        Unauthorized: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": {
+                    /** @enum {string} */
+                    code?: "not_authorized";
+                    /** @enum {unknown} */
+                    http_response_code?: 401;
+                    detail?: string | components["schemas"]["MissingRequiredScopes"];
+                } & components["schemas"]["Result"];
+            };
+        };
+        /** @description Not found */
+        NotFound: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": {
+                    /** @enum {string} */
+                    code?: "not_found";
+                    /** @enum {unknown} */
+                    http_response_code?: 404;
+                } & components["schemas"]["Result"];
+            };
+        };
         /** @description Unsupported media type */
         UnsupportedMediaError: {
             headers: {
@@ -9870,35 +9951,6 @@ export interface components {
                 } & components["schemas"]["Result"];
             };
         };
-        /** @description Unauthorized */
-        Unauthorized: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": {
-                    /** @enum {string} */
-                    code?: "not_authorized";
-                    /** @enum {unknown} */
-                    http_response_code?: 401;
-                    detail?: string | components["schemas"]["MissingRequiredScopes"];
-                } & components["schemas"]["Result"];
-            };
-        };
-        /** @description Not found */
-        NotFound: {
-            headers: {
-                [name: string]: unknown;
-            };
-            content: {
-                "application/json": {
-                    /** @enum {string} */
-                    code?: "not_found";
-                    /** @enum {unknown} */
-                    http_response_code?: 404;
-                } & components["schemas"]["Result"];
-            };
-        };
     };
     parameters: {
         /** @description Maximum page size for a paginated response */
@@ -9914,114 +9966,6 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    postCollectionsBatchDelete: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description List of collection ids to delete */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["Batch"];
-            };
-        };
-        responses: {
-            /** @description Delete multiple collections response */
-            202: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @enum {string} */
-                        code?: "success";
-                        data?: components["schemas"]["Batch"][];
-                    } & components["schemas"]["Result"];
-                };
-            };
-            400: components["responses"]["BadRequestError"];
-            401: components["responses"]["Unauthorized"];
-            /** @description Permission denied */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": ({
-                        /** @enum {string} */
-                        code?: "permission_denied";
-                        /** @enum {unknown} */
-                        http_response_code?: 403;
-                        detail?: string | components["schemas"]["MissingRequiredRole"];
-                    } & components["schemas"]["Result"]) | ({
-                        /** @enum {string} */
-                        code?: "permission_denied";
-                        /** @enum {unknown} */
-                        http_response_code?: 403;
-                        detail?: string | components["schemas"]["Batch"];
-                    } & components["schemas"]["Result"]);
-                };
-            };
-            415: components["responses"]["UnsupportedMediaError"];
-            422: components["responses"]["ValidationError"];
-        };
-    };
-    checkCollections: {
-        parameters: {
-            query?: {
-                /** @description Maximum page size for a paginated response */
-                page_size?: components["parameters"]["page_size_query_parameter"];
-                /** @description Pagination marker for a paginated response */
-                marker?: components["parameters"]["marker_query_parameter"];
-                /** @description Filter to apply to the return set
-                 *      */
-                filter?: string[];
-                /** @description Filter collections which were created using this storage_gateway_id
-                 *      */
-                storage_gateway_id?: string;
-                /** @description Filter collections which were created using this mapped_collection_id
-                 *      */
-                mapped_collection_id?: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Check collections response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @enum {string} */
-                        code?: "success";
-                        data?: components["schemas"]["CheckResult"][];
-                    } & components["schemas"]["Result"];
-                };
-            };
-            401: components["responses"]["Unauthorized"];
-            /** @description Permission denied */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @enum {string} */
-                        code?: "permission_denied";
-                        /** @enum {unknown} */
-                        http_response_code?: 403;
-                    } & components["schemas"]["Result"];
-                };
-            };
-            404: components["responses"]["NotFound"];
-        };
-    };
     listCollections: {
         parameters: {
             query?: {
@@ -10141,286 +10085,30 @@ export interface operations {
             422: components["responses"]["ValidationError"];
         };
     };
-    putSubscriptionAdminVerified: {
+    checkCollections: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Maximum page size for a paginated response */
+                page_size?: components["parameters"]["page_size_query_parameter"];
+                /** @description Pagination marker for a paginated response */
+                marker?: components["parameters"]["marker_query_parameter"];
+                /** @description Filter to apply to the return set
+                 *      */
+                filter?: string[];
+                /** @description Filter collections which were created using this storage_gateway_id
+                 *      */
+                storage_gateway_id?: string;
+                /** @description Filter collections which were created using this mapped_collection_id
+                 *      */
+                mapped_collection_id?: string;
+            };
             header?: never;
-            path: {
-                /** @description Id of the collection */
-                collection_id: string;
-            };
-            cookie?: never;
-        };
-        /** @description New value of the subscription_admin_verified property of this collection */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SubscriptionAdminVerified"];
-            };
-        };
-        responses: {
-            /** @description Set collection subscription admin verified response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Result"];
-                };
-            };
-            400: components["responses"]["BadRequestError"];
-            401: components["responses"]["Unauthorized"];
-            /** @description Permission denied */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @enum {string} */
-                        code?: "permission_denied";
-                        /** @enum {unknown} */
-                        http_response_code?: 403;
-                    } & components["schemas"]["Result"];
-                };
-            };
-            404: components["responses"]["NotFound"];
-            415: components["responses"]["UnsupportedMediaError"];
-            422: components["responses"]["ValidationError"];
-        };
-    };
-    putCollectionOwnerString: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of the collection */
-                collection_id: string;
-            };
-            cookie?: never;
-        };
-        /** @description New collection owner string */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["OwnerString"];
-            };
-        };
-        responses: {
-            /** @description Set collection owner string response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Result"];
-                };
-            };
-            400: components["responses"]["BadRequestError"];
-            401: components["responses"]["Unauthorized"];
-            /** @description Permission denied */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @enum {string} */
-                        code?: "permission_denied";
-                        /** @enum {unknown} */
-                        http_response_code?: 403;
-                        detail?: string | components["schemas"]["MissingRequiredRole"];
-                    } & components["schemas"]["Result"];
-                };
-            };
-            404: components["responses"]["NotFound"];
-            415: components["responses"]["UnsupportedMediaError"];
-            422: components["responses"]["ValidationError"];
-        };
-    };
-    deleteCollectionOwnerString: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of the collection */
-                collection_id: string;
-            };
+            path?: never;
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description Delete collection owner string response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Result"];
-                };
-            };
-            401: components["responses"]["Unauthorized"];
-            /** @description Permission denied */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @enum {string} */
-                        code?: "permission_denied";
-                        /** @enum {unknown} */
-                        http_response_code?: 403;
-                        detail?: string | components["schemas"]["MissingRequiredRole"];
-                    } & components["schemas"]["Result"];
-                };
-            };
-            404: components["responses"]["NotFound"];
-        };
-    };
-    getCollectionDomain: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of the collection */
-                collection_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Get collection domain response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @enum {string} */
-                        code?: "success";
-                        data?: components["schemas"]["Domain"][];
-                    } & components["schemas"]["Result"];
-                };
-            };
-            401: components["responses"]["Unauthorized"];
-            /** @description Permission denied */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @enum {string} */
-                        code?: "permission_denied";
-                        /** @enum {unknown} */
-                        http_response_code?: 403;
-                        detail?: string | components["schemas"]["MissingRequiredRole"];
-                    } & components["schemas"]["Result"];
-                };
-            };
-            404: components["responses"]["NotFound"];
-        };
-    };
-    putCollectionDomain: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of the collection */
-                collection_id: string;
-            };
-            cookie?: never;
-        };
-        /** @description New collection domain definition */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["Domain"];
-            };
-        };
-        responses: {
-            /** @description Set collection domain response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Result"];
-                };
-            };
-            400: components["responses"]["BadRequestError"];
-            401: components["responses"]["Unauthorized"];
-            /** @description Permission denied */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @enum {string} */
-                        code?: "permission_denied";
-                        /** @enum {unknown} */
-                        http_response_code?: 403;
-                        detail?: string | components["schemas"]["MissingRequiredRole"];
-                    } & components["schemas"]["Result"];
-                };
-            };
-            404: components["responses"]["NotFound"];
-            415: components["responses"]["UnsupportedMediaError"];
-            422: components["responses"]["ValidationError"];
-        };
-    };
-    deleteCollectionDomain: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of the collection */
-                collection_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Delete collection domain response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Result"];
-                };
-            };
-            401: components["responses"]["Unauthorized"];
-            /** @description Permission denied */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @enum {string} */
-                        code?: "permission_denied";
-                        /** @enum {unknown} */
-                        http_response_code?: 403;
-                        detail?: string | components["schemas"]["MissingRequiredRole"];
-                    } & components["schemas"]["Result"];
-                };
-            };
-            404: components["responses"]["NotFound"];
-        };
-    };
-    checkCollection: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Id of the collection */
-                collection_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Check response */
+            /** @description Check collections response */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -10434,36 +10122,6 @@ export interface operations {
                 };
             };
             401: components["responses"]["Unauthorized"];
-            404: components["responses"]["NotFound"];
-        };
-    };
-    setCollectionOwner: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description ID of the collection */
-                collection_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CollectionOwner"];
-            };
-        };
-        responses: {
-            /** @description Set collection owner response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Result"];
-                };
-            };
-            400: components["responses"]["BadRequestError"];
-            401: components["responses"]["Unauthorized"];
             /** @description Permission denied */
             403: {
                 headers: {
@@ -10475,13 +10133,10 @@ export interface operations {
                         code?: "permission_denied";
                         /** @enum {unknown} */
                         http_response_code?: 403;
-                        detail?: string | components["schemas"]["MissingRequiredRole"];
                     } & components["schemas"]["Result"];
                 };
             };
             404: components["responses"]["NotFound"];
-            415: components["responses"]["UnsupportedMediaError"];
-            422: components["responses"]["ValidationError"];
         };
     };
     getCollection: {
@@ -10652,131 +10307,58 @@ export interface operations {
             422: components["responses"]["ValidationError"];
         };
     };
-    putEndpointSubscriptionId: {
+    checkCollection: {
         parameters: {
             query?: never;
             header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description Endpoint subscription request */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["EndpointSubscription"];
+            path: {
+                /** @description Id of the collection */
+                collection_id: string;
             };
-        };
-        responses: {
-            /** @description Set endpoint owner response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Result"];
-                };
-            };
-            400: components["responses"]["BadRequestError"];
-            401: components["responses"]["Unauthorized"];
-            415: components["responses"]["UnsupportedMediaError"];
-            422: components["responses"]["ValidationError"];
-        };
-    };
-    putEndpointOwnerString: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description New endpoint owner_string */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["OwnerString"];
-            };
-        };
-        responses: {
-            /** @description Set endpoint owner string response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Result"];
-                };
-            };
-            400: components["responses"]["BadRequestError"];
-            401: components["responses"]["Unauthorized"];
-            /** @description Permission denied */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @enum {string} */
-                        code?: "permission_denied";
-                        /** @enum {unknown} */
-                        http_response_code?: 403;
-                        detail?: string | components["schemas"]["MissingRequiredRole"];
-                    } & components["schemas"]["Result"];
-                };
-            };
-            415: components["responses"]["UnsupportedMediaError"];
-            422: components["responses"]["ValidationError"];
-        };
-    };
-    deleteEndpointOwnerString: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description Reset advertised owner string response */
+            /** @description Check response */
             200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Result"];
-                };
-            };
-            401: components["responses"]["Unauthorized"];
-            /** @description Permission denied */
-            403: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
                     "application/json": {
                         /** @enum {string} */
-                        code?: "permission_denied";
-                        /** @enum {unknown} */
-                        http_response_code?: 403;
-                        detail?: string | components["schemas"]["MissingRequiredRole"];
+                        code?: "success";
+                        data?: components["schemas"]["CheckResult"][];
                     } & components["schemas"]["Result"];
                 };
             };
+            401: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
         };
     };
-    getEndpointDomain: {
+    getCollectionDomain: {
         parameters: {
             query?: never;
             header?: never;
-            path?: never;
+            path: {
+                /** @description Id of the collection */
+                collection_id: string;
+            };
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description Get endpoint domain response */
+            /** @description Get collection domain response */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Result"];
+                    "application/json": {
+                        /** @enum {string} */
+                        code?: "success";
+                        data?: components["schemas"]["Domain"][];
+                    } & components["schemas"]["Result"];
                 };
             };
             401: components["responses"]["Unauthorized"];
@@ -10795,23 +10377,27 @@ export interface operations {
                     } & components["schemas"]["Result"];
                 };
             };
+            404: components["responses"]["NotFound"];
         };
     };
-    putEndpointDomain: {
+    putCollectionDomain: {
         parameters: {
             query?: never;
             header?: never;
-            path?: never;
+            path: {
+                /** @description Id of the collection */
+                collection_id: string;
+            };
             cookie?: never;
         };
-        /** @description Put domain request */
+        /** @description New collection domain definition */
         requestBody: {
             content: {
                 "application/json": components["schemas"]["Domain"];
             };
         };
         responses: {
-            /** @description Set endpoint domain response */
+            /** @description Set collection domain response */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -10835,62 +10421,212 @@ export interface operations {
                         http_response_code?: 403;
                         detail?: string | components["schemas"]["MissingRequiredRole"];
                     } & components["schemas"]["Result"];
+                };
+            };
+            404: components["responses"]["NotFound"];
+            415: components["responses"]["UnsupportedMediaError"];
+            422: components["responses"]["ValidationError"];
+        };
+    };
+    deleteCollectionDomain: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of the collection */
+                collection_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Delete collection domain response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Result"];
+                };
+            };
+            401: components["responses"]["Unauthorized"];
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code?: "permission_denied";
+                        /** @enum {unknown} */
+                        http_response_code?: 403;
+                        detail?: string | components["schemas"]["MissingRequiredRole"];
+                    } & components["schemas"]["Result"];
+                };
+            };
+            404: components["responses"]["NotFound"];
+        };
+    };
+    putCollectionOwnerString: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of the collection */
+                collection_id: string;
+            };
+            cookie?: never;
+        };
+        /** @description New collection owner string */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OwnerString"];
+            };
+        };
+        responses: {
+            /** @description Set collection owner string response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Result"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["Unauthorized"];
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code?: "permission_denied";
+                        /** @enum {unknown} */
+                        http_response_code?: 403;
+                        detail?: string | components["schemas"]["MissingRequiredRole"];
+                    } & components["schemas"]["Result"];
+                };
+            };
+            404: components["responses"]["NotFound"];
+            415: components["responses"]["UnsupportedMediaError"];
+            422: components["responses"]["ValidationError"];
+        };
+    };
+    deleteCollectionOwnerString: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of the collection */
+                collection_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Delete collection owner string response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Result"];
+                };
+            };
+            401: components["responses"]["Unauthorized"];
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code?: "permission_denied";
+                        /** @enum {unknown} */
+                        http_response_code?: 403;
+                        detail?: string | components["schemas"]["MissingRequiredRole"];
+                    } & components["schemas"]["Result"];
+                };
+            };
+            404: components["responses"]["NotFound"];
+        };
+    };
+    postCollectionsBatchDelete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List of collection ids to delete */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Batch"];
+            };
+        };
+        responses: {
+            /** @description Delete multiple collections response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code?: "success";
+                        data?: components["schemas"]["Batch"][];
+                    } & components["schemas"]["Result"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["Unauthorized"];
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": ({
+                        /** @enum {string} */
+                        code?: "permission_denied";
+                        /** @enum {unknown} */
+                        http_response_code?: 403;
+                        detail?: string | components["schemas"]["MissingRequiredRole"];
+                    } & components["schemas"]["Result"]) | ({
+                        /** @enum {string} */
+                        code?: "permission_denied";
+                        /** @enum {unknown} */
+                        http_response_code?: 403;
+                        detail?: string | components["schemas"]["Batch"];
+                    } & components["schemas"]["Result"]);
                 };
             };
             415: components["responses"]["UnsupportedMediaError"];
             422: components["responses"]["ValidationError"];
         };
     };
-    deleteEndpointDomain: {
+    setCollectionOwner: {
         parameters: {
             query?: never;
             header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Delete endpoint domain response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Result"];
-                };
+            path: {
+                /** @description ID of the collection */
+                collection_id: string;
             };
-            401: components["responses"]["Unauthorized"];
-            /** @description Permission denied */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @enum {string} */
-                        code?: "permission_denied";
-                        /** @enum {unknown} */
-                        http_response_code?: 403;
-                        detail?: string | components["schemas"]["MissingRequiredRole"];
-                    } & components["schemas"]["Result"];
-                };
-            };
-        };
-    };
-    putEndpointOwner: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
             cookie?: never;
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["EndpointOwner"];
+                "application/json": components["schemas"]["CollectionOwner"];
             };
         };
         responses: {
-            /** @description Set endpoint owner response */
+            /** @description Set collection owner response */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -10916,6 +10652,54 @@ export interface operations {
                     } & components["schemas"]["Result"];
                 };
             };
+            404: components["responses"]["NotFound"];
+            415: components["responses"]["UnsupportedMediaError"];
+            422: components["responses"]["ValidationError"];
+        };
+    };
+    putSubscriptionAdminVerified: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of the collection */
+                collection_id: string;
+            };
+            cookie?: never;
+        };
+        /** @description New value of the subscription_admin_verified property of this collection */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SubscriptionAdminVerified"];
+            };
+        };
+        responses: {
+            /** @description Set collection subscription admin verified response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Result"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["Unauthorized"];
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code?: "permission_denied";
+                        /** @enum {unknown} */
+                        http_response_code?: 403;
+                    } & components["schemas"]["Result"];
+                };
+            };
+            404: components["responses"]["NotFound"];
             415: components["responses"]["UnsupportedMediaError"];
             422: components["responses"]["ValidationError"];
         };
@@ -11045,6 +10829,274 @@ export interface operations {
             };
             415: components["responses"]["UnsupportedMediaError"];
             422: components["responses"]["ValidationError"];
+        };
+    };
+    putEndpointOwner: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EndpointOwner"];
+            };
+        };
+        responses: {
+            /** @description Set endpoint owner response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Result"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["Unauthorized"];
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code?: "permission_denied";
+                        /** @enum {unknown} */
+                        http_response_code?: 403;
+                        detail?: string | components["schemas"]["MissingRequiredRole"];
+                    } & components["schemas"]["Result"];
+                };
+            };
+            415: components["responses"]["UnsupportedMediaError"];
+            422: components["responses"]["ValidationError"];
+        };
+    };
+    putEndpointOwnerString: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description New endpoint owner_string */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OwnerString"];
+            };
+        };
+        responses: {
+            /** @description Set endpoint owner string response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Result"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["Unauthorized"];
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code?: "permission_denied";
+                        /** @enum {unknown} */
+                        http_response_code?: 403;
+                        detail?: string | components["schemas"]["MissingRequiredRole"];
+                    } & components["schemas"]["Result"];
+                };
+            };
+            415: components["responses"]["UnsupportedMediaError"];
+            422: components["responses"]["ValidationError"];
+        };
+    };
+    deleteEndpointOwnerString: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Reset advertised owner string response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Result"];
+                };
+            };
+            401: components["responses"]["Unauthorized"];
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code?: "permission_denied";
+                        /** @enum {unknown} */
+                        http_response_code?: 403;
+                        detail?: string | components["schemas"]["MissingRequiredRole"];
+                    } & components["schemas"]["Result"];
+                };
+            };
+        };
+    };
+    putEndpointSubscriptionId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Endpoint subscription request */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EndpointSubscription"];
+            };
+        };
+        responses: {
+            /** @description Set endpoint owner response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Result"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["Unauthorized"];
+            415: components["responses"]["UnsupportedMediaError"];
+            422: components["responses"]["ValidationError"];
+        };
+    };
+    getEndpointDomain: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Get endpoint domain response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Result"];
+                };
+            };
+            401: components["responses"]["Unauthorized"];
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code?: "permission_denied";
+                        /** @enum {unknown} */
+                        http_response_code?: 403;
+                        detail?: string | components["schemas"]["MissingRequiredRole"];
+                    } & components["schemas"]["Result"];
+                };
+            };
+        };
+    };
+    putEndpointDomain: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Put domain request */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Domain"];
+            };
+        };
+        responses: {
+            /** @description Set endpoint domain response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Result"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            401: components["responses"]["Unauthorized"];
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code?: "permission_denied";
+                        /** @enum {unknown} */
+                        http_response_code?: 403;
+                        detail?: string | components["schemas"]["MissingRequiredRole"];
+                    } & components["schemas"]["Result"];
+                };
+            };
+            415: components["responses"]["UnsupportedMediaError"];
+            422: components["responses"]["ValidationError"];
+        };
+    };
+    deleteEndpointDomain: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Delete endpoint domain response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Result"];
+                };
+            };
+            401: components["responses"]["Unauthorized"];
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code?: "permission_denied";
+                        /** @enum {unknown} */
+                        http_response_code?: 403;
+                        detail?: string | components["schemas"]["MissingRequiredRole"];
+                    } & components["schemas"]["Result"];
+                };
+            };
         };
     };
     getInfo: {
@@ -12258,32 +12310,6 @@ export interface operations {
             422: components["responses"]["ValidationError"];
         };
     };
-    getAuthcallbackGoogle: {
-        parameters: {
-            query: {
-                /** @description OAuth code response */
-                code?: string;
-                /** @description Error information from the OAuth provider */
-                error?: string;
-                /** @description Encrypted authorization context */
-                state: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Redirect to page initiating the credential creation */
-            302: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            400: components["responses"]["BadRequestError"];
-        };
-    };
     postUserCredentials: {
         parameters: {
             query?: never;
@@ -12311,11 +12337,15 @@ export interface operations {
             422: components["responses"]["ValidationError"];
         };
     };
-    getAuthclicomplete: {
+    getAuthcallbackGoogle: {
         parameters: {
-            query?: {
-                /** @description Unique identifier of the new credential */
-                user_credential_id?: string;
+            query: {
+                /** @description OAuth code response */
+                code?: string;
+                /** @description Error information from the OAuth provider */
+                error?: string;
+                /** @description Encrypted authorization context */
+                state: string;
             };
             header?: never;
             path?: never;
@@ -12323,15 +12353,14 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Authentication callback response */
-            200: {
+            /** @description Redirect to page initiating the credential creation */
+            302: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": components["schemas"]["Result"];
-                };
+                content?: never;
             };
+            400: components["responses"]["BadRequestError"];
         };
     };
     getAuthcallback: {
@@ -12358,6 +12387,29 @@ export interface operations {
                 content?: never;
             };
             400: components["responses"]["BadRequestError"];
+        };
+    };
+    getAuthclicomplete: {
+        parameters: {
+            query?: {
+                /** @description Unique identifier of the new credential */
+                user_credential_id?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Authentication callback response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Result"];
+                };
+            };
         };
     };
 }
