@@ -1,6 +1,5 @@
 import { endpointSearch } from '..';
-
-import type { MirroredRequest } from '../../../__mocks__/handlers';
+import { mirror } from '../../../__mocks__/handlers';
 
 test('endpointSearch', async () => {
   const result = await endpointSearch({
@@ -14,7 +13,7 @@ test('endpointSearch', async () => {
   });
   const {
     req: { url, method, headers },
-  } = (await result.json()) as MirroredRequest;
+  } = await mirror(result);
   expect({
     url,
     method,

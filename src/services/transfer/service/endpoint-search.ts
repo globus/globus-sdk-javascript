@@ -1,10 +1,9 @@
 import { serviceRequest } from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
 
-import type { ServiceMethod } from '../../../services/types.js';
-import type { QueryParameters } from '../types.js';
-import type { EntityType } from './endpoint.js';
-
+import type { JSONFetchResponse, ServiceMethod } from '../../../services/types.js';
+import type { PaginatedResponse, QueryParameters } from '../types.js';
+import type { EntityType, EndpointListDocument } from './endpoint.js';
 /**
  * @see https://docs.globus.org/api/transfer/endpoint_search/#search_scope
  */
@@ -34,11 +33,19 @@ export type EndpointSearchQuery = QueryParameters<
   'Offset'
 >;
 
+export type EndpointSearchResult = PaginatedResponse<
+  'Offset',
+  Omit<EndpointListDocument, 'length'>
+>;
+
 /**
  * Get a list of endpoints matching the search filters in a given search scope.
  * @see https://docs.globus.org/api/transfer/endpoint_search/#endpoint_search
  */
-export const endpointSearch = function (options?, sdkOptions?) {
+export const endpointSearch = function (
+  options?,
+  sdkOptions?,
+): Promise<JSONFetchResponse<EndpointSearchResult>> {
   const serviceRequestOptions = {
     ...options,
     query: options?.query,
@@ -52,8 +59,11 @@ export const endpointSearch = function (options?, sdkOptions?) {
     serviceRequestOptions,
     sdkOptions,
   );
-} satisfies ServiceMethod<{
-  query?: EndpointSearchQuery;
-}>;
+} satisfies ServiceMethod<
+  {
+    query?: EndpointSearchQuery;
+  },
+  JSONFetchResponse<EndpointSearchResult>
+>;
 
 export default endpointSearch;
