@@ -905,8 +905,10 @@ export interface operations {
     list_jobs_jobs__get: {
         parameters: {
             query?: {
-                /** @description List only jobs with names containing the argument as a substring
-                 *             (case-insensitive). */
+                /**
+                 * @description List only jobs with names containing the argument as a substring
+                 *             (case-insensitive).
+                 */
                 filter_name?: string;
                 /** @description Filter listed jobs to only those submitted after the specified date. */
                 submitted_after?: string;
@@ -916,18 +918,22 @@ export interface operations {
                 filter_active?: boolean;
                 /** @description [DEPRECATED] Equivalent to 'filter_status=ended'. */
                 filter_stopped?: boolean;
-                /** @description Only return timers with the provided statuses, specified as a comma-separated
+                /**
+                 * @description Only return timers with the provided statuses, specified as a comma-separated
                  *             list. Valid statuses are 'active', 'inactive', and 'ended'.
-                 *             Defaults to 'active,inactive,ended'. */
+                 *             Defaults to 'active,inactive,ended'.
+                 */
                 filter_status?: string;
                 /** @description Limit the number of results returned per job. */
                 result_count?: number;
-                /** @description Specify the order of the returned job list. The argument provided has the format
+                /**
+                 * @description Specify the order of the returned job list. The argument provided has the format
                  *             `FIELD [asc|desc]` where `FIELD` is any orderable field on the job model. `asc`
                  *             or `desc` is separated with a space from the field name. If neither is provided,
                  *             the ordering always defaults to ascending. For example, `name desc` would list
                  *             jobs in reverse alphabetical order on name; `submitted_at` (with no ordering
-                 *             specified) would list oldest jobs first. */
+                 *             specified) would list oldest jobs first.
+                 */
                 order?: string;
             };
             header?: never;

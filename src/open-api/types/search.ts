@@ -32,15 +32,15 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description
-                 *     A Search Result document.
+                /**
+                 * @description A Search Result document.
                  *
                  *     The offset, count, total, and has_next_page fields are computed based on the
                  *     number of results which were matched and which results were returned by the
                  *     search.
                  *     As long as `has_next_page` is True, you can add the count of results to the offset
                  *     of a prior query to fetch another page of results.
-                 *      */
+                 */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -75,15 +75,15 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description
-                 *     A Search Result document.
+                /**
+                 * @description A Search Result document.
                  *
                  *     The offset, count, total, and has_next_page fields are computed based on the
                  *     number of results which were matched and which results were returned by the
                  *     search.
                  *     As long as `has_next_page` is True, you can add the count of results to the offset
                  *     of a prior query to fetch another page of results.
-                 *      */
+                 */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -131,15 +131,15 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description
-                 *     A Scroll Result document.
+                /**
+                 * @description A Scroll Result document.
                  *
                  *     This is nearly identical to a Search Result, but includes the `marker` parameter.
                  *     `marker` is an opaque token which can be used on subsequent requests for pagination.
                  *
                  *     NOTE: In rare cases, `has_next_page` may be True until an empty page of results is
                  *     reached.
-                 *      */
+                 */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -1158,9 +1158,11 @@ export interface components {
              * @example my_field_name
              */
             field_name: string;
-            /** @description A name for this facet which is referenced in the results.
+            /**
+             * @description A name for this facet which is referenced in the results.
              *
-             *     If `name` is omitted, it will default to the value of the `field_name` property. If more than one facet in a single search request references the same field, a name *must* be provided. */
+             *     If `name` is omitted, it will default to the value of the `field_name` property. If more than one facet in a single search request references the same field, a name *must* be provided.
+             */
             name?: string;
             /**
              * @description discriminator enum property added by openapi-typescript
@@ -1179,9 +1181,11 @@ export interface components {
              * @example my_field_name
              */
             field_name: string;
-            /** @description A name for this facet which is referenced in the results.
+            /**
+             * @description A name for this facet which is referenced in the results.
              *
-             *     If `name` is omitted, it will default to the value of the `field_name` property. If more than one facet in a single search request references the same field, a name *must* be provided. */
+             *     If `name` is omitted, it will default to the value of the `field_name` property. If more than one facet in a single search request references the same field, a name *must* be provided.
+             */
             name?: string;
             /**
              * @description discriminator enum property added by openapi-typescript
@@ -1203,9 +1207,11 @@ export interface components {
              * @example my_field_name
              */
             field_name: string;
-            /** @description A name for this facet which is referenced in the results.
+            /**
+             * @description A name for this facet which is referenced in the results.
              *
-             *     If `name` is omitted, it will default to the value of the `field_name` property. If more than one facet in a single search request references the same field, a name *must* be provided. */
+             *     If `name` is omitted, it will default to the value of the `field_name` property. If more than one facet in a single search request references the same field, a name *must* be provided.
+             */
             name?: string;
             /**
              * @description discriminator enum property added by openapi-typescript
@@ -1229,9 +1235,11 @@ export interface components {
              * @example my_field_name
              */
             field_name: string;
-            /** @description A name for this facet which is referenced in the results.
+            /**
+             * @description A name for this facet which is referenced in the results.
              *
-             *     If `name` is omitted, it will default to the value of the `field_name` property. If more than one facet in a single search request references the same field, a name *must* be provided. */
+             *     If `name` is omitted, it will default to the value of the `field_name` property. If more than one facet in a single search request references the same field, a name *must* be provided.
+             */
             name?: string;
             /**
              * @description discriminator enum property added by openapi-typescript
@@ -1256,7 +1264,6 @@ export interface components {
              *     query results.
              *
              *     Defaults to True for all filters except `match_all`, where it defaults to False.
-             *
              * @default false
              */
             post_filter: boolean;
@@ -1278,7 +1285,6 @@ export interface components {
              *     query results.
              *
              *     Defaults to True for all filters except `match_all`, where it defaults to False.
-             *
              * @default true
              */
             post_filter: boolean;
@@ -1308,7 +1314,6 @@ export interface components {
              *     query results.
              *
              *     Defaults to True for all filters except `match_all`, where it defaults to False.
-             *
              * @default true
              */
             post_filter: boolean;
@@ -1334,7 +1339,6 @@ export interface components {
              *     query results.
              *
              *     Defaults to True for all filters except `match_all`, where it defaults to False.
-             *
              * @default true
              */
             post_filter: boolean;
@@ -1345,7 +1349,6 @@ export interface components {
              *     and `lon`, for latitude and longitude. The values must be floats, positive or negative,
              *     within the range of acceptable coordinate values: [-90.0, 90.0] for latitude, and
              *     [-180.0, 180.0] for longitude.
-             *
              * @example {
              *       "lat": 40.9,
              *       "lon": 87.5
@@ -1357,7 +1360,6 @@ export interface components {
              *     and `lon`, for latitude and longitude. The values must be floats, positive or negative,
              *     within the range of acceptable coordinate values: [-90.0, 90.0] for latitude, and
              *     [-180.0, 180.0] for longitude.
-             *
              * @example {
              *       "lat": 40.9,
              *       "lon": 87.5
@@ -1388,7 +1390,6 @@ export interface components {
              *     query results.
              *
              *     Defaults to True for all filters except `match_all`, where it defaults to False.
-             *
              * @default true
              */
             post_filter: boolean;
@@ -1400,7 +1401,6 @@ export interface components {
              *
              *     'intersects': (default) Return documents whose shape intersects the query shape.
              *     'within': Return documents whose shape is fully within the query shape.
-             *
              * @default intersects
              * @enum {string}
              */
@@ -1420,7 +1420,6 @@ export interface components {
              *     query results.
              *
              *     Defaults to True for all filters except `match_all`, where it defaults to False.
-             *
              * @default true
              */
             post_filter: boolean;
@@ -1441,7 +1440,6 @@ export interface components {
              *     query results.
              *
              *     Defaults to True for all filters except `match_all`, where it defaults to False.
-             *
              * @default true
              */
             post_filter: boolean;
@@ -1504,7 +1502,6 @@ export interface components {
              *     and `lon`, for latitude and longitude. The values must be floats, positive or negative,
              *     within the range of acceptable coordinate values: [-90.0, 90.0] for latitude, and
              *     [-180.0, 180.0] for longitude.
-             *
              * @example {
              *       "lat": 40.9,
              *       "lon": 87.5
@@ -1516,7 +1513,6 @@ export interface components {
              *     and `lon`, for latitude and longitude. The values must be floats, positive or negative,
              *     within the range of acceptable coordinate values: [-90.0, 90.0] for latitude, and
              *     [-180.0, 180.0] for longitude.
-             *
              * @example {
              *       "lat": 40.9,
              *       "lon": 87.5
@@ -1540,7 +1536,6 @@ export interface components {
              *
              *     'intersects': (default) Return documents whose shape intersects the query shape.
              *     'within': Return documents whose shape is fully within the query shape.
-             *
              * @default intersects
              * @enum {string}
              */
@@ -1618,7 +1613,6 @@ export interface components {
              *     query results.
              *
              *     Defaults to True for all filters except `match_all`, where it defaults to False.
-             *
              * @default true
              */
             post_filter: boolean;
@@ -1638,7 +1632,6 @@ export interface components {
              *     query results.
              *
              *     Defaults to True for all filters except `match_all`, where it defaults to False.
-             *
              * @default true
              */
             post_filter: boolean;
@@ -1658,7 +1651,6 @@ export interface components {
              *     query results.
              *
              *     Defaults to True for all filters except `match_all`, where it defaults to False.
-             *
              * @default true
              */
             post_filter: boolean;
@@ -1756,7 +1748,6 @@ export interface components {
              *     and `lon`, for latitude and longitude. The values must be floats, positive or negative,
              *     within the range of acceptable coordinate values: [-90.0, 90.0] for latitude, and
              *     [-180.0, 180.0] for longitude.
-             *
              * @example {
              *       "lat": 40.9,
              *       "lon": 87.5
@@ -1768,7 +1759,6 @@ export interface components {
              *     and `lon`, for latitude and longitude. The values must be floats, positive or negative,
              *     within the range of acceptable coordinate values: [-90.0, 90.0] for latitude, and
              *     [-180.0, 180.0] for longitude.
-             *
              * @example {
              *       "lat": 40.9,
              *       "lon": 87.5
@@ -1799,7 +1789,6 @@ export interface components {
              *
              *     'intersects': (default) Return documents whose shape intersects the query shape.
              *     'within': Return documents whose shape is fully within the query shape.
-             *
              * @default intersects
              * @enum {string}
              */
@@ -1860,9 +1849,11 @@ export interface components {
              * @example my_field_name
              */
             field_name: string;
-            /** @description A name for this facet which is referenced in the results.
+            /**
+             * @description A name for this facet which is referenced in the results.
              *
-             *     If `name` is omitted, it will default to the value of the `field_name` property. If more than one facet in a single search request references the same field, a name *must* be provided. */
+             *     If `name` is omitted, it will default to the value of the `field_name` property. If more than one facet in a single search request references the same field, a name *must* be provided.
+             */
             name?: string;
             /**
              * @description discriminator enum property added by openapi-typescript
@@ -1880,9 +1871,11 @@ export interface components {
              * @example my_field_name
              */
             field_name: string;
-            /** @description A name for this facet which is referenced in the results.
+            /**
+             * @description A name for this facet which is referenced in the results.
              *
-             *     If `name` is omitted, it will default to the value of the `field_name` property. If more than one facet in a single search request references the same field, a name *must* be provided. */
+             *     If `name` is omitted, it will default to the value of the `field_name` property. If more than one facet in a single search request references the same field, a name *must* be provided.
+             */
             name?: string;
             /**
              * @description discriminator enum property added by openapi-typescript
@@ -1899,9 +1892,11 @@ export interface components {
              * @example my_field_name
              */
             field_name: string;
-            /** @description A name for this facet which is referenced in the results.
+            /**
+             * @description A name for this facet which is referenced in the results.
              *
-             *     If `name` is omitted, it will default to the value of the `field_name` property. If more than one facet in a single search request references the same field, a name *must* be provided. */
+             *     If `name` is omitted, it will default to the value of the `field_name` property. If more than one facet in a single search request references the same field, a name *must* be provided.
+             */
             name?: string;
             /**
              * @description discriminator enum property added by openapi-typescript
@@ -1921,9 +1916,11 @@ export interface components {
              * @example my_field_name
              */
             field_name: string;
-            /** @description A name for this facet which is referenced in the results.
+            /**
+             * @description A name for this facet which is referenced in the results.
              *
-             *     If `name` is omitted, it will default to the value of the `field_name` property. If more than one facet in a single search request references the same field, a name *must* be provided. */
+             *     If `name` is omitted, it will default to the value of the `field_name` property. If more than one facet in a single search request references the same field, a name *must* be provided.
+             */
             name?: string;
             /**
              * @description discriminator enum property added by openapi-typescript
@@ -1946,9 +1943,11 @@ export interface components {
              * @example my_field_name
              */
             field_name: string;
-            /** @description A name for this facet which is referenced in the results.
+            /**
+             * @description A name for this facet which is referenced in the results.
              *
-             *     If `name` is omitted, it will default to the value of the `field_name` property. If more than one facet in a single search request references the same field, a name *must* be provided. */
+             *     If `name` is omitted, it will default to the value of the `field_name` property. If more than one facet in a single search request references the same field, a name *must* be provided.
+             */
             name?: string;
             /**
              * @description discriminator enum property added by openapi-typescript
@@ -2094,7 +2093,6 @@ export interface components {
              *     backslash.
              *
              *     Currently, only geo datatypes are supported.
-             *
              * @example {
              *       "location.center": "geo_point",
              *       "location.boundary": "geo_shape"
@@ -2125,7 +2123,6 @@ export interface components {
              *     backslash.
              *
              *     Currently, only geo datatypes are supported.
-             *
              * @example {
              *       "location.center": "geo_point",
              *       "location.boundary": "geo_shape"

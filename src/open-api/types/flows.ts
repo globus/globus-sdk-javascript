@@ -10,21 +10,20 @@ export interface paths {
          * Retrieve all Flows
          * @description Query the Flows service for a listing of Flows available to a user
          *     according to the permissions (role) they have on the Flow.
-         *
          */
         get: {
             parameters: {
                 query?: {
-                    /** @description An opaque token used to iterate through pages of returned Flows.
+                    /**
+                     * @description An opaque token used to iterate through pages of returned Flows.
                      *     If provided, all other query arguments will be ignored.
                      *     The marker encodes all state in a given query,
                      *     therefore it's unnecessary to provide query arguments
                      *     once an initial marker has been received.
-                     *      */
+                     */
                     marker?: string;
                     /**
                      * @description The number of results to return in a single paged response.
-                     *
                      * @example 50
                      */
                     per_page?: number;
@@ -38,7 +37,6 @@ export interface paths {
                      *     user has on the Flow dictates the operations they can perform. If
                      *     multiple roles are specified, the user will have at least one of the
                      *     specified roles on each Flow returned.
-                     *
                      * @example [
                      *       "flow_owner",
                      *       "flow_viewers"
@@ -55,7 +53,6 @@ export interface paths {
                      *     include all Flows for which the user has "flow_viewer" role as
                      *     well. If not provided, only Flows for which the caller has
                      *     "flow_owner" role will be returned.
-                     *
                      * @example flow_starter
                      */
                     filter_role?: "flow_viewer" | "flow_starter" | "flow_administrator" | "flow_owner" | "run_manager" | "run_monitor";
@@ -64,7 +61,6 @@ export interface paths {
                      *     scope string fields. If multiple values are specified, each Flow
                      *     returned is guaranteed to contain at least one of the strings in its
                      *     scope strings.
-                     *
                      * @example [
                      *       "0abc",
                      *       "100"
@@ -75,7 +71,6 @@ export interface paths {
                      * @description Performs a case insensitive substring based search on the Flows' title
                      *     field. If multiple values are specified, each Flow returned
                      *     is guaranteed to contain at least one of the strings in its title.
-                     *
                      * @example [
                      *       "hello",
                      *       "science"
@@ -87,7 +82,6 @@ export interface paths {
                      *     subtitle field. If multiple values are specified, each Flow returned
                      *     is guaranteed to contain at least one of the strings in its
                      *     subtitle.
-                     *
                      * @example [
                      *       "hello",
                      *       "science"
@@ -99,7 +93,6 @@ export interface paths {
                      *     description field. If multiple values are specified, each Flow returned
                      *     is guaranteed to contain at least one of the strings in its
                      *     description.
-                     *
                      * @example [
                      *       "hello",
                      *       "science"
@@ -111,7 +104,6 @@ export interface paths {
                      *     keywords field. If multiple values are specified, each Flow returned
                      *     is guaranteed to contain at least one of the substrings as a
                      *     keyword.
-                     *
                      * @example [
                      *       "hello",
                      *       "science"
@@ -130,7 +122,6 @@ export interface paths {
                      *       - description
                      *       - id
                      *       - flow_administrators
-                     *
                      * @example [
                      *       "globus"
                      *     ]
@@ -173,7 +164,6 @@ export interface paths {
                      *
                      *     - `ASC`
                      *     - `DESC`
-                     *
                      * @example [
                      *       "title ASC",
                      *       "id DESC"
@@ -187,9 +177,10 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description The requestor has successfully authenticated and queried the Flow's
+                /**
+                 * @description The requestor has successfully authenticated and queried the Flow's
                  *     service for the Flows available for them.
-                 *      */
+                 */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -199,24 +190,23 @@ export interface paths {
                             flows?: components["schemas"]["FlowResponse"][];
                             /** @description The number of Flows returned. */
                             limit?: number;
-                            /** @description An opaque pagination token for iterating through returned
+                            /**
+                             * @description An opaque pagination token for iterating through returned
                              *     Flows.
-                             *      */
+                             */
                             marker?: string;
                             has_next_page?: boolean;
                         };
                     };
                 };
-                /** @description There was an issue parsing the query parameters.
-                 *      */
+                /** @description There was an issue parsing the query parameters. */
                 400: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description The requestor presented a token with insufficient scopes.
-                 *      */
+                /** @description The requestor presented a token with insufficient scopes. */
                 403: {
                     headers: {
                         [name: string]: unknown;
@@ -241,24 +231,25 @@ export interface paths {
                 content: {
                     "application/json": {
                         definition: components["schemas"]["FlowDefinition"];
-                        /** @description A non-unique, human-friendly name used for displaying the provider
+                        /**
+                         * @description A non-unique, human-friendly name used for displaying the provider
                          *     to end users.
-                         *      */
+                         */
                         title?: string;
                         /** @description A concise summary of the provider’s purpose. */
                         subtitle?: string;
                         /** @description A detailed description of the provider for end user display. */
                         description?: string;
-                        /** @description A set of terms used to categorize the provider which may be used in
+                        /**
+                         * @description A set of terms used to categorize the provider which may be used in
                          *     query and discovery operations. Maximum total length of all
                          *     keywords is 1024 characters.
-                         *      */
+                         */
                         keywords?: string[];
                         /**
                          * @description A set of Principal URNs, or the value "public",
                          *     indicating the identity of users and/or groups
                          *     who can view the flow.
-                         *
                          * @example [
                          *       "urn:globus:auth:identity:46bd0f56-e24f-11e5-a510-131bef46955c",
                          *       "urn:globus:groups:id:fdb38a24-03c1-11e3-86f7-12313809f035"
@@ -268,7 +259,6 @@ export interface paths {
                         /**
                          * @description A set of Principal URNs, or the value "all_authenticated_users",
                          *     indicating the identity of users who can start the flow.
-                         *
                          * @example [
                          *       "urn:globus:auth:identity:46bd0f56-e24f-11e5-a510-131bef46955c",
                          *       "urn:globus:groups:id:fdb38a24-03c1-11e3-86f7-12313809f035"
@@ -279,16 +269,16 @@ export interface paths {
                          * @description The set of Principal URN values of users who may perform
                          *     administrative operations, including updating the description
                          *     itself, on the flow.
-                         *
                          * @example [
                          *       "urn:globus:auth:identity:46bd0f56-e24f-11e5-a510-131bef46955c",
                          *       "urn:globus:groups:id:fdb38a24-03c1-11e3-86f7-12313809f035"
                          *     ]
                          */
                         flow_administrators?: components["schemas"]["PrincipalURN"][];
-                        /** @description A published JSON Schema which input to the Flow must conform
+                        /**
+                         * @description A published JSON Schema which input to the Flow must conform
                          *     to.
-                         *      */
+                         */
                         input_schema?: Record<string, unknown>;
                         run_managers?: components["schemas"]["RunManagers"];
                         run_monitors?: components["schemas"]["RunMonitors"];
@@ -298,16 +288,16 @@ export interface paths {
                          *
                          *     If no subscription is specified, the flow may be created
                          *     but may have limits on how long or how much it can be used.
-                         *
                          */
                         subscription_id?: string;
                     };
                 };
             };
             responses: {
-                /** @description The Flow definition was successfully deployed onto the Flows
+                /**
+                 * @description The Flow definition was successfully deployed onto the Flows
                  *     service.
-                 *      */
+                 */
                 201: {
                     headers: {
                         [name: string]: unknown;
@@ -316,16 +306,14 @@ export interface paths {
                         "application/json": components["schemas"]["FlowResponse"];
                     };
                 };
-                /** @description The requestor attempted to deploy a malformed Flow.
-                 *      */
+                /** @description The requestor attempted to deploy a malformed Flow. */
                 400: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description The requestor is not authorized to deploy a Flow.
-                 *      */
+                /** @description The requestor is not authorized to deploy a Flow. */
                 403: {
                     headers: {
                         [name: string]: unknown;
@@ -364,15 +352,13 @@ export interface paths {
                 content: {
                     "application/json": {
                         definition: components["schemas"]["FlowDefinition"];
-                        /** @description A JSON Schema describing valid input to the flow.
-                         *      */
+                        /** @description A JSON Schema describing valid input to the flow. */
                         input_schema?: Record<string, unknown>;
                     };
                 };
             };
             responses: {
-                /** @description The flow passed all validation checks.
-                 *      */
+                /** @description The flow passed all validation checks. */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -381,32 +367,28 @@ export interface paths {
                         "application/json": components["schemas"]["FlowValidationResponse"];
                     };
                 };
-                /** @description The requestor attempted to validate a malformed flow.
-                 *      */
+                /** @description The requestor attempted to validate a malformed flow. */
                 400: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description The requestor is not authorized to validate a flow.
-                 *      */
+                /** @description The requestor is not authorized to validate a flow. */
                 403: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description A conflict was found in the flow definition or input schema.
-                 *      */
+                /** @description A conflict was found in the flow definition or input schema. */
                 409: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description The flow definition or input schema failed validation checks.
-                 *      */
+                /** @description The flow definition or input schema failed validation checks. */
                 422: {
                     headers: {
                         [name: string]: unknown;
@@ -449,9 +431,10 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description The requestor has successfully authenticated and queried the Flow's
+                /**
+                 * @description The requestor has successfully authenticated and queried the Flow's
                  *     service for a specific Flow definition.
-                 *      */
+                 */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -460,18 +443,20 @@ export interface paths {
                         "application/json": components["schemas"]["FlowResponse"];
                     };
                 };
-                /** @description The requestor attempted to retrieve a Flow definition for which they
+                /**
+                 * @description The requestor attempted to retrieve a Flow definition for which they
                  *     did not have access.
-                 *      */
+                 */
                 403: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description The requestor attempted to retrieve a non-existent Flow, or the
+                /**
+                 * @description The requestor attempted to retrieve a non-existent Flow, or the
                  *     requestor did not have permissions to view a Flow.
-                 *      */
+                 */
                 404: {
                     headers: {
                         [name: string]: unknown;
@@ -498,35 +483,36 @@ export interface paths {
                 content: {
                     "application/json": {
                         definition?: components["schemas"]["FlowDefinition"];
-                        /** @description A JSON schema document.
+                        /**
+                         * @description A JSON schema document.
                          *
                          *     When starting the flow, input keys and values must conform to the schema.
                          *     The Globus Web App uses the input schema to created a guided input page when starting the flow.
-                         *      */
+                         */
                         input_schema?: Record<string, unknown>;
-                        /** @description A non-unique, human-friendly name used for displaying the flow to end users.
-                         *      */
+                        /** @description A non-unique, human-friendly name used for displaying the flow to end users. */
                         title?: string;
-                        /** @description A short summary of the flow's purpose or functionality.
-                         *      */
+                        /** @description A short summary of the flow's purpose or functionality. */
                         subtitle?: string;
-                        /** @description Arbitrary text to describe the Flow.
-                         *      */
+                        /** @description Arbitrary text to describe the Flow. */
                         description?: string;
-                        /** @description If provided, the value must be the calling user's Globus Auth identity URN,
+                        /**
+                         * @description If provided, the value must be the calling user's Globus Auth identity URN,
                          *     and the user must be a flow administrator.
                          *
                          *     It is not possible for non-administrators to take ownership of a flow.
                          *     Also, it is currently not possible to assign ownership to another user.
-                         *      */
+                         */
                         flow_owner?: string;
-                        /** @description A list of Globus Auth identity and group URNs that may administer the flow.
+                        /**
+                         * @description A list of Globus Auth identity and group URNs that may administer the flow.
                          *
                          *     Flow administrators are able to see the full flow definition,
                          *     including any parameters listed in a "__Private_Parameters" value.
-                         *      */
+                         */
                         flow_administrators?: string[];
-                        /** @description A list of Globus Auth identity and group URNs that may start the flow.
+                        /**
+                         * @description A list of Globus Auth identity and group URNs that may start the flow.
                          *
                          *     It is possible to make a flow available for use to all authenticated users
                          *     -- including those outside your organization or domain --
@@ -534,9 +520,10 @@ export interface paths {
                          *
                          *     Parameters listed in "__Private_Parameters" values in the definition
                          *     will be removed from the definition when it is viewed by a flow starter.
-                         *      */
+                         */
                         flow_starters?: string[];
-                        /** @description A list of Globus Auth identity and group URNs that may see the flow,
+                        /**
+                         * @description A list of Globus Auth identity and group URNs that may see the flow,
                          *     including its definition and input schema.
                          *
                          *     It is possible to make a flow available for viewing to all users
@@ -545,10 +532,9 @@ export interface paths {
                          *
                          *     Parameters listed in "__Private_Parameters" values in the definition
                          *     will be removed from the definition when it is viewed by a flow starter.
-                         *      */
+                         */
                         flow_viewers?: string[];
-                        /** @description A list of keywords that can be used for grouping or identifying flows.
-                         *      */
+                        /** @description A list of keywords that can be used for grouping or identifying flows. */
                         keywords?: string[];
                         run_managers?: components["schemas"]["RunManagers"];
                         run_monitors?: components["schemas"]["RunMonitors"];
@@ -557,9 +543,10 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description The requestor has successfully authenticated and updated the target
+                /**
+                 * @description The requestor has successfully authenticated and updated the target
                  *     Flow definition.
-                 *      */
+                 */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -568,27 +555,30 @@ export interface paths {
                         "application/json": components["schemas"]["FlowResponse"];
                     };
                 };
-                /** @description The Flow definition update failed due to an attempt to perform a
+                /**
+                 * @description The Flow definition update failed due to an attempt to perform a
                  *     malformed update.
-                 *      */
+                 */
                 400: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description The requestor attempted to update a Flow for which they did not have
+                /**
+                 * @description The requestor attempted to update a Flow for which they did not have
                  *     access.
-                 *      */
+                 */
                 403: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description The requestor attempted to update a non-existent Flow, or the
+                /**
+                 * @description The requestor attempted to update a non-existent Flow, or the
                  *     requestor did not have permissions to update a Flow.
-                 *      */
+                 */
                 404: {
                     headers: {
                         [name: string]: unknown;
@@ -614,9 +604,10 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description The requestor has successfully removed the Flow from the Flows
+                /**
+                 * @description The requestor has successfully removed the Flow from the Flows
                  *     service.
-                 *      */
+                 */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -625,18 +616,20 @@ export interface paths {
                         "application/json": components["schemas"]["FlowResponse"];
                     };
                 };
-                /** @description The requestor attempted to modify a Flow for which they did not have
+                /**
+                 * @description The requestor attempted to modify a Flow for which they did not have
                  *     access.
-                 *      */
+                 */
                 403: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description The requestor attempted to remove a non-existent Flow, or the
+                /**
+                 * @description The requestor attempted to remove a non-existent Flow, or the
                  *     requestor did not have permissions to remove the Flow.
-                 *      */
+                 */
                 404: {
                     headers: {
                         [name: string]: unknown;
@@ -698,25 +691,24 @@ export interface paths {
                         "application/json": components["schemas"]["FlowRun"];
                     };
                 };
-                /** @description The Run's input failed validation against the Flow's input schema.
-                 *      */
+                /** @description The Run's input failed validation against the Flow's input schema. */
                 400: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description The requestor presented a token with insufficient scopes.
-                 *      */
+                /** @description The requestor presented a token with insufficient scopes. */
                 403: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description The requestor did not have access to run the provided Flow, or the
+                /**
+                 * @description The requestor did not have access to run the provided Flow, or the
                  *     Flow does not exist.
-                 *      */
+                 */
                 404: {
                     headers: {
                         [name: string]: unknown;
@@ -730,19 +722,21 @@ export interface paths {
                     };
                     content?: never;
                 };
-                /** @description An upstream service has imposed rate limiting.
+                /**
+                 * @description An upstream service has imposed rate limiting.
                  *     The requestor may resubmit the API request.
-                 *      */
+                 */
                 429: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description An upstream service returned an uncorrectable error.
+                /**
+                 * @description An upstream service returned an uncorrectable error.
                  *     The error may or may not occur if the API request is submitted again.
                  *     It may be possible to resubmit the API request.
-                 *      */
+                 */
                 502: {
                     headers: {
                         [name: string]: unknown;
@@ -777,7 +771,6 @@ export interface paths {
          *
          *     If validation passes, then it is likely that the flow can be started
          *     with the same inputs and Globus Auth token.
-         *
          */
         post: {
             parameters: {
@@ -802,11 +795,12 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description The inputs and Globus Auth token passed validation.
+                /**
+                 * @description The inputs and Globus Auth token passed validation.
                  *
                  *     It is likely that the user or client will be able to start the flow
                  *     using the same Globus Auth token and input values.
-                 *      */
+                 */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -815,17 +809,17 @@ export interface paths {
                         "application/json": components["schemas"]["ValidateRun"];
                     };
                 };
-                /** @description The input body failed validation against the flow's input schema.
-                 *      */
+                /** @description The input body failed validation against the flow's input schema. */
                 400: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description The user or client is not allowed to run the flow,
+                /**
+                 * @description The user or client is not allowed to run the flow,
                  *     or the Globus Auth token is missing required scopes.
-                 *      */
+                 */
                 403: {
                     headers: {
                         [name: string]: unknown;
@@ -877,54 +871,60 @@ export interface paths {
                         "application/json": components["schemas"]["FlowRun"];
                     };
                 };
-                /** @description The requestor is not authorized to access the run or flow,
+                /**
+                 * @description The requestor is not authorized to access the run or flow,
                  *     or has not provided access tokens with sufficient privileges.
-                 *      */
+                 */
                 403: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description The requested Run or Flow was not found. Or, the requestor did not
+                /**
+                 * @description The requested Run or Flow was not found. Or, the requestor did not
                  *     have access to view the Run.
-                 *      */
+                 */
                 404: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description The requestor attempted to remove the state for a Run which had
+                /**
+                 * @description The requestor attempted to remove the state for a Run which had
                  *     not yet reached a completed status.
-                 *      */
+                 */
                 409: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description An upstream service rate-limited the request to release the Run.
+                /**
+                 * @description An upstream service rate-limited the request to release the Run.
                  *     The requestor may re-submit the request at a later time.
-                 *      */
+                 */
                 429: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description The run is in an unexpected state in the Flows service.
+                /**
+                 * @description The run is in an unexpected state in the Flows service.
                  *     Please contact Globus support.
-                 *      */
+                 */
                 500: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description A request to an upstream service failed for an unknown reason.
+                /**
+                 * @description A request to an upstream service failed for an unknown reason.
                  *     The requestor can re-submit the request or contact Globus support.
-                 *      */
+                 */
                 502: {
                     headers: {
                         [name: string]: unknown;
@@ -983,7 +983,6 @@ export interface paths {
          *     progress. Performing the resume operation may simply cause a
          *     poll to happen more quickly and thus allow the Action to
          *     resume more quickly.
-         *
          */
         post: {
             parameters: {
@@ -1008,9 +1007,10 @@ export interface paths {
                         "application/json": components["schemas"]["FlowRun"];
                     };
                 };
-                /** @description The requested Run or Flow was not found. Or, the requestor did not
+                /**
+                 * @description The requested Run or Flow was not found. Or, the requestor did not
                  *     have access to manage the Run.
-                 *      */
+                 */
                 404: {
                     headers: {
                         [name: string]: unknown;
@@ -1063,18 +1063,20 @@ export interface paths {
                         "application/json": components["schemas"]["FlowRun"];
                     };
                 };
-                /** @description The requested Run or Flow was not found. Or, the requestor did not
+                /**
+                 * @description The requested Run or Flow was not found. Or, the requestor did not
                  *     have access to view the Run.
-                 *      */
+                 */
                 404: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description The service encountered an Upstream error when attempting to cancel
+                /**
+                 * @description The service encountered an Upstream error when attempting to cancel
                  *     the Run.
-                 *      */
+                 */
                 502: {
                     headers: {
                         [name: string]: unknown;
@@ -1094,11 +1096,9 @@ export interface paths {
             query?: {
                 /** @description An integer limit on the number of log records returned. */
                 limit?: number;
-                /** @description A flag to indicate if log records should be returned in reverse order.
-                 *      */
+                /** @description A flag to indicate if log records should be returned in reverse order. */
                 reverse_order?: boolean;
-                /** @description A token used to iterate through pages of returned log records.
-                 *      */
+                /** @description A token used to iterate through pages of returned log records. */
                 pagination_token?: string;
             };
             header?: never;
@@ -1113,18 +1113,15 @@ export interface paths {
         /**
          * Get execution details on a Run
          * @description Retrieve detailed execution information for a particular Flow Run
-         *
          */
         get: {
             parameters: {
                 query?: {
                     /** @description An integer limit on the number of log records returned. */
                     limit?: number;
-                    /** @description A flag to indicate if log records should be returned in reverse order.
-                     *      */
+                    /** @description A flag to indicate if log records should be returned in reverse order. */
                     reverse_order?: boolean;
-                    /** @description A token used to iterate through pages of returned log records.
-                     *      */
+                    /** @description A token used to iterate through pages of returned log records. */
                     pagination_token?: string;
                 };
                 header?: never;
@@ -1147,27 +1144,28 @@ export interface paths {
                         "application/json": {
                             /** @description The number of log states returned. */
                             limit: number;
-                            /** @description An opaque pagination token for iterating through returned
+                            /**
+                             * @description An opaque pagination token for iterating through returned
                              *     records. If there are no more entries, this field will not
                              *     exist.
-                             *      */
+                             */
                             marker?: string;
                             has_next_page: boolean;
                             entries: Record<string, unknown>[];
                         };
                     };
                 };
-                /** @description There was an issue parsing the query parameters.
-                 *      */
+                /** @description There was an issue parsing the query parameters. */
                 400: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description The requested Action or Flow was not found. Or, the
+                /**
+                 * @description The requested Action or Flow was not found. Or, the
                  *     requestor did not have access to view the Action.
-                 *      */
+                 */
                 404: {
                     headers: {
                         [name: string]: unknown;
@@ -1201,17 +1199,17 @@ export interface paths {
          *     the *\/actions endpoint, the response will list the Runs under a
          *     "actions" key. If hitting the *\/runs endpoint, the response will list
          *     the Runs under a "runs" key.
-         *
          */
         get: {
             parameters: {
                 query?: {
-                    /** @description An opaque token used to iterate through pages of returned Actions.
+                    /**
+                     * @description An opaque token used to iterate through pages of returned Actions.
                      *     If provided, all other query arguments will be ignored.
                      *     The marker encodes all state in a given query,
                      *     therefore it's unnecessary to provide query arguments
                      *     once an initial marker has been received.
-                     *      */
+                     */
                     marker?: string;
                     /**
                      * @deprecated
@@ -1221,12 +1219,10 @@ export interface paths {
                      *     pagination_token encodes all state in a given query, therefore it's
                      *     unnecessary to provide query arguments once an initial token has been
                      *     received.
-                     *
                      */
                     pagination_token?: string;
                     /**
                      * @description The number of results to return in a single paged response.
-                     *
                      * @example 50
                      */
                     per_page?: number;
@@ -1240,7 +1236,6 @@ export interface paths {
                      *     user has on the Action dictates the operations they can perform.
                      *     If multiple roles are specified, the user will have at least one of
                      *     the specified roles on each Action returned.
-                     *
                      * @example [
                      *       "run_manager"
                      *     ]
@@ -1256,7 +1251,6 @@ export interface paths {
                      *     manager will also include all Actions for which the user
                      *     has "run_monitor" role as well. If not provided, only Actions
                      *     for which the caller has "run_owner" role will be returned.
-                     *
                      * @example [
                      *       "run_manager"
                      *     ]
@@ -1268,7 +1262,6 @@ export interface paths {
                      *     multiple statuses are specified, each Action returned will be in one
                      *     of the specified states. By default, Actions in any state will be
                      *     returned.
-                     *
                      * @example [
                      *       "FAILED",
                      *       "INACTIVE"
@@ -1279,7 +1272,6 @@ export interface paths {
                      * @description Performs a case insensitive string based search on the Actions'
                      *     label fields. If multiple values are specified, each Action returned
                      *     is guaranteed to contain at least one of the strings in its label.
-                     *
                      * @example [
                      *       "science",
                      *       "tests"
@@ -1303,7 +1295,6 @@ export interface paths {
                      *
                      *     Note that runs which are still executing will not have a completion time
                      *     and will be automatically excluded if this filter is applied.
-                     *
                      * @example 2021-03-09T21:52:14,2021-03-09T21:53
                      */
                     filter_completion_time?: components["parameters"]["filter_completion_time"];
@@ -1321,7 +1312,6 @@ export interface paths {
                      *
                      *     Results will contain runs which began between the first datetime
                      *     onwards, up to (but not including) the second datetime.
-                     *
                      * @example 2021-03-09T21:52:14,2021-03-09T21:53
                      */
                     filter_start_time?: components["parameters"]["filter_start_time"];
@@ -1360,7 +1350,6 @@ export interface paths {
                      *
                      *     - `ASC`
                      *     - `DESC`
-                     *
                      * @example [
                      *       "start_time ASC",
                      *       "id DESC"
@@ -1384,27 +1373,28 @@ export interface paths {
                     };
                     content: {
                         "application/json": {
-                            /** @description An opaque pagination token for iterating through returned
+                            /**
+                             * @description An opaque pagination token for iterating through returned
                              *     Actions. If there are no more entries, this field will not
                              *     exist.
-                             *      */
+                             */
                             marker?: string;
                             has_next_page: boolean;
                             actions: components["schemas"]["FlowRun"][];
                         };
                     };
                 };
-                /** @description The requestor presented a token with insufficient scopes.
-                 *      */
+                /** @description The requestor presented a token with insufficient scopes. */
                 403: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description The Flow does not exist or the requestor did not have access to
+                /**
+                 * @description The Flow does not exist or the requestor did not have access to
                  *     enumerate the Flow's Actions.
-                 *      */
+                 */
                 404: {
                     headers: {
                         [name: string]: unknown;
@@ -1434,17 +1424,17 @@ export interface paths {
          *     the *\/actions endpoint, the response will list the Runs under a
          *     "actions" key. If hitting the *\/runs endpoint, the response will list
          *     the Runs under a "runs" key.
-         *
          */
         get: {
             parameters: {
                 query?: {
-                    /** @description An opaque token used to iterate through pages of returned Actions.
+                    /**
+                     * @description An opaque token used to iterate through pages of returned Actions.
                      *     If provided, all other query arguments will be ignored.
                      *     The marker encodes all state in a given query,
                      *     therefore it's unnecessary to provide query arguments
                      *     once an initial marker has been received.
-                     *      */
+                     */
                     marker?: string;
                     /**
                      * @deprecated
@@ -1454,12 +1444,10 @@ export interface paths {
                      *     pagination_token encodes all state in a given query, therefore it's
                      *     unnecessary to provide query arguments once an initial token has been
                      *     received.
-                     *
                      */
                     pagination_token?: string;
                     /**
                      * @description The number of results to return in a single paged response.
-                     *
                      * @example 50
                      */
                     per_page?: number;
@@ -1473,7 +1461,6 @@ export interface paths {
                      *     user has on the Action dictates the operations they can perform.
                      *     If multiple roles are specified, the user will have at least one of
                      *     the specified roles on each Action returned.
-                     *
                      * @example [
                      *       "run_owner",
                      *       "run_managers"
@@ -1490,7 +1477,6 @@ export interface paths {
                      *     manager will also include all Runs for which the user
                      *     has "run_monitor" role as well. If not provided, only Runs
                      *     for which the caller has "run_owner" role will be returned.
-                     *
                      * @example run_manager
                      */
                     filter_role?: "run_monitor" | "run_manager" | "run_owner";
@@ -1500,7 +1486,6 @@ export interface paths {
                      *     multiple statuses are specified, each Action returned will be in one
                      *     of the specified states. By default, Actions in any state will be
                      *     returned.
-                     *
                      * @example [
                      *       "FAILED",
                      *       "INACTIVE"
@@ -1511,7 +1496,6 @@ export interface paths {
                      * @description Performs a case insensitive string based search on the Actions'
                      *     label fields. If multiple values are specified, each Action returned
                      *     is guaranteed to contain at least one of the strings in its label.
-                     *
                      * @example [
                      *       "science",
                      *       "tests"
@@ -1523,7 +1507,6 @@ export interface paths {
                      *     Actions which have parent Flow's with a matching title(s). If
                      *     multiple values are specified, each Action returned will have a
                      *     parent Flow with a title matching at least one of the strings.
-                     *
                      * @example [
                      *       "globus",
                      *       "tests"
@@ -1535,7 +1518,6 @@ export interface paths {
                      *     initiated from the specified Flow ID(s). If multiple values are
                      *     specified, each Run returned will have been initiated from at least
                      *     one of the specified Flow IDs.
-                     *
                      * @example [
                      *       "00000000-19d9-4f5b-9329-22ed12d4d3dd",
                      *       "11111111-19a5-4d19-998e-0709c40321e9"
@@ -1559,7 +1541,6 @@ export interface paths {
                      *
                      *     Note that runs which are still executing will not have a completion time
                      *     and will be automatically excluded if this filter is applied.
-                     *
                      * @example 2021-03-09T21:52:14,2021-03-09T21:53
                      */
                     filter_completion_time?: components["parameters"]["filter_completion_time"];
@@ -1577,7 +1558,6 @@ export interface paths {
                      *
                      *     Results will contain runs which began between the first datetime
                      *     onwards, up to (but not including) the second datetime.
-                     *
                      * @example 2021-03-09T21:52:14,2021-03-09T21:53
                      */
                     filter_start_time?: components["parameters"]["filter_start_time"];
@@ -1616,7 +1596,6 @@ export interface paths {
                      *
                      *     - `ASC`
                      *     - `DESC`
-                     *
                      * @example [
                      *       "start_time ASC",
                      *       "id DESC"
@@ -1637,10 +1616,11 @@ export interface paths {
                     };
                     content: {
                         "application/json": {
-                            /** @description An opaque pagination token for iterating through returned
+                            /**
+                             * @description An opaque pagination token for iterating through returned
                              *     Actions. If there are no more entries, this field will not
                              *     exist.
-                             *      */
+                             */
                             marker?: string;
                             has_next_page: boolean;
                             actions?: components["schemas"]["FlowRun"][];
@@ -1648,17 +1628,17 @@ export interface paths {
                         };
                     };
                 };
-                /** @description The requestor presented a token with insufficient scopes.
-                 *      */
+                /** @description The requestor presented a token with insufficient scopes. */
                 403: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description The Flow does not exist or the requestor did not have access to
+                /**
+                 * @description The Flow does not exist or the requestor did not have access to
                  *     enumerate the Actions.
-                 *      */
+                 */
                 404: {
                     headers: {
                         [name: string]: unknown;
@@ -1688,7 +1668,6 @@ export interface paths {
         /**
          * Get details about a run
          * @description Get details about a run.
-         *
          */
         get: {
             parameters: {
@@ -1696,7 +1675,6 @@ export interface paths {
                     /**
                      * @description If present and set to a true value,
                      *     metadata about the associated flow will be included.
-                     *
                      * @example true
                      */
                     include_flow_description?: true | true | false | false;
@@ -1719,17 +1697,17 @@ export interface paths {
                         "application/json": components["schemas"]["FlowRunWithFlowEmbed"];
                     };
                 };
-                /** @description The requestor presented a token with insufficient scopes.
-                 *      */
+                /** @description The requestor presented a token with insufficient scopes. */
                 403: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description The Run does not exist or the requestor did not have access to
+                /**
+                 * @description The Run does not exist or the requestor did not have access to
                  *     view the Run's status.
-                 *      */
+                 */
                 404: {
                     headers: {
                         [name: string]: unknown;
@@ -1745,7 +1723,6 @@ export interface paths {
          *     By default only the Run initiator is able to modify a Run's metadata.
          *     Note that delegating manage access to a principal will allow them
          *     to further alter the principals with monitor and manage access.
-         *
          */
         put: {
             parameters: {
@@ -1772,43 +1749,44 @@ export interface paths {
                         "application/json": components["schemas"]["FlowRun"];
                     };
                 };
-                /** @description The requestor presented a token with insufficient scopes.
-                 *      */
+                /** @description The requestor presented a token with insufficient scopes. */
                 403: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description The Run does not exist or the requestor did not have access to
+                /**
+                 * @description The Run does not exist or the requestor did not have access to
                  *     modify the Run.
-                 *      */
+                 */
                 404: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description The request's JSON body did not pass schema validation.
-                 *      */
+                /** @description The request's JSON body did not pass schema validation. */
                 422: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description An upstream service has imposed rate limiting.
+                /**
+                 * @description An upstream service has imposed rate limiting.
                  *     The requestor may resubmit the API request.
-                 *      */
+                 */
                 429: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description An unknown upstream service error occurred.
+                /**
+                 * @description An unknown upstream service error occurred.
                  *     The problem may be resolved by re-submitting the API request.
-                 *      */
+                 */
                 502: {
                     headers: {
                         [name: string]: unknown;
@@ -1840,7 +1818,6 @@ export interface paths {
          *
          *     This route allows users to view the Flow definition and input schema
          *     that were used to start a given Run.
-         *
          */
         get: {
             parameters: {
@@ -1863,16 +1840,14 @@ export interface paths {
                         "application/json": components["schemas"]["GetRunDefinitionResponse"];
                     };
                 };
-                /** @description The requestor presented a token with insufficient scopes.
-                 *      */
+                /** @description The requestor presented a token with insufficient scopes. */
                 403: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description The Run does not exist or the requestor did not have access to view the Run.
-                 *      */
+                /** @description The Run does not exist or the requestor did not have access to view the Run. */
                 404: {
                     headers: {
                         [name: string]: unknown;
@@ -1941,7 +1916,6 @@ export interface components {
          *     If this parameter is used when updating a flow,
          *     runs that are currently executing will continue to use the definition
          *     that they were initially started with.
-         *
          */
         FlowDefinition: {
             Comment?: string;
@@ -1951,34 +1925,28 @@ export interface components {
             };
         };
         FlowRun: {
-            /** @description The ID for a particular Flow invocation. Analogous to a run_id.
-             *      */
+            /** @description The ID for a particular Flow invocation. Analogous to a run_id. */
             action_id: string;
-            /** @description The ID for a particular Flow invocation. Analogous to an action_id.
-             *      */
+            /** @description The ID for a particular Flow invocation. Analogous to an action_id. */
             run_id: string;
-            /** @description The Flow to which this Run belongs.
-             *      */
+            /** @description The Flow to which this Run belongs. */
             flow_id: string;
             /**
              * Format: date-time
              * @description A timezone-aware ISO8601 format string that represents the time at
              *     which the last update to this Run's Flow occurred.
-             *
              */
             flow_last_updated: string;
             /**
              * Format: date-time
              * @description A timezone-aware ISO8601 format string that represents the time at
              *     which this Run started.
-             *
              */
             start_time: string;
             /**
              * Format: date-time
              * @description A timezone-aware ISO8601 format string that represents the time at
              *     which this Run reached a completed status.
-             *
              */
             completion_time: string;
             label: components["schemas"]["Label"];
@@ -1988,16 +1956,16 @@ export interface components {
              */
             status: "SUCCEEDED" | "FAILED" | "ENDED" | "ACTIVE" | "INACTIVE";
             display_status?: string;
-            /** @description Details about the run execution. This is null for runs of High Assurance
+            /**
+             * @description Details about the run execution. This is null for runs of High Assurance
              *     flows when listing runs.
-             *      */
+             */
             details: Record<string, unknown> | null;
             run_owner: components["schemas"]["PrincipalURN"];
             run_monitors?: components["schemas"]["RunMonitors"];
             run_managers?: components["schemas"]["RunManagers"];
             /**
              * @description The role the requesting user has on the Run.
-             *
              * @enum {string}
              */
             user_role: "run_monitor" | "run_manager" | "run_owner";
@@ -2006,20 +1974,16 @@ export interface components {
         ValidateRun: {
             /**
              * @description A message indicating the validation was successful
-             *
              * @example success
              */
             message: string;
         };
         GetRunDefinitionResponse: {
-            /** @description The Flow used to start the Run.
-             *      */
+            /** @description The Flow used to start the Run. */
             flow_id: string;
-            /** @description The definition of the Flow at the time the Run was started.
-             *      */
+            /** @description The definition of the Flow at the time the Run was started. */
             definition: Record<string, unknown>;
-            /** @description The input schema of the Flow at the time the Run was started.
-             *      */
+            /** @description The input schema of the Flow at the time the Run was started. */
             input_schema: Record<string, unknown>;
         };
         FlowEmbed: {
@@ -2030,33 +1994,30 @@ export interface components {
              * Format: date-time
              * @description A timezone-aware ISO8601 format string that represents the time at
              *     which the Flow was created.
-             *
              */
             created_at: string;
             /**
              * Format: date-time
              * @description A timezone-aware ISO8601 format string that represents the time at
              *     which the Flow was last updated.
-             *
              */
             updated_at?: string;
             /**
              * Format: date-time
              * @description A timezone-aware ISO8601 format string that represents the time at
              *     which the Flow was deleted (not present if the Flow has not been deleted).
-             *
              */
             deleted_at?: string;
-            /** @description A non-unique, human-friendly name used for displaying the Flow to end users.
-             *      */
+            /** @description A non-unique, human-friendly name used for displaying the Flow to end users. */
             title: string;
             /** @description A concise summary of the Flow's purpose. */
             subtitle?: string;
             /** @description A detailed description of the Flow for end user display. */
             description?: string;
-            /** @description A set of terms used to categorize the Flow which may be used in
+            /**
+             * @description A set of terms used to categorize the Flow which may be used in
              *     query and discovery operations.
-             *      */
+             */
             keywords?: string[];
         };
         FlowRunWithFlowEmbed: components["schemas"]["FlowRun"] & {
@@ -2075,7 +2036,6 @@ export interface components {
         ActivityNotificationPolicy: {
             /**
              * @description The set of statuses on which to notify the run's owner by email.
-             *
              * @default [
              *       "INACTIVE"
              *     ]
@@ -2105,7 +2065,6 @@ export interface components {
          *
          *     Only users with the "run_manager" role will be able to view this list.
          *     Users with only the "run_monitor" role will see an empty list.
-         *
          */
         RunManagers: components["schemas"]["PrincipalURN"][];
         /**
@@ -2116,7 +2075,6 @@ export interface components {
          *
          *     Only users with the "run_manager" role will be able to view this list.
          *     Users with only the "run_monitor" role will see an empty list.
-         *
          */
         RunMonitors: components["schemas"]["PrincipalURN"][];
         /**
@@ -2128,7 +2086,6 @@ export interface components {
          *
          *     When updating a run, existing tags will be overwritten.
          *     This means that an empty array will delete all existing tags.
-         *
          * @example [
          *       "Experiment:xDA202",
          *       "Site:Nautilus",
@@ -2139,7 +2096,6 @@ export interface components {
         /**
          * @description A URN representation of an Identity in Globus either of a user from
          *     Globus Auth or a group from Globus Groups.
-         *
          * @example urn:globus:auth:identity:46bd0f56-e24f-11e5-a510-131bef46955c
          */
         PrincipalURN: string;
@@ -2279,26 +2235,23 @@ export interface components {
         FlowResponse: {
             /** @description The unique identifier for the Flow. */
             id?: string;
-            /** @description The flow definition. This is null for High Assurance flows when listing flows.
-             *      */
+            /** @description The flow definition. This is null for High Assurance flows when listing flows. */
             definition?: components["schemas"]["FlowDefinition"];
-            /** @description A JSON Schema compliant definition of the format of the `body` field
+            /**
+             * @description A JSON Schema compliant definition of the format of the `body` field
              *     when requesting a Flow be run. This is null for High Assurance flows when listing flows.
-             *      */
+             */
             input_schema?: Record<string, unknown> | null;
             /**
              * Format: uri
              * @description The scope of any bearer token to be used on authenticated accesses
              *     to the Flow.
-             *
              */
             globus_auth_scope?: string;
-            /** @description A list of scopes according to RunAs values as defined in the Flow.
-             *      */
+            /** @description A list of scopes according to RunAs values as defined in the Flow. */
             globus_auth_scopes_by_RunAs?: string[];
             /**
              * @description The role the requesting user has on the Flow.
-             *
              * @enum {string}
              */
             user_role?: "flow_viewer" | "flow_starter" | "flow_administrator" | "flow_owner";
@@ -2308,7 +2261,6 @@ export interface components {
              *     definition. Only calling users with the "administrator"
              *     role will be provided this list. Otherwise, the value
              *     will always be an empty list.
-             *
              * @example [
              *       "public",
              *       "urn:globus:auth:identity:46bd0f56-e24f-11e5-a510-131bef46955c",
@@ -2322,7 +2274,6 @@ export interface components {
              *     who can initiate a run of the Flow. Only calling users
              *     with the "administrator" role will be provided this
              *     list. Otherwise, the value will always be an empty list.
-             *
              * @example [
              *       "all_authenticated_users",
              *       "urn:globus:auth:identity:46bd0f56-e24f-11e5-a510-131bef46955c",
@@ -2330,47 +2281,49 @@ export interface components {
              *     ]
              */
             flow_starters?: components["schemas"]["PrincipalURN"][];
-            /** @description The set of Principal URN values of users who may perform
+            /**
+             * @description The set of Principal URN values of users who may perform
              *     administrative operations, including updating the
              *     description itself. Only calling users with the
              *     "administrator" role will be provided this
              *     list. Otherwise, the value will always be an empty list.
-             *      */
+             */
             flow_administrators?: components["schemas"]["PrincipalURN"][];
             flow_owner?: components["schemas"]["PrincipalURN"];
             /**
              * Format: date-time
              * @description A timezone-aware ISO8601 format string that represents the time at
              *     which the Flow was created.
-             *
              */
             created_at?: string;
             /**
              * Format: date-time
              * @description A timezone-aware ISO8601 format string that represents the time at
              *     which the Flow was last updated.
-             *
              */
             updated_at?: string;
             synchronous?: boolean;
-            /** @description True if the Flow supports the /log operation providing detailed
+            /**
+             * @description True if the Flow supports the /log operation providing detailed
              *     information on the intermediate states of a Flow invocation.
-             *      */
+             */
             log_supported?: boolean;
             types?: ("Action" | "Event")[];
             /** @enum {string} */
             api_version?: "1.0";
-            /** @description A non-unique, human-friendly name used for displaying the Flow
+            /**
+             * @description A non-unique, human-friendly name used for displaying the Flow
              *     to end users.
-             *      */
+             */
             title?: string;
             /** @description A concise summary of the Flow's purpose. */
             subtitle?: string;
             /** @description A detailed description of the Flow for end user display. */
             description?: string;
-            /** @description A set of terms used to categorize the Flow which may be used in
+            /**
+             * @description A set of terms used to categorize the Flow which may be used in
              *     query and discovery operations.
-             *      */
+             */
             keywords?: string[];
             principal_urn?: components["schemas"]["PrincipalURN"];
             /** @description The Flow's Globus Auth username. */
@@ -2379,13 +2332,13 @@ export interface components {
              * Format: uri
              * @description The web-addressable location at which this Flow can be referenced
              *     and run from.
-             *
              */
             flow_url?: string;
-            /** @description Indicates whether this flow is High Assurance. High Assurance flows have
+            /**
+             * @description Indicates whether this flow is High Assurance. High Assurance flows have
              *     sensitive fields (definition, input_schema) omitted from list responses
              *     for security purposes.
-             *      */
+             */
             is_high_assurance?: boolean;
             /**
              * Format: uuid
@@ -2393,7 +2346,6 @@ export interface components {
              *     subscription_id is present, the Flow may be
              *     accepted, but may have limits on how long or how
              *     much it can be used.
-             *
              */
             subscription_id?: string;
         };
@@ -2401,8 +2353,7 @@ export interface components {
             scopes?: components["schemas"]["FlowScopes"];
         };
         FlowValidationErrorResponse: {
-            /** @description A unique identifier for the validation error, used for debugging.
-             *      */
+            /** @description A unique identifier for the validation error, used for debugging. */
             debug_id: string;
             error: {
                 /** @description A readable keyword describing the failure. */
@@ -2438,11 +2389,12 @@ export interface components {
         };
     };
     responses: {
-        /** @description The requested operation was accepted.
+        /**
+         * @description The requested operation was accepted.
          *
          *     The operation may have been completed, or may be completed at a later time.
          *     A follow-up API request may be needed to confirm the status of the operation.
-         *      */
+         */
         HTTP202Response: {
             headers: {
                 [name: string]: unknown;
@@ -2505,7 +2457,6 @@ export interface components {
          *
          *     Note that runs which are still executing will not have a completion time
          *     and will be automatically excluded if this filter is applied.
-         *
          * @example 2021-03-09T21:52:14,2021-03-09T21:53
          */
         filter_completion_time: string;
@@ -2523,7 +2474,6 @@ export interface components {
          *
          *     Results will contain runs which began between the first datetime
          *     onwards, up to (but not including) the second datetime.
-         *
          * @example 2021-03-09T21:52:14,2021-03-09T21:53
          */
         filter_start_time: string;
@@ -2564,7 +2514,6 @@ export interface components {
          *
          *     - `ASC`
          *     - `DESC`
-         *
          * @example [
          *       "title ASC",
          *       "id DESC"
@@ -2606,7 +2555,6 @@ export interface components {
          *
          *     - `ASC`
          *     - `DESC`
-         *
          * @example [
          *       "start_time ASC",
          *       "id DESC"
