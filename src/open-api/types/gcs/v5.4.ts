@@ -51,7 +51,6 @@ export interface paths {
          *     the response. If the query parameter `include=private_policies` is passed
          *     to this API, and the caller has an administrator role on this collection,
          *     the response will include all private policies for the collection as well.
-         *
          */
         get: operations["listCollections"];
         put?: never;
@@ -71,7 +70,6 @@ export interface paths {
          *
          *     In order to create a mapped collection, the caller must have an
          *     "endpoint:administrator" or "endpoint:owner" role.
-         *
          */
         post: operations["postCollection"];
         delete?: never;
@@ -115,7 +113,6 @@ export interface paths {
          *     the response. If the query parameter `include=private_policies` is passed
          *     to this API, and the caller has an administrator role on this collection,
          *     the response will include all private policies for the collection as well.
-         *
          */
         get: operations["getCollection"];
         /**
@@ -123,7 +120,6 @@ export interface paths {
          * @description Update a collection, completely replacing its definition with the new
          *     document. It returns a document containing the collection after the
          *     update has been applied.
-         *
          */
         put: operations["putCollection"];
         post?: never;
@@ -138,7 +134,6 @@ export interface paths {
          *
          *     If a mapped collection is deleted, then all guest collections and roles
          *     associated them are also deleted.
-         *
          */
         delete: operations["deleteCollection"];
         options?: never;
@@ -149,7 +144,6 @@ export interface paths {
          *     document. It optionally returns a document containing the document after
          *     the change is applied.  Items explicitly set to null in the input are
          *     removed from the collection document.
-         *
          */
         patch: operations["patchCollection"];
         trace?: never;
@@ -168,7 +162,6 @@ export interface paths {
          *
          *     This operation requires the caller to have an endpoint owner or
          *     administrator role, or a collection administrator role.
-         *
          */
         get: operations["checkCollection"];
         put?: never;
@@ -191,7 +184,6 @@ export interface paths {
          * @description Get the custom domain document associated with this collection.
          *
          *     This requires an `administrator` role on the Endpoint
-         *
          */
         get: operations["getCollectionDomain"];
         /**
@@ -206,7 +198,6 @@ export interface paths {
          *     will use that domain.
          *
          *     This requires an `administrator` role on the Endpoint
-         *
          */
         put: operations["putCollectionDomain"];
         post?: never;
@@ -227,7 +218,6 @@ export interface paths {
          *     custom wildcard domain if it has one.
          *
          *     This requires an `administrator` role on the Endpoint.
-         *
          */
         delete: operations["deleteCollectionDomain"];
         options?: never;
@@ -250,14 +240,12 @@ export interface paths {
          *     Modify the collection's advertised owner to match the username of one of
          *     the caller's linked identities.  The identity must have an administrator
          *     role on the collection.
-         *
          */
         put: operations["putCollectionOwnerString"];
         post?: never;
         /**
          * Reset advertised owner of collection
          * @description Reset the advertised owner string of the collection to the endpoint's client_id.
-         *
          */
         delete: operations["deleteCollectionOwnerString"];
         options?: never;
@@ -291,7 +279,6 @@ export interface paths {
          *
          *     On success, this operation returns a message body containing the list of
          *     collections from the input that this GCS manager node will delete.
-         *
          */
         post: operations["postCollectionsBatchDelete"];
         delete?: never;
@@ -315,7 +302,6 @@ export interface paths {
          *
          *     - This is only allowed for mapped collections
          *     - Owner ID can not be the endpoint client ID
-         *
          */
         put: operations["setCollectionOwner"];
         post?: never;
@@ -338,7 +324,6 @@ export interface paths {
          * @description Set the subscription_admin_verified property of the collection. This
          *     only be invoked if the endpoint is associated with a subscription and
          *     the caller is a subscription administrator for that subscription.
-         *
          */
         put: operations["putSubscriptionAdminVerified"];
         post?: never;
@@ -358,7 +343,6 @@ export interface paths {
         /**
          * Get endpoint definition
          * @description Get the endpoint.
-         *
          */
         get: operations["getEndpoint"];
         /**
@@ -366,7 +350,6 @@ export interface paths {
          * @description Update the endpoint document, replacing all properties with those in the
          *     input. This operation optionally returns the Endpoint after the update if
          *     the include=endpoint query parameter is passed to this operation.
-         *
          */
         put: operations["putEndpoint"];
         post?: never;
@@ -380,7 +363,6 @@ export interface paths {
          *     endpoint document. This operation optionally returns the endpoint after
          *     applying the changes in the input if the include=endpoint query parameter
          *     is passed to this operation.
-         *
          */
         patch: operations["patchEndpoint"];
         trace?: never;
@@ -396,7 +378,6 @@ export interface paths {
         /**
          * Set endpoint owner
          * @description Assign a new identity to act as the endpoint owner.
-         *
          */
         put: operations["putEndpointOwner"];
         post?: never;
@@ -419,14 +400,12 @@ export interface paths {
          * @description Modify the endpoint's advertised owner to match the username of one of the
          *     caller's linked identities.  The identity must have an administrator role
          *     on the endpoint.
-         *
          */
         put: operations["putEndpointOwnerString"];
         post?: never;
         /**
          * Reset advertised owner string
          * @description Reset the endpoint's advertised owner to the client_id of the endpoint.
-         *
          */
         delete: operations["deleteEndpointOwnerString"];
         options?: never;
@@ -467,7 +446,6 @@ export interface paths {
          *         even if it is currently managed by a subscription that the caller is
          *         not a manager of.</dd>
          *     </dl>
-         *
          */
         put: operations["putEndpointSubscriptionId"];
         post?: never;
@@ -489,7 +467,6 @@ export interface paths {
          * @description Get the custom domain document associated with this endpoint.
          *
          *     This requires an `administrator` role on the Endpoint.
-         *
          */
         get: operations["getEndpointDomain"];
         /**
@@ -502,7 +479,6 @@ export interface paths {
          *     with that endpoint that do not have a custom domain will be
          *     updated to use subdomains of that domain. Otherwise, only the
          *     endpoint will use that domain.
-         *
          */
         put: operations["putEndpointDomain"];
         post?: never;
@@ -514,7 +490,6 @@ export interface paths {
          *     domains associated with them.
          *
          *     This requires an `administrator` role on the Endpoint.
-         *
          */
         delete: operations["deleteEndpointDomain"];
         options?: never;
@@ -536,7 +511,6 @@ export interface paths {
          *     extensions to the API defined in this document.
          *
          *     This operation can be performed without an `Authorization` header.
-         *
          */
         get: operations["getInfo"];
         put?: never;
@@ -561,7 +535,6 @@ export interface paths {
          *     This operation requires either the endpoint to have the `public` property
          *     set to true or the caller to have a role that allows viewing this endpoint
          *     or a collection on it.
-         *
          */
         get: operations["listNodes"];
         put?: never;
@@ -573,7 +546,6 @@ export interface paths {
          *
          *     On success returns a copy of the created Node with the system generated id
          *     added.
-         *
          */
         post: operations["postNode"];
         delete?: never;
@@ -596,7 +568,6 @@ export interface paths {
          *     This operation requires either the endpoint to have the public property set
          *     to true or the caller to have a role that allows viewing this Endpoint or a
          *     Collection on it.
-         *
          */
         get: operations["getNode"];
         /**
@@ -604,14 +575,12 @@ export interface paths {
          * @description Update a node, replacing all properties with those in the input.  This
          *     operation optionally returns the node's definition after the update if the
          *     `include=node` query parameter is passed to this operation.
-         *
          */
         put: operations["putNode"];
         post?: never;
         /**
          * Delete a node
          * @description Delete the `Node` document for the given node.
-         *
          */
         delete: operations["deleteNode"];
         options?: never;
@@ -623,7 +592,6 @@ export interface paths {
          *     document. This operation optionally returns the node definition after
          *     applying the changes in the input if the `include=node` query parameter is
          *     passed to this operation.
-         *
          */
         patch: operations["patchNode"];
         trace?: never;
@@ -650,7 +618,6 @@ export interface paths {
          *     "all_roles" value as the value of the "include" parameter.  This requires
          *     the "administrator" role for the endpoint Or Collection the role is
          *     associated with.
-         *
          */
         get: operations["listRoles"];
         put?: never;
@@ -680,7 +647,6 @@ export interface paths {
          *
          *     On success returns a copy of the created role with the system generated id
          *     added.
-         *
          */
         post: operations["postRoles"];
         delete?: never;
@@ -699,7 +665,6 @@ export interface paths {
         /**
          * Get a role
          * @description Get one of the role assignments on this endpoint.
-         *
          */
         get: operations["getRole"];
         put?: never;
@@ -722,7 +687,6 @@ export interface paths {
          *
          *     The `endpoint:owner`, or the `collection:administrator` role for the creator
          *     of a collection may not be deleted using this API.
-         *
          */
         delete: operations["deleteRole"];
         options?: never;
@@ -747,7 +711,6 @@ export interface paths {
          *     policies which are relevant to the given username are returned. This will
          *     include policies where the **users** property is `null` or contains the
          *     given username.
-         *
          */
         get: operations["listSharingPolicies"];
         put?: never;
@@ -761,7 +724,6 @@ export interface paths {
          *
          *     This returns the policy document with the "id" field populated with the
          *     assigned ID of this policy.
-         *
          */
         post: operations["postSharingPolicy"];
         delete?: never;
@@ -780,7 +742,6 @@ export interface paths {
         /**
          * Get a sharing policy
          * @description Get a sharing policy.
-         *
          */
         get: operations["getSharingPolicy"];
         put?: never;
@@ -792,7 +753,6 @@ export interface paths {
          *     This may alter the behavior of existing guest collections, if the policies
          *     change the visible parts of the storage gateway's virtual file system for
          *     the guest collection creator.
-         *
          */
         delete: operations["deleteSharingPolicy"];
         options?: never;
@@ -817,7 +777,6 @@ export interface paths {
          *     role that allows viewing this Endpoint, the user to have an identity which
          *     is allowed by the individual Storage Gateway policies, or an identity which
          *     has a permission for a collection created on this Storage Gateway.
-         *
          */
         get: operations["listStorageGateways"];
         put?: never;
@@ -825,7 +784,6 @@ export interface paths {
          * Create a storage gateway
          * @description Create a storage gateway on an endpoint. On success, this operation returns
          *     a copy of the created storage gateway with the system generated id added.
-         *
          */
         post: operations["postStorageGateway"];
         delete?: never;
@@ -851,7 +809,6 @@ export interface paths {
          *     role that allows viewing this Endpoint, the user to have an identity which
          *     is allowed by the individual storage gateway policies, or an identity which
          *     has a permission for a collection created on this storage gateway.
-         *
          */
         get: operations["getStorageGateway"];
         /**
@@ -864,14 +821,12 @@ export interface paths {
          *     would be not be consistent with the change in Storage Gateway policies.
          *
          *     The `high_assurance` property cannot be changed.
-         *
          */
         put: operations["putStorageGateway"];
         post?: never;
         /**
          * Delete a storage gateway
          * @description Delete a storage gateway.
-         *
          */
         delete: operations["deleteStorageGateway"];
         options?: never;
@@ -889,7 +844,6 @@ export interface paths {
          *
          *     This operation may return a Conflict error if any collections exist which
          *     would be not be consistent with the change in Storage Gateway policies.
-         *
          */
         patch: operations["patchStorageGateway"];
         trace?: never;
@@ -907,7 +861,6 @@ export interface paths {
          *     identity in the caller's identity set unless they are an administrator. If
          *     the endpoint is not public, returns ForbiddenError if the user has no
          *     credentials
-         *
          */
         get: operations["listUserCredentials"];
         put?: never;
@@ -921,7 +874,6 @@ export interface paths {
          *     The caller is authorized based on the StorageGateway identity
          *     policies, so users with no assigned roles on the endpoint may
          *     be permitted to access this operation.
-         *
          */
         post: operations["postUserCredential"];
         delete?: never;
@@ -943,7 +895,6 @@ export interface paths {
          *
          *     The caller must have the identity_id of the user credential
          *     in its identity set.
-         *
          */
         get: operations["getUserCredential"];
         /**
@@ -955,7 +906,6 @@ export interface paths {
          *
          *     The caller must have the identity_id of the user credential
          *     in its identity set.
-         *
          */
         put: operations["putUserCredential"];
         post?: never;
@@ -965,7 +915,6 @@ export interface paths {
          *
          *     The caller must have the identity_id of the user credential in its identity
          *     set.
-         *
          */
         delete: operations["deleteUserCredential"];
         options?: never;
@@ -979,7 +928,6 @@ export interface paths {
          *
          *     The caller must have the identity_id of the user credential
          *     in its identity set.
-         *
          */
         patch: operations["patchUserCredential"];
         trace?: never;
@@ -999,7 +947,6 @@ export interface paths {
          *     initiates a flow to an OAuth service
          *     to authenticate the user and generate an authentication
          *     token to allow access to a storage system.
-         *
          */
         post: operations["postUserCredentials"];
         delete?: never;
@@ -1056,7 +1003,6 @@ export interface paths {
          * OAuth callback for CLI apps
          * @description Landing page for auth flow completion, suitable for use with a
          *     non-web application that uses a browser to complete the flow.
-         *
          */
         get: operations["getAuthclicomplete"];
         put?: never;
@@ -1118,7 +1064,6 @@ export interface components {
          * Batch_1_0_0
          * @description The Batch data type is used to specify multiple objects to operate
          *     on via a single REST API call.
-         *
          */
         Batch_1_0_0: {
             /**
@@ -1134,7 +1079,6 @@ export interface components {
          * AuthenticationTimeout_1_0_0
          * @description Error details when a user must reauthenticate an identity
          *     in order to perform this operation.
-         *
          */
         AuthenticationTimeout_1_0_0: {
             /**
@@ -1143,13 +1087,15 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "authentication_timeout#1.0.0";
-            /** @description Boolean flag indicating whether the new authentication must be done
+            /**
+             * @description Boolean flag indicating whether the new authentication must be done
              *     within the same auth session as the application making the request.
-             *                  */
+             */
             high_assurance?: boolean;
-            /** @description List of identities that would have otherwise been authorized except
+            /**
+             * @description List of identities that would have otherwise been authorized except
              *     that the authentication has timed out.
-             *      */
+             */
             identities?: string[];
         };
         /**
@@ -1158,7 +1104,6 @@ export interface components {
          *     in order to perform this operation.
          *
          *     Version 1.1.0 adds the require_mfa property.
-         *
          */
         AuthenticationTimeout_1_1_0: {
             /**
@@ -1167,17 +1112,20 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "authentication_timeout#1.1.0";
-            /** @description Boolean flag indicating whether the new authentication must be done
+            /**
+             * @description Boolean flag indicating whether the new authentication must be done
              *     within the same auth session as the application making the request.
-             *                  */
+             */
             high_assurance?: boolean;
-            /** @description List of identities that would have otherwise been authorized except
+            /**
+             * @description List of identities that would have otherwise been authorized except
              *     that the authentication has timed out.
-             *      */
+             */
             identities?: string[];
-            /** @description Flag indicating that multi-factor authentication is required.  Only
+            /**
+             * @description Flag indicating that multi-factor authentication is required.  Only
              *     occurs on high assurance storage gateways.
-             *      */
+             */
             require_mfa?: boolean;
         };
         /**
@@ -1204,7 +1152,6 @@ export interface components {
         /**
          * Domain_1_0_0
          * @description Custom domain description
-         *
          */
         Domain_1_0_0: {
             /**
@@ -1215,38 +1162,43 @@ export interface components {
             DATA_TYPE: "domain#1.0.0";
             /** @description PEM-Encoded X.509 certificate for this domain */
             certificate?: string | null;
-            /** @description PEM-Encoded X.509 certificate chain for this domain. Only needed if
+            /**
+             * @description PEM-Encoded X.509 certificate chain for this domain. Only needed if
              *     there are intermediate certificates that must also be sent to clients
              *     to allow them to verify the certificate.
-             *      */
+             */
             certificate_chain?: string | null;
-            /** @description Path to a file containing the X.509 certificate chain for this domain.
+            /**
+             * @description Path to a file containing the X.509 certificate chain for this domain.
              *     This file path must contain a sequence of valid certificate and be
              *     present on each data transfer node.
-             *      */
+             */
             certificate_chain_path?: string | null;
-            /** @description Path to a file containing the X.509 certificate for this domain. This
+            /**
+             * @description Path to a file containing the X.509 certificate for this domain. This
              *     file path must contain a valid certificate and be present on each data
              *     transfer node.
-             *      */
+             */
             certificate_path?: string | null;
             /** @description Domain name */
             domain_name: string;
             /** @description PEM-Encoded private key for the certificate */
             private_key?: string | null;
-            /** @description Path to a file containing the private key for this domain. This file
+            /**
+             * @description Path to a file containing the private key for this domain. This file
              *     path must contain a valid key and be present on each data transfer
              *     node.
-             *      */
+             */
             private_key_path?: string | null;
-            /** @description Flag indicating whether this is a wildcard domain or not.
+            /**
+             * @description Flag indicating whether this is a wildcard domain or not.
              *
              *     When setting a custom domain for a mapped collection, the domain may
              *     optionally be a wildcard domain. If it is a wildcard domain, the guest
              *     collections will be created as subdomains of the mapped collection
              *     domain; if not, guest collections will be created as subdomains of the
              *     endpoint domain.
-             *      */
+             */
             wildcard: boolean;
         };
         /**
@@ -1315,8 +1267,6 @@ export interface components {
          *     </tr>
          *     </table>
          *     ++++
-         *
-         *
          */
         PathRestrictions_1_0_0: {
             /**
@@ -1398,8 +1348,6 @@ export interface components {
          *     </tr>
          *     </table>
          *     ++++
-         *
-         *
          */
         PathRestrictions: components["schemas"]["PathRestrictions_1_0_0"];
         /**
@@ -1419,7 +1367,6 @@ export interface components {
          *     Multiple sharing policies can be defined for a mapped collection.  When a
          *     guest collection is created or accessed, only the policies relevant to the
          *     user which created the account are enforced.
-         *
          */
         SharingPolicy_1_0_0: {
             /**
@@ -1438,14 +1385,16 @@ export interface components {
              * @description Unique id for this sharing policy
              */
             id?: string;
-            /** @description Restrictions on which paths may be shared in guest collections related
+            /**
+             * @description Restrictions on which paths may be shared in guest collections related
              *     to this mapped collection. These paths are relative to the root_path
              *     property of the mapped collection.
-             *      */
+             */
             sharing_restrict_paths: components["schemas"]["PathRestrictions"];
-            /** @description List of local user accounts that this policy applies to. If omitted
+            /**
+             * @description List of local user accounts that this policy applies to. If omitted
              *     or null, this restriction applies to all local user accounts.
-             *      */
+             */
             users?: string[];
         };
         /**
@@ -1455,7 +1404,6 @@ export interface components {
          *     the Data Transfer Nodes to access the collection data. Globus
          *     Connect Server version 5 supports two types of collections:
          *     **mapped** and **guest**.
-         *
          */
         Collection_1_0_0: {
             /**
@@ -1464,17 +1412,20 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "collection#1.0.0";
-            /** @description Flag indicating if this Collection allows users to create guest
+            /**
+             * @description Flag indicating if this Collection allows users to create guest
              *     collections on it. This is always false if this is a guest collection.
              *     If this is changed to false on a mapped collection with associated
              *     guest collections, those collections will no longer be accessible.
-             *      */
+             */
             allow_guest_collections?: boolean;
-            /** @description Timeout (in minutes) during which a user is required to have
+            /**
+             * @description Timeout (in minutes) during which a user is required to have
              *     authenticated in a session to access this storage gateway.
-             *      */
+             */
             readonly authentication_timeout_mins?: number;
-            /** @description Path to be interpreted as the base path when creating a new collection.
+            /**
+             * @description Path to be interpreted as the base path when creating a new collection.
              *     It is interpreted differently depending on the collection type being
              *     created. For a mapped collection, this is an absolute path on the
              *     storage system named by the storage_gateway_id.  For a guest collection,
@@ -1484,14 +1435,13 @@ export interface components {
              *     collection is created.
              *
              *     Support for `~` was added in API version 1.21.0.
-             *      */
+             */
             collection_base_path: string;
             /**
              * @description Type of collection. A `mapped` collection requires an account on the
              *     system to access the administrator-defined collection. A `guest`
              *     collection allows users to share access to their data on a Storage
              *     Gateway by registering a credential with the GCS Manager.
-             *
              * @enum {string}
              */
             collection_type: "mapped" | "guest";
@@ -1500,16 +1450,19 @@ export interface components {
              * @description Id of the connector type that is used by this collection.
              */
             readonly connector_id?: string;
-            /** @description Email address of the support contact for this collection. This is
+            /**
+             * @description Email address of the support contact for this collection. This is
              *     visible to end users so that they may contact your organization for
              *     support.
-             *      */
+             */
             contact_email?: string | null;
-            /** @description Other non-email contact information for the collection, e.g.  phone
+            /**
+             * @description Other non-email contact information for the collection, e.g.  phone
              *     and mailing address. This is visible to end users for support.
-             *      */
+             */
             contact_info?: string | null;
-            /** @description Default directory when accessing the collection. This may include
+            /**
+             * @description Default directory when accessing the collection. This may include
              *     the special string `$USER` which is evaluated at access time to be
              *     the connector-specific username accessing the data.
              *
@@ -1517,43 +1470,49 @@ export interface components {
              *     value of `/`, this value can also begin with the values `/~/` and
              *     `$HOME`, which are replaced by the user's home directory, or `/` if
              *     the connector does not support the concept of a home directory.
-             *      */
+             */
             default_directory?: string;
             /** @description Flag indicating that this collection has been deleted */
             readonly deleted?: boolean;
-            /** @description Department within organization that runs the server(s). Searchable.
+            /**
+             * @description Department within organization that runs the server(s). Searchable.
              *     Optional. Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             department?: string | null;
             /** @description A description of the collection. */
             description?: string | null;
-            /** @description Flag indicating that this endpoint does not support computing
+            /**
+             * @description Flag indicating that this endpoint does not support computing
              *     checksums, needed for the verify_checksum option of transfer.
-             *      */
+             */
             disable_verify?: boolean;
-            /** @description Friendly name for the collection. Unicode string, max 128 characters,
+            /**
+             * @description Friendly name for the collection. Unicode string, max 128 characters,
              *     no new lines (`\r` or `\n`).
-             *      */
+             */
             display_name: string;
-            /** @description DNS name of the virtual host serving this collection. For mapped
+            /**
+             * @description DNS name of the virtual host serving this collection. For mapped
              *     collections which do not have a custom domain, this may be specified
              *     as part of the input document to create the collection, otherwise this
              *     is a read-only property. When included in the input, the name is
              *     restricted to be a subdomain of the endpoint, and the input name label
              *     may not start with `m-` or `g-`.
-             *      */
+             */
             domain_name?: string;
-            /** @description Flag indicating whether all data transfers to and from this
+            /**
+             * @description Flag indicating whether all data transfers to and from this
              *     collection are always encrypted.
              *
              *     __New in v5.4.17__: If a mapped collection forces encryption, all
              *     of its guest collections must as well.  If this option is used on a
              *     mapped collection, the value is propagated to its guest collections.
-             *      */
+             */
             force_encryption?: boolean;
-            /** @description Flag indicating if this collection is created on a high assurance
+            /**
+             * @description Flag indicating if this collection is created on a high assurance
              *     Storage Gateway.
-             *      */
+             */
             readonly high_assurance?: boolean;
             /** @description HTTPS URL for the data on this collection. */
             readonly https_url?: string;
@@ -1561,25 +1520,25 @@ export interface components {
              * Format: uuid
              * @description Unique identifier for this collection. This is assigned by the GCS
              *     manager when creating a collection.
-             *
              */
             readonly id?: string;
             /**
              * Format: uuid
              * @description Globus Auth identity to who acts as the owner of this collection.
              *     This identity is an `administrator` on the collection.
-             *
              */
             identity_id?: string;
             /** @description Link to a web page with more information about the collection */
             info_link?: string | null;
-            /** @description List of search keywords for the endpoint. Optional. Unicode string,
+            /**
+             * @description List of search keywords for the endpoint. Optional. Unicode string,
              *     max 1024 characters total across all strings.
-             *      */
+             */
             keywords?: string[];
-            /** @description URL of the GCS Manager API service for the endpoint hosting this
+            /**
+             * @description URL of the GCS Manager API service for the endpoint hosting this
              *     collection.
-             *      */
+             */
             readonly manager_url?: string;
             /**
              * Format: uuid
@@ -1589,40 +1548,42 @@ export interface components {
              *     sharing (`allow_guest_collections`, `sharing_restrict_paths`) will
              *     always reflect the values in the Mapped Collection definition and
              *     may not be changed on this Guest Collection.
-             *
              */
             mapped_collection_id?: string;
-            /** @description Organization that runs the server(s) represented by the endpoint.
+            /**
+             * @description Organization that runs the server(s) represented by the endpoint.
              *     Optional to preserve backward compatibility, but will eventually be
              *     required and all clients are encouraged to require users to specify
              *     it.  Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             organization?: string;
             /** @description Connector-specific collection policies */
             policies?: components["schemas"]["S3CollectionPolicies_1_0_0"] | components["schemas"]["AzureBlobCollectionPolicies_1_0_0"] | components["schemas"]["BlackPearlCollectionPolicies_1_0_0"] | components["schemas"]["BoxCollectionPolicies_1_0_0"] | components["schemas"]["CephCollectionPolicies_1_0_0"] | components["schemas"]["DropboxCollectionPolicies_1_0_0"] | components["schemas"]["GoogleCloudStorageCollectionPolicies_1_0_0"] | components["schemas"]["GoogleDriveCollectionPolicies_1_0_0"] | components["schemas"]["HPSSCollectionPolicies_1_0_0"] | components["schemas"]["IrodsCollectionPolicies_1_0_0"] | components["schemas"]["OneDriveCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_1_0"] | components["schemas"]["PosixStagingCollectionPolicies_1_0_0"];
-            /** @description Flag indicating whether this collection is visible to other Globus
+            /**
+             * @description Flag indicating whether this collection is visible to other Globus
              *     users.
-             *      */
+             */
             public: boolean;
-            /** @description Absolute root path of the collection. All data access
+            /**
+             * @description Absolute root path of the collection. All data access
              *     is done relative to this path. On a guest collection,
              *     this value is only visible if the caller has an
              *     administrator role on both the guest collection and the
              *     mapped collection it is created on.
-             *      */
+             */
             readonly root_path?: string;
-            /** @description Restrictions on which paths may be shared in guest collections related
+            /**
+             * @description Restrictions on which paths may be shared in guest collections related
              *     to this mapped collection. On the mapped collection, these paths are
              *     relative to the root_path property of the mapped collection. On a guest
              *     collection, they are absolute paths from the storage root.
-             *      */
+             */
             sharing_restrict_paths?: unknown | components["schemas"]["PathRestrictions"];
             /**
              * Format: uuid
              * @description Unique ID of the Storage Gateway which this collection provides
              *     access to. This value can not change after the collection is
              *     created.
-             *
              */
             storage_gateway_id?: string;
             /** @description TLSFTP URL for the data on this collection. */
@@ -1632,7 +1593,6 @@ export interface components {
              * @description The ID of the User Credential which is used to access data on this
              *     collection. This credential must be owned by the collection's
              *     identity_id.
-             *
              */
             user_credential_id?: string;
         };
@@ -1648,7 +1608,6 @@ export interface components {
          *     individual collections, as well as the ability for collection
          *     administrators to add an optional message and web link to be shown on
          *     the Globus Web App when users visit the collection.
-         *
          */
         Collection_1_1_0: {
             /**
@@ -1657,17 +1616,20 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "collection#1.1.0";
-            /** @description Flag indicating if this Collection allows users to create guest
+            /**
+             * @description Flag indicating if this Collection allows users to create guest
              *     collections on it. This is always false if this is a guest collection.
              *     If this is changed to false on a mapped collection with associated
              *     guest collections, those collections will no longer be accessible.
-             *      */
+             */
             allow_guest_collections?: boolean;
-            /** @description Timeout (in minutes) during which a user is required to have
+            /**
+             * @description Timeout (in minutes) during which a user is required to have
              *     authenticated in a session to access this storage gateway.
-             *      */
+             */
             readonly authentication_timeout_mins?: number;
-            /** @description Path to be interpreted as the base path when creating a new collection.
+            /**
+             * @description Path to be interpreted as the base path when creating a new collection.
              *     It is interpreted differently depending on the collection type being
              *     created. For a mapped collection, this is an absolute path on the
              *     storage system named by the storage_gateway_id.  For a guest collection,
@@ -1677,14 +1639,13 @@ export interface components {
              *     collection is created.
              *
              *     Support for `~` was added in API version 1.21.0.
-             *      */
+             */
             collection_base_path: string;
             /**
              * @description Type of collection. A `mapped` collection requires an account on the
              *     system to access the administrator-defined collection. A `guest`
              *     collection allows users to share access to their data on a Storage
              *     Gateway by registering a credential with the GCS Manager.
-             *
              * @enum {string}
              */
             collection_type: "mapped" | "guest";
@@ -1693,16 +1654,19 @@ export interface components {
              * @description Id of the connector type that is used by this collection.
              */
             readonly connector_id?: string;
-            /** @description Email address of the support contact for this collection. This is
+            /**
+             * @description Email address of the support contact for this collection. This is
              *     visible to end users so that they may contact your organization for
              *     support.
-             *      */
+             */
             contact_email?: string | null;
-            /** @description Other non-email contact information for the collection, e.g.  phone
+            /**
+             * @description Other non-email contact information for the collection, e.g.  phone
              *     and mailing address. This is visible to end users for support.
-             *      */
+             */
             contact_info?: string | null;
-            /** @description Default directory when accessing the collection. This may include
+            /**
+             * @description Default directory when accessing the collection. This may include
              *     the special string `$USER` which is evaluated at access time to be
              *     the connector-specific username accessing the data.
              *
@@ -1710,49 +1674,56 @@ export interface components {
              *     value of `/`, this value can also begin with the values `/~/` and
              *     `$HOME`, which are replaced by the user's home directory, or `/` if
              *     the connector does not support the concept of a home directory.
-             *      */
+             */
             default_directory?: string;
             /** @description Flag indicating that this collection has been deleted */
             readonly deleted?: boolean;
-            /** @description Department within organization that runs the server(s). Searchable.
+            /**
+             * @description Department within organization that runs the server(s). Searchable.
              *     Optional. Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             department?: string | null;
             /** @description A description of the collection. */
             description?: string | null;
-            /** @description Flag indicating that this endpoint does not support computing
+            /**
+             * @description Flag indicating that this endpoint does not support computing
              *     checksums, needed for the verify_checksum option of transfer.
-             *      */
+             */
             disable_verify?: boolean;
-            /** @description Friendly name for the collection. Unicode string, max 128 characters,
+            /**
+             * @description Friendly name for the collection. Unicode string, max 128 characters,
              *     no new lines (`\r` or `\n`).
-             *      */
+             */
             display_name: string;
-            /** @description DNS name of the virtual host serving this collection. For mapped
+            /**
+             * @description DNS name of the virtual host serving this collection. For mapped
              *     collections which do not have a custom domain, this may be specified
              *     as part of the input document to create the collection, otherwise this
              *     is a read-only property. When included in the input, the name is
              *     restricted to be a subdomain of the endpoint, and the input name label
              *     may not start with `m-` or `g-`.
-             *      */
+             */
             domain_name?: string;
-            /** @description Boolean flag indicating whether this collection should support
+            /**
+             * @description Boolean flag indicating whether this collection should support
              *     HTTPS. This value can be set on mapped collections or guest
              *     collections. However, it may not be set to true on a guest
              *     collection if the value on the related mapped collection is false.
-             *      */
+             */
             enable_https?: boolean;
-            /** @description Flag indicating whether all data transfers to and from this
+            /**
+             * @description Flag indicating whether all data transfers to and from this
              *     collection are always encrypted.
              *
              *     __New in v5.4.17__: If a mapped collection forces encryption, all
              *     of its guest collections must as well.  If this option is used on a
              *     mapped collection, the value is propagated to its guest collections.
-             *      */
+             */
             force_encryption?: boolean;
-            /** @description Flag indicating if this collection is created on a high assurance
+            /**
+             * @description Flag indicating if this collection is created on a high assurance
              *     Storage Gateway.
-             *      */
+             */
             readonly high_assurance?: boolean;
             /** @description HTTPS URL for the data on this collection. */
             readonly https_url?: string;
@@ -1760,25 +1731,25 @@ export interface components {
              * Format: uuid
              * @description Unique identifier for this collection. This is assigned by the GCS
              *     manager when creating a collection.
-             *
              */
             readonly id?: string;
             /**
              * Format: uuid
              * @description Globus Auth identity to who acts as the owner of this collection.
              *     This identity is an `administrator` on the collection.
-             *
              */
             identity_id?: string;
             /** @description Link to a web page with more information about the collection */
             info_link?: string | null;
-            /** @description List of search keywords for the endpoint. Optional. Unicode string,
+            /**
+             * @description List of search keywords for the endpoint. Optional. Unicode string,
              *     max 1024 characters total across all strings.
-             *      */
+             */
             keywords?: string[];
-            /** @description URL of the GCS Manager API service for the endpoint hosting this
+            /**
+             * @description URL of the GCS Manager API service for the endpoint hosting this
              *     collection.
-             *      */
+             */
             readonly manager_url?: string;
             /**
              * Format: uuid
@@ -1788,40 +1759,42 @@ export interface components {
              *     sharing (`allow_guest_collections`, `sharing_restrict_paths`) will
              *     always reflect the values in the Mapped Collection definition and
              *     may not be changed on this Guest Collection.
-             *
              */
             mapped_collection_id?: string;
-            /** @description Organization that runs the server(s) represented by the endpoint.
+            /**
+             * @description Organization that runs the server(s) represented by the endpoint.
              *     Optional to preserve backward compatibility, but will eventually be
              *     required and all clients are encouraged to require users to specify
              *     it.  Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             organization?: string;
             /** @description Connector-specific collection policies */
             policies?: components["schemas"]["S3CollectionPolicies_1_0_0"] | components["schemas"]["AzureBlobCollectionPolicies_1_0_0"] | components["schemas"]["BlackPearlCollectionPolicies_1_0_0"] | components["schemas"]["BoxCollectionPolicies_1_0_0"] | components["schemas"]["CephCollectionPolicies_1_0_0"] | components["schemas"]["DropboxCollectionPolicies_1_0_0"] | components["schemas"]["GoogleCloudStorageCollectionPolicies_1_0_0"] | components["schemas"]["GoogleDriveCollectionPolicies_1_0_0"] | components["schemas"]["HPSSCollectionPolicies_1_0_0"] | components["schemas"]["IrodsCollectionPolicies_1_0_0"] | components["schemas"]["OneDriveCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_1_0"] | components["schemas"]["PosixStagingCollectionPolicies_1_0_0"];
-            /** @description Flag indicating whether this collection is visible to other Globus
+            /**
+             * @description Flag indicating whether this collection is visible to other Globus
              *     users.
-             *      */
+             */
             public: boolean;
-            /** @description Absolute root path of the collection. All data access
+            /**
+             * @description Absolute root path of the collection. All data access
              *     is done relative to this path. On a guest collection,
              *     this value is only visible if the caller has an
              *     administrator role on both the guest collection and the
              *     mapped collection it is created on.
-             *      */
+             */
             readonly root_path?: string;
-            /** @description Restrictions on which paths may be shared in guest collections related
+            /**
+             * @description Restrictions on which paths may be shared in guest collections related
              *     to this mapped collection. On the mapped collection, these paths are
              *     relative to the root_path property of the mapped collection. On a guest
              *     collection, they are absolute paths from the storage root.
-             *      */
+             */
             sharing_restrict_paths?: unknown | components["schemas"]["PathRestrictions"];
             /**
              * Format: uuid
              * @description Unique ID of the Storage Gateway which this collection provides
              *     access to. This value can not change after the collection is
              *     created.
-             *
              */
             storage_gateway_id?: string;
             /** @description TLSFTP URL for the data on this collection. */
@@ -1831,20 +1804,21 @@ export interface components {
              * @description The ID of the User Credential which is used to access data on this
              *     collection. This credential must be owned by the collection's
              *     identity_id.
-             *
              */
             user_credential_id?: string;
-            /** @description A message for clients to display to users when interacting with
+            /**
+             * @description A message for clients to display to users when interacting with
              *     this collection. For guest collections, this property is read-only
              *     and is the same as the value of its related mapped collection. The
              *     message may be up to 64 characters long.
-             *      */
+             */
             user_message?: string | null;
-            /** @description Link to additional messaging for clients to display to users when
+            /**
+             * @description Link to additional messaging for clients to display to users when
              *     interacting with this endpoint, linked to an HTTP or HTTPS URL. For
              *     guest collections, this property is read-only and is the same as the
              *     value of its related mapped collection.
-             *      */
+             */
             user_message_link?: string | null;
         };
         /**
@@ -1862,7 +1836,6 @@ export interface components {
          *
          *     Version 1.2.0 adds the ability to enable or disable sharing by specific
          *     users.
-         *
          */
         Collection_1_2_0: {
             /**
@@ -1871,17 +1844,20 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "collection#1.2.0";
-            /** @description Flag indicating if this Collection allows users to create guest
+            /**
+             * @description Flag indicating if this Collection allows users to create guest
              *     collections on it. This is always false if this is a guest collection.
              *     If this is changed to false on a mapped collection with associated
              *     guest collections, those collections will no longer be accessible.
-             *      */
+             */
             allow_guest_collections?: boolean;
-            /** @description Timeout (in minutes) during which a user is required to have
+            /**
+             * @description Timeout (in minutes) during which a user is required to have
              *     authenticated in a session to access this storage gateway.
-             *      */
+             */
             readonly authentication_timeout_mins?: number;
-            /** @description Path to be interpreted as the base path when creating a new collection.
+            /**
+             * @description Path to be interpreted as the base path when creating a new collection.
              *     It is interpreted differently depending on the collection type being
              *     created. For a mapped collection, this is an absolute path on the
              *     storage system named by the storage_gateway_id.  For a guest collection,
@@ -1891,14 +1867,13 @@ export interface components {
              *     collection is created.
              *
              *     Support for `~` was added in API version 1.21.0.
-             *      */
+             */
             collection_base_path: string;
             /**
              * @description Type of collection. A `mapped` collection requires an account on the
              *     system to access the administrator-defined collection. A `guest`
              *     collection allows users to share access to their data on a Storage
              *     Gateway by registering a credential with the GCS Manager.
-             *
              * @enum {string}
              */
             collection_type: "mapped" | "guest";
@@ -1907,16 +1882,19 @@ export interface components {
              * @description Id of the connector type that is used by this collection.
              */
             readonly connector_id?: string;
-            /** @description Email address of the support contact for this collection. This is
+            /**
+             * @description Email address of the support contact for this collection. This is
              *     visible to end users so that they may contact your organization for
              *     support.
-             *      */
+             */
             contact_email?: string | null;
-            /** @description Other non-email contact information for the collection, e.g.  phone
+            /**
+             * @description Other non-email contact information for the collection, e.g.  phone
              *     and mailing address. This is visible to end users for support.
-             *      */
+             */
             contact_info?: string | null;
-            /** @description Default directory when accessing the collection. This may include
+            /**
+             * @description Default directory when accessing the collection. This may include
              *     the special string `$USER` which is evaluated at access time to be
              *     the connector-specific username accessing the data.
              *
@@ -1924,49 +1902,56 @@ export interface components {
              *     value of `/`, this value can also begin with the values `/~/` and
              *     `$HOME`, which are replaced by the user's home directory, or `/` if
              *     the connector does not support the concept of a home directory.
-             *      */
+             */
             default_directory?: string;
             /** @description Flag indicating that this collection has been deleted */
             readonly deleted?: boolean;
-            /** @description Department within organization that runs the server(s). Searchable.
+            /**
+             * @description Department within organization that runs the server(s). Searchable.
              *     Optional. Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             department?: string | null;
             /** @description A description of the collection. */
             description?: string | null;
-            /** @description Flag indicating that this endpoint does not support computing
+            /**
+             * @description Flag indicating that this endpoint does not support computing
              *     checksums, needed for the verify_checksum option of transfer.
-             *      */
+             */
             disable_verify?: boolean;
-            /** @description Friendly name for the collection. Unicode string, max 128 characters,
+            /**
+             * @description Friendly name for the collection. Unicode string, max 128 characters,
              *     no new lines (`\r` or `\n`).
-             *      */
+             */
             display_name: string;
-            /** @description DNS name of the virtual host serving this collection. For mapped
+            /**
+             * @description DNS name of the virtual host serving this collection. For mapped
              *     collections which do not have a custom domain, this may be specified
              *     as part of the input document to create the collection, otherwise this
              *     is a read-only property. When included in the input, the name is
              *     restricted to be a subdomain of the endpoint, and the input name label
              *     may not start with `m-` or `g-`.
-             *      */
+             */
             domain_name?: string;
-            /** @description Boolean flag indicating whether this collection should support
+            /**
+             * @description Boolean flag indicating whether this collection should support
              *     HTTPS. This value can be set on mapped collections or guest
              *     collections. However, it may not be set to true on a guest
              *     collection if the value on the related mapped collection is false.
-             *      */
+             */
             enable_https?: boolean;
-            /** @description Flag indicating whether all data transfers to and from this
+            /**
+             * @description Flag indicating whether all data transfers to and from this
              *     collection are always encrypted.
              *
              *     __New in v5.4.17__: If a mapped collection forces encryption, all
              *     of its guest collections must as well.  If this option is used on a
              *     mapped collection, the value is propagated to its guest collections.
-             *      */
+             */
             force_encryption?: boolean;
-            /** @description Flag indicating if this collection is created on a high assurance
+            /**
+             * @description Flag indicating if this collection is created on a high assurance
              *     Storage Gateway.
-             *      */
+             */
             readonly high_assurance?: boolean;
             /** @description HTTPS URL for the data on this collection. */
             readonly https_url?: string;
@@ -1974,25 +1959,25 @@ export interface components {
              * Format: uuid
              * @description Unique identifier for this collection. This is assigned by the GCS
              *     manager when creating a collection.
-             *
              */
             readonly id?: string;
             /**
              * Format: uuid
              * @description Globus Auth identity to who acts as the owner of this collection.
              *     This identity is an `administrator` on the collection.
-             *
              */
             identity_id?: string;
             /** @description Link to a web page with more information about the collection */
             info_link?: string | null;
-            /** @description List of search keywords for the endpoint. Optional. Unicode string,
+            /**
+             * @description List of search keywords for the endpoint. Optional. Unicode string,
              *     max 1024 characters total across all strings.
-             *      */
+             */
             keywords?: string[];
-            /** @description URL of the GCS Manager API service for the endpoint hosting this
+            /**
+             * @description URL of the GCS Manager API service for the endpoint hosting this
              *     collection.
-             *      */
+             */
             readonly manager_url?: string;
             /**
              * Format: uuid
@@ -2002,48 +1987,52 @@ export interface components {
              *     sharing (`allow_guest_collections`, `sharing_restrict_paths`) will
              *     always reflect the values in the Mapped Collection definition and
              *     may not be changed on this Guest Collection.
-             *
              */
             mapped_collection_id?: string;
-            /** @description Organization that runs the server(s) represented by the endpoint.
+            /**
+             * @description Organization that runs the server(s) represented by the endpoint.
              *     Optional to preserve backward compatibility, but will eventually be
              *     required and all clients are encouraged to require users to specify
              *     it.  Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             organization?: string;
             /** @description Connector-specific collection policies */
             policies?: components["schemas"]["S3CollectionPolicies_1_0_0"] | components["schemas"]["AzureBlobCollectionPolicies_1_0_0"] | components["schemas"]["BlackPearlCollectionPolicies_1_0_0"] | components["schemas"]["BoxCollectionPolicies_1_0_0"] | components["schemas"]["CephCollectionPolicies_1_0_0"] | components["schemas"]["DropboxCollectionPolicies_1_0_0"] | components["schemas"]["GoogleCloudStorageCollectionPolicies_1_0_0"] | components["schemas"]["GoogleDriveCollectionPolicies_1_0_0"] | components["schemas"]["HPSSCollectionPolicies_1_0_0"] | components["schemas"]["IrodsCollectionPolicies_1_0_0"] | components["schemas"]["OneDriveCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_1_0"] | components["schemas"]["PosixStagingCollectionPolicies_1_0_0"];
-            /** @description Flag indicating whether this collection is visible to other Globus
+            /**
+             * @description Flag indicating whether this collection is visible to other Globus
              *     users.
-             *      */
+             */
             public: boolean;
-            /** @description Absolute root path of the collection. All data access
+            /**
+             * @description Absolute root path of the collection. All data access
              *     is done relative to this path. On a guest collection,
              *     this value is only visible if the caller has an
              *     administrator role on both the guest collection and the
              *     mapped collection it is created on.
-             *      */
+             */
             readonly root_path?: string;
-            /** @description Restrictions on which paths may be shared in guest collections related
+            /**
+             * @description Restrictions on which paths may be shared in guest collections related
              *     to this mapped collection. On the mapped collection, these paths are
              *     relative to the root_path property of the mapped collection. On a guest
              *     collection, they are absolute paths from the storage root.
-             *      */
+             */
             sharing_restrict_paths?: unknown | components["schemas"]["PathRestrictions"];
-            /** @description List of connector-specific usernames allowed to create new guest
+            /**
+             * @description List of connector-specific usernames allowed to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_allow?: string[] | null;
-            /** @description List of connector-specific usernames denied access to create new guest
+            /**
+             * @description List of connector-specific usernames denied access to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_deny?: string[] | null;
             /**
              * Format: uuid
              * @description Unique ID of the Storage Gateway which this collection provides
              *     access to. This value can not change after the collection is
              *     created.
-             *
              */
             storage_gateway_id?: string;
             /** @description TLSFTP URL for the data on this collection. */
@@ -2053,26 +2042,26 @@ export interface components {
              * @description The ID of the User Credential which is used to access data on this
              *     collection. This credential must be owned by the collection's
              *     identity_id.
-             *
              */
             user_credential_id?: string;
-            /** @description A message for clients to display to users when interacting with
+            /**
+             * @description A message for clients to display to users when interacting with
              *     this collection. For guest collections, this property is read-only
              *     and is the same as the value of its related mapped collection. The
              *     message may be up to 64 characters long.
-             *      */
+             */
             user_message?: string | null;
-            /** @description Link to additional messaging for clients to display to users when
+            /**
+             * @description Link to additional messaging for clients to display to users when
              *     interacting with this endpoint, linked to an HTTP or HTTPS URL. For
              *     guest collections, this property is read-only and is the same as the
              *     value of its related mapped collection.
-             *      */
+             */
             user_message_link?: string | null;
         };
         /**
          * Domain
          * @description Custom domain description
-         *
          */
         Domain: components["schemas"]["Domain_1_0_0"];
         /**
@@ -2092,7 +2081,6 @@ export interface components {
          *     users.
          *
          *     Version 1.3.0 add support for custom DNS domains on collections.
-         *
          */
         Collection_1_3_0: {
             /**
@@ -2101,17 +2089,20 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "collection#1.3.0";
-            /** @description Flag indicating if this Collection allows users to create guest
+            /**
+             * @description Flag indicating if this Collection allows users to create guest
              *     collections on it. This is always false if this is a guest collection.
              *     If this is changed to false on a mapped collection with associated
              *     guest collections, those collections will no longer be accessible.
-             *      */
+             */
             allow_guest_collections?: boolean;
-            /** @description Timeout (in minutes) during which a user is required to have
+            /**
+             * @description Timeout (in minutes) during which a user is required to have
              *     authenticated in a session to access this storage gateway.
-             *      */
+             */
             readonly authentication_timeout_mins?: number;
-            /** @description Path to be interpreted as the base path when creating a new collection.
+            /**
+             * @description Path to be interpreted as the base path when creating a new collection.
              *     It is interpreted differently depending on the collection type being
              *     created. For a mapped collection, this is an absolute path on the
              *     storage system named by the storage_gateway_id.  For a guest collection,
@@ -2121,14 +2112,13 @@ export interface components {
              *     collection is created.
              *
              *     Support for `~` was added in API version 1.21.0.
-             *      */
+             */
             collection_base_path: string;
             /**
              * @description Type of collection. A `mapped` collection requires an account on the
              *     system to access the administrator-defined collection. A `guest`
              *     collection allows users to share access to their data on a Storage
              *     Gateway by registering a credential with the GCS Manager.
-             *
              * @enum {string}
              */
             collection_type: "mapped" | "guest";
@@ -2137,16 +2127,19 @@ export interface components {
              * @description Id of the connector type that is used by this collection.
              */
             readonly connector_id?: string;
-            /** @description Email address of the support contact for this collection. This is
+            /**
+             * @description Email address of the support contact for this collection. This is
              *     visible to end users so that they may contact your organization for
              *     support.
-             *      */
+             */
             contact_email?: string | null;
-            /** @description Other non-email contact information for the collection, e.g.  phone
+            /**
+             * @description Other non-email contact information for the collection, e.g.  phone
              *     and mailing address. This is visible to end users for support.
-             *      */
+             */
             contact_info?: string | null;
-            /** @description Default directory when accessing the collection. This may include
+            /**
+             * @description Default directory when accessing the collection. This may include
              *     the special string `$USER` which is evaluated at access time to be
              *     the connector-specific username accessing the data.
              *
@@ -2154,50 +2147,57 @@ export interface components {
              *     value of `/`, this value can also begin with the values `/~/` and
              *     `$HOME`, which are replaced by the user's home directory, or `/` if
              *     the connector does not support the concept of a home directory.
-             *      */
+             */
             default_directory?: string;
             /** @description Flag indicating that this collection has been deleted */
             readonly deleted?: boolean;
-            /** @description Department within organization that runs the server(s). Searchable.
+            /**
+             * @description Department within organization that runs the server(s). Searchable.
              *     Optional. Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             department?: string | null;
             /** @description A description of the collection. */
             description?: string | null;
-            /** @description Flag indicating that this endpoint does not support computing
+            /**
+             * @description Flag indicating that this endpoint does not support computing
              *     checksums, needed for the verify_checksum option of transfer.
-             *      */
+             */
             disable_verify?: boolean;
-            /** @description Friendly name for the collection. Unicode string, max 128 characters,
+            /**
+             * @description Friendly name for the collection. Unicode string, max 128 characters,
              *     no new lines (`\r` or `\n`).
-             *      */
+             */
             display_name: string;
             domain?: components["schemas"]["Domain"];
-            /** @description DNS name of the virtual host serving this collection. For mapped
+            /**
+             * @description DNS name of the virtual host serving this collection. For mapped
              *     collections which do not have a custom domain, this may be specified
              *     as part of the input document to create the collection, otherwise this
              *     is a read-only property. When included in the input, the name is
              *     restricted to be a subdomain of the endpoint, and the input name label
              *     may not start with `m-` or `g-`.
-             *      */
+             */
             domain_name?: string;
-            /** @description Boolean flag indicating whether this collection should support
+            /**
+             * @description Boolean flag indicating whether this collection should support
              *     HTTPS. This value can be set on mapped collections or guest
              *     collections. However, it may not be set to true on a guest
              *     collection if the value on the related mapped collection is false.
-             *      */
+             */
             enable_https?: boolean;
-            /** @description Flag indicating whether all data transfers to and from this
+            /**
+             * @description Flag indicating whether all data transfers to and from this
              *     collection are always encrypted.
              *
              *     __New in v5.4.17__: If a mapped collection forces encryption, all
              *     of its guest collections must as well.  If this option is used on a
              *     mapped collection, the value is propagated to its guest collections.
-             *      */
+             */
             force_encryption?: boolean;
-            /** @description Flag indicating if this collection is created on a high assurance
+            /**
+             * @description Flag indicating if this collection is created on a high assurance
              *     Storage Gateway.
-             *      */
+             */
             readonly high_assurance?: boolean;
             /** @description HTTPS URL for the data on this collection. */
             readonly https_url?: string;
@@ -2205,25 +2205,25 @@ export interface components {
              * Format: uuid
              * @description Unique identifier for this collection. This is assigned by the GCS
              *     manager when creating a collection.
-             *
              */
             readonly id?: string;
             /**
              * Format: uuid
              * @description Globus Auth identity to who acts as the owner of this collection.
              *     This identity is an `administrator` on the collection.
-             *
              */
             identity_id?: string;
             /** @description Link to a web page with more information about the collection */
             info_link?: string | null;
-            /** @description List of search keywords for the endpoint. Optional. Unicode string,
+            /**
+             * @description List of search keywords for the endpoint. Optional. Unicode string,
              *     max 1024 characters total across all strings.
-             *      */
+             */
             keywords?: string[];
-            /** @description URL of the GCS Manager API service for the endpoint hosting this
+            /**
+             * @description URL of the GCS Manager API service for the endpoint hosting this
              *     collection.
-             *      */
+             */
             readonly manager_url?: string;
             /**
              * Format: uuid
@@ -2233,48 +2233,52 @@ export interface components {
              *     sharing (`allow_guest_collections`, `sharing_restrict_paths`) will
              *     always reflect the values in the Mapped Collection definition and
              *     may not be changed on this Guest Collection.
-             *
              */
             mapped_collection_id?: string;
-            /** @description Organization that runs the server(s) represented by the endpoint.
+            /**
+             * @description Organization that runs the server(s) represented by the endpoint.
              *     Optional to preserve backward compatibility, but will eventually be
              *     required and all clients are encouraged to require users to specify
              *     it.  Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             organization?: string;
             /** @description Connector-specific collection policies */
             policies?: components["schemas"]["S3CollectionPolicies_1_0_0"] | components["schemas"]["AzureBlobCollectionPolicies_1_0_0"] | components["schemas"]["BlackPearlCollectionPolicies_1_0_0"] | components["schemas"]["BoxCollectionPolicies_1_0_0"] | components["schemas"]["CephCollectionPolicies_1_0_0"] | components["schemas"]["DropboxCollectionPolicies_1_0_0"] | components["schemas"]["GoogleCloudStorageCollectionPolicies_1_0_0"] | components["schemas"]["GoogleDriveCollectionPolicies_1_0_0"] | components["schemas"]["HPSSCollectionPolicies_1_0_0"] | components["schemas"]["IrodsCollectionPolicies_1_0_0"] | components["schemas"]["OneDriveCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_1_0"] | components["schemas"]["PosixStagingCollectionPolicies_1_0_0"];
-            /** @description Flag indicating whether this collection is visible to other Globus
+            /**
+             * @description Flag indicating whether this collection is visible to other Globus
              *     users.
-             *      */
+             */
             public: boolean;
-            /** @description Absolute root path of the collection. All data access
+            /**
+             * @description Absolute root path of the collection. All data access
              *     is done relative to this path. On a guest collection,
              *     this value is only visible if the caller has an
              *     administrator role on both the guest collection and the
              *     mapped collection it is created on.
-             *      */
+             */
             readonly root_path?: string;
-            /** @description Restrictions on which paths may be shared in guest collections related
+            /**
+             * @description Restrictions on which paths may be shared in guest collections related
              *     to this mapped collection. On the mapped collection, these paths are
              *     relative to the root_path property of the mapped collection. On a guest
              *     collection, they are absolute paths from the storage root.
-             *      */
+             */
             sharing_restrict_paths?: unknown | components["schemas"]["PathRestrictions"];
-            /** @description List of connector-specific usernames allowed to create new guest
+            /**
+             * @description List of connector-specific usernames allowed to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_allow?: string[] | null;
-            /** @description List of connector-specific usernames denied access to create new guest
+            /**
+             * @description List of connector-specific usernames denied access to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_deny?: string[] | null;
             /**
              * Format: uuid
              * @description Unique ID of the Storage Gateway which this collection provides
              *     access to. This value can not change after the collection is
              *     created.
-             *
              */
             storage_gateway_id?: string;
             /** @description TLSFTP URL for the data on this collection. */
@@ -2284,20 +2288,21 @@ export interface components {
              * @description The ID of the User Credential which is used to access data on this
              *     collection. This credential must be owned by the collection's
              *     identity_id.
-             *
              */
             user_credential_id?: string;
-            /** @description A message for clients to display to users when interacting with
+            /**
+             * @description A message for clients to display to users when interacting with
              *     this collection. For guest collections, this property is read-only
              *     and is the same as the value of its related mapped collection. The
              *     message may be up to 64 characters long.
-             *      */
+             */
             user_message?: string | null;
-            /** @description Link to additional messaging for clients to display to users when
+            /**
+             * @description Link to additional messaging for clients to display to users when
              *     interacting with this endpoint, linked to an HTTP or HTTPS URL. For
              *     guest collections, this property is read-only and is the same as the
              *     value of its related mapped collection.
-             *      */
+             */
             user_message_link?: string | null;
         };
         /**
@@ -2321,7 +2326,6 @@ export interface components {
          *     Version 1.4.0 allows optional multi-factor authentication requirements to
          *     high assurance collections and the ability to require checksums when
          *     transferring data on this collection.
-         *
          */
         Collection_1_4_0: {
             /**
@@ -2330,17 +2334,20 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "collection#1.4.0";
-            /** @description Flag indicating if this Collection allows users to create guest
+            /**
+             * @description Flag indicating if this Collection allows users to create guest
              *     collections on it. This is always false if this is a guest collection.
              *     If this is changed to false on a mapped collection with associated
              *     guest collections, those collections will no longer be accessible.
-             *      */
+             */
             allow_guest_collections?: boolean;
-            /** @description Timeout (in minutes) during which a user is required to have
+            /**
+             * @description Timeout (in minutes) during which a user is required to have
              *     authenticated in a session to access this storage gateway.
-             *      */
+             */
             readonly authentication_timeout_mins?: number;
-            /** @description Path to be interpreted as the base path when creating a new collection.
+            /**
+             * @description Path to be interpreted as the base path when creating a new collection.
              *     It is interpreted differently depending on the collection type being
              *     created. For a mapped collection, this is an absolute path on the
              *     storage system named by the storage_gateway_id.  For a guest collection,
@@ -2350,14 +2357,13 @@ export interface components {
              *     collection is created.
              *
              *     Support for `~` was added in API version 1.21.0.
-             *      */
+             */
             collection_base_path: string;
             /**
              * @description Type of collection. A `mapped` collection requires an account on the
              *     system to access the administrator-defined collection. A `guest`
              *     collection allows users to share access to their data on a Storage
              *     Gateway by registering a credential with the GCS Manager.
-             *
              * @enum {string}
              */
             collection_type: "mapped" | "guest";
@@ -2366,16 +2372,19 @@ export interface components {
              * @description Id of the connector type that is used by this collection.
              */
             readonly connector_id?: string;
-            /** @description Email address of the support contact for this collection. This is
+            /**
+             * @description Email address of the support contact for this collection. This is
              *     visible to end users so that they may contact your organization for
              *     support.
-             *      */
+             */
             contact_email?: string | null;
-            /** @description Other non-email contact information for the collection, e.g.  phone
+            /**
+             * @description Other non-email contact information for the collection, e.g.  phone
              *     and mailing address. This is visible to end users for support.
-             *      */
+             */
             contact_info?: string | null;
-            /** @description Default directory when accessing the collection. This may include
+            /**
+             * @description Default directory when accessing the collection. This may include
              *     the special string `$USER` which is evaluated at access time to be
              *     the connector-specific username accessing the data.
              *
@@ -2383,54 +2392,62 @@ export interface components {
              *     value of `/`, this value can also begin with the values `/~/` and
              *     `$HOME`, which are replaced by the user's home directory, or `/` if
              *     the connector does not support the concept of a home directory.
-             *      */
+             */
             default_directory?: string;
             /** @description Flag indicating that this collection has been deleted */
             readonly deleted?: boolean;
-            /** @description Department within organization that runs the server(s). Searchable.
+            /**
+             * @description Department within organization that runs the server(s). Searchable.
              *     Optional. Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             department?: string | null;
             /** @description A description of the collection. */
             description?: string | null;
-            /** @description Flag indicating that this endpoint does not support computing
+            /**
+             * @description Flag indicating that this endpoint does not support computing
              *     checksums, needed for the verify_checksum option of transfer.
-             *      */
+             */
             disable_verify?: boolean;
-            /** @description Friendly name for the collection. Unicode string, max 128 characters,
+            /**
+             * @description Friendly name for the collection. Unicode string, max 128 characters,
              *     no new lines (`\r` or `\n`).
-             *      */
+             */
             display_name: string;
             domain?: components["schemas"]["Domain"];
-            /** @description DNS name of the virtual host serving this collection. For mapped
+            /**
+             * @description DNS name of the virtual host serving this collection. For mapped
              *     collections which do not have a custom domain, this may be specified
              *     as part of the input document to create the collection, otherwise this
              *     is a read-only property. When included in the input, the name is
              *     restricted to be a subdomain of the endpoint, and the input name label
              *     may not start with `m-` or `g-`.
-             *      */
+             */
             domain_name?: string;
-            /** @description Boolean flag indicating whether this collection should support
+            /**
+             * @description Boolean flag indicating whether this collection should support
              *     HTTPS. This value can be set on mapped collections or guest
              *     collections. However, it may not be set to true on a guest
              *     collection if the value on the related mapped collection is false.
-             *      */
+             */
             enable_https?: boolean;
-            /** @description Flag indicating whether all data transfers to and from this
+            /**
+             * @description Flag indicating whether all data transfers to and from this
              *     collection are always encrypted.
              *
              *     __New in v5.4.17__: If a mapped collection forces encryption, all
              *     of its guest collections must as well.  If this option is used on a
              *     mapped collection, the value is propagated to its guest collections.
-             *      */
+             */
             force_encryption?: boolean;
-            /** @description Flag indicating that this endpoint requires computing checksums,
+            /**
+             * @description Flag indicating that this endpoint requires computing checksums,
              *     needed for the verify_checksum option of transfer.
-             *      */
+             */
             force_verify?: boolean;
-            /** @description Flag indicating if this collection is created on a high assurance
+            /**
+             * @description Flag indicating if this collection is created on a high assurance
              *     Storage Gateway.
-             *      */
+             */
             readonly high_assurance?: boolean;
             /** @description HTTPS URL for the data on this collection. */
             readonly https_url?: string;
@@ -2438,25 +2455,25 @@ export interface components {
              * Format: uuid
              * @description Unique identifier for this collection. This is assigned by the GCS
              *     manager when creating a collection.
-             *
              */
             readonly id?: string;
             /**
              * Format: uuid
              * @description Globus Auth identity to who acts as the owner of this collection.
              *     This identity is an `administrator` on the collection.
-             *
              */
             identity_id?: string;
             /** @description Link to a web page with more information about the collection */
             info_link?: string | null;
-            /** @description List of search keywords for the endpoint. Optional. Unicode string,
+            /**
+             * @description List of search keywords for the endpoint. Optional. Unicode string,
              *     max 1024 characters total across all strings.
-             *      */
+             */
             keywords?: string[];
-            /** @description URL of the GCS Manager API service for the endpoint hosting this
+            /**
+             * @description URL of the GCS Manager API service for the endpoint hosting this
              *     collection.
-             *      */
+             */
             readonly manager_url?: string;
             /**
              * Format: uuid
@@ -2466,52 +2483,57 @@ export interface components {
              *     sharing (`allow_guest_collections`, `sharing_restrict_paths`) will
              *     always reflect the values in the Mapped Collection definition and
              *     may not be changed on this Guest Collection.
-             *
              */
             mapped_collection_id?: string;
-            /** @description Organization that runs the server(s) represented by the endpoint.
+            /**
+             * @description Organization that runs the server(s) represented by the endpoint.
              *     Optional to preserve backward compatibility, but will eventually be
              *     required and all clients are encouraged to require users to specify
              *     it.  Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             organization?: string;
             /** @description Connector-specific collection policies */
             policies?: components["schemas"]["S3CollectionPolicies_1_0_0"] | components["schemas"]["AzureBlobCollectionPolicies_1_0_0"] | components["schemas"]["BlackPearlCollectionPolicies_1_0_0"] | components["schemas"]["BoxCollectionPolicies_1_0_0"] | components["schemas"]["CephCollectionPolicies_1_0_0"] | components["schemas"]["DropboxCollectionPolicies_1_0_0"] | components["schemas"]["GoogleCloudStorageCollectionPolicies_1_0_0"] | components["schemas"]["GoogleDriveCollectionPolicies_1_0_0"] | components["schemas"]["HPSSCollectionPolicies_1_0_0"] | components["schemas"]["IrodsCollectionPolicies_1_0_0"] | components["schemas"]["OneDriveCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_1_0"] | components["schemas"]["PosixStagingCollectionPolicies_1_0_0"];
-            /** @description Flag indicating whether this collection is visible to other Globus
+            /**
+             * @description Flag indicating whether this collection is visible to other Globus
              *     users.
-             *      */
+             */
             public: boolean;
-            /** @description Flag indicating if the storage_gateway requires multi-factor
+            /**
+             * @description Flag indicating if the storage_gateway requires multi-factor
              *     authentication. Only applies to high assurance storage gateways.
-             *      */
+             */
             readonly require_mfa?: boolean;
-            /** @description Absolute root path of the collection. All data access
+            /**
+             * @description Absolute root path of the collection. All data access
              *     is done relative to this path. On a guest collection,
              *     this value is only visible if the caller has an
              *     administrator role on both the guest collection and the
              *     mapped collection it is created on.
-             *      */
+             */
             readonly root_path?: string;
-            /** @description Restrictions on which paths may be shared in guest collections related
+            /**
+             * @description Restrictions on which paths may be shared in guest collections related
              *     to this mapped collection. On the mapped collection, these paths are
              *     relative to the root_path property of the mapped collection. On a guest
              *     collection, they are absolute paths from the storage root.
-             *      */
+             */
             sharing_restrict_paths?: unknown | components["schemas"]["PathRestrictions"];
-            /** @description List of connector-specific usernames allowed to create new guest
+            /**
+             * @description List of connector-specific usernames allowed to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_allow?: string[] | null;
-            /** @description List of connector-specific usernames denied access to create new guest
+            /**
+             * @description List of connector-specific usernames denied access to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_deny?: string[] | null;
             /**
              * Format: uuid
              * @description Unique ID of the Storage Gateway which this collection provides
              *     access to. This value can not change after the collection is
              *     created.
-             *
              */
             storage_gateway_id?: string;
             /** @description TLSFTP URL for the data on this collection. */
@@ -2521,20 +2543,21 @@ export interface components {
              * @description The ID of the User Credential which is used to access data on this
              *     collection. This credential must be owned by the collection's
              *     identity_id.
-             *
              */
             user_credential_id?: string;
-            /** @description A message for clients to display to users when interacting with
+            /**
+             * @description A message for clients to display to users when interacting with
              *     this collection. For guest collections, this property is read-only
              *     and is the same as the value of its related mapped collection. The
              *     message may be up to 64 characters long.
-             *      */
+             */
             user_message?: string | null;
-            /** @description Link to additional messaging for clients to display to users when
+            /**
+             * @description Link to additional messaging for clients to display to users when
              *     interacting with this endpoint, linked to an HTTP or HTTPS URL. For
              *     guest collections, this property is read-only and is the same as the
              *     value of its related mapped collection.
-             *      */
+             */
             user_message_link?: string | null;
         };
         /**
@@ -2561,7 +2584,6 @@ export interface components {
          *
          *     Version 1.5.0 allows administrators to disable permissions that would allow
          *     anonymous users to have write access to an endpoint.
-         *
          */
         Collection_1_5_0: {
             /**
@@ -2570,17 +2592,20 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "collection#1.5.0";
-            /** @description Flag indicating if this Collection allows users to create guest
+            /**
+             * @description Flag indicating if this Collection allows users to create guest
              *     collections on it. This is always false if this is a guest collection.
              *     If this is changed to false on a mapped collection with associated
              *     guest collections, those collections will no longer be accessible.
-             *      */
+             */
             allow_guest_collections?: boolean;
-            /** @description Timeout (in minutes) during which a user is required to have
+            /**
+             * @description Timeout (in minutes) during which a user is required to have
              *     authenticated in a session to access this storage gateway.
-             *      */
+             */
             readonly authentication_timeout_mins?: number;
-            /** @description Path to be interpreted as the base path when creating a new collection.
+            /**
+             * @description Path to be interpreted as the base path when creating a new collection.
              *     It is interpreted differently depending on the collection type being
              *     created. For a mapped collection, this is an absolute path on the
              *     storage system named by the storage_gateway_id.  For a guest collection,
@@ -2590,14 +2615,13 @@ export interface components {
              *     collection is created.
              *
              *     Support for `~` was added in API version 1.21.0.
-             *      */
+             */
             collection_base_path: string;
             /**
              * @description Type of collection. A `mapped` collection requires an account on the
              *     system to access the administrator-defined collection. A `guest`
              *     collection allows users to share access to their data on a Storage
              *     Gateway by registering a credential with the GCS Manager.
-             *
              * @enum {string}
              */
             collection_type: "mapped" | "guest";
@@ -2606,16 +2630,19 @@ export interface components {
              * @description Id of the connector type that is used by this collection.
              */
             readonly connector_id?: string;
-            /** @description Email address of the support contact for this collection. This is
+            /**
+             * @description Email address of the support contact for this collection. This is
              *     visible to end users so that they may contact your organization for
              *     support.
-             *      */
+             */
             contact_email?: string | null;
-            /** @description Other non-email contact information for the collection, e.g.  phone
+            /**
+             * @description Other non-email contact information for the collection, e.g.  phone
              *     and mailing address. This is visible to end users for support.
-             *      */
+             */
             contact_info?: string | null;
-            /** @description Default directory when accessing the collection. This may include
+            /**
+             * @description Default directory when accessing the collection. This may include
              *     the special string `$USER` which is evaluated at access time to be
              *     the connector-specific username accessing the data.
              *
@@ -2623,60 +2650,69 @@ export interface components {
              *     value of `/`, this value can also begin with the values `/~/` and
              *     `$HOME`, which are replaced by the user's home directory, or `/` if
              *     the connector does not support the concept of a home directory.
-             *      */
+             */
             default_directory?: string;
             /** @description Flag indicating that this collection has been deleted */
             readonly deleted?: boolean;
-            /** @description Department within organization that runs the server(s). Searchable.
+            /**
+             * @description Department within organization that runs the server(s). Searchable.
              *     Optional. Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             department?: string | null;
             /** @description A description of the collection. */
             description?: string | null;
-            /** @description Flag indicating if guest collections on this mapped collection allow
+            /**
+             * @description Flag indicating if guest collections on this mapped collection allow
              *     anonymous write permissions or not. This flag is always true for high
              *     assurance collections. For non-high assurance mapped collections, the
              *     default value is false.
-             *      */
+             */
             disable_anonymous_writes?: boolean;
-            /** @description Flag indicating that this endpoint does not support computing
+            /**
+             * @description Flag indicating that this endpoint does not support computing
              *     checksums, needed for the verify_checksum option of transfer.
-             *      */
+             */
             disable_verify?: boolean;
-            /** @description Friendly name for the collection. Unicode string, max 128 characters,
+            /**
+             * @description Friendly name for the collection. Unicode string, max 128 characters,
              *     no new lines (`\r` or `\n`).
-             *      */
+             */
             display_name: string;
             domain?: components["schemas"]["Domain"];
-            /** @description DNS name of the virtual host serving this collection. For mapped
+            /**
+             * @description DNS name of the virtual host serving this collection. For mapped
              *     collections which do not have a custom domain, this may be specified
              *     as part of the input document to create the collection, otherwise this
              *     is a read-only property. When included in the input, the name is
              *     restricted to be a subdomain of the endpoint, and the input name label
              *     may not start with `m-` or `g-`.
-             *      */
+             */
             domain_name?: string;
-            /** @description Boolean flag indicating whether this collection should support
+            /**
+             * @description Boolean flag indicating whether this collection should support
              *     HTTPS. This value can be set on mapped collections or guest
              *     collections. However, it may not be set to true on a guest
              *     collection if the value on the related mapped collection is false.
-             *      */
+             */
             enable_https?: boolean;
-            /** @description Flag indicating whether all data transfers to and from this
+            /**
+             * @description Flag indicating whether all data transfers to and from this
              *     collection are always encrypted.
              *
              *     __New in v5.4.17__: If a mapped collection forces encryption, all
              *     of its guest collections must as well.  If this option is used on a
              *     mapped collection, the value is propagated to its guest collections.
-             *      */
+             */
             force_encryption?: boolean;
-            /** @description Flag indicating that this endpoint requires computing checksums,
+            /**
+             * @description Flag indicating that this endpoint requires computing checksums,
              *     needed for the verify_checksum option of transfer.
-             *      */
+             */
             force_verify?: boolean;
-            /** @description Flag indicating if this collection is created on a high assurance
+            /**
+             * @description Flag indicating if this collection is created on a high assurance
              *     Storage Gateway.
-             *      */
+             */
             readonly high_assurance?: boolean;
             /** @description HTTPS URL for the data on this collection. */
             readonly https_url?: string;
@@ -2684,25 +2720,25 @@ export interface components {
              * Format: uuid
              * @description Unique identifier for this collection. This is assigned by the GCS
              *     manager when creating a collection.
-             *
              */
             readonly id?: string;
             /**
              * Format: uuid
              * @description Globus Auth identity to who acts as the owner of this collection.
              *     This identity is an `administrator` on the collection.
-             *
              */
             identity_id?: string;
             /** @description Link to a web page with more information about the collection */
             info_link?: string | null;
-            /** @description List of search keywords for the endpoint. Optional. Unicode string,
+            /**
+             * @description List of search keywords for the endpoint. Optional. Unicode string,
              *     max 1024 characters total across all strings.
-             *      */
+             */
             keywords?: string[];
-            /** @description URL of the GCS Manager API service for the endpoint hosting this
+            /**
+             * @description URL of the GCS Manager API service for the endpoint hosting this
              *     collection.
-             *      */
+             */
             readonly manager_url?: string;
             /**
              * Format: uuid
@@ -2712,52 +2748,57 @@ export interface components {
              *     sharing (`allow_guest_collections`, `sharing_restrict_paths`) will
              *     always reflect the values in the Mapped Collection definition and
              *     may not be changed on this Guest Collection.
-             *
              */
             mapped_collection_id?: string;
-            /** @description Organization that runs the server(s) represented by the endpoint.
+            /**
+             * @description Organization that runs the server(s) represented by the endpoint.
              *     Optional to preserve backward compatibility, but will eventually be
              *     required and all clients are encouraged to require users to specify
              *     it.  Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             organization?: string;
             /** @description Connector-specific collection policies */
             policies?: components["schemas"]["S3CollectionPolicies_1_0_0"] | components["schemas"]["AzureBlobCollectionPolicies_1_0_0"] | components["schemas"]["BlackPearlCollectionPolicies_1_0_0"] | components["schemas"]["BoxCollectionPolicies_1_0_0"] | components["schemas"]["CephCollectionPolicies_1_0_0"] | components["schemas"]["DropboxCollectionPolicies_1_0_0"] | components["schemas"]["GoogleCloudStorageCollectionPolicies_1_0_0"] | components["schemas"]["GoogleDriveCollectionPolicies_1_0_0"] | components["schemas"]["HPSSCollectionPolicies_1_0_0"] | components["schemas"]["IrodsCollectionPolicies_1_0_0"] | components["schemas"]["OneDriveCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_1_0"] | components["schemas"]["PosixStagingCollectionPolicies_1_0_0"];
-            /** @description Flag indicating whether this collection is visible to other Globus
+            /**
+             * @description Flag indicating whether this collection is visible to other Globus
              *     users.
-             *      */
+             */
             public: boolean;
-            /** @description Flag indicating if the storage_gateway requires multi-factor
+            /**
+             * @description Flag indicating if the storage_gateway requires multi-factor
              *     authentication. Only applies to high assurance storage gateways.
-             *      */
+             */
             readonly require_mfa?: boolean;
-            /** @description Absolute root path of the collection. All data access
+            /**
+             * @description Absolute root path of the collection. All data access
              *     is done relative to this path. On a guest collection,
              *     this value is only visible if the caller has an
              *     administrator role on both the guest collection and the
              *     mapped collection it is created on.
-             *      */
+             */
             readonly root_path?: string;
-            /** @description Restrictions on which paths may be shared in guest collections related
+            /**
+             * @description Restrictions on which paths may be shared in guest collections related
              *     to this mapped collection. On the mapped collection, these paths are
              *     relative to the root_path property of the mapped collection. On a guest
              *     collection, they are absolute paths from the storage root.
-             *      */
+             */
             sharing_restrict_paths?: unknown | components["schemas"]["PathRestrictions"];
-            /** @description List of connector-specific usernames allowed to create new guest
+            /**
+             * @description List of connector-specific usernames allowed to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_allow?: string[] | null;
-            /** @description List of connector-specific usernames denied access to create new guest
+            /**
+             * @description List of connector-specific usernames denied access to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_deny?: string[] | null;
             /**
              * Format: uuid
              * @description Unique ID of the Storage Gateway which this collection provides
              *     access to. This value can not change after the collection is
              *     created.
-             *
              */
             storage_gateway_id?: string;
             /** @description TLSFTP URL for the data on this collection. */
@@ -2767,20 +2808,21 @@ export interface components {
              * @description The ID of the User Credential which is used to access data on this
              *     collection. This credential must be owned by the collection's
              *     identity_id.
-             *
              */
             user_credential_id?: string;
-            /** @description A message for clients to display to users when interacting with
+            /**
+             * @description A message for clients to display to users when interacting with
              *     this collection. For guest collections, this property is read-only
              *     and is the same as the value of its related mapped collection. The
              *     message may be up to 64 characters long.
-             *      */
+             */
             user_message?: string | null;
-            /** @description Link to additional messaging for clients to display to users when
+            /**
+             * @description Link to additional messaging for clients to display to users when
              *     interacting with this endpoint, linked to an HTTP or HTTPS URL. For
              *     guest collections, this property is read-only and is the same as the
              *     value of its related mapped collection.
-             *      */
+             */
             user_message_link?: string | null;
         };
         /**
@@ -2811,7 +2853,6 @@ export interface components {
          *     Version 1.6.0 allows administrators of mapped collections to associate
          *     policies that users accessing guest collections must meet beyond the
          *     guest collection permissions.
-         *
          */
         Collection_1_6_0: {
             /**
@@ -2820,17 +2861,20 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "collection#1.6.0";
-            /** @description Flag indicating if this Collection allows users to create guest
+            /**
+             * @description Flag indicating if this Collection allows users to create guest
              *     collections on it. This is always false if this is a guest collection.
              *     If this is changed to false on a mapped collection with associated
              *     guest collections, those collections will no longer be accessible.
-             *      */
+             */
             allow_guest_collections?: boolean;
-            /** @description Timeout (in minutes) during which a user is required to have
+            /**
+             * @description Timeout (in minutes) during which a user is required to have
              *     authenticated in a session to access this storage gateway.
-             *      */
+             */
             readonly authentication_timeout_mins?: number;
-            /** @description Path to be interpreted as the base path when creating a new collection.
+            /**
+             * @description Path to be interpreted as the base path when creating a new collection.
              *     It is interpreted differently depending on the collection type being
              *     created. For a mapped collection, this is an absolute path on the
              *     storage system named by the storage_gateway_id.  For a guest collection,
@@ -2840,14 +2884,13 @@ export interface components {
              *     collection is created.
              *
              *     Support for `~` was added in API version 1.21.0.
-             *      */
+             */
             collection_base_path: string;
             /**
              * @description Type of collection. A `mapped` collection requires an account on the
              *     system to access the administrator-defined collection. A `guest`
              *     collection allows users to share access to their data on a Storage
              *     Gateway by registering a credential with the GCS Manager.
-             *
              * @enum {string}
              */
             collection_type: "mapped" | "guest";
@@ -2856,16 +2899,19 @@ export interface components {
              * @description Id of the connector type that is used by this collection.
              */
             readonly connector_id?: string;
-            /** @description Email address of the support contact for this collection. This is
+            /**
+             * @description Email address of the support contact for this collection. This is
              *     visible to end users so that they may contact your organization for
              *     support.
-             *      */
+             */
             contact_email?: string | null;
-            /** @description Other non-email contact information for the collection, e.g.  phone
+            /**
+             * @description Other non-email contact information for the collection, e.g.  phone
              *     and mailing address. This is visible to end users for support.
-             *      */
+             */
             contact_info?: string | null;
-            /** @description Default directory when accessing the collection. This may include
+            /**
+             * @description Default directory when accessing the collection. This may include
              *     the special string `$USER` which is evaluated at access time to be
              *     the connector-specific username accessing the data.
              *
@@ -2873,56 +2919,64 @@ export interface components {
              *     value of `/`, this value can also begin with the values `/~/` and
              *     `$HOME`, which are replaced by the user's home directory, or `/` if
              *     the connector does not support the concept of a home directory.
-             *      */
+             */
             default_directory?: string;
             /** @description Flag indicating that this collection has been deleted */
             readonly deleted?: boolean;
-            /** @description Department within organization that runs the server(s). Searchable.
+            /**
+             * @description Department within organization that runs the server(s). Searchable.
              *     Optional. Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             department?: string | null;
             /** @description A description of the collection. */
             description?: string | null;
-            /** @description Flag indicating if guest collections on this mapped collection allow
+            /**
+             * @description Flag indicating if guest collections on this mapped collection allow
              *     anonymous write permissions or not. This flag is always true for high
              *     assurance collections. For non-high assurance mapped collections, the
              *     default value is false.
-             *      */
+             */
             disable_anonymous_writes?: boolean;
-            /** @description Flag indicating that this endpoint does not support computing
+            /**
+             * @description Flag indicating that this endpoint does not support computing
              *     checksums, needed for the verify_checksum option of transfer.
-             *      */
+             */
             disable_verify?: boolean;
-            /** @description Friendly name for the collection. Unicode string, max 128 characters,
+            /**
+             * @description Friendly name for the collection. Unicode string, max 128 characters,
              *     no new lines (`\r` or `\n`).
-             *      */
+             */
             display_name: string;
             domain?: components["schemas"]["Domain"];
-            /** @description DNS name of the virtual host serving this collection. For mapped
+            /**
+             * @description DNS name of the virtual host serving this collection. For mapped
              *     collections which do not have a custom domain, this may be specified
              *     as part of the input document to create the collection, otherwise this
              *     is a read-only property. When included in the input, the name is
              *     restricted to be a subdomain of the endpoint, and the input name label
              *     may not start with `m-` or `g-`.
-             *      */
+             */
             domain_name?: string;
-            /** @description Boolean flag indicating whether this collection should support
+            /**
+             * @description Boolean flag indicating whether this collection should support
              *     HTTPS. This value can be set on mapped collections or guest
              *     collections. However, it may not be set to true on a guest
              *     collection if the value on the related mapped collection is false.
-             *      */
+             */
             enable_https?: boolean;
-            /** @description Flag indicating whether all data transfers to and from this
+            /**
+             * @description Flag indicating whether all data transfers to and from this
              *     collection are always encrypted.
              *
              *     __New in v5.4.17__: If a mapped collection forces encryption, all
              *     of its guest collections must as well.  If this option is used on a
              *     mapped collection, the value is propagated to its guest collections.
-             *      */
+             */
             force_encryption?: boolean;
-            /** @description Flag indicating that this endpoint requires computing checksums,
+            /**
+             * @description Flag indicating that this endpoint requires computing checksums,
              *     needed for the verify_checksum option of transfer.
-             *      */
+             */
             force_verify?: boolean;
             /**
              * Format: uuid
@@ -2930,12 +2984,12 @@ export interface components {
              *     guest collections. During authorization, the authentication policy must
              *     be satisfied before permissions are considered. Read-only on guest
              *     collections. (**Added in API 1.15.0**)
-             *
              */
             guest_auth_policy_id?: string | null;
-            /** @description Flag indicating if this collection is created on a high assurance
+            /**
+             * @description Flag indicating if this collection is created on a high assurance
              *     Storage Gateway.
-             *      */
+             */
             readonly high_assurance?: boolean;
             /** @description HTTPS URL for the data on this collection. */
             readonly https_url?: string;
@@ -2943,25 +2997,25 @@ export interface components {
              * Format: uuid
              * @description Unique identifier for this collection. This is assigned by the GCS
              *     manager when creating a collection.
-             *
              */
             readonly id?: string;
             /**
              * Format: uuid
              * @description Globus Auth identity to who acts as the owner of this collection.
              *     This identity is an `administrator` on the collection.
-             *
              */
             identity_id?: string;
             /** @description Link to a web page with more information about the collection */
             info_link?: string | null;
-            /** @description List of search keywords for the endpoint. Optional. Unicode string,
+            /**
+             * @description List of search keywords for the endpoint. Optional. Unicode string,
              *     max 1024 characters total across all strings.
-             *      */
+             */
             keywords?: string[];
-            /** @description URL of the GCS Manager API service for the endpoint hosting this
+            /**
+             * @description URL of the GCS Manager API service for the endpoint hosting this
              *     collection.
-             *      */
+             */
             readonly manager_url?: string;
             /**
              * Format: uuid
@@ -2971,52 +3025,57 @@ export interface components {
              *     sharing (`allow_guest_collections`, `sharing_restrict_paths`) will
              *     always reflect the values in the Mapped Collection definition and
              *     may not be changed on this Guest Collection.
-             *
              */
             mapped_collection_id?: string;
-            /** @description Organization that runs the server(s) represented by the endpoint.
+            /**
+             * @description Organization that runs the server(s) represented by the endpoint.
              *     Optional to preserve backward compatibility, but will eventually be
              *     required and all clients are encouraged to require users to specify
              *     it.  Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             organization?: string;
             /** @description Connector-specific collection policies */
             policies?: components["schemas"]["S3CollectionPolicies_1_0_0"] | components["schemas"]["AzureBlobCollectionPolicies_1_0_0"] | components["schemas"]["BlackPearlCollectionPolicies_1_0_0"] | components["schemas"]["BoxCollectionPolicies_1_0_0"] | components["schemas"]["CephCollectionPolicies_1_0_0"] | components["schemas"]["DropboxCollectionPolicies_1_0_0"] | components["schemas"]["GoogleCloudStorageCollectionPolicies_1_0_0"] | components["schemas"]["GoogleDriveCollectionPolicies_1_0_0"] | components["schemas"]["HPSSCollectionPolicies_1_0_0"] | components["schemas"]["IrodsCollectionPolicies_1_0_0"] | components["schemas"]["OneDriveCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_1_0"] | components["schemas"]["PosixStagingCollectionPolicies_1_0_0"];
-            /** @description Flag indicating whether this collection is visible to other Globus
+            /**
+             * @description Flag indicating whether this collection is visible to other Globus
              *     users.
-             *      */
+             */
             public: boolean;
-            /** @description Flag indicating if the storage_gateway requires multi-factor
+            /**
+             * @description Flag indicating if the storage_gateway requires multi-factor
              *     authentication. Only applies to high assurance storage gateways.
-             *      */
+             */
             readonly require_mfa?: boolean;
-            /** @description Absolute root path of the collection. All data access
+            /**
+             * @description Absolute root path of the collection. All data access
              *     is done relative to this path. On a guest collection,
              *     this value is only visible if the caller has an
              *     administrator role on both the guest collection and the
              *     mapped collection it is created on.
-             *      */
+             */
             readonly root_path?: string;
-            /** @description Restrictions on which paths may be shared in guest collections related
+            /**
+             * @description Restrictions on which paths may be shared in guest collections related
              *     to this mapped collection. On the mapped collection, these paths are
              *     relative to the root_path property of the mapped collection. On a guest
              *     collection, they are absolute paths from the storage root.
-             *      */
+             */
             sharing_restrict_paths?: unknown | components["schemas"]["PathRestrictions"];
-            /** @description List of connector-specific usernames allowed to create new guest
+            /**
+             * @description List of connector-specific usernames allowed to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_allow?: string[] | null;
-            /** @description List of connector-specific usernames denied access to create new guest
+            /**
+             * @description List of connector-specific usernames denied access to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_deny?: string[] | null;
             /**
              * Format: uuid
              * @description Unique ID of the Storage Gateway which this collection provides
              *     access to. This value can not change after the collection is
              *     created.
-             *
              */
             storage_gateway_id?: string;
             /** @description TLSFTP URL for the data on this collection. */
@@ -3026,20 +3085,21 @@ export interface components {
              * @description The ID of the User Credential which is used to access data on this
              *     collection. This credential must be owned by the collection's
              *     identity_id.
-             *
              */
             user_credential_id?: string;
-            /** @description A message for clients to display to users when interacting with
+            /**
+             * @description A message for clients to display to users when interacting with
              *     this collection. For guest collections, this property is read-only
              *     and is the same as the value of its related mapped collection. The
              *     message may be up to 64 characters long.
-             *      */
+             */
             user_message?: string | null;
-            /** @description Link to additional messaging for clients to display to users when
+            /**
+             * @description Link to additional messaging for clients to display to users when
              *     interacting with this endpoint, linked to an HTTP or HTTPS URL. For
              *     guest collections, this property is read-only and is the same as the
              *     value of its related mapped collection.
-             *      */
+             */
             user_message_link?: string | null;
         };
         /**
@@ -3073,7 +3133,6 @@ export interface components {
          *
          *     Version 1.7.0 increases the maximum allowed length of the user_message
          *     property.
-         *
          */
         Collection_1_7_0: {
             /**
@@ -3082,17 +3141,20 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "collection#1.7.0";
-            /** @description Flag indicating if this Collection allows users to create guest
+            /**
+             * @description Flag indicating if this Collection allows users to create guest
              *     collections on it. This is always false if this is a guest collection.
              *     If this is changed to false on a mapped collection with associated
              *     guest collections, those collections will no longer be accessible.
-             *      */
+             */
             allow_guest_collections?: boolean;
-            /** @description Timeout (in minutes) during which a user is required to have
+            /**
+             * @description Timeout (in minutes) during which a user is required to have
              *     authenticated in a session to access this storage gateway.
-             *      */
+             */
             readonly authentication_timeout_mins?: number;
-            /** @description Path to be interpreted as the base path when creating a new collection.
+            /**
+             * @description Path to be interpreted as the base path when creating a new collection.
              *     It is interpreted differently depending on the collection type being
              *     created. For a mapped collection, this is an absolute path on the
              *     storage system named by the storage_gateway_id.  For a guest collection,
@@ -3102,14 +3164,13 @@ export interface components {
              *     collection is created.
              *
              *     Support for `~` was added in API version 1.21.0.
-             *      */
+             */
             collection_base_path: string;
             /**
              * @description Type of collection. A `mapped` collection requires an account on the
              *     system to access the administrator-defined collection. A `guest`
              *     collection allows users to share access to their data on a Storage
              *     Gateway by registering a credential with the GCS Manager.
-             *
              * @enum {string}
              */
             collection_type: "mapped" | "guest";
@@ -3118,16 +3179,19 @@ export interface components {
              * @description Id of the connector type that is used by this collection.
              */
             readonly connector_id?: string;
-            /** @description Email address of the support contact for this collection. This is
+            /**
+             * @description Email address of the support contact for this collection. This is
              *     visible to end users so that they may contact your organization for
              *     support.
-             *      */
+             */
             contact_email?: string | null;
-            /** @description Other non-email contact information for the collection, e.g.  phone
+            /**
+             * @description Other non-email contact information for the collection, e.g.  phone
              *     and mailing address. This is visible to end users for support.
-             *      */
+             */
             contact_info?: string | null;
-            /** @description Default directory when accessing the collection. This may include
+            /**
+             * @description Default directory when accessing the collection. This may include
              *     the special string `$USER` which is evaluated at access time to be
              *     the connector-specific username accessing the data.
              *
@@ -3135,56 +3199,64 @@ export interface components {
              *     value of `/`, this value can also begin with the values `/~/` and
              *     `$HOME`, which are replaced by the user's home directory, or `/` if
              *     the connector does not support the concept of a home directory.
-             *      */
+             */
             default_directory?: string;
             /** @description Flag indicating that this collection has been deleted */
             readonly deleted?: boolean;
-            /** @description Department within organization that runs the server(s). Searchable.
+            /**
+             * @description Department within organization that runs the server(s). Searchable.
              *     Optional. Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             department?: string | null;
             /** @description A description of the collection. */
             description?: string | null;
-            /** @description Flag indicating if guest collections on this mapped collection allow
+            /**
+             * @description Flag indicating if guest collections on this mapped collection allow
              *     anonymous write permissions or not. This flag is always true for high
              *     assurance collections. For non-high assurance mapped collections, the
              *     default value is false.
-             *      */
+             */
             disable_anonymous_writes?: boolean;
-            /** @description Flag indicating that this endpoint does not support computing
+            /**
+             * @description Flag indicating that this endpoint does not support computing
              *     checksums, needed for the verify_checksum option of transfer.
-             *      */
+             */
             disable_verify?: boolean;
-            /** @description Friendly name for the collection. Unicode string, max 128 characters,
+            /**
+             * @description Friendly name for the collection. Unicode string, max 128 characters,
              *     no new lines (`\r` or `\n`).
-             *      */
+             */
             display_name: string;
             domain?: components["schemas"]["Domain"];
-            /** @description DNS name of the virtual host serving this collection. For mapped
+            /**
+             * @description DNS name of the virtual host serving this collection. For mapped
              *     collections which do not have a custom domain, this may be specified
              *     as part of the input document to create the collection, otherwise this
              *     is a read-only property. When included in the input, the name is
              *     restricted to be a subdomain of the endpoint, and the input name label
              *     may not start with `m-` or `g-`.
-             *      */
+             */
             domain_name?: string;
-            /** @description Boolean flag indicating whether this collection should support
+            /**
+             * @description Boolean flag indicating whether this collection should support
              *     HTTPS. This value can be set on mapped collections or guest
              *     collections. However, it may not be set to true on a guest
              *     collection if the value on the related mapped collection is false.
-             *      */
+             */
             enable_https?: boolean;
-            /** @description Flag indicating whether all data transfers to and from this
+            /**
+             * @description Flag indicating whether all data transfers to and from this
              *     collection are always encrypted.
              *
              *     __New in v5.4.17__: If a mapped collection forces encryption, all
              *     of its guest collections must as well.  If this option is used on a
              *     mapped collection, the value is propagated to its guest collections.
-             *      */
+             */
             force_encryption?: boolean;
-            /** @description Flag indicating that this endpoint requires computing checksums,
+            /**
+             * @description Flag indicating that this endpoint requires computing checksums,
              *     needed for the verify_checksum option of transfer.
-             *      */
+             */
             force_verify?: boolean;
             /**
              * Format: uuid
@@ -3192,12 +3264,12 @@ export interface components {
              *     guest collections. During authorization, the authentication policy must
              *     be satisfied before permissions are considered. Read-only on guest
              *     collections. (**Added in API 1.15.0**)
-             *
              */
             guest_auth_policy_id?: string | null;
-            /** @description Flag indicating if this collection is created on a high assurance
+            /**
+             * @description Flag indicating if this collection is created on a high assurance
              *     Storage Gateway.
-             *      */
+             */
             readonly high_assurance?: boolean;
             /** @description HTTPS URL for the data on this collection. */
             readonly https_url?: string;
@@ -3205,25 +3277,25 @@ export interface components {
              * Format: uuid
              * @description Unique identifier for this collection. This is assigned by the GCS
              *     manager when creating a collection.
-             *
              */
             readonly id?: string;
             /**
              * Format: uuid
              * @description Globus Auth identity to who acts as the owner of this collection.
              *     This identity is an `administrator` on the collection.
-             *
              */
             identity_id?: string;
             /** @description Link to a web page with more information about the collection */
             info_link?: string | null;
-            /** @description List of search keywords for the endpoint. Optional. Unicode string,
+            /**
+             * @description List of search keywords for the endpoint. Optional. Unicode string,
              *     max 1024 characters total across all strings.
-             *      */
+             */
             keywords?: string[];
-            /** @description URL of the GCS Manager API service for the endpoint hosting this
+            /**
+             * @description URL of the GCS Manager API service for the endpoint hosting this
              *     collection.
-             *      */
+             */
             readonly manager_url?: string;
             /**
              * Format: uuid
@@ -3233,52 +3305,57 @@ export interface components {
              *     sharing (`allow_guest_collections`, `sharing_restrict_paths`) will
              *     always reflect the values in the Mapped Collection definition and
              *     may not be changed on this Guest Collection.
-             *
              */
             mapped_collection_id?: string;
-            /** @description Organization that runs the server(s) represented by the endpoint.
+            /**
+             * @description Organization that runs the server(s) represented by the endpoint.
              *     Optional to preserve backward compatibility, but will eventually be
              *     required and all clients are encouraged to require users to specify
              *     it.  Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             organization?: string;
             /** @description Connector-specific collection policies */
             policies?: components["schemas"]["S3CollectionPolicies_1_0_0"] | components["schemas"]["AzureBlobCollectionPolicies_1_0_0"] | components["schemas"]["BlackPearlCollectionPolicies_1_0_0"] | components["schemas"]["BoxCollectionPolicies_1_0_0"] | components["schemas"]["CephCollectionPolicies_1_0_0"] | components["schemas"]["DropboxCollectionPolicies_1_0_0"] | components["schemas"]["GoogleCloudStorageCollectionPolicies_1_0_0"] | components["schemas"]["GoogleDriveCollectionPolicies_1_0_0"] | components["schemas"]["HPSSCollectionPolicies_1_0_0"] | components["schemas"]["IrodsCollectionPolicies_1_0_0"] | components["schemas"]["OneDriveCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_1_0"] | components["schemas"]["PosixStagingCollectionPolicies_1_0_0"];
-            /** @description Flag indicating whether this collection is visible to other Globus
+            /**
+             * @description Flag indicating whether this collection is visible to other Globus
              *     users.
-             *      */
+             */
             public: boolean;
-            /** @description Flag indicating if the storage_gateway requires multi-factor
+            /**
+             * @description Flag indicating if the storage_gateway requires multi-factor
              *     authentication. Only applies to high assurance storage gateways.
-             *      */
+             */
             readonly require_mfa?: boolean;
-            /** @description Absolute root path of the collection. All data access
+            /**
+             * @description Absolute root path of the collection. All data access
              *     is done relative to this path. On a guest collection,
              *     this value is only visible if the caller has an
              *     administrator role on both the guest collection and the
              *     mapped collection it is created on.
-             *      */
+             */
             readonly root_path?: string;
-            /** @description Restrictions on which paths may be shared in guest collections related
+            /**
+             * @description Restrictions on which paths may be shared in guest collections related
              *     to this mapped collection. On the mapped collection, these paths are
              *     relative to the root_path property of the mapped collection. On a guest
              *     collection, they are absolute paths from the storage root.
-             *      */
+             */
             sharing_restrict_paths?: unknown | components["schemas"]["PathRestrictions"];
-            /** @description List of connector-specific usernames allowed to create new guest
+            /**
+             * @description List of connector-specific usernames allowed to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_allow?: string[] | null;
-            /** @description List of connector-specific usernames denied access to create new guest
+            /**
+             * @description List of connector-specific usernames denied access to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_deny?: string[] | null;
             /**
              * Format: uuid
              * @description Unique ID of the Storage Gateway which this collection provides
              *     access to. This value can not change after the collection is
              *     created.
-             *
              */
             storage_gateway_id?: string;
             /** @description TLSFTP URL for the data on this collection. */
@@ -3288,20 +3365,21 @@ export interface components {
              * @description The ID of the User Credential which is used to access data on this
              *     collection. This credential must be owned by the collection's
              *     identity_id.
-             *
              */
             user_credential_id?: string;
-            /** @description A message for clients to display to users when interacting with
+            /**
+             * @description A message for clients to display to users when interacting with
              *     this collection. For guest collections, this property is read-only
              *     and is the same as the value of its related mapped collection. The
              *     message may be up to 256 characters long.
-             *      */
+             */
             user_message?: string | null;
-            /** @description Link to additional messaging for clients to display to users when
+            /**
+             * @description Link to additional messaging for clients to display to users when
              *     interacting with this endpoint, linked to an HTTP or HTTPS URL. For
              *     guest collections, this property is read-only and is the same as the
              *     value of its related mapped collection.
-             *      */
+             */
             user_message_link?: string | null;
         };
         /**
@@ -3339,7 +3417,6 @@ export interface components {
          *     Version 1.8.0 adds the delete_protected property. While it is set to true
          *     on a mapped collection, the collection may not be deleted. As of GCS 5.4.69,
          *     this is true by default.
-         *
          */
         Collection_1_8_0: {
             /**
@@ -3348,17 +3425,20 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "collection#1.8.0";
-            /** @description Flag indicating if this Collection allows users to create guest
+            /**
+             * @description Flag indicating if this Collection allows users to create guest
              *     collections on it. This is always false if this is a guest collection.
              *     If this is changed to false on a mapped collection with associated
              *     guest collections, those collections will no longer be accessible.
-             *      */
+             */
             allow_guest_collections?: boolean;
-            /** @description Timeout (in minutes) during which a user is required to have
+            /**
+             * @description Timeout (in minutes) during which a user is required to have
              *     authenticated in a session to access this storage gateway.
-             *      */
+             */
             readonly authentication_timeout_mins?: number;
-            /** @description Path to be interpreted as the base path when creating a new collection.
+            /**
+             * @description Path to be interpreted as the base path when creating a new collection.
              *     It is interpreted differently depending on the collection type being
              *     created. For a mapped collection, this is an absolute path on the
              *     storage system named by the storage_gateway_id.  For a guest collection,
@@ -3368,14 +3448,13 @@ export interface components {
              *     collection is created.
              *
              *     Support for `~` was added in API version 1.21.0.
-             *      */
+             */
             collection_base_path: string;
             /**
              * @description Type of collection. A `mapped` collection requires an account on the
              *     system to access the administrator-defined collection. A `guest`
              *     collection allows users to share access to their data on a Storage
              *     Gateway by registering a credential with the GCS Manager.
-             *
              * @enum {string}
              */
             collection_type: "mapped" | "guest";
@@ -3384,16 +3463,19 @@ export interface components {
              * @description Id of the connector type that is used by this collection.
              */
             readonly connector_id?: string;
-            /** @description Email address of the support contact for this collection. This is
+            /**
+             * @description Email address of the support contact for this collection. This is
              *     visible to end users so that they may contact your organization for
              *     support.
-             *      */
+             */
             contact_email?: string | null;
-            /** @description Other non-email contact information for the collection, e.g.  phone
+            /**
+             * @description Other non-email contact information for the collection, e.g.  phone
              *     and mailing address. This is visible to end users for support.
-             *      */
+             */
             contact_info?: string | null;
-            /** @description Default directory when accessing the collection. This may include
+            /**
+             * @description Default directory when accessing the collection. This may include
              *     the special string `$USER` which is evaluated at access time to be
              *     the connector-specific username accessing the data.
              *
@@ -3401,61 +3483,70 @@ export interface components {
              *     value of `/`, this value can also begin with the values `/~/` and
              *     `$HOME`, which are replaced by the user's home directory, or `/` if
              *     the connector does not support the concept of a home directory.
-             *      */
+             */
             default_directory?: string;
-            /** @description If set to true, this collection can not be deleted. This property
+            /**
+             * @description If set to true, this collection can not be deleted. This property
              *     is available only on mapped collections. As of GCS 5.4.69, this is
              *     true by default.
-             *      */
+             */
             delete_protected?: boolean;
             /** @description Flag indicating that this collection has been deleted */
             readonly deleted?: boolean;
-            /** @description Department within organization that runs the server(s). Searchable.
+            /**
+             * @description Department within organization that runs the server(s). Searchable.
              *     Optional. Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             department?: string | null;
             /** @description A description of the collection. */
             description?: string | null;
-            /** @description Flag indicating if guest collections on this mapped collection allow
+            /**
+             * @description Flag indicating if guest collections on this mapped collection allow
              *     anonymous write permissions or not. This flag is always true for high
              *     assurance collections. For non-high assurance mapped collections, the
              *     default value is false.
-             *      */
+             */
             disable_anonymous_writes?: boolean;
-            /** @description Flag indicating that this endpoint does not support computing
+            /**
+             * @description Flag indicating that this endpoint does not support computing
              *     checksums, needed for the verify_checksum option of transfer.
-             *      */
+             */
             disable_verify?: boolean;
-            /** @description Friendly name for the collection. Unicode string, max 128 characters,
+            /**
+             * @description Friendly name for the collection. Unicode string, max 128 characters,
              *     no new lines (`\r` or `\n`).
-             *      */
+             */
             display_name: string;
             domain?: components["schemas"]["Domain"];
-            /** @description DNS name of the virtual host serving this collection. For mapped
+            /**
+             * @description DNS name of the virtual host serving this collection. For mapped
              *     collections which do not have a custom domain, this may be specified
              *     as part of the input document to create the collection, otherwise this
              *     is a read-only property. When included in the input, the name is
              *     restricted to be a subdomain of the endpoint, and the input name label
              *     may not start with `m-` or `g-`.
-             *      */
+             */
             domain_name?: string;
-            /** @description Boolean flag indicating whether this collection should support
+            /**
+             * @description Boolean flag indicating whether this collection should support
              *     HTTPS. This value can be set on mapped collections or guest
              *     collections. However, it may not be set to true on a guest
              *     collection if the value on the related mapped collection is false.
-             *      */
+             */
             enable_https?: boolean;
-            /** @description Flag indicating whether all data transfers to and from this
+            /**
+             * @description Flag indicating whether all data transfers to and from this
              *     collection are always encrypted.
              *
              *     __New in v5.4.17__: If a mapped collection forces encryption, all
              *     of its guest collections must as well.  If this option is used on a
              *     mapped collection, the value is propagated to its guest collections.
-             *      */
+             */
             force_encryption?: boolean;
-            /** @description Flag indicating that this endpoint requires computing checksums,
+            /**
+             * @description Flag indicating that this endpoint requires computing checksums,
              *     needed for the verify_checksum option of transfer.
-             *      */
+             */
             force_verify?: boolean;
             /**
              * Format: uuid
@@ -3463,12 +3554,12 @@ export interface components {
              *     guest collections. During authorization, the authentication policy must
              *     be satisfied before permissions are considered. Read-only on guest
              *     collections. (**Added in API 1.15.0**)
-             *
              */
             guest_auth_policy_id?: string | null;
-            /** @description Flag indicating if this collection is created on a high assurance
+            /**
+             * @description Flag indicating if this collection is created on a high assurance
              *     Storage Gateway.
-             *      */
+             */
             readonly high_assurance?: boolean;
             /** @description HTTPS URL for the data on this collection. */
             readonly https_url?: string;
@@ -3476,25 +3567,25 @@ export interface components {
              * Format: uuid
              * @description Unique identifier for this collection. This is assigned by the GCS
              *     manager when creating a collection.
-             *
              */
             readonly id?: string;
             /**
              * Format: uuid
              * @description Globus Auth identity to who acts as the owner of this collection.
              *     This identity is an `administrator` on the collection.
-             *
              */
             identity_id?: string;
             /** @description Link to a web page with more information about the collection */
             info_link?: string | null;
-            /** @description List of search keywords for the endpoint. Optional. Unicode string,
+            /**
+             * @description List of search keywords for the endpoint. Optional. Unicode string,
              *     max 1024 characters total across all strings.
-             *      */
+             */
             keywords?: string[];
-            /** @description URL of the GCS Manager API service for the endpoint hosting this
+            /**
+             * @description URL of the GCS Manager API service for the endpoint hosting this
              *     collection.
-             *      */
+             */
             readonly manager_url?: string;
             /**
              * Format: uuid
@@ -3504,52 +3595,57 @@ export interface components {
              *     sharing (`allow_guest_collections`, `sharing_restrict_paths`) will
              *     always reflect the values in the Mapped Collection definition and
              *     may not be changed on this Guest Collection.
-             *
              */
             mapped_collection_id?: string;
-            /** @description Organization that runs the server(s) represented by the endpoint.
+            /**
+             * @description Organization that runs the server(s) represented by the endpoint.
              *     Optional to preserve backward compatibility, but will eventually be
              *     required and all clients are encouraged to require users to specify
              *     it.  Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             organization?: string;
             /** @description Connector-specific collection policies */
             policies?: components["schemas"]["S3CollectionPolicies_1_0_0"] | components["schemas"]["AzureBlobCollectionPolicies_1_0_0"] | components["schemas"]["BlackPearlCollectionPolicies_1_0_0"] | components["schemas"]["BoxCollectionPolicies_1_0_0"] | components["schemas"]["CephCollectionPolicies_1_0_0"] | components["schemas"]["DropboxCollectionPolicies_1_0_0"] | components["schemas"]["GoogleCloudStorageCollectionPolicies_1_0_0"] | components["schemas"]["GoogleDriveCollectionPolicies_1_0_0"] | components["schemas"]["HPSSCollectionPolicies_1_0_0"] | components["schemas"]["IrodsCollectionPolicies_1_0_0"] | components["schemas"]["OneDriveCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_1_0"] | components["schemas"]["PosixStagingCollectionPolicies_1_0_0"];
-            /** @description Flag indicating whether this collection is visible to other Globus
+            /**
+             * @description Flag indicating whether this collection is visible to other Globus
              *     users.
-             *      */
+             */
             public: boolean;
-            /** @description Flag indicating if the storage_gateway requires multi-factor
+            /**
+             * @description Flag indicating if the storage_gateway requires multi-factor
              *     authentication. Only applies to high assurance storage gateways.
-             *      */
+             */
             readonly require_mfa?: boolean;
-            /** @description Absolute root path of the collection. All data access
+            /**
+             * @description Absolute root path of the collection. All data access
              *     is done relative to this path. On a guest collection,
              *     this value is only visible if the caller has an
              *     administrator role on both the guest collection and the
              *     mapped collection it is created on.
-             *      */
+             */
             readonly root_path?: string;
-            /** @description Restrictions on which paths may be shared in guest collections related
+            /**
+             * @description Restrictions on which paths may be shared in guest collections related
              *     to this mapped collection. On the mapped collection, these paths are
              *     relative to the root_path property of the mapped collection. On a guest
              *     collection, they are absolute paths from the storage root.
-             *      */
+             */
             sharing_restrict_paths?: unknown | components["schemas"]["PathRestrictions"];
-            /** @description List of connector-specific usernames allowed to create new guest
+            /**
+             * @description List of connector-specific usernames allowed to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_allow?: string[] | null;
-            /** @description List of connector-specific usernames denied access to create new guest
+            /**
+             * @description List of connector-specific usernames denied access to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_deny?: string[] | null;
             /**
              * Format: uuid
              * @description Unique ID of the Storage Gateway which this collection provides
              *     access to. This value can not change after the collection is
              *     created.
-             *
              */
             storage_gateway_id?: string;
             /** @description TLSFTP URL for the data on this collection. */
@@ -3559,20 +3655,21 @@ export interface components {
              * @description The ID of the User Credential which is used to access data on this
              *     collection. This credential must be owned by the collection's
              *     identity_id.
-             *
              */
             user_credential_id?: string;
-            /** @description A message for clients to display to users when interacting with
+            /**
+             * @description A message for clients to display to users when interacting with
              *     this collection. For guest collections, this property is read-only
              *     and is the same as the value of its related mapped collection. The
              *     message may be up to 256 characters long.
-             *      */
+             */
             user_message?: string | null;
-            /** @description Link to additional messaging for clients to display to users when
+            /**
+             * @description Link to additional messaging for clients to display to users when
              *     interacting with this endpoint, linked to an HTTP or HTTPS URL. For
              *     guest collections, this property is read-only and is the same as the
              *     value of its related mapped collection.
-             *      */
+             */
             user_message_link?: string | null;
         };
         /**
@@ -3612,7 +3709,6 @@ export interface components {
          *     this is true by default.
          *
          *     Version 1.9.0 adds the read-only last_access and created_at properties.
-         *
          */
         Collection_1_9_0: {
             /**
@@ -3621,17 +3717,20 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "collection#1.9.0";
-            /** @description Flag indicating if this Collection allows users to create guest
+            /**
+             * @description Flag indicating if this Collection allows users to create guest
              *     collections on it. This is always false if this is a guest collection.
              *     If this is changed to false on a mapped collection with associated
              *     guest collections, those collections will no longer be accessible.
-             *      */
+             */
             allow_guest_collections?: boolean;
-            /** @description Timeout (in minutes) during which a user is required to have
+            /**
+             * @description Timeout (in minutes) during which a user is required to have
              *     authenticated in a session to access this storage gateway.
-             *      */
+             */
             readonly authentication_timeout_mins?: number;
-            /** @description Path to be interpreted as the base path when creating a new collection.
+            /**
+             * @description Path to be interpreted as the base path when creating a new collection.
              *     It is interpreted differently depending on the collection type being
              *     created. For a mapped collection, this is an absolute path on the
              *     storage system named by the storage_gateway_id.  For a guest collection,
@@ -3641,14 +3740,13 @@ export interface components {
              *     collection is created.
              *
              *     Support for `~` was added in API version 1.21.0.
-             *      */
+             */
             collection_base_path: string;
             /**
              * @description Type of collection. A `mapped` collection requires an account on the
              *     system to access the administrator-defined collection. A `guest`
              *     collection allows users to share access to their data on a Storage
              *     Gateway by registering a credential with the GCS Manager.
-             *
              * @enum {string}
              */
             collection_type: "mapped" | "guest";
@@ -3657,21 +3755,24 @@ export interface components {
              * @description Id of the connector type that is used by this collection.
              */
             readonly connector_id?: string;
-            /** @description Email address of the support contact for this collection. This is
+            /**
+             * @description Email address of the support contact for this collection. This is
              *     visible to end users so that they may contact your organization for
              *     support.
-             *      */
+             */
             contact_email?: string | null;
-            /** @description Other non-email contact information for the collection, e.g.  phone
+            /**
+             * @description Other non-email contact information for the collection, e.g.  phone
              *     and mailing address. This is visible to end users for support.
-             *      */
+             */
             contact_info?: string | null;
             /**
              * Format: date
              * @description Date on which this collection was created
              */
             readonly created_at?: string | null;
-            /** @description Default directory when accessing the collection. This may include
+            /**
+             * @description Default directory when accessing the collection. This may include
              *     the special string `$USER` which is evaluated at access time to be
              *     the connector-specific username accessing the data.
              *
@@ -3679,61 +3780,70 @@ export interface components {
              *     value of `/`, this value can also begin with the values `/~/` and
              *     `$HOME`, which are replaced by the user's home directory, or `/` if
              *     the connector does not support the concept of a home directory.
-             *      */
+             */
             default_directory?: string;
-            /** @description If set to true, this collection can not be deleted. This property
+            /**
+             * @description If set to true, this collection can not be deleted. This property
              *     is available only on mapped collections. As of GCS 5.4.69, this is
              *     true by default.
-             *      */
+             */
             delete_protected?: boolean;
             /** @description Flag indicating that this collection has been deleted */
             readonly deleted?: boolean;
-            /** @description Department within organization that runs the server(s). Searchable.
+            /**
+             * @description Department within organization that runs the server(s). Searchable.
              *     Optional. Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             department?: string | null;
             /** @description A description of the collection. */
             description?: string | null;
-            /** @description Flag indicating if guest collections on this mapped collection allow
+            /**
+             * @description Flag indicating if guest collections on this mapped collection allow
              *     anonymous write permissions or not. This flag is always true for high
              *     assurance collections. For non-high assurance mapped collections, the
              *     default value is false.
-             *      */
+             */
             disable_anonymous_writes?: boolean;
-            /** @description Flag indicating that this endpoint does not support computing
+            /**
+             * @description Flag indicating that this endpoint does not support computing
              *     checksums, needed for the verify_checksum option of transfer.
-             *      */
+             */
             disable_verify?: boolean;
-            /** @description Friendly name for the collection. Unicode string, max 128 characters,
+            /**
+             * @description Friendly name for the collection. Unicode string, max 128 characters,
              *     no new lines (`\r` or `\n`).
-             *      */
+             */
             display_name: string;
             domain?: components["schemas"]["Domain"];
-            /** @description DNS name of the virtual host serving this collection. For mapped
+            /**
+             * @description DNS name of the virtual host serving this collection. For mapped
              *     collections which do not have a custom domain, this may be specified
              *     as part of the input document to create the collection, otherwise this
              *     is a read-only property. When included in the input, the name is
              *     restricted to be a subdomain of the endpoint, and the input name label
              *     may not start with `m-` or `g-`.
-             *      */
+             */
             domain_name?: string;
-            /** @description Boolean flag indicating whether this collection should support
+            /**
+             * @description Boolean flag indicating whether this collection should support
              *     HTTPS. This value can be set on mapped collections or guest
              *     collections. However, it may not be set to true on a guest
              *     collection if the value on the related mapped collection is false.
-             *      */
+             */
             enable_https?: boolean;
-            /** @description Flag indicating whether all data transfers to and from this
+            /**
+             * @description Flag indicating whether all data transfers to and from this
              *     collection are always encrypted.
              *
              *     __New in v5.4.17__: If a mapped collection forces encryption, all
              *     of its guest collections must as well.  If this option is used on a
              *     mapped collection, the value is propagated to its guest collections.
-             *      */
+             */
             force_encryption?: boolean;
-            /** @description Flag indicating that this endpoint requires computing checksums,
+            /**
+             * @description Flag indicating that this endpoint requires computing checksums,
              *     needed for the verify_checksum option of transfer.
-             *      */
+             */
             force_verify?: boolean;
             /**
              * Format: uuid
@@ -3741,12 +3851,12 @@ export interface components {
              *     guest collections. During authorization, the authentication policy must
              *     be satisfied before permissions are considered. Read-only on guest
              *     collections. (**Added in API 1.15.0**)
-             *
              */
             guest_auth_policy_id?: string | null;
-            /** @description Flag indicating if this collection is created on a high assurance
+            /**
+             * @description Flag indicating if this collection is created on a high assurance
              *     Storage Gateway.
-             *      */
+             */
             readonly high_assurance?: boolean;
             /** @description HTTPS URL for the data on this collection. */
             readonly https_url?: string;
@@ -3754,30 +3864,30 @@ export interface components {
              * Format: uuid
              * @description Unique identifier for this collection. This is assigned by the GCS
              *     manager when creating a collection.
-             *
              */
             readonly id?: string;
             /**
              * Format: uuid
              * @description Globus Auth identity to who acts as the owner of this collection.
              *     This identity is an `administrator` on the collection.
-             *
              */
             identity_id?: string;
             /** @description Link to a web page with more information about the collection */
             info_link?: string | null;
-            /** @description List of search keywords for the endpoint. Optional. Unicode string,
+            /**
+             * @description List of search keywords for the endpoint. Optional. Unicode string,
              *     max 1024 characters total across all strings.
-             *      */
+             */
             keywords?: string[];
             /**
              * Format: date
              * @description Date on which this collection was last accessed
              */
             readonly last_access?: string | null;
-            /** @description URL of the GCS Manager API service for the endpoint hosting this
+            /**
+             * @description URL of the GCS Manager API service for the endpoint hosting this
              *     collection.
-             *      */
+             */
             readonly manager_url?: string;
             /**
              * Format: uuid
@@ -3787,52 +3897,57 @@ export interface components {
              *     sharing (`allow_guest_collections`, `sharing_restrict_paths`) will
              *     always reflect the values in the Mapped Collection definition and
              *     may not be changed on this Guest Collection.
-             *
              */
             mapped_collection_id?: string;
-            /** @description Organization that runs the server(s) represented by the endpoint.
+            /**
+             * @description Organization that runs the server(s) represented by the endpoint.
              *     Optional to preserve backward compatibility, but will eventually be
              *     required and all clients are encouraged to require users to specify
              *     it.  Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             organization?: string;
             /** @description Connector-specific collection policies */
             policies?: components["schemas"]["S3CollectionPolicies_1_0_0"] | components["schemas"]["AzureBlobCollectionPolicies_1_0_0"] | components["schemas"]["BlackPearlCollectionPolicies_1_0_0"] | components["schemas"]["BoxCollectionPolicies_1_0_0"] | components["schemas"]["CephCollectionPolicies_1_0_0"] | components["schemas"]["DropboxCollectionPolicies_1_0_0"] | components["schemas"]["GoogleCloudStorageCollectionPolicies_1_0_0"] | components["schemas"]["GoogleDriveCollectionPolicies_1_0_0"] | components["schemas"]["HPSSCollectionPolicies_1_0_0"] | components["schemas"]["IrodsCollectionPolicies_1_0_0"] | components["schemas"]["OneDriveCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_1_0"] | components["schemas"]["PosixStagingCollectionPolicies_1_0_0"];
-            /** @description Flag indicating whether this collection is visible to other Globus
+            /**
+             * @description Flag indicating whether this collection is visible to other Globus
              *     users.
-             *      */
+             */
             public: boolean;
-            /** @description Flag indicating if the storage_gateway requires multi-factor
+            /**
+             * @description Flag indicating if the storage_gateway requires multi-factor
              *     authentication. Only applies to high assurance storage gateways.
-             *      */
+             */
             readonly require_mfa?: boolean;
-            /** @description Absolute root path of the collection. All data access
+            /**
+             * @description Absolute root path of the collection. All data access
              *     is done relative to this path. On a guest collection,
              *     this value is only visible if the caller has an
              *     administrator role on both the guest collection and the
              *     mapped collection it is created on.
-             *      */
+             */
             readonly root_path?: string;
-            /** @description Restrictions on which paths may be shared in guest collections related
+            /**
+             * @description Restrictions on which paths may be shared in guest collections related
              *     to this mapped collection. On the mapped collection, these paths are
              *     relative to the root_path property of the mapped collection. On a guest
              *     collection, they are absolute paths from the storage root.
-             *      */
+             */
             sharing_restrict_paths?: unknown | components["schemas"]["PathRestrictions"];
-            /** @description List of connector-specific usernames allowed to create new guest
+            /**
+             * @description List of connector-specific usernames allowed to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_allow?: string[] | null;
-            /** @description List of connector-specific usernames denied access to create new guest
+            /**
+             * @description List of connector-specific usernames denied access to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_deny?: string[] | null;
             /**
              * Format: uuid
              * @description Unique ID of the Storage Gateway which this collection provides
              *     access to. This value can not change after the collection is
              *     created.
-             *
              */
             storage_gateway_id?: string;
             /** @description TLSFTP URL for the data on this collection. */
@@ -3842,20 +3957,21 @@ export interface components {
              * @description The ID of the User Credential which is used to access data on this
              *     collection. This credential must be owned by the collection's
              *     identity_id.
-             *
              */
             user_credential_id?: string;
-            /** @description A message for clients to display to users when interacting with
+            /**
+             * @description A message for clients to display to users when interacting with
              *     this collection. For guest collections, this property is read-only
              *     and is the same as the value of its related mapped collection. The
              *     message may be up to 256 characters long.
-             *      */
+             */
             user_message?: string | null;
-            /** @description Link to additional messaging for clients to display to users when
+            /**
+             * @description Link to additional messaging for clients to display to users when
              *     interacting with this endpoint, linked to an HTTP or HTTPS URL. For
              *     guest collections, this property is read-only and is the same as the
              *     value of its related mapped collection.
-             *      */
+             */
             user_message_link?: string | null;
         };
         /**
@@ -3897,7 +4013,6 @@ export interface components {
          *     Version 1.9.0 adds the read-only last_access and created_at properties.
          *
          *     Version 1.10.0 adds the acl_expiration_mins property to HA mapped collections.
-         *
          */
         Collection_1_10_0: {
             /**
@@ -3906,22 +4021,26 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "collection#1.10.0";
-            /** @description Length of time that guest collection permissions are valid.  Only
+            /**
+             * @description Length of time that guest collection permissions are valid.  Only
              *     settable on HA mapped collections and used by the guest collections
              *     attached to it. Set to null to delete any previously set value.
-             *      */
+             */
             acl_expiration_mins?: number | null;
-            /** @description Flag indicating if this Collection allows users to create guest
+            /**
+             * @description Flag indicating if this Collection allows users to create guest
              *     collections on it. This is always false if this is a guest collection.
              *     If this is changed to false on a mapped collection with associated
              *     guest collections, those collections will no longer be accessible.
-             *      */
+             */
             allow_guest_collections?: boolean;
-            /** @description Timeout (in minutes) during which a user is required to have
+            /**
+             * @description Timeout (in minutes) during which a user is required to have
              *     authenticated in a session to access this storage gateway.
-             *      */
+             */
             readonly authentication_timeout_mins?: number;
-            /** @description Path to be interpreted as the base path when creating a new collection.
+            /**
+             * @description Path to be interpreted as the base path when creating a new collection.
              *     It is interpreted differently depending on the collection type being
              *     created. For a mapped collection, this is an absolute path on the
              *     storage system named by the storage_gateway_id.  For a guest collection,
@@ -3931,14 +4050,13 @@ export interface components {
              *     collection is created.
              *
              *     Support for `~` was added in API version 1.21.0.
-             *      */
+             */
             collection_base_path: string;
             /**
              * @description Type of collection. A `mapped` collection requires an account on the
              *     system to access the administrator-defined collection. A `guest`
              *     collection allows users to share access to their data on a Storage
              *     Gateway by registering a credential with the GCS Manager.
-             *
              * @enum {string}
              */
             collection_type: "mapped" | "guest";
@@ -3947,21 +4065,24 @@ export interface components {
              * @description Id of the connector type that is used by this collection.
              */
             readonly connector_id?: string;
-            /** @description Email address of the support contact for this collection. This is
+            /**
+             * @description Email address of the support contact for this collection. This is
              *     visible to end users so that they may contact your organization for
              *     support.
-             *      */
+             */
             contact_email?: string | null;
-            /** @description Other non-email contact information for the collection, e.g.  phone
+            /**
+             * @description Other non-email contact information for the collection, e.g.  phone
              *     and mailing address. This is visible to end users for support.
-             *      */
+             */
             contact_info?: string | null;
             /**
              * Format: date
              * @description Date on which this collection was created
              */
             readonly created_at?: string | null;
-            /** @description Default directory when accessing the collection. This may include
+            /**
+             * @description Default directory when accessing the collection. This may include
              *     the special string `$USER` which is evaluated at access time to be
              *     the connector-specific username accessing the data.
              *
@@ -3969,61 +4090,70 @@ export interface components {
              *     value of `/`, this value can also begin with the values `/~/` and
              *     `$HOME`, which are replaced by the user's home directory, or `/` if
              *     the connector does not support the concept of a home directory.
-             *      */
+             */
             default_directory?: string;
-            /** @description If set to true, this collection can not be deleted. This property
+            /**
+             * @description If set to true, this collection can not be deleted. This property
              *     is available only on mapped collections. As of GCS 5.4.69, this is
              *     true by default.
-             *      */
+             */
             delete_protected?: boolean;
             /** @description Flag indicating that this collection has been deleted */
             readonly deleted?: boolean;
-            /** @description Department within organization that runs the server(s). Searchable.
+            /**
+             * @description Department within organization that runs the server(s). Searchable.
              *     Optional. Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             department?: string | null;
             /** @description A description of the collection. */
             description?: string | null;
-            /** @description Flag indicating if guest collections on this mapped collection allow
+            /**
+             * @description Flag indicating if guest collections on this mapped collection allow
              *     anonymous write permissions or not. This flag is always true for high
              *     assurance collections. For non-high assurance mapped collections, the
              *     default value is false.
-             *      */
+             */
             disable_anonymous_writes?: boolean;
-            /** @description Flag indicating that this endpoint does not support computing
+            /**
+             * @description Flag indicating that this endpoint does not support computing
              *     checksums, needed for the verify_checksum option of transfer.
-             *      */
+             */
             disable_verify?: boolean;
-            /** @description Friendly name for the collection. Unicode string, max 128 characters,
+            /**
+             * @description Friendly name for the collection. Unicode string, max 128 characters,
              *     no new lines (`\r` or `\n`).
-             *      */
+             */
             display_name: string;
             domain?: components["schemas"]["Domain"];
-            /** @description DNS name of the virtual host serving this collection. For mapped
+            /**
+             * @description DNS name of the virtual host serving this collection. For mapped
              *     collections which do not have a custom domain, this may be specified
              *     as part of the input document to create the collection, otherwise this
              *     is a read-only property. When included in the input, the name is
              *     restricted to be a subdomain of the endpoint, and the input name label
              *     may not start with `m-` or `g-`.
-             *      */
+             */
             domain_name?: string;
-            /** @description Boolean flag indicating whether this collection should support
+            /**
+             * @description Boolean flag indicating whether this collection should support
              *     HTTPS. This value can be set on mapped collections or guest
              *     collections. However, it may not be set to true on a guest
              *     collection if the value on the related mapped collection is false.
-             *      */
+             */
             enable_https?: boolean;
-            /** @description Flag indicating whether all data transfers to and from this
+            /**
+             * @description Flag indicating whether all data transfers to and from this
              *     collection are always encrypted.
              *
              *     __New in v5.4.17__: If a mapped collection forces encryption, all
              *     of its guest collections must as well.  If this option is used on a
              *     mapped collection, the value is propagated to its guest collections.
-             *      */
+             */
             force_encryption?: boolean;
-            /** @description Flag indicating that this endpoint requires computing checksums,
+            /**
+             * @description Flag indicating that this endpoint requires computing checksums,
              *     needed for the verify_checksum option of transfer.
-             *      */
+             */
             force_verify?: boolean;
             /**
              * Format: uuid
@@ -4031,12 +4161,12 @@ export interface components {
              *     guest collections. During authorization, the authentication policy must
              *     be satisfied before permissions are considered. Read-only on guest
              *     collections. (**Added in API 1.15.0**)
-             *
              */
             guest_auth_policy_id?: string | null;
-            /** @description Flag indicating if this collection is created on a high assurance
+            /**
+             * @description Flag indicating if this collection is created on a high assurance
              *     Storage Gateway.
-             *      */
+             */
             readonly high_assurance?: boolean;
             /** @description HTTPS URL for the data on this collection. */
             readonly https_url?: string;
@@ -4044,30 +4174,30 @@ export interface components {
              * Format: uuid
              * @description Unique identifier for this collection. This is assigned by the GCS
              *     manager when creating a collection.
-             *
              */
             readonly id?: string;
             /**
              * Format: uuid
              * @description Globus Auth identity to who acts as the owner of this collection.
              *     This identity is an `administrator` on the collection.
-             *
              */
             identity_id?: string;
             /** @description Link to a web page with more information about the collection */
             info_link?: string | null;
-            /** @description List of search keywords for the endpoint. Optional. Unicode string,
+            /**
+             * @description List of search keywords for the endpoint. Optional. Unicode string,
              *     max 1024 characters total across all strings.
-             *      */
+             */
             keywords?: string[];
             /**
              * Format: date
              * @description Date on which this collection was last accessed
              */
             readonly last_access?: string | null;
-            /** @description URL of the GCS Manager API service for the endpoint hosting this
+            /**
+             * @description URL of the GCS Manager API service for the endpoint hosting this
              *     collection.
-             *      */
+             */
             readonly manager_url?: string;
             /**
              * Format: uuid
@@ -4077,52 +4207,57 @@ export interface components {
              *     sharing (`allow_guest_collections`, `sharing_restrict_paths`) will
              *     always reflect the values in the Mapped Collection definition and
              *     may not be changed on this Guest Collection.
-             *
              */
             mapped_collection_id?: string;
-            /** @description Organization that runs the server(s) represented by the endpoint.
+            /**
+             * @description Organization that runs the server(s) represented by the endpoint.
              *     Optional to preserve backward compatibility, but will eventually be
              *     required and all clients are encouraged to require users to specify
              *     it.  Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             organization?: string;
             /** @description Connector-specific collection policies */
             policies?: components["schemas"]["S3CollectionPolicies_1_0_0"] | components["schemas"]["AzureBlobCollectionPolicies_1_0_0"] | components["schemas"]["BlackPearlCollectionPolicies_1_0_0"] | components["schemas"]["BoxCollectionPolicies_1_0_0"] | components["schemas"]["CephCollectionPolicies_1_0_0"] | components["schemas"]["DropboxCollectionPolicies_1_0_0"] | components["schemas"]["GoogleCloudStorageCollectionPolicies_1_0_0"] | components["schemas"]["GoogleDriveCollectionPolicies_1_0_0"] | components["schemas"]["HPSSCollectionPolicies_1_0_0"] | components["schemas"]["IrodsCollectionPolicies_1_0_0"] | components["schemas"]["OneDriveCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_1_0"] | components["schemas"]["PosixStagingCollectionPolicies_1_0_0"];
-            /** @description Flag indicating whether this collection is visible to other Globus
+            /**
+             * @description Flag indicating whether this collection is visible to other Globus
              *     users.
-             *      */
+             */
             public: boolean;
-            /** @description Flag indicating if the storage_gateway requires multi-factor
+            /**
+             * @description Flag indicating if the storage_gateway requires multi-factor
              *     authentication. Only applies to high assurance storage gateways.
-             *      */
+             */
             readonly require_mfa?: boolean;
-            /** @description Absolute root path of the collection. All data access
+            /**
+             * @description Absolute root path of the collection. All data access
              *     is done relative to this path. On a guest collection,
              *     this value is only visible if the caller has an
              *     administrator role on both the guest collection and the
              *     mapped collection it is created on.
-             *      */
+             */
             readonly root_path?: string;
-            /** @description Restrictions on which paths may be shared in guest collections related
+            /**
+             * @description Restrictions on which paths may be shared in guest collections related
              *     to this mapped collection. On the mapped collection, these paths are
              *     relative to the root_path property of the mapped collection. On a guest
              *     collection, they are absolute paths from the storage root.
-             *      */
+             */
             sharing_restrict_paths?: unknown | components["schemas"]["PathRestrictions"];
-            /** @description List of connector-specific usernames allowed to create new guest
+            /**
+             * @description List of connector-specific usernames allowed to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_allow?: string[] | null;
-            /** @description List of connector-specific usernames denied access to create new guest
+            /**
+             * @description List of connector-specific usernames denied access to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_deny?: string[] | null;
             /**
              * Format: uuid
              * @description Unique ID of the Storage Gateway which this collection provides
              *     access to. This value can not change after the collection is
              *     created.
-             *
              */
             storage_gateway_id?: string;
             /** @description TLSFTP URL for the data on this collection. */
@@ -4132,20 +4267,21 @@ export interface components {
              * @description The ID of the User Credential which is used to access data on this
              *     collection. This credential must be owned by the collection's
              *     identity_id.
-             *
              */
             user_credential_id?: string;
-            /** @description A message for clients to display to users when interacting with
+            /**
+             * @description A message for clients to display to users when interacting with
              *     this collection. For guest collections, this property is read-only
              *     and is the same as the value of its related mapped collection. The
              *     message may be up to 256 characters long.
-             *      */
+             */
             user_message?: string | null;
-            /** @description Link to additional messaging for clients to display to users when
+            /**
+             * @description Link to additional messaging for clients to display to users when
              *     interacting with this endpoint, linked to an HTTP or HTTPS URL. For
              *     guest collections, this property is read-only and is the same as the
              *     value of its related mapped collection.
-             *      */
+             */
             user_message_link?: string | null;
         };
         /**
@@ -4189,7 +4325,6 @@ export interface components {
          *     Version 1.10.0 adds the acl_expiration_mins property to HA mapped collections.
          *
          *     Version 1.11.0 adds the acl_expiration_mins property to HA guest collection.
-         *
          */
         Collection_1_11_0: {
             /**
@@ -4198,24 +4333,28 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "collection#1.11.0";
-            /** @description Length of time that guest collection permissions are valid.  Only
+            /**
+             * @description Length of time that guest collection permissions are valid.  Only
              *     settable on HA guest collections and HA mapped collections and used
              *     by guest collections attached to it. When set on both the mapped and
              *     guest collections, the lesser value is in effect. Set to null to
              *     delete any previously set value.
-             *      */
+             */
             acl_expiration_mins?: number | null;
-            /** @description Flag indicating if this Collection allows users to create guest
+            /**
+             * @description Flag indicating if this Collection allows users to create guest
              *     collections on it. This is always false if this is a guest collection.
              *     If this is changed to false on a mapped collection with associated
              *     guest collections, those collections will no longer be accessible.
-             *      */
+             */
             allow_guest_collections?: boolean;
-            /** @description Timeout (in minutes) during which a user is required to have
+            /**
+             * @description Timeout (in minutes) during which a user is required to have
              *     authenticated in a session to access this storage gateway.
-             *      */
+             */
             readonly authentication_timeout_mins?: number;
-            /** @description Path to be interpreted as the base path when creating a new collection.
+            /**
+             * @description Path to be interpreted as the base path when creating a new collection.
              *     It is interpreted differently depending on the collection type being
              *     created. For a mapped collection, this is an absolute path on the
              *     storage system named by the storage_gateway_id.  For a guest collection,
@@ -4225,14 +4364,13 @@ export interface components {
              *     collection is created.
              *
              *     Support for `~` was added in API version 1.21.0.
-             *      */
+             */
             collection_base_path: string;
             /**
              * @description Type of collection. A `mapped` collection requires an account on the
              *     system to access the administrator-defined collection. A `guest`
              *     collection allows users to share access to their data on a Storage
              *     Gateway by registering a credential with the GCS Manager.
-             *
              * @enum {string}
              */
             collection_type: "mapped" | "guest";
@@ -4241,21 +4379,24 @@ export interface components {
              * @description Id of the connector type that is used by this collection.
              */
             readonly connector_id?: string;
-            /** @description Email address of the support contact for this collection. This is
+            /**
+             * @description Email address of the support contact for this collection. This is
              *     visible to end users so that they may contact your organization for
              *     support.
-             *      */
+             */
             contact_email?: string | null;
-            /** @description Other non-email contact information for the collection, e.g.  phone
+            /**
+             * @description Other non-email contact information for the collection, e.g.  phone
              *     and mailing address. This is visible to end users for support.
-             *      */
+             */
             contact_info?: string | null;
             /**
              * Format: date
              * @description Date on which this collection was created
              */
             readonly created_at?: string | null;
-            /** @description Default directory when accessing the collection. This may include
+            /**
+             * @description Default directory when accessing the collection. This may include
              *     the special string `$USER` which is evaluated at access time to be
              *     the connector-specific username accessing the data.
              *
@@ -4263,61 +4404,70 @@ export interface components {
              *     value of `/`, this value can also begin with the values `/~/` and
              *     `$HOME`, which are replaced by the user's home directory, or `/` if
              *     the connector does not support the concept of a home directory.
-             *      */
+             */
             default_directory?: string;
-            /** @description If set to true, this collection can not be deleted. This property
+            /**
+             * @description If set to true, this collection can not be deleted. This property
              *     is available only on mapped collections. As of GCS 5.4.69, this is
              *     true by default.
-             *      */
+             */
             delete_protected?: boolean;
             /** @description Flag indicating that this collection has been deleted */
             readonly deleted?: boolean;
-            /** @description Department within organization that runs the server(s). Searchable.
+            /**
+             * @description Department within organization that runs the server(s). Searchable.
              *     Optional. Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             department?: string | null;
             /** @description A description of the collection. */
             description?: string | null;
-            /** @description Flag indicating if guest collections on this mapped collection allow
+            /**
+             * @description Flag indicating if guest collections on this mapped collection allow
              *     anonymous write permissions or not. This flag is always true for high
              *     assurance collections. For non-high assurance mapped collections, the
              *     default value is false.
-             *      */
+             */
             disable_anonymous_writes?: boolean;
-            /** @description Flag indicating that this endpoint does not support computing
+            /**
+             * @description Flag indicating that this endpoint does not support computing
              *     checksums, needed for the verify_checksum option of transfer.
-             *      */
+             */
             disable_verify?: boolean;
-            /** @description Friendly name for the collection. Unicode string, max 128 characters,
+            /**
+             * @description Friendly name for the collection. Unicode string, max 128 characters,
              *     no new lines (`\r` or `\n`).
-             *      */
+             */
             display_name: string;
             domain?: components["schemas"]["Domain"];
-            /** @description DNS name of the virtual host serving this collection. For mapped
+            /**
+             * @description DNS name of the virtual host serving this collection. For mapped
              *     collections which do not have a custom domain, this may be specified
              *     as part of the input document to create the collection, otherwise this
              *     is a read-only property. When included in the input, the name is
              *     restricted to be a subdomain of the endpoint, and the input name label
              *     may not start with `m-` or `g-`.
-             *      */
+             */
             domain_name?: string;
-            /** @description Boolean flag indicating whether this collection should support
+            /**
+             * @description Boolean flag indicating whether this collection should support
              *     HTTPS. This value can be set on mapped collections or guest
              *     collections. However, it may not be set to true on a guest
              *     collection if the value on the related mapped collection is false.
-             *      */
+             */
             enable_https?: boolean;
-            /** @description Flag indicating whether all data transfers to and from this
+            /**
+             * @description Flag indicating whether all data transfers to and from this
              *     collection are always encrypted.
              *
              *     __New in v5.4.17__: If a mapped collection forces encryption, all
              *     of its guest collections must as well.  If this option is used on a
              *     mapped collection, the value is propagated to its guest collections.
-             *      */
+             */
             force_encryption?: boolean;
-            /** @description Flag indicating that this endpoint requires computing checksums,
+            /**
+             * @description Flag indicating that this endpoint requires computing checksums,
              *     needed for the verify_checksum option of transfer.
-             *      */
+             */
             force_verify?: boolean;
             /**
              * Format: uuid
@@ -4325,12 +4475,12 @@ export interface components {
              *     guest collections. During authorization, the authentication policy must
              *     be satisfied before permissions are considered. Read-only on guest
              *     collections. (**Added in API 1.15.0**)
-             *
              */
             guest_auth_policy_id?: string | null;
-            /** @description Flag indicating if this collection is created on a high assurance
+            /**
+             * @description Flag indicating if this collection is created on a high assurance
              *     Storage Gateway.
-             *      */
+             */
             readonly high_assurance?: boolean;
             /** @description HTTPS URL for the data on this collection. */
             readonly https_url?: string;
@@ -4338,30 +4488,30 @@ export interface components {
              * Format: uuid
              * @description Unique identifier for this collection. This is assigned by the GCS
              *     manager when creating a collection.
-             *
              */
             readonly id?: string;
             /**
              * Format: uuid
              * @description Globus Auth identity to who acts as the owner of this collection.
              *     This identity is an `administrator` on the collection.
-             *
              */
             identity_id?: string;
             /** @description Link to a web page with more information about the collection */
             info_link?: string | null;
-            /** @description List of search keywords for the endpoint. Optional. Unicode string,
+            /**
+             * @description List of search keywords for the endpoint. Optional. Unicode string,
              *     max 1024 characters total across all strings.
-             *      */
+             */
             keywords?: string[];
             /**
              * Format: date
              * @description Date on which this collection was last accessed
              */
             readonly last_access?: string | null;
-            /** @description URL of the GCS Manager API service for the endpoint hosting this
+            /**
+             * @description URL of the GCS Manager API service for the endpoint hosting this
              *     collection.
-             *      */
+             */
             readonly manager_url?: string;
             /**
              * Format: uuid
@@ -4371,52 +4521,57 @@ export interface components {
              *     sharing (`allow_guest_collections`, `sharing_restrict_paths`) will
              *     always reflect the values in the Mapped Collection definition and
              *     may not be changed on this Guest Collection.
-             *
              */
             mapped_collection_id?: string;
-            /** @description Organization that runs the server(s) represented by the endpoint.
+            /**
+             * @description Organization that runs the server(s) represented by the endpoint.
              *     Optional to preserve backward compatibility, but will eventually be
              *     required and all clients are encouraged to require users to specify
              *     it.  Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             organization?: string;
             /** @description Connector-specific collection policies */
             policies?: components["schemas"]["S3CollectionPolicies_1_0_0"] | components["schemas"]["AzureBlobCollectionPolicies_1_0_0"] | components["schemas"]["BlackPearlCollectionPolicies_1_0_0"] | components["schemas"]["BoxCollectionPolicies_1_0_0"] | components["schemas"]["CephCollectionPolicies_1_0_0"] | components["schemas"]["DropboxCollectionPolicies_1_0_0"] | components["schemas"]["GoogleCloudStorageCollectionPolicies_1_0_0"] | components["schemas"]["GoogleDriveCollectionPolicies_1_0_0"] | components["schemas"]["HPSSCollectionPolicies_1_0_0"] | components["schemas"]["IrodsCollectionPolicies_1_0_0"] | components["schemas"]["OneDriveCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_1_0"] | components["schemas"]["PosixStagingCollectionPolicies_1_0_0"];
-            /** @description Flag indicating whether this collection is visible to other Globus
+            /**
+             * @description Flag indicating whether this collection is visible to other Globus
              *     users.
-             *      */
+             */
             public: boolean;
-            /** @description Flag indicating if the storage_gateway requires multi-factor
+            /**
+             * @description Flag indicating if the storage_gateway requires multi-factor
              *     authentication. Only applies to high assurance storage gateways.
-             *      */
+             */
             readonly require_mfa?: boolean;
-            /** @description Absolute root path of the collection. All data access
+            /**
+             * @description Absolute root path of the collection. All data access
              *     is done relative to this path. On a guest collection,
              *     this value is only visible if the caller has an
              *     administrator role on both the guest collection and the
              *     mapped collection it is created on.
-             *      */
+             */
             readonly root_path?: string;
-            /** @description Restrictions on which paths may be shared in guest collections related
+            /**
+             * @description Restrictions on which paths may be shared in guest collections related
              *     to this mapped collection. On the mapped collection, these paths are
              *     relative to the root_path property of the mapped collection. On a guest
              *     collection, they are absolute paths from the storage root.
-             *      */
+             */
             sharing_restrict_paths?: unknown | components["schemas"]["PathRestrictions"];
-            /** @description List of connector-specific usernames allowed to create new guest
+            /**
+             * @description List of connector-specific usernames allowed to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_allow?: string[] | null;
-            /** @description List of connector-specific usernames denied access to create new guest
+            /**
+             * @description List of connector-specific usernames denied access to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_deny?: string[] | null;
             /**
              * Format: uuid
              * @description Unique ID of the Storage Gateway which this collection provides
              *     access to. This value can not change after the collection is
              *     created.
-             *
              */
             storage_gateway_id?: string;
             /** @description TLSFTP URL for the data on this collection. */
@@ -4426,20 +4581,21 @@ export interface components {
              * @description The ID of the User Credential which is used to access data on this
              *     collection. This credential must be owned by the collection's
              *     identity_id.
-             *
              */
             user_credential_id?: string;
-            /** @description A message for clients to display to users when interacting with
+            /**
+             * @description A message for clients to display to users when interacting with
              *     this collection. For guest collections, this property is read-only
              *     and is the same as the value of its related mapped collection. The
              *     message may be up to 256 characters long.
-             *      */
+             */
             user_message?: string | null;
-            /** @description Link to additional messaging for clients to display to users when
+            /**
+             * @description Link to additional messaging for clients to display to users when
              *     interacting with this endpoint, linked to an HTTP or HTTPS URL. For
              *     guest collections, this property is read-only and is the same as the
              *     value of its related mapped collection.
-             *      */
+             */
             user_message_link?: string | null;
         };
         /**
@@ -4486,7 +4642,6 @@ export interface components {
          *
          *     Version 1.12.0 adds the restrict_transfers_to_high_assurance property to HA
          *     collections.
-         *
          */
         Collection_1_12_0: {
             /**
@@ -4495,24 +4650,28 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "collection#1.12.0";
-            /** @description Length of time that guest collection permissions are valid.  Only
+            /**
+             * @description Length of time that guest collection permissions are valid.  Only
              *     settable on HA guest collections and HA mapped collections and used
              *     by guest collections attached to it. When set on both the mapped and
              *     guest collections, the lesser value is in effect. Set to null to
              *     delete any previously set value.
-             *      */
+             */
             acl_expiration_mins?: number | null;
-            /** @description Flag indicating if this Collection allows users to create guest
+            /**
+             * @description Flag indicating if this Collection allows users to create guest
              *     collections on it. This is always false if this is a guest collection.
              *     If this is changed to false on a mapped collection with associated
              *     guest collections, those collections will no longer be accessible.
-             *      */
+             */
             allow_guest_collections?: boolean;
-            /** @description Timeout (in minutes) during which a user is required to have
+            /**
+             * @description Timeout (in minutes) during which a user is required to have
              *     authenticated in a session to access this storage gateway.
-             *      */
+             */
             readonly authentication_timeout_mins?: number;
-            /** @description Path to be interpreted as the base path when creating a new collection.
+            /**
+             * @description Path to be interpreted as the base path when creating a new collection.
              *     It is interpreted differently depending on the collection type being
              *     created. For a mapped collection, this is an absolute path on the
              *     storage system named by the storage_gateway_id.  For a guest collection,
@@ -4522,14 +4681,13 @@ export interface components {
              *     collection is created.
              *
              *     Support for `~` was added in API version 1.21.0.
-             *      */
+             */
             collection_base_path: string;
             /**
              * @description Type of collection. A `mapped` collection requires an account on the
              *     system to access the administrator-defined collection. A `guest`
              *     collection allows users to share access to their data on a Storage
              *     Gateway by registering a credential with the GCS Manager.
-             *
              * @enum {string}
              */
             collection_type: "mapped" | "guest";
@@ -4538,21 +4696,24 @@ export interface components {
              * @description Id of the connector type that is used by this collection.
              */
             readonly connector_id?: string;
-            /** @description Email address of the support contact for this collection. This is
+            /**
+             * @description Email address of the support contact for this collection. This is
              *     visible to end users so that they may contact your organization for
              *     support.
-             *      */
+             */
             contact_email?: string | null;
-            /** @description Other non-email contact information for the collection, e.g.  phone
+            /**
+             * @description Other non-email contact information for the collection, e.g.  phone
              *     and mailing address. This is visible to end users for support.
-             *      */
+             */
             contact_info?: string | null;
             /**
              * Format: date
              * @description Date on which this collection was created
              */
             readonly created_at?: string | null;
-            /** @description Default directory when accessing the collection. This may include
+            /**
+             * @description Default directory when accessing the collection. This may include
              *     the special string `$USER` which is evaluated at access time to be
              *     the connector-specific username accessing the data.
              *
@@ -4560,61 +4721,70 @@ export interface components {
              *     value of `/`, this value can also begin with the values `/~/` and
              *     `$HOME`, which are replaced by the user's home directory, or `/` if
              *     the connector does not support the concept of a home directory.
-             *      */
+             */
             default_directory?: string;
-            /** @description If set to true, this collection can not be deleted. This property
+            /**
+             * @description If set to true, this collection can not be deleted. This property
              *     is available only on mapped collections. As of GCS 5.4.69, this is
              *     true by default.
-             *      */
+             */
             delete_protected?: boolean;
             /** @description Flag indicating that this collection has been deleted */
             readonly deleted?: boolean;
-            /** @description Department within organization that runs the server(s). Searchable.
+            /**
+             * @description Department within organization that runs the server(s). Searchable.
              *     Optional. Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             department?: string | null;
             /** @description A description of the collection. */
             description?: string | null;
-            /** @description Flag indicating if guest collections on this mapped collection allow
+            /**
+             * @description Flag indicating if guest collections on this mapped collection allow
              *     anonymous write permissions or not. This flag is always true for high
              *     assurance collections. For non-high assurance mapped collections, the
              *     default value is false.
-             *      */
+             */
             disable_anonymous_writes?: boolean;
-            /** @description Flag indicating that this endpoint does not support computing
+            /**
+             * @description Flag indicating that this endpoint does not support computing
              *     checksums, needed for the verify_checksum option of transfer.
-             *      */
+             */
             disable_verify?: boolean;
-            /** @description Friendly name for the collection. Unicode string, max 128 characters,
+            /**
+             * @description Friendly name for the collection. Unicode string, max 128 characters,
              *     no new lines (`\r` or `\n`).
-             *      */
+             */
             display_name: string;
             domain?: components["schemas"]["Domain"];
-            /** @description DNS name of the virtual host serving this collection. For mapped
+            /**
+             * @description DNS name of the virtual host serving this collection. For mapped
              *     collections which do not have a custom domain, this may be specified
              *     as part of the input document to create the collection, otherwise this
              *     is a read-only property. When included in the input, the name is
              *     restricted to be a subdomain of the endpoint, and the input name label
              *     may not start with `m-` or `g-`.
-             *      */
+             */
             domain_name?: string;
-            /** @description Boolean flag indicating whether this collection should support
+            /**
+             * @description Boolean flag indicating whether this collection should support
              *     HTTPS. This value can be set on mapped collections or guest
              *     collections. However, it may not be set to true on a guest
              *     collection if the value on the related mapped collection is false.
-             *      */
+             */
             enable_https?: boolean;
-            /** @description Flag indicating whether all data transfers to and from this
+            /**
+             * @description Flag indicating whether all data transfers to and from this
              *     collection are always encrypted.
              *
              *     __New in v5.4.17__: If a mapped collection forces encryption, all
              *     of its guest collections must as well.  If this option is used on a
              *     mapped collection, the value is propagated to its guest collections.
-             *      */
+             */
             force_encryption?: boolean;
-            /** @description Flag indicating that this endpoint requires computing checksums,
+            /**
+             * @description Flag indicating that this endpoint requires computing checksums,
              *     needed for the verify_checksum option of transfer.
-             *      */
+             */
             force_verify?: boolean;
             /**
              * Format: uuid
@@ -4622,12 +4792,12 @@ export interface components {
              *     guest collections. During authorization, the authentication policy must
              *     be satisfied before permissions are considered. Read-only on guest
              *     collections. (**Added in API 1.15.0**)
-             *
              */
             guest_auth_policy_id?: string | null;
-            /** @description Flag indicating if this collection is created on a high assurance
+            /**
+             * @description Flag indicating if this collection is created on a high assurance
              *     Storage Gateway.
-             *      */
+             */
             readonly high_assurance?: boolean;
             /** @description HTTPS URL for the data on this collection. */
             readonly https_url?: string;
@@ -4635,30 +4805,30 @@ export interface components {
              * Format: uuid
              * @description Unique identifier for this collection. This is assigned by the GCS
              *     manager when creating a collection.
-             *
              */
             readonly id?: string;
             /**
              * Format: uuid
              * @description Globus Auth identity to who acts as the owner of this collection.
              *     This identity is an `administrator` on the collection.
-             *
              */
             identity_id?: string;
             /** @description Link to a web page with more information about the collection */
             info_link?: string | null;
-            /** @description List of search keywords for the endpoint. Optional. Unicode string,
+            /**
+             * @description List of search keywords for the endpoint. Optional. Unicode string,
              *     max 1024 characters total across all strings.
-             *      */
+             */
             keywords?: string[];
             /**
              * Format: date
              * @description Date on which this collection was last accessed
              */
             readonly last_access?: string | null;
-            /** @description URL of the GCS Manager API service for the endpoint hosting this
+            /**
+             * @description URL of the GCS Manager API service for the endpoint hosting this
              *     collection.
-             *      */
+             */
             readonly manager_url?: string;
             /**
              * Format: uuid
@@ -4668,24 +4838,26 @@ export interface components {
              *     sharing (`allow_guest_collections`, `sharing_restrict_paths`) will
              *     always reflect the values in the Mapped Collection definition and
              *     may not be changed on this Guest Collection.
-             *
              */
             mapped_collection_id?: string;
-            /** @description Organization that runs the server(s) represented by the endpoint.
+            /**
+             * @description Organization that runs the server(s) represented by the endpoint.
              *     Optional to preserve backward compatibility, but will eventually be
              *     required and all clients are encouraged to require users to specify
              *     it.  Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             organization?: string;
             /** @description Connector-specific collection policies */
             policies?: components["schemas"]["S3CollectionPolicies_1_0_0"] | components["schemas"]["AzureBlobCollectionPolicies_1_0_0"] | components["schemas"]["BlackPearlCollectionPolicies_1_0_0"] | components["schemas"]["BoxCollectionPolicies_1_0_0"] | components["schemas"]["CephCollectionPolicies_1_0_0"] | components["schemas"]["DropboxCollectionPolicies_1_0_0"] | components["schemas"]["GoogleCloudStorageCollectionPolicies_1_0_0"] | components["schemas"]["GoogleDriveCollectionPolicies_1_0_0"] | components["schemas"]["HPSSCollectionPolicies_1_0_0"] | components["schemas"]["IrodsCollectionPolicies_1_0_0"] | components["schemas"]["OneDriveCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_1_0"] | components["schemas"]["PosixStagingCollectionPolicies_1_0_0"];
-            /** @description Flag indicating whether this collection is visible to other Globus
+            /**
+             * @description Flag indicating whether this collection is visible to other Globus
              *     users.
-             *      */
+             */
             public: boolean;
-            /** @description Flag indicating if the storage_gateway requires multi-factor
+            /**
+             * @description Flag indicating if the storage_gateway requires multi-factor
              *     authentication. Only applies to high assurance storage gateways.
-             *      */
+             */
             readonly require_mfa?: boolean;
             /**
              * @description Flag indicating whether all data transfers to and from this collection
@@ -4696,37 +4868,39 @@ export interface components {
              *
              *     If a restriction is in place for a collection, then HTTPS access to
              *     it is disabled.
-             *
              * @enum {string|null}
              */
             restrict_transfers_to_high_assurance?: "inbound" | "outbound" | "all" | null;
-            /** @description Absolute root path of the collection. All data access
+            /**
+             * @description Absolute root path of the collection. All data access
              *     is done relative to this path. On a guest collection,
              *     this value is only visible if the caller has an
              *     administrator role on both the guest collection and the
              *     mapped collection it is created on.
-             *      */
+             */
             readonly root_path?: string;
-            /** @description Restrictions on which paths may be shared in guest collections related
+            /**
+             * @description Restrictions on which paths may be shared in guest collections related
              *     to this mapped collection. On the mapped collection, these paths are
              *     relative to the root_path property of the mapped collection. On a guest
              *     collection, they are absolute paths from the storage root.
-             *      */
+             */
             sharing_restrict_paths?: unknown | components["schemas"]["PathRestrictions"];
-            /** @description List of connector-specific usernames allowed to create new guest
+            /**
+             * @description List of connector-specific usernames allowed to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_allow?: string[] | null;
-            /** @description List of connector-specific usernames denied access to create new guest
+            /**
+             * @description List of connector-specific usernames denied access to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_deny?: string[] | null;
             /**
              * Format: uuid
              * @description Unique ID of the Storage Gateway which this collection provides
              *     access to. This value can not change after the collection is
              *     created.
-             *
              */
             storage_gateway_id?: string;
             /** @description TLSFTP URL for the data on this collection. */
@@ -4736,20 +4910,21 @@ export interface components {
              * @description The ID of the User Credential which is used to access data on this
              *     collection. This credential must be owned by the collection's
              *     identity_id.
-             *
              */
             user_credential_id?: string;
-            /** @description A message for clients to display to users when interacting with
+            /**
+             * @description A message for clients to display to users when interacting with
              *     this collection. For guest collections, this property is read-only
              *     and is the same as the value of its related mapped collection. The
              *     message may be up to 256 characters long.
-             *      */
+             */
             user_message?: string | null;
-            /** @description Link to additional messaging for clients to display to users when
+            /**
+             * @description Link to additional messaging for clients to display to users when
              *     interacting with this endpoint, linked to an HTTP or HTTPS URL. For
              *     guest collections, this property is read-only and is the same as the
              *     value of its related mapped collection.
-             *      */
+             */
             user_message_link?: string | null;
         };
         /**
@@ -4799,7 +4974,6 @@ export interface components {
          *
          *     Version 1.13.0 adds the auto_delete_timeout property to mapped collections
          *     and the skip_auto_delete property to guest collections.
-         *
          */
         Collection_1_13_0: {
             /**
@@ -4808,30 +4982,35 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "collection#1.13.0";
-            /** @description Length of time that guest collection permissions are valid.  Only
+            /**
+             * @description Length of time that guest collection permissions are valid.  Only
              *     settable on HA guest collections and HA mapped collections and used
              *     by guest collections attached to it. When set on both the mapped and
              *     guest collections, the lesser value is in effect. Set to null to
              *     delete any previously set value.
-             *      */
+             */
             acl_expiration_mins?: number | null;
-            /** @description Flag indicating if this Collection allows users to create guest
+            /**
+             * @description Flag indicating if this Collection allows users to create guest
              *     collections on it. This is always false if this is a guest collection.
              *     If this is changed to false on a mapped collection with associated
              *     guest collections, those collections will no longer be accessible.
-             *      */
+             */
             allow_guest_collections?: boolean;
-            /** @description Timeout (in minutes) during which a user is required to have
+            /**
+             * @description Timeout (in minutes) during which a user is required to have
              *     authenticated in a session to access this storage gateway.
-             *      */
+             */
             readonly authentication_timeout_mins?: number;
-            /** @description Number of days before unused guest collections will be automatically
+            /**
+             * @description Number of days before unused guest collections will be automatically
              *     deleted. Only settable on mapped collections. Values must be an integer
              *     greater than 0. Set to null to disable automatic guest collection deletion
              *     for the mapped collection. Defaults to disabled.
-             *      */
+             */
             auto_delete_timeout?: number | null;
-            /** @description Path to be interpreted as the base path when creating a new collection.
+            /**
+             * @description Path to be interpreted as the base path when creating a new collection.
              *     It is interpreted differently depending on the collection type being
              *     created. For a mapped collection, this is an absolute path on the
              *     storage system named by the storage_gateway_id.  For a guest collection,
@@ -4841,14 +5020,13 @@ export interface components {
              *     collection is created.
              *
              *     Support for `~` was added in API version 1.21.0.
-             *      */
+             */
             collection_base_path: string;
             /**
              * @description Type of collection. A `mapped` collection requires an account on the
              *     system to access the administrator-defined collection. A `guest`
              *     collection allows users to share access to their data on a Storage
              *     Gateway by registering a credential with the GCS Manager.
-             *
              * @enum {string}
              */
             collection_type: "mapped" | "guest";
@@ -4857,21 +5035,24 @@ export interface components {
              * @description Id of the connector type that is used by this collection.
              */
             readonly connector_id?: string;
-            /** @description Email address of the support contact for this collection. This is
+            /**
+             * @description Email address of the support contact for this collection. This is
              *     visible to end users so that they may contact your organization for
              *     support.
-             *      */
+             */
             contact_email?: string | null;
-            /** @description Other non-email contact information for the collection, e.g.  phone
+            /**
+             * @description Other non-email contact information for the collection, e.g.  phone
              *     and mailing address. This is visible to end users for support.
-             *      */
+             */
             contact_info?: string | null;
             /**
              * Format: date
              * @description Date on which this collection was created
              */
             readonly created_at?: string | null;
-            /** @description Default directory when accessing the collection. This may include
+            /**
+             * @description Default directory when accessing the collection. This may include
              *     the special string `$USER` which is evaluated at access time to be
              *     the connector-specific username accessing the data.
              *
@@ -4879,61 +5060,70 @@ export interface components {
              *     value of `/`, this value can also begin with the values `/~/` and
              *     `$HOME`, which are replaced by the user's home directory, or `/` if
              *     the connector does not support the concept of a home directory.
-             *      */
+             */
             default_directory?: string;
-            /** @description If set to true, this collection can not be deleted. This property
+            /**
+             * @description If set to true, this collection can not be deleted. This property
              *     is available only on mapped collections. As of GCS 5.4.69, this is
              *     true by default.
-             *      */
+             */
             delete_protected?: boolean;
             /** @description Flag indicating that this collection has been deleted */
             readonly deleted?: boolean;
-            /** @description Department within organization that runs the server(s). Searchable.
+            /**
+             * @description Department within organization that runs the server(s). Searchable.
              *     Optional. Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             department?: string | null;
             /** @description A description of the collection. */
             description?: string | null;
-            /** @description Flag indicating if guest collections on this mapped collection allow
+            /**
+             * @description Flag indicating if guest collections on this mapped collection allow
              *     anonymous write permissions or not. This flag is always true for high
              *     assurance collections. For non-high assurance mapped collections, the
              *     default value is false.
-             *      */
+             */
             disable_anonymous_writes?: boolean;
-            /** @description Flag indicating that this endpoint does not support computing
+            /**
+             * @description Flag indicating that this endpoint does not support computing
              *     checksums, needed for the verify_checksum option of transfer.
-             *      */
+             */
             disable_verify?: boolean;
-            /** @description Friendly name for the collection. Unicode string, max 128 characters,
+            /**
+             * @description Friendly name for the collection. Unicode string, max 128 characters,
              *     no new lines (`\r` or `\n`).
-             *      */
+             */
             display_name: string;
             domain?: components["schemas"]["Domain"];
-            /** @description DNS name of the virtual host serving this collection. For mapped
+            /**
+             * @description DNS name of the virtual host serving this collection. For mapped
              *     collections which do not have a custom domain, this may be specified
              *     as part of the input document to create the collection, otherwise this
              *     is a read-only property. When included in the input, the name is
              *     restricted to be a subdomain of the endpoint, and the input name label
              *     may not start with `m-` or `g-`.
-             *      */
+             */
             domain_name?: string;
-            /** @description Boolean flag indicating whether this collection should support
+            /**
+             * @description Boolean flag indicating whether this collection should support
              *     HTTPS. This value can be set on mapped collections or guest
              *     collections. However, it may not be set to true on a guest
              *     collection if the value on the related mapped collection is false.
-             *      */
+             */
             enable_https?: boolean;
-            /** @description Flag indicating whether all data transfers to and from this
+            /**
+             * @description Flag indicating whether all data transfers to and from this
              *     collection are always encrypted.
              *
              *     __New in v5.4.17__: If a mapped collection forces encryption, all
              *     of its guest collections must as well.  If this option is used on a
              *     mapped collection, the value is propagated to its guest collections.
-             *      */
+             */
             force_encryption?: boolean;
-            /** @description Flag indicating that this endpoint requires computing checksums,
+            /**
+             * @description Flag indicating that this endpoint requires computing checksums,
              *     needed for the verify_checksum option of transfer.
-             *      */
+             */
             force_verify?: boolean;
             /**
              * Format: uuid
@@ -4941,12 +5131,12 @@ export interface components {
              *     guest collections. During authorization, the authentication policy must
              *     be satisfied before permissions are considered. Read-only on guest
              *     collections. (**Added in API 1.15.0**)
-             *
              */
             guest_auth_policy_id?: string | null;
-            /** @description Flag indicating if this collection is created on a high assurance
+            /**
+             * @description Flag indicating if this collection is created on a high assurance
              *     Storage Gateway.
-             *      */
+             */
             readonly high_assurance?: boolean;
             /** @description HTTPS URL for the data on this collection. */
             readonly https_url?: string;
@@ -4954,30 +5144,30 @@ export interface components {
              * Format: uuid
              * @description Unique identifier for this collection. This is assigned by the GCS
              *     manager when creating a collection.
-             *
              */
             readonly id?: string;
             /**
              * Format: uuid
              * @description Globus Auth identity to who acts as the owner of this collection.
              *     This identity is an `administrator` on the collection.
-             *
              */
             identity_id?: string;
             /** @description Link to a web page with more information about the collection */
             info_link?: string | null;
-            /** @description List of search keywords for the endpoint. Optional. Unicode string,
+            /**
+             * @description List of search keywords for the endpoint. Optional. Unicode string,
              *     max 1024 characters total across all strings.
-             *      */
+             */
             keywords?: string[];
             /**
              * Format: date
              * @description Date on which this collection was last accessed
              */
             readonly last_access?: string | null;
-            /** @description URL of the GCS Manager API service for the endpoint hosting this
+            /**
+             * @description URL of the GCS Manager API service for the endpoint hosting this
              *     collection.
-             *      */
+             */
             readonly manager_url?: string;
             /**
              * Format: uuid
@@ -4987,24 +5177,26 @@ export interface components {
              *     sharing (`allow_guest_collections`, `sharing_restrict_paths`) will
              *     always reflect the values in the Mapped Collection definition and
              *     may not be changed on this Guest Collection.
-             *
              */
             mapped_collection_id?: string;
-            /** @description Organization that runs the server(s) represented by the endpoint.
+            /**
+             * @description Organization that runs the server(s) represented by the endpoint.
              *     Optional to preserve backward compatibility, but will eventually be
              *     required and all clients are encouraged to require users to specify
              *     it.  Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             organization?: string;
             /** @description Connector-specific collection policies */
             policies?: components["schemas"]["S3CollectionPolicies_1_0_0"] | components["schemas"]["AzureBlobCollectionPolicies_1_0_0"] | components["schemas"]["BlackPearlCollectionPolicies_1_0_0"] | components["schemas"]["BoxCollectionPolicies_1_0_0"] | components["schemas"]["CephCollectionPolicies_1_0_0"] | components["schemas"]["DropboxCollectionPolicies_1_0_0"] | components["schemas"]["GoogleCloudStorageCollectionPolicies_1_0_0"] | components["schemas"]["GoogleDriveCollectionPolicies_1_0_0"] | components["schemas"]["HPSSCollectionPolicies_1_0_0"] | components["schemas"]["IrodsCollectionPolicies_1_0_0"] | components["schemas"]["OneDriveCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_1_0"] | components["schemas"]["PosixStagingCollectionPolicies_1_0_0"];
-            /** @description Flag indicating whether this collection is visible to other Globus
+            /**
+             * @description Flag indicating whether this collection is visible to other Globus
              *     users.
-             *      */
+             */
             public: boolean;
-            /** @description Flag indicating if the storage_gateway requires multi-factor
+            /**
+             * @description Flag indicating if the storage_gateway requires multi-factor
              *     authentication. Only applies to high assurance storage gateways.
-             *      */
+             */
             readonly require_mfa?: boolean;
             /**
              * @description Flag indicating whether all data transfers to and from this collection
@@ -5015,42 +5207,45 @@ export interface components {
              *
              *     If a restriction is in place for a collection, then HTTPS access to
              *     it is disabled.
-             *
              * @enum {string|null}
              */
             restrict_transfers_to_high_assurance?: "inbound" | "outbound" | "all" | null;
-            /** @description Absolute root path of the collection. All data access
+            /**
+             * @description Absolute root path of the collection. All data access
              *     is done relative to this path. On a guest collection,
              *     this value is only visible if the caller has an
              *     administrator role on both the guest collection and the
              *     mapped collection it is created on.
-             *      */
+             */
             readonly root_path?: string;
-            /** @description Restrictions on which paths may be shared in guest collections related
+            /**
+             * @description Restrictions on which paths may be shared in guest collections related
              *     to this mapped collection. On the mapped collection, these paths are
              *     relative to the root_path property of the mapped collection. On a guest
              *     collection, they are absolute paths from the storage root.
-             *      */
+             */
             sharing_restrict_paths?: unknown | components["schemas"]["PathRestrictions"];
-            /** @description List of connector-specific usernames allowed to create new guest
+            /**
+             * @description List of connector-specific usernames allowed to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_allow?: string[] | null;
-            /** @description List of connector-specific usernames denied access to create new guest
+            /**
+             * @description List of connector-specific usernames denied access to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_deny?: string[] | null;
-            /** @description Flag indicating whether the guest collection is subject to automatic
+            /**
+             * @description Flag indicating whether the guest collection is subject to automatic
              *     deletion if auto_delete_timeout is set on its mapped collection. Only
              *     settable on guest collections. Defaults to false.
-             *      */
+             */
             skip_auto_delete?: boolean;
             /**
              * Format: uuid
              * @description Unique ID of the Storage Gateway which this collection provides
              *     access to. This value can not change after the collection is
              *     created.
-             *
              */
             storage_gateway_id?: string;
             /** @description TLSFTP URL for the data on this collection. */
@@ -5060,20 +5255,21 @@ export interface components {
              * @description The ID of the User Credential which is used to access data on this
              *     collection. This credential must be owned by the collection's
              *     identity_id.
-             *
              */
             user_credential_id?: string;
-            /** @description A message for clients to display to users when interacting with
+            /**
+             * @description A message for clients to display to users when interacting with
              *     this collection. For guest collections, this property is read-only
              *     and is the same as the value of its related mapped collection. The
              *     message may be up to 256 characters long.
-             *      */
+             */
             user_message?: string | null;
-            /** @description Link to additional messaging for clients to display to users when
+            /**
+             * @description Link to additional messaging for clients to display to users when
              *     interacting with this endpoint, linked to an HTTP or HTTPS URL. For
              *     guest collections, this property is read-only and is the same as the
              *     value of its related mapped collection.
-             *      */
+             */
             user_message_link?: string | null;
         };
         /** ActivityNotificationPolicy */
@@ -5131,7 +5327,6 @@ export interface components {
          *
          *     Version 1.14.0 adds the subscription_admin_verified property to collections
          *     and activity_notification_policy to guest collections.
-         *
          */
         Collection_1_14_0: {
             /**
@@ -5140,31 +5335,36 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "collection#1.14.0";
-            /** @description Length of time that guest collection permissions are valid.  Only
+            /**
+             * @description Length of time that guest collection permissions are valid.  Only
              *     settable on HA guest collections and HA mapped collections and used
              *     by guest collections attached to it. When set on both the mapped and
              *     guest collections, the lesser value is in effect. Set to null to
              *     delete any previously set value.
-             *      */
+             */
             acl_expiration_mins?: number | null;
             activity_notification_policy?: components["schemas"]["ActivityNotificationPolicy"];
-            /** @description Flag indicating if this Collection allows users to create guest
+            /**
+             * @description Flag indicating if this Collection allows users to create guest
              *     collections on it. This is always false if this is a guest collection.
              *     If this is changed to false on a mapped collection with associated
              *     guest collections, those collections will no longer be accessible.
-             *      */
+             */
             allow_guest_collections?: boolean;
-            /** @description Timeout (in minutes) during which a user is required to have
+            /**
+             * @description Timeout (in minutes) during which a user is required to have
              *     authenticated in a session to access this storage gateway.
-             *      */
+             */
             readonly authentication_timeout_mins?: number;
-            /** @description Number of days before unused guest collections will be automatically
+            /**
+             * @description Number of days before unused guest collections will be automatically
              *     deleted. Only settable on mapped collections. Values must be an integer
              *     greater than 0. Set to null to disable automatic guest collection deletion
              *     for the mapped collection. Defaults to disabled.
-             *      */
+             */
             auto_delete_timeout?: number | null;
-            /** @description Path to be interpreted as the base path when creating a new collection.
+            /**
+             * @description Path to be interpreted as the base path when creating a new collection.
              *     It is interpreted differently depending on the collection type being
              *     created. For a mapped collection, this is an absolute path on the
              *     storage system named by the storage_gateway_id.  For a guest collection,
@@ -5174,14 +5374,13 @@ export interface components {
              *     collection is created.
              *
              *     Support for `~` was added in API version 1.21.0.
-             *      */
+             */
             collection_base_path: string;
             /**
              * @description Type of collection. A `mapped` collection requires an account on the
              *     system to access the administrator-defined collection. A `guest`
              *     collection allows users to share access to their data on a Storage
              *     Gateway by registering a credential with the GCS Manager.
-             *
              * @enum {string}
              */
             collection_type: "mapped" | "guest";
@@ -5190,21 +5389,24 @@ export interface components {
              * @description Id of the connector type that is used by this collection.
              */
             readonly connector_id?: string;
-            /** @description Email address of the support contact for this collection. This is
+            /**
+             * @description Email address of the support contact for this collection. This is
              *     visible to end users so that they may contact your organization for
              *     support.
-             *      */
+             */
             contact_email?: string | null;
-            /** @description Other non-email contact information for the collection, e.g.  phone
+            /**
+             * @description Other non-email contact information for the collection, e.g.  phone
              *     and mailing address. This is visible to end users for support.
-             *      */
+             */
             contact_info?: string | null;
             /**
              * Format: date
              * @description Date on which this collection was created
              */
             readonly created_at?: string | null;
-            /** @description Default directory when accessing the collection. This may include
+            /**
+             * @description Default directory when accessing the collection. This may include
              *     the special string `$USER` which is evaluated at access time to be
              *     the connector-specific username accessing the data.
              *
@@ -5212,61 +5414,70 @@ export interface components {
              *     value of `/`, this value can also begin with the values `/~/` and
              *     `$HOME`, which are replaced by the user's home directory, or `/` if
              *     the connector does not support the concept of a home directory.
-             *      */
+             */
             default_directory?: string;
-            /** @description If set to true, this collection can not be deleted. This property
+            /**
+             * @description If set to true, this collection can not be deleted. This property
              *     is available only on mapped collections. As of GCS 5.4.69, this is
              *     true by default.
-             *      */
+             */
             delete_protected?: boolean;
             /** @description Flag indicating that this collection has been deleted */
             readonly deleted?: boolean;
-            /** @description Department within organization that runs the server(s). Searchable.
+            /**
+             * @description Department within organization that runs the server(s). Searchable.
              *     Optional. Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             department?: string | null;
             /** @description A description of the collection. */
             description?: string | null;
-            /** @description Flag indicating if guest collections on this mapped collection allow
+            /**
+             * @description Flag indicating if guest collections on this mapped collection allow
              *     anonymous write permissions or not. This flag is always true for high
              *     assurance collections. For non-high assurance mapped collections, the
              *     default value is false.
-             *      */
+             */
             disable_anonymous_writes?: boolean;
-            /** @description Flag indicating that this endpoint does not support computing
+            /**
+             * @description Flag indicating that this endpoint does not support computing
              *     checksums, needed for the verify_checksum option of transfer.
-             *      */
+             */
             disable_verify?: boolean;
-            /** @description Friendly name for the collection. Unicode string, max 128 characters,
+            /**
+             * @description Friendly name for the collection. Unicode string, max 128 characters,
              *     no new lines (`\r` or `\n`).
-             *      */
+             */
             display_name: string;
             domain?: components["schemas"]["Domain"];
-            /** @description DNS name of the virtual host serving this collection. For mapped
+            /**
+             * @description DNS name of the virtual host serving this collection. For mapped
              *     collections which do not have a custom domain, this may be specified
              *     as part of the input document to create the collection, otherwise this
              *     is a read-only property. When included in the input, the name is
              *     restricted to be a subdomain of the endpoint, and the input name label
              *     may not start with `m-` or `g-`.
-             *      */
+             */
             domain_name?: string;
-            /** @description Boolean flag indicating whether this collection should support
+            /**
+             * @description Boolean flag indicating whether this collection should support
              *     HTTPS. This value can be set on mapped collections or guest
              *     collections. However, it may not be set to true on a guest
              *     collection if the value on the related mapped collection is false.
-             *      */
+             */
             enable_https?: boolean;
-            /** @description Flag indicating whether all data transfers to and from this
+            /**
+             * @description Flag indicating whether all data transfers to and from this
              *     collection are always encrypted.
              *
              *     __New in v5.4.17__: If a mapped collection forces encryption, all
              *     of its guest collections must as well.  If this option is used on a
              *     mapped collection, the value is propagated to its guest collections.
-             *      */
+             */
             force_encryption?: boolean;
-            /** @description Flag indicating that this endpoint requires computing checksums,
+            /**
+             * @description Flag indicating that this endpoint requires computing checksums,
              *     needed for the verify_checksum option of transfer.
-             *      */
+             */
             force_verify?: boolean;
             /**
              * Format: uuid
@@ -5274,12 +5485,12 @@ export interface components {
              *     guest collections. During authorization, the authentication policy must
              *     be satisfied before permissions are considered. Read-only on guest
              *     collections. (**Added in API 1.15.0**)
-             *
              */
             guest_auth_policy_id?: string | null;
-            /** @description Flag indicating if this collection is created on a high assurance
+            /**
+             * @description Flag indicating if this collection is created on a high assurance
              *     Storage Gateway.
-             *      */
+             */
             readonly high_assurance?: boolean;
             /** @description HTTPS URL for the data on this collection. */
             readonly https_url?: string;
@@ -5287,30 +5498,30 @@ export interface components {
              * Format: uuid
              * @description Unique identifier for this collection. This is assigned by the GCS
              *     manager when creating a collection.
-             *
              */
             readonly id?: string;
             /**
              * Format: uuid
              * @description Globus Auth identity to who acts as the owner of this collection.
              *     This identity is an `administrator` on the collection.
-             *
              */
             identity_id?: string;
             /** @description Link to a web page with more information about the collection */
             info_link?: string | null;
-            /** @description List of search keywords for the endpoint. Optional. Unicode string,
+            /**
+             * @description List of search keywords for the endpoint. Optional. Unicode string,
              *     max 1024 characters total across all strings.
-             *      */
+             */
             keywords?: string[];
             /**
              * Format: date
              * @description Date on which this collection was last accessed
              */
             readonly last_access?: string | null;
-            /** @description URL of the GCS Manager API service for the endpoint hosting this
+            /**
+             * @description URL of the GCS Manager API service for the endpoint hosting this
              *     collection.
-             *      */
+             */
             readonly manager_url?: string;
             /**
              * Format: uuid
@@ -5320,24 +5531,26 @@ export interface components {
              *     sharing (`allow_guest_collections`, `sharing_restrict_paths`) will
              *     always reflect the values in the Mapped Collection definition and
              *     may not be changed on this Guest Collection.
-             *
              */
             mapped_collection_id?: string;
-            /** @description Organization that runs the server(s) represented by the endpoint.
+            /**
+             * @description Organization that runs the server(s) represented by the endpoint.
              *     Optional to preserve backward compatibility, but will eventually be
              *     required and all clients are encouraged to require users to specify
              *     it.  Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             organization?: string;
             /** @description Connector-specific collection policies */
             policies?: components["schemas"]["S3CollectionPolicies_1_0_0"] | components["schemas"]["AzureBlobCollectionPolicies_1_0_0"] | components["schemas"]["BlackPearlCollectionPolicies_1_0_0"] | components["schemas"]["BoxCollectionPolicies_1_0_0"] | components["schemas"]["CephCollectionPolicies_1_0_0"] | components["schemas"]["DropboxCollectionPolicies_1_0_0"] | components["schemas"]["GoogleCloudStorageCollectionPolicies_1_0_0"] | components["schemas"]["GoogleDriveCollectionPolicies_1_0_0"] | components["schemas"]["HPSSCollectionPolicies_1_0_0"] | components["schemas"]["IrodsCollectionPolicies_1_0_0"] | components["schemas"]["OneDriveCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_1_0"] | components["schemas"]["PosixStagingCollectionPolicies_1_0_0"];
-            /** @description Flag indicating whether this collection is visible to other Globus
+            /**
+             * @description Flag indicating whether this collection is visible to other Globus
              *     users.
-             *      */
+             */
             public: boolean;
-            /** @description Flag indicating if the storage_gateway requires multi-factor
+            /**
+             * @description Flag indicating if the storage_gateway requires multi-factor
              *     authentication. Only applies to high assurance storage gateways.
-             *      */
+             */
             readonly require_mfa?: boolean;
             /**
              * @description Flag indicating whether all data transfers to and from this collection
@@ -5348,47 +5561,51 @@ export interface components {
              *
              *     If a restriction is in place for a collection, then HTTPS access to
              *     it is disabled.
-             *
              * @enum {string|null}
              */
             restrict_transfers_to_high_assurance?: "inbound" | "outbound" | "all" | null;
-            /** @description Absolute root path of the collection. All data access
+            /**
+             * @description Absolute root path of the collection. All data access
              *     is done relative to this path. On a guest collection,
              *     this value is only visible if the caller has an
              *     administrator role on both the guest collection and the
              *     mapped collection it is created on.
-             *      */
+             */
             readonly root_path?: string;
-            /** @description Restrictions on which paths may be shared in guest collections related
+            /**
+             * @description Restrictions on which paths may be shared in guest collections related
              *     to this mapped collection. On the mapped collection, these paths are
              *     relative to the root_path property of the mapped collection. On a guest
              *     collection, they are absolute paths from the storage root.
-             *      */
+             */
             sharing_restrict_paths?: unknown | components["schemas"]["PathRestrictions"];
-            /** @description List of connector-specific usernames allowed to create new guest
+            /**
+             * @description List of connector-specific usernames allowed to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_allow?: string[] | null;
-            /** @description List of connector-specific usernames denied access to create new guest
+            /**
+             * @description List of connector-specific usernames denied access to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_deny?: string[] | null;
-            /** @description Flag indicating whether the guest collection is subject to automatic
+            /**
+             * @description Flag indicating whether the guest collection is subject to automatic
              *     deletion if auto_delete_timeout is set on its mapped collection. Only
              *     settable on guest collections. Defaults to false.
-             *      */
+             */
             skip_auto_delete?: boolean;
             /**
              * Format: uuid
              * @description Unique ID of the Storage Gateway which this collection provides
              *     access to. This value can not change after the collection is
              *     created.
-             *
              */
             storage_gateway_id?: string;
-            /** @description Flag indicating whether the collection has been marked as verified by
+            /**
+             * @description Flag indicating whether the collection has been marked as verified by
              *     the administrator of the subscription associated with this endpoint.
-             *      */
+             */
             readonly subscription_admin_verified?: boolean;
             /** @description TLSFTP URL for the data on this collection. */
             readonly tlsftp_url?: string;
@@ -5397,20 +5614,21 @@ export interface components {
              * @description The ID of the User Credential which is used to access data on this
              *     collection. This credential must be owned by the collection's
              *     identity_id.
-             *
              */
             user_credential_id?: string;
-            /** @description A message for clients to display to users when interacting with
+            /**
+             * @description A message for clients to display to users when interacting with
              *     this collection. For guest collections, this property is read-only
              *     and is the same as the value of its related mapped collection. The
              *     message may be up to 256 characters long.
-             *      */
+             */
             user_message?: string | null;
-            /** @description Link to additional messaging for clients to display to users when
+            /**
+             * @description Link to additional messaging for clients to display to users when
              *     interacting with this endpoint, linked to an HTTP or HTTPS URL. For
              *     guest collections, this property is read-only and is the same as the
              *     value of its related mapped collection.
-             *      */
+             */
             user_message_link?: string | null;
         };
         /** FlowAssociation */
@@ -5478,7 +5696,6 @@ export interface components {
          *     and activity_notification_policy to guest collections.
          *
          *     Version 1.15.0 adds the associated_flow_policy property to the collection.
-         *
          */
         Collection_1_15_0: {
             /**
@@ -5487,34 +5704,38 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "collection#1.15.0";
-            /** @description Length of time that guest collection permissions are valid.  Only
+            /**
+             * @description Length of time that guest collection permissions are valid.  Only
              *     settable on HA guest collections and HA mapped collections and used
              *     by guest collections attached to it. When set on both the mapped and
              *     guest collections, the lesser value is in effect. Set to null to
              *     delete any previously set value.
-             *      */
+             */
             acl_expiration_mins?: number | null;
             activity_notification_policy?: components["schemas"]["ActivityNotificationPolicy"];
-            /** @description Flag indicating if this Collection allows users to create guest
+            /**
+             * @description Flag indicating if this Collection allows users to create guest
              *     collections on it. This is always false if this is a guest collection.
              *     If this is changed to false on a mapped collection with associated
              *     guest collections, those collections will no longer be accessible.
-             *      */
+             */
             allow_guest_collections?: boolean;
-            /** @description Policy describing Globus flows to run when the collection is accessed.
-             *      */
+            /** @description Policy describing Globus flows to run when the collection is accessed. */
             associated_flow_policy?: unknown | components["schemas"]["FlowAssociation"];
-            /** @description Timeout (in minutes) during which a user is required to have
+            /**
+             * @description Timeout (in minutes) during which a user is required to have
              *     authenticated in a session to access this storage gateway.
-             *      */
+             */
             readonly authentication_timeout_mins?: number;
-            /** @description Number of days before unused guest collections will be automatically
+            /**
+             * @description Number of days before unused guest collections will be automatically
              *     deleted. Only settable on mapped collections. Values must be an integer
              *     greater than 0. Set to null to disable automatic guest collection deletion
              *     for the mapped collection. Defaults to disabled.
-             *      */
+             */
             auto_delete_timeout?: number | null;
-            /** @description Path to be interpreted as the base path when creating a new collection.
+            /**
+             * @description Path to be interpreted as the base path when creating a new collection.
              *     It is interpreted differently depending on the collection type being
              *     created. For a mapped collection, this is an absolute path on the
              *     storage system named by the storage_gateway_id.  For a guest collection,
@@ -5524,14 +5745,13 @@ export interface components {
              *     collection is created.
              *
              *     Support for `~` was added in API version 1.21.0.
-             *      */
+             */
             collection_base_path: string;
             /**
              * @description Type of collection. A `mapped` collection requires an account on the
              *     system to access the administrator-defined collection. A `guest`
              *     collection allows users to share access to their data on a Storage
              *     Gateway by registering a credential with the GCS Manager.
-             *
              * @enum {string}
              */
             collection_type: "mapped" | "guest";
@@ -5540,21 +5760,24 @@ export interface components {
              * @description Id of the connector type that is used by this collection.
              */
             readonly connector_id?: string;
-            /** @description Email address of the support contact for this collection. This is
+            /**
+             * @description Email address of the support contact for this collection. This is
              *     visible to end users so that they may contact your organization for
              *     support.
-             *      */
+             */
             contact_email?: string | null;
-            /** @description Other non-email contact information for the collection, e.g.  phone
+            /**
+             * @description Other non-email contact information for the collection, e.g.  phone
              *     and mailing address. This is visible to end users for support.
-             *      */
+             */
             contact_info?: string | null;
             /**
              * Format: date
              * @description Date on which this collection was created
              */
             readonly created_at?: string | null;
-            /** @description Default directory when accessing the collection. This may include
+            /**
+             * @description Default directory when accessing the collection. This may include
              *     the special string `$USER` which is evaluated at access time to be
              *     the connector-specific username accessing the data.
              *
@@ -5562,61 +5785,70 @@ export interface components {
              *     value of `/`, this value can also begin with the values `/~/` and
              *     `$HOME`, which are replaced by the user's home directory, or `/` if
              *     the connector does not support the concept of a home directory.
-             *      */
+             */
             default_directory?: string;
-            /** @description If set to true, this collection can not be deleted. This property
+            /**
+             * @description If set to true, this collection can not be deleted. This property
              *     is available only on mapped collections. As of GCS 5.4.69, this is
              *     true by default.
-             *      */
+             */
             delete_protected?: boolean;
             /** @description Flag indicating that this collection has been deleted */
             readonly deleted?: boolean;
-            /** @description Department within organization that runs the server(s). Searchable.
+            /**
+             * @description Department within organization that runs the server(s). Searchable.
              *     Optional. Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             department?: string | null;
             /** @description A description of the collection. */
             description?: string | null;
-            /** @description Flag indicating if guest collections on this mapped collection allow
+            /**
+             * @description Flag indicating if guest collections on this mapped collection allow
              *     anonymous write permissions or not. This flag is always true for high
              *     assurance collections. For non-high assurance mapped collections, the
              *     default value is false.
-             *      */
+             */
             disable_anonymous_writes?: boolean;
-            /** @description Flag indicating that this endpoint does not support computing
+            /**
+             * @description Flag indicating that this endpoint does not support computing
              *     checksums, needed for the verify_checksum option of transfer.
-             *      */
+             */
             disable_verify?: boolean;
-            /** @description Friendly name for the collection. Unicode string, max 128 characters,
+            /**
+             * @description Friendly name for the collection. Unicode string, max 128 characters,
              *     no new lines (`\r` or `\n`).
-             *      */
+             */
             display_name: string;
             domain?: components["schemas"]["Domain"];
-            /** @description DNS name of the virtual host serving this collection. For mapped
+            /**
+             * @description DNS name of the virtual host serving this collection. For mapped
              *     collections which do not have a custom domain, this may be specified
              *     as part of the input document to create the collection, otherwise this
              *     is a read-only property. When included in the input, the name is
              *     restricted to be a subdomain of the endpoint, and the input name label
              *     may not start with `m-` or `g-`.
-             *      */
+             */
             domain_name?: string;
-            /** @description Boolean flag indicating whether this collection should support
+            /**
+             * @description Boolean flag indicating whether this collection should support
              *     HTTPS. This value can be set on mapped collections or guest
              *     collections. However, it may not be set to true on a guest
              *     collection if the value on the related mapped collection is false.
-             *      */
+             */
             enable_https?: boolean;
-            /** @description Flag indicating whether all data transfers to and from this
+            /**
+             * @description Flag indicating whether all data transfers to and from this
              *     collection are always encrypted.
              *
              *     __New in v5.4.17__: If a mapped collection forces encryption, all
              *     of its guest collections must as well.  If this option is used on a
              *     mapped collection, the value is propagated to its guest collections.
-             *      */
+             */
             force_encryption?: boolean;
-            /** @description Flag indicating that this endpoint requires computing checksums,
+            /**
+             * @description Flag indicating that this endpoint requires computing checksums,
              *     needed for the verify_checksum option of transfer.
-             *      */
+             */
             force_verify?: boolean;
             /**
              * Format: uuid
@@ -5624,12 +5856,12 @@ export interface components {
              *     guest collections. During authorization, the authentication policy must
              *     be satisfied before permissions are considered. Read-only on guest
              *     collections. (**Added in API 1.15.0**)
-             *
              */
             guest_auth_policy_id?: string | null;
-            /** @description Flag indicating if this collection is created on a high assurance
+            /**
+             * @description Flag indicating if this collection is created on a high assurance
              *     Storage Gateway.
-             *      */
+             */
             readonly high_assurance?: boolean;
             /** @description HTTPS URL for the data on this collection. */
             readonly https_url?: string;
@@ -5637,30 +5869,30 @@ export interface components {
              * Format: uuid
              * @description Unique identifier for this collection. This is assigned by the GCS
              *     manager when creating a collection.
-             *
              */
             readonly id?: string;
             /**
              * Format: uuid
              * @description Globus Auth identity to who acts as the owner of this collection.
              *     This identity is an `administrator` on the collection.
-             *
              */
             identity_id?: string;
             /** @description Link to a web page with more information about the collection */
             info_link?: string | null;
-            /** @description List of search keywords for the endpoint. Optional. Unicode string,
+            /**
+             * @description List of search keywords for the endpoint. Optional. Unicode string,
              *     max 1024 characters total across all strings.
-             *      */
+             */
             keywords?: string[];
             /**
              * Format: date
              * @description Date on which this collection was last accessed
              */
             readonly last_access?: string | null;
-            /** @description URL of the GCS Manager API service for the endpoint hosting this
+            /**
+             * @description URL of the GCS Manager API service for the endpoint hosting this
              *     collection.
-             *      */
+             */
             readonly manager_url?: string;
             /**
              * Format: uuid
@@ -5670,24 +5902,26 @@ export interface components {
              *     sharing (`allow_guest_collections`, `sharing_restrict_paths`) will
              *     always reflect the values in the Mapped Collection definition and
              *     may not be changed on this Guest Collection.
-             *
              */
             mapped_collection_id?: string;
-            /** @description Organization that runs the server(s) represented by the endpoint.
+            /**
+             * @description Organization that runs the server(s) represented by the endpoint.
              *     Optional to preserve backward compatibility, but will eventually be
              *     required and all clients are encouraged to require users to specify
              *     it.  Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             organization?: string;
             /** @description Connector-specific collection policies */
             policies?: components["schemas"]["S3CollectionPolicies_1_0_0"] | components["schemas"]["AzureBlobCollectionPolicies_1_0_0"] | components["schemas"]["BlackPearlCollectionPolicies_1_0_0"] | components["schemas"]["BoxCollectionPolicies_1_0_0"] | components["schemas"]["CephCollectionPolicies_1_0_0"] | components["schemas"]["DropboxCollectionPolicies_1_0_0"] | components["schemas"]["GoogleCloudStorageCollectionPolicies_1_0_0"] | components["schemas"]["GoogleDriveCollectionPolicies_1_0_0"] | components["schemas"]["HPSSCollectionPolicies_1_0_0"] | components["schemas"]["IrodsCollectionPolicies_1_0_0"] | components["schemas"]["OneDriveCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_1_0"] | components["schemas"]["PosixStagingCollectionPolicies_1_0_0"];
-            /** @description Flag indicating whether this collection is visible to other Globus
+            /**
+             * @description Flag indicating whether this collection is visible to other Globus
              *     users.
-             *      */
+             */
             public: boolean;
-            /** @description Flag indicating if the storage_gateway requires multi-factor
+            /**
+             * @description Flag indicating if the storage_gateway requires multi-factor
              *     authentication. Only applies to high assurance storage gateways.
-             *      */
+             */
             readonly require_mfa?: boolean;
             /**
              * @description Flag indicating whether all data transfers to and from this collection
@@ -5698,47 +5932,51 @@ export interface components {
              *
              *     If a restriction is in place for a collection, then HTTPS access to
              *     it is disabled.
-             *
              * @enum {string|null}
              */
             restrict_transfers_to_high_assurance?: "inbound" | "outbound" | "all" | null;
-            /** @description Absolute root path of the collection. All data access
+            /**
+             * @description Absolute root path of the collection. All data access
              *     is done relative to this path. On a guest collection,
              *     this value is only visible if the caller has an
              *     administrator role on both the guest collection and the
              *     mapped collection it is created on.
-             *      */
+             */
             readonly root_path?: string;
-            /** @description Restrictions on which paths may be shared in guest collections related
+            /**
+             * @description Restrictions on which paths may be shared in guest collections related
              *     to this mapped collection. On the mapped collection, these paths are
              *     relative to the root_path property of the mapped collection. On a guest
              *     collection, they are absolute paths from the storage root.
-             *      */
+             */
             sharing_restrict_paths?: unknown | components["schemas"]["PathRestrictions"];
-            /** @description List of connector-specific usernames allowed to create new guest
+            /**
+             * @description List of connector-specific usernames allowed to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_allow?: string[] | null;
-            /** @description List of connector-specific usernames denied access to create new guest
+            /**
+             * @description List of connector-specific usernames denied access to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_deny?: string[] | null;
-            /** @description Flag indicating whether the guest collection is subject to automatic
+            /**
+             * @description Flag indicating whether the guest collection is subject to automatic
              *     deletion if auto_delete_timeout is set on its mapped collection. Only
              *     settable on guest collections. Defaults to false.
-             *      */
+             */
             skip_auto_delete?: boolean;
             /**
              * Format: uuid
              * @description Unique ID of the Storage Gateway which this collection provides
              *     access to. This value can not change after the collection is
              *     created.
-             *
              */
             storage_gateway_id?: string;
-            /** @description Flag indicating whether the collection has been marked as verified by
+            /**
+             * @description Flag indicating whether the collection has been marked as verified by
              *     the administrator of the subscription associated with this endpoint.
-             *      */
+             */
             readonly subscription_admin_verified?: boolean;
             /** @description TLSFTP URL for the data on this collection. */
             readonly tlsftp_url?: string;
@@ -5747,20 +5985,21 @@ export interface components {
              * @description The ID of the User Credential which is used to access data on this
              *     collection. This credential must be owned by the collection's
              *     identity_id.
-             *
              */
             user_credential_id?: string;
-            /** @description A message for clients to display to users when interacting with
+            /**
+             * @description A message for clients to display to users when interacting with
              *     this collection. For guest collections, this property is read-only
              *     and is the same as the value of its related mapped collection. The
              *     message may be up to 256 characters long.
-             *      */
+             */
             user_message?: string | null;
-            /** @description Link to additional messaging for clients to display to users when
+            /**
+             * @description Link to additional messaging for clients to display to users when
              *     interacting with this endpoint, linked to an HTTP or HTTPS URL. For
              *     guest collections, this property is read-only and is the same as the
              *     value of its related mapped collection.
-             *      */
+             */
             user_message_link?: string | null;
         };
         /**
@@ -5818,7 +6057,6 @@ export interface components {
          *
          *     Version 1.16.0 adds the preserve_modtime and https_methods property to the
          *     collection.
-         *
          */
         Collection_1_16_0: {
             /**
@@ -5827,34 +6065,38 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "collection#1.16.0";
-            /** @description Length of time that guest collection permissions are valid.  Only
+            /**
+             * @description Length of time that guest collection permissions are valid.  Only
              *     settable on HA guest collections and HA mapped collections and used
              *     by guest collections attached to it. When set on both the mapped and
              *     guest collections, the lesser value is in effect. Set to null to
              *     delete any previously set value.
-             *      */
+             */
             acl_expiration_mins?: number | null;
             activity_notification_policy?: components["schemas"]["ActivityNotificationPolicy"];
-            /** @description Flag indicating if this Collection allows users to create guest
+            /**
+             * @description Flag indicating if this Collection allows users to create guest
              *     collections on it. This is always false if this is a guest collection.
              *     If this is changed to false on a mapped collection with associated
              *     guest collections, those collections will no longer be accessible.
-             *      */
+             */
             allow_guest_collections?: boolean;
-            /** @description Policy describing Globus flows to run when the collection is accessed.
-             *      */
+            /** @description Policy describing Globus flows to run when the collection is accessed. */
             associated_flow_policy?: unknown | components["schemas"]["FlowAssociation"];
-            /** @description Timeout (in minutes) during which a user is required to have
+            /**
+             * @description Timeout (in minutes) during which a user is required to have
              *     authenticated in a session to access this storage gateway.
-             *      */
+             */
             readonly authentication_timeout_mins?: number;
-            /** @description Number of days before unused guest collections will be automatically
+            /**
+             * @description Number of days before unused guest collections will be automatically
              *     deleted. Only settable on mapped collections. Values must be an integer
              *     greater than 0. Set to null to disable automatic guest collection deletion
              *     for the mapped collection. Defaults to disabled.
-             *      */
+             */
             auto_delete_timeout?: number | null;
-            /** @description Path to be interpreted as the base path when creating a new collection.
+            /**
+             * @description Path to be interpreted as the base path when creating a new collection.
              *     It is interpreted differently depending on the collection type being
              *     created. For a mapped collection, this is an absolute path on the
              *     storage system named by the storage_gateway_id.  For a guest collection,
@@ -5864,14 +6106,13 @@ export interface components {
              *     collection is created.
              *
              *     Support for `~` was added in API version 1.21.0.
-             *      */
+             */
             collection_base_path: string;
             /**
              * @description Type of collection. A `mapped` collection requires an account on the
              *     system to access the administrator-defined collection. A `guest`
              *     collection allows users to share access to their data on a Storage
              *     Gateway by registering a credential with the GCS Manager.
-             *
              * @enum {string}
              */
             collection_type: "mapped" | "guest";
@@ -5880,21 +6121,24 @@ export interface components {
              * @description Id of the connector type that is used by this collection.
              */
             readonly connector_id?: string;
-            /** @description Email address of the support contact for this collection. This is
+            /**
+             * @description Email address of the support contact for this collection. This is
              *     visible to end users so that they may contact your organization for
              *     support.
-             *      */
+             */
             contact_email?: string | null;
-            /** @description Other non-email contact information for the collection, e.g.  phone
+            /**
+             * @description Other non-email contact information for the collection, e.g.  phone
              *     and mailing address. This is visible to end users for support.
-             *      */
+             */
             contact_info?: string | null;
             /**
              * Format: date
              * @description Date on which this collection was created
              */
             readonly created_at?: string | null;
-            /** @description Default directory when accessing the collection. This may include
+            /**
+             * @description Default directory when accessing the collection. This may include
              *     the special string `$USER` which is evaluated at access time to be
              *     the connector-specific username accessing the data.
              *
@@ -5902,61 +6146,70 @@ export interface components {
              *     value of `/`, this value can also begin with the values `/~/` and
              *     `$HOME`, which are replaced by the user's home directory, or `/` if
              *     the connector does not support the concept of a home directory.
-             *      */
+             */
             default_directory?: string;
-            /** @description If set to true, this collection can not be deleted. This property
+            /**
+             * @description If set to true, this collection can not be deleted. This property
              *     is available only on mapped collections. As of GCS 5.4.69, this is
              *     true by default.
-             *      */
+             */
             delete_protected?: boolean;
             /** @description Flag indicating that this collection has been deleted */
             readonly deleted?: boolean;
-            /** @description Department within organization that runs the server(s). Searchable.
+            /**
+             * @description Department within organization that runs the server(s). Searchable.
              *     Optional. Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             department?: string | null;
             /** @description A description of the collection. */
             description?: string | null;
-            /** @description Flag indicating if guest collections on this mapped collection allow
+            /**
+             * @description Flag indicating if guest collections on this mapped collection allow
              *     anonymous write permissions or not. This flag is always true for high
              *     assurance collections. For non-high assurance mapped collections, the
              *     default value is false.
-             *      */
+             */
             disable_anonymous_writes?: boolean;
-            /** @description Flag indicating that this endpoint does not support computing
+            /**
+             * @description Flag indicating that this endpoint does not support computing
              *     checksums, needed for the verify_checksum option of transfer.
-             *      */
+             */
             disable_verify?: boolean;
-            /** @description Friendly name for the collection. Unicode string, max 128 characters,
+            /**
+             * @description Friendly name for the collection. Unicode string, max 128 characters,
              *     no new lines (`\r` or `\n`).
-             *      */
+             */
             display_name: string;
             domain?: components["schemas"]["Domain"];
-            /** @description DNS name of the virtual host serving this collection. For mapped
+            /**
+             * @description DNS name of the virtual host serving this collection. For mapped
              *     collections which do not have a custom domain, this may be specified
              *     as part of the input document to create the collection, otherwise this
              *     is a read-only property. When included in the input, the name is
              *     restricted to be a subdomain of the endpoint, and the input name label
              *     may not start with `m-` or `g-`.
-             *      */
+             */
             domain_name?: string;
-            /** @description Boolean flag indicating whether this collection should support
+            /**
+             * @description Boolean flag indicating whether this collection should support
              *     HTTPS. This value can be set on mapped collections or guest
              *     collections. However, it may not be set to true on a guest
              *     collection if the value on the related mapped collection is false.
-             *      */
+             */
             enable_https?: boolean;
-            /** @description Flag indicating whether all data transfers to and from this
+            /**
+             * @description Flag indicating whether all data transfers to and from this
              *     collection are always encrypted.
              *
              *     __New in v5.4.17__: If a mapped collection forces encryption, all
              *     of its guest collections must as well.  If this option is used on a
              *     mapped collection, the value is propagated to its guest collections.
-             *      */
+             */
             force_encryption?: boolean;
-            /** @description Flag indicating that this endpoint requires computing checksums,
+            /**
+             * @description Flag indicating that this endpoint requires computing checksums,
              *     needed for the verify_checksum option of transfer.
-             *      */
+             */
             force_verify?: boolean;
             /**
              * Format: uuid
@@ -5964,14 +6217,15 @@ export interface components {
              *     guest collections. During authorization, the authentication policy must
              *     be satisfied before permissions are considered. Read-only on guest
              *     collections. (**Added in API 1.15.0**)
-             *
              */
             guest_auth_policy_id?: string | null;
-            /** @description Flag indicating if this collection is created on a high assurance
+            /**
+             * @description Flag indicating if this collection is created on a high assurance
              *     Storage Gateway.
-             *      */
+             */
             readonly high_assurance?: boolean;
-            /** @description List containing the supported HTTPS methods for this collection. Elements
+            /**
+             * @description List containing the supported HTTPS methods for this collection. Elements
              *     in the list can be "GET", "PUT", or "DELETE".
              *
              *     For a mapped collection, the default is ["GET", "PUT", "DELETE"].
@@ -5983,7 +6237,7 @@ export interface components {
              *     supported methods from the mapped collection it is sharing data from, but
              *     may disable methods by putting a value that excludes values supported by
              *     the mapped collection.
-             *      */
+             */
             https_methods?: ("GET" | "PUT" | "DELETE")[];
             /** @description HTTPS URL for the data on this collection. */
             readonly https_url?: string;
@@ -5991,30 +6245,30 @@ export interface components {
              * Format: uuid
              * @description Unique identifier for this collection. This is assigned by the GCS
              *     manager when creating a collection.
-             *
              */
             readonly id?: string;
             /**
              * Format: uuid
              * @description Globus Auth identity to who acts as the owner of this collection.
              *     This identity is an `administrator` on the collection.
-             *
              */
             identity_id?: string;
             /** @description Link to a web page with more information about the collection */
             info_link?: string | null;
-            /** @description List of search keywords for the endpoint. Optional. Unicode string,
+            /**
+             * @description List of search keywords for the endpoint. Optional. Unicode string,
              *     max 1024 characters total across all strings.
-             *      */
+             */
             keywords?: string[];
             /**
              * Format: date
              * @description Date on which this collection was last accessed
              */
             readonly last_access?: string | null;
-            /** @description URL of the GCS Manager API service for the endpoint hosting this
+            /**
+             * @description URL of the GCS Manager API service for the endpoint hosting this
              *     collection.
-             *      */
+             */
             readonly manager_url?: string;
             /**
              * Format: uuid
@@ -6024,14 +6278,14 @@ export interface components {
              *     sharing (`allow_guest_collections`, `sharing_restrict_paths`) will
              *     always reflect the values in the Mapped Collection definition and
              *     may not be changed on this Guest Collection.
-             *
              */
             mapped_collection_id?: string;
-            /** @description Organization that runs the server(s) represented by the endpoint.
+            /**
+             * @description Organization that runs the server(s) represented by the endpoint.
              *     Optional to preserve backward compatibility, but will eventually be
              *     required and all clients are encouraged to require users to specify
              *     it.  Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             organization?: string;
             /** @description Connector-specific collection policies */
             policies?: components["schemas"]["S3CollectionPolicies_1_0_0"] | components["schemas"]["AzureBlobCollectionPolicies_1_0_0"] | components["schemas"]["BlackPearlCollectionPolicies_1_0_0"] | components["schemas"]["BoxCollectionPolicies_1_0_0"] | components["schemas"]["CephCollectionPolicies_1_0_0"] | components["schemas"]["DropboxCollectionPolicies_1_0_0"] | components["schemas"]["GoogleCloudStorageCollectionPolicies_1_0_0"] | components["schemas"]["GoogleDriveCollectionPolicies_1_0_0"] | components["schemas"]["HPSSCollectionPolicies_1_0_0"] | components["schemas"]["IrodsCollectionPolicies_1_0_0"] | components["schemas"]["OneDriveCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_1_0"] | components["schemas"]["PosixStagingCollectionPolicies_1_0_0"];
@@ -6039,17 +6293,18 @@ export interface components {
              * @description Flag indicating whether all data transfers to and from this
              *     collection require the transfer to have the preserve_modtime
              *     property set to true.
-             *
              * @enum {string|null}
              */
             preserve_modtime?: "inbound" | "outbound" | "all" | null;
-            /** @description Flag indicating whether this collection is visible to other Globus
+            /**
+             * @description Flag indicating whether this collection is visible to other Globus
              *     users.
-             *      */
+             */
             public: boolean;
-            /** @description Flag indicating if the storage_gateway requires multi-factor
+            /**
+             * @description Flag indicating if the storage_gateway requires multi-factor
              *     authentication. Only applies to high assurance storage gateways.
-             *      */
+             */
             readonly require_mfa?: boolean;
             /**
              * @description Flag indicating whether all data transfers to and from this collection
@@ -6060,47 +6315,51 @@ export interface components {
              *
              *     If a restriction is in place for a collection, then HTTPS access to
              *     it is disabled.
-             *
              * @enum {string|null}
              */
             restrict_transfers_to_high_assurance?: "inbound" | "outbound" | "all" | null;
-            /** @description Absolute root path of the collection. All data access
+            /**
+             * @description Absolute root path of the collection. All data access
              *     is done relative to this path. On a guest collection,
              *     this value is only visible if the caller has an
              *     administrator role on both the guest collection and the
              *     mapped collection it is created on.
-             *      */
+             */
             readonly root_path?: string;
-            /** @description Restrictions on which paths may be shared in guest collections related
+            /**
+             * @description Restrictions on which paths may be shared in guest collections related
              *     to this mapped collection. On the mapped collection, these paths are
              *     relative to the root_path property of the mapped collection. On a guest
              *     collection, they are absolute paths from the storage root.
-             *      */
+             */
             sharing_restrict_paths?: unknown | components["schemas"]["PathRestrictions"];
-            /** @description List of connector-specific usernames allowed to create new guest
+            /**
+             * @description List of connector-specific usernames allowed to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_allow?: string[] | null;
-            /** @description List of connector-specific usernames denied access to create new guest
+            /**
+             * @description List of connector-specific usernames denied access to create new guest
              *     collections on this mapped collection.
-             *      */
+             */
             sharing_users_deny?: string[] | null;
-            /** @description Flag indicating whether the guest collection is subject to automatic
+            /**
+             * @description Flag indicating whether the guest collection is subject to automatic
              *     deletion if auto_delete_timeout is set on its mapped collection. Only
              *     settable on guest collections. Defaults to false.
-             *      */
+             */
             skip_auto_delete?: boolean;
             /**
              * Format: uuid
              * @description Unique ID of the Storage Gateway which this collection provides
              *     access to. This value can not change after the collection is
              *     created.
-             *
              */
             storage_gateway_id?: string;
-            /** @description Flag indicating whether the collection has been marked as verified by
+            /**
+             * @description Flag indicating whether the collection has been marked as verified by
              *     the administrator of the subscription associated with this endpoint.
-             *      */
+             */
             readonly subscription_admin_verified?: boolean;
             /** @description TLSFTP URL for the data on this collection. */
             readonly tlsftp_url?: string;
@@ -6109,27 +6368,27 @@ export interface components {
              * @description The ID of the User Credential which is used to access data on this
              *     collection. This credential must be owned by the collection's
              *     identity_id.
-             *
              */
             user_credential_id?: string;
-            /** @description A message for clients to display to users when interacting with
+            /**
+             * @description A message for clients to display to users when interacting with
              *     this collection. For guest collections, this property is read-only
              *     and is the same as the value of its related mapped collection. The
              *     message may be up to 256 characters long.
-             *      */
+             */
             user_message?: string | null;
-            /** @description Link to additional messaging for clients to display to users when
+            /**
+             * @description Link to additional messaging for clients to display to users when
              *     interacting with this endpoint, linked to an HTTP or HTTPS URL. For
              *     guest collections, this property is read-only and is the same as the
              *     value of its related mapped collection.
-             *      */
+             */
             user_message_link?: string | null;
         };
         /**
          * CollectionNotFound_1_0_0
          * @description Error details when a mapped collection no longer exists when accessing a
          *     guest collection.
-         *
          */
         CollectionNotFound_1_0_0: {
             /**
@@ -6147,7 +6406,6 @@ export interface components {
         /**
          * CollectionOwner_1_0_0
          * @description Schema for processing the collection_owner#1.0.0 data type
-         *
          */
         CollectionOwner_1_0_0: {
             /**
@@ -6165,7 +6423,6 @@ export interface components {
         /**
          * Connector_1_0_0
          * @description Connector information document
-         *
          */
         Connector_1_0_0: {
             /**
@@ -6189,7 +6446,6 @@ export interface components {
          * @description Connector information document
          *
          *         Version 1.1.0 adds information about HA and BAA subscriptions.
-         *
          */
         Connector_1_1_0: {
             /**
@@ -6222,7 +6478,6 @@ export interface components {
          * @description Error details when a user has attempted to use a credential when creating a
          *     collection or logging in, but there are multiple mapped identities and none
          *     of them have a valid credential.
-         *
          */
         CredentialNotFound_1_0_0: {
             /**
@@ -6231,8 +6486,7 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "credential_not_found#1.0.0";
-            /** @description List of available accounts that do not have credentials registered.
-             *      */
+            /** @description List of available accounts that do not have credentials registered. */
             accounts: components["schemas"]["Account"][];
         };
         /**
@@ -6243,7 +6497,6 @@ export interface components {
          *     deployment and the Globus Transfer service. The endpoint describes services
          *     for accessing data via GridFTP and HTTPS and also for configuring and
          *     managing the policies associated with that access.
-         *
          */
         Endpoint_1_0_0: {
             /**
@@ -6254,23 +6507,27 @@ export interface components {
             DATA_TYPE: "endpoint#1.0.0";
             /** @description Allow data transfer on this endpoint using the UDT protocol */
             allow_udt?: boolean;
-            /** @description Email address of the support contact for this endpoint. This is visible
+            /**
+             * @description Email address of the support contact for this endpoint. This is visible
              *     to end users so that they may contact your organization for support.
-             *      */
+             */
             contact_email?: string;
-            /** @description Other non-email contact information for the endpoint, e.g.  phone and
+            /**
+             * @description Other non-email contact information for the endpoint, e.g.  phone and
              *     mailing address. This is visible to end users for support.
-             *      */
+             */
             contact_info?: string;
-            /** @description Department within organization that runs the server(s).  Searchable.
+            /**
+             * @description Department within organization that runs the server(s).  Searchable.
              *     Unicode string, max 1024 characters, no new lines.
-             *              */
+             */
             department?: string;
             /** @description A description of the endpoint */
             description?: string;
-            /** @description Friendly name for the endpoint, not unique.  Unicode string, no new
+            /**
+             * @description Friendly name for the endpoint, not unique.  Unicode string, no new
              *     lines (`\r` or `\n`).  Searchable.
-             *      */
+             */
             display_name: string;
             /**
              * Format: uuid
@@ -6279,23 +6536,27 @@ export interface components {
             id?: string;
             /** @description URL of the GCS Manager API service for this endpoint */
             readonly gcs_manager_url?: string;
-            /** @description Link to a web page with more information about the endpoint. The
+            /**
+             * @description Link to a web page with more information about the endpoint. The
              *     administrator is responsible for running a website at this URL and
              *     verifying that it is accepting public connections.
-             *      */
+             */
             info_link?: string;
-            /** @description List of search keywords for the endpoint. Unicode string, max 1024
+            /**
+             * @description List of search keywords for the endpoint. Unicode string, max 1024
              *     characters total across all strings.
-             *              */
+             */
             keywords?: string[];
-            /** @description Admin-specified value when the **network_use** property's value is
+            /**
+             * @description Admin-specified value when the **network_use** property's value is
              *     `custom`; otherwise the preset value for the specified
              *     **network_use**.
-             *      */
+             */
             max_concurrency?: number;
-            /** @description Admin-specified value when the **network_use** property's value is
+            /**
+             * @description Admin-specified value when the **network_use** property's value is
              *     `custom`; otherwise the preset value for the specified **network_use**.
-             *      */
+             */
             max_parallelism?: number;
             /**
              * @description Control how Globus interacts with this endpoint over the network.
@@ -6315,36 +6576,38 @@ export interface components {
              *           endpoint admin. When setting this level, you must also set
              *           the **max_concurrency**, **preferred_concurrency**,
              *           **max_parallelism**, and **preferred_parallelism** properties.
-             *
              * @default normal
              * @enum {string}
              */
             network_use: "normal" | "minimal" | "aggressive" | "custom";
-            /** @description Organization that runs the server(s) represented by the endpoint.
+            /**
+             * @description Organization that runs the server(s) represented by the endpoint.
              *     Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             organization?: string;
-            /** @description Admin-specified value when the **network_use** property's value is
+            /**
+             * @description Admin-specified value when the **network_use** property's value is
              *     `custom`; otherwise the preset value for the specified **network_use**.
-             *      */
+             */
             preferred_concurrency?: number;
-            /** @description Admin-specified value when the **network_use** property's value is
+            /**
+             * @description Admin-specified value when the **network_use** property's value is
              *     `custom`; otherwise the preset value for the specified **network_use**.
-             *      */
+             */
             preferred_parallelism?: number;
             /**
              * @description Flag indicating whether this endpoint is visible to all other Globus
              *     users. If false, only users which have been granted a role on the
              *     endpoint or one of its collections, or belong to a domain allowed
              *     access to any of its storage gateways may view it.
-             *
              * @default true
              */
             public: boolean;
-            /** @description The id of the subscription that is managing this endpoint.  This may
+            /**
+             * @description The id of the subscription that is managing this endpoint.  This may
              *     be the special value `DEFAULT` when using this as input to PATCH or PUT
              *     to use the caller's default subscription id.
-             *      */
+             */
             subscription_id?: string | null;
         };
         /**
@@ -6358,7 +6621,6 @@ export interface components {
          *
          *     Version 1.1.0 of the endpoint includes support for customizing the TCP port
          *     that the GridFTP listens on.
-         *
          */
         Endpoint_1_1_0: {
             /**
@@ -6369,23 +6631,27 @@ export interface components {
             DATA_TYPE: "endpoint#1.1.0";
             /** @description Allow data transfer on this endpoint using the UDT protocol */
             allow_udt?: boolean;
-            /** @description Email address of the support contact for this endpoint. This is visible
+            /**
+             * @description Email address of the support contact for this endpoint. This is visible
              *     to end users so that they may contact your organization for support.
-             *      */
+             */
             contact_email?: string;
-            /** @description Other non-email contact information for the endpoint, e.g.  phone and
+            /**
+             * @description Other non-email contact information for the endpoint, e.g.  phone and
              *     mailing address. This is visible to end users for support.
-             *      */
+             */
             contact_info?: string;
-            /** @description Department within organization that runs the server(s).  Searchable.
+            /**
+             * @description Department within organization that runs the server(s).  Searchable.
              *     Unicode string, max 1024 characters, no new lines.
-             *              */
+             */
             department?: string;
             /** @description A description of the endpoint */
             description?: string;
-            /** @description Friendly name for the endpoint, not unique.  Unicode string, no new
+            /**
+             * @description Friendly name for the endpoint, not unique.  Unicode string, no new
              *     lines (`\r` or `\n`).  Searchable.
-             *      */
+             */
             display_name: string;
             /**
              * Format: uuid
@@ -6394,28 +6660,33 @@ export interface components {
             id?: string;
             /** @description URL of the GCS Manager API service for this endpoint */
             readonly gcs_manager_url?: string;
-            /** @description TCP port for the Globus control channel to listen on. By default, the
+            /**
+             * @description TCP port for the Globus control channel to listen on. By default, the
              *     control channel is passed through 443 with an ALPN header containing
              *     the value "ftp".
-             *      */
+             */
             gridftp_control_channel_port?: number | null;
-            /** @description Link to a web page with more information about the endpoint. The
+            /**
+             * @description Link to a web page with more information about the endpoint. The
              *     administrator is responsible for running a website at this URL and
              *     verifying that it is accepting public connections.
-             *      */
+             */
             info_link?: string;
-            /** @description List of search keywords for the endpoint. Unicode string, max 1024
+            /**
+             * @description List of search keywords for the endpoint. Unicode string, max 1024
              *     characters total across all strings.
-             *              */
+             */
             keywords?: string[];
-            /** @description Admin-specified value when the **network_use** property's value is
+            /**
+             * @description Admin-specified value when the **network_use** property's value is
              *     `custom`; otherwise the preset value for the specified
              *     **network_use**.
-             *      */
+             */
             max_concurrency?: number;
-            /** @description Admin-specified value when the **network_use** property's value is
+            /**
+             * @description Admin-specified value when the **network_use** property's value is
              *     `custom`; otherwise the preset value for the specified **network_use**.
-             *      */
+             */
             max_parallelism?: number;
             /**
              * @description Control how Globus interacts with this endpoint over the network.
@@ -6435,36 +6706,38 @@ export interface components {
              *           endpoint admin. When setting this level, you must also set
              *           the **max_concurrency**, **preferred_concurrency**,
              *           **max_parallelism**, and **preferred_parallelism** properties.
-             *
              * @default normal
              * @enum {string}
              */
             network_use: "normal" | "minimal" | "aggressive" | "custom";
-            /** @description Organization that runs the server(s) represented by the endpoint.
+            /**
+             * @description Organization that runs the server(s) represented by the endpoint.
              *     Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             organization?: string;
-            /** @description Admin-specified value when the **network_use** property's value is
+            /**
+             * @description Admin-specified value when the **network_use** property's value is
              *     `custom`; otherwise the preset value for the specified **network_use**.
-             *      */
+             */
             preferred_concurrency?: number;
-            /** @description Admin-specified value when the **network_use** property's value is
+            /**
+             * @description Admin-specified value when the **network_use** property's value is
              *     `custom`; otherwise the preset value for the specified **network_use**.
-             *      */
+             */
             preferred_parallelism?: number;
             /**
              * @description Flag indicating whether this endpoint is visible to all other Globus
              *     users. If false, only users which have been granted a role on the
              *     endpoint or one of its collections, or belong to a domain allowed
              *     access to any of its storage gateways may view it.
-             *
              * @default true
              */
             public: boolean;
-            /** @description The id of the subscription that is managing this endpoint.  This may
+            /**
+             * @description The id of the subscription that is managing this endpoint.  This may
              *     be the special value `DEFAULT` when using this as input to PATCH or PUT
              *     to use the caller's default subscription id.
-             *      */
+             */
             subscription_id?: string | null;
         };
         /**
@@ -6481,7 +6754,6 @@ export interface components {
          *
          *     Version 1.2.0 of the endpoint includes read-only earliest_last_access
          *     to put a limit on collections which are missing a last_access value.
-         *
          */
         Endpoint_1_2_0: {
             /**
@@ -6492,29 +6764,32 @@ export interface components {
             DATA_TYPE: "endpoint#1.2.0";
             /** @description Allow data transfer on this endpoint using the UDT protocol */
             allow_udt?: boolean;
-            /** @description Email address of the support contact for this endpoint. This is visible
+            /**
+             * @description Email address of the support contact for this endpoint. This is visible
              *     to end users so that they may contact your organization for support.
-             *      */
+             */
             contact_email?: string;
-            /** @description Other non-email contact information for the endpoint, e.g.  phone and
+            /**
+             * @description Other non-email contact information for the endpoint, e.g.  phone and
              *     mailing address. This is visible to end users for support.
-             *      */
+             */
             contact_info?: string;
-            /** @description Department within organization that runs the server(s).  Searchable.
+            /**
+             * @description Department within organization that runs the server(s).  Searchable.
              *     Unicode string, max 1024 characters, no new lines.
-             *              */
+             */
             department?: string;
             /** @description A description of the endpoint */
             description?: string;
-            /** @description Friendly name for the endpoint, not unique.  Unicode string, no new
+            /**
+             * @description Friendly name for the endpoint, not unique.  Unicode string, no new
              *     lines (`\r` or `\n`).  Searchable.
-             *      */
+             */
             display_name: string;
             /**
              * Format: date
              * @description Earliest date when this endpoint began tracking last_access for
              *     collections
-             *
              */
             readonly earliest_last_access?: string;
             /**
@@ -6524,28 +6799,33 @@ export interface components {
             id?: string;
             /** @description URL of the GCS Manager API service for this endpoint */
             readonly gcs_manager_url?: string;
-            /** @description TCP port for the Globus control channel to listen on. By default, the
+            /**
+             * @description TCP port for the Globus control channel to listen on. By default, the
              *     control channel is passed through 443 with an ALPN header containing
              *     the value "ftp".
-             *      */
+             */
             gridftp_control_channel_port?: number | null;
-            /** @description Link to a web page with more information about the endpoint. The
+            /**
+             * @description Link to a web page with more information about the endpoint. The
              *     administrator is responsible for running a website at this URL and
              *     verifying that it is accepting public connections.
-             *      */
+             */
             info_link?: string;
-            /** @description List of search keywords for the endpoint. Unicode string, max 1024
+            /**
+             * @description List of search keywords for the endpoint. Unicode string, max 1024
              *     characters total across all strings.
-             *              */
+             */
             keywords?: string[];
-            /** @description Admin-specified value when the **network_use** property's value is
+            /**
+             * @description Admin-specified value when the **network_use** property's value is
              *     `custom`; otherwise the preset value for the specified
              *     **network_use**.
-             *      */
+             */
             max_concurrency?: number;
-            /** @description Admin-specified value when the **network_use** property's value is
+            /**
+             * @description Admin-specified value when the **network_use** property's value is
              *     `custom`; otherwise the preset value for the specified **network_use**.
-             *      */
+             */
             max_parallelism?: number;
             /**
              * @description Control how Globus interacts with this endpoint over the network.
@@ -6565,42 +6845,43 @@ export interface components {
              *           endpoint admin. When setting this level, you must also set
              *           the **max_concurrency**, **preferred_concurrency**,
              *           **max_parallelism**, and **preferred_parallelism** properties.
-             *
              * @default normal
              * @enum {string}
              */
             network_use: "normal" | "minimal" | "aggressive" | "custom";
-            /** @description Organization that runs the server(s) represented by the endpoint.
+            /**
+             * @description Organization that runs the server(s) represented by the endpoint.
              *     Unicode string, max 1024 characters, no new lines.
-             *      */
+             */
             organization?: string;
-            /** @description Admin-specified value when the **network_use** property's value is
+            /**
+             * @description Admin-specified value when the **network_use** property's value is
              *     `custom`; otherwise the preset value for the specified **network_use**.
-             *      */
+             */
             preferred_concurrency?: number;
-            /** @description Admin-specified value when the **network_use** property's value is
+            /**
+             * @description Admin-specified value when the **network_use** property's value is
              *     `custom`; otherwise the preset value for the specified **network_use**.
-             *      */
+             */
             preferred_parallelism?: number;
             /**
              * @description Flag indicating whether this endpoint is visible to all other Globus
              *     users. If false, only users which have been granted a role on the
              *     endpoint or one of its collections, or belong to a domain allowed
              *     access to any of its storage gateways may view it.
-             *
              * @default true
              */
             public: boolean;
-            /** @description The id of the subscription that is managing this endpoint.  This may
+            /**
+             * @description The id of the subscription that is managing this endpoint.  This may
              *     be the special value `DEFAULT` when using this as input to PATCH or PUT
              *     to use the caller's default subscription id.
-             *      */
+             */
             subscription_id?: string | null;
         };
         /**
          * EndpointOwner_1_0_0
          * @description Schema for processing the endpoint_owner#1.0.0 data type
-         *
          */
         EndpointOwner_1_0_0: {
             /**
@@ -6618,7 +6899,6 @@ export interface components {
         /**
          * EndpointSubscription_1_0_0
          * @description Endpoint subscription
-         *
          */
         EndpointSubscription_1_0_0: {
             /**
@@ -6627,17 +6907,17 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "endpoint_subscription#1.0.0";
-            /** @description Either the id of a Globus subscription or the special value "DEFAULT"
+            /**
+             * @description Either the id of a Globus subscription or the special value "DEFAULT"
              *     if the caller has only one subscription associated with their identity
              *     set.
-             *      */
+             */
             subscription_id: string | null;
         };
         /**
          * IdNotInIdentitySet_1_0_0
          * @description Error details when a user has authenticated but has requested to act as an
          *     identity not in the current identity set.
-         *
          */
         IdNotInIdentitySet_1_0_0: {
             /**
@@ -6657,7 +6937,6 @@ export interface components {
          * @description This document contains information about the Globus Connect
          *     Server, including its software and supported API version
          *     number.
-         *
          */
         Info_1_0_0: {
             /**
@@ -6687,7 +6966,6 @@ export interface components {
          * InvalidCredential_1_0_0
          * @description Error details when the caller's identity maps to an account with a user
          *     credential that is in an invalid state.
-         *
          */
         InvalidCredential_1_0_0: {
             /**
@@ -6700,19 +6978,18 @@ export interface components {
              * Format: uuid
              * @description The ID of the user credential which needs to be fixed before this
              *     resource can be accessed.
-             *
              */
             user_credential_id: string;
         };
         /**
          * InvalidInputItem
          * @description Invalid input item details.
-         *
          */
         InvalidInputItem: {
-            /** @description Name of the property whose value contains the error, if known. May
+            /**
+             * @description Name of the property whose value contains the error, if known. May
              *     be unset depending on the error.
-             *      */
+             */
             property?: string;
             /** @description Error message describing the invalid input error */
             message: string;
@@ -6720,7 +6997,6 @@ export interface components {
         /**
          * InvalidInput_1_0_0
          * @description Error details when the caller has sent an invalid input document.
-         *
          */
         InvalidInput_1_0_0: {
             /**
@@ -6729,16 +7005,16 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "invalid_input#1.0.0";
-            /** @description Optional list of input schema violations, such as missing or unknown
+            /**
+             * @description Optional list of input schema violations, such as missing or unknown
              *     properties, or properties with invalid values.
-             *      */
+             */
             errors?: components["schemas"]["InvalidInputItem"][];
         };
         /**
          * InvalidUser_1_0_0
          * @description Error details when the caller's identity does not map to valid local
          *     account.
-         *
          */
         InvalidUser_1_0_0: {
             /**
@@ -6756,7 +7032,6 @@ export interface components {
          *     program to map an identity to a storage-gateway specific user account name.
          *     The specified command will be called to map Globus Auth identity data to a
          *     connector-specific list of account names.
-         *
          */
         ExternalIdentityMapping_1_0_0: {
             /**
@@ -6765,7 +7040,8 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "external_identity_mapping#1.0.0";
-            /** @description The mapping command and its command-line arguments.  In addition to
+            /**
+             * @description The mapping command and its command-line arguments.  In addition to
              *     these arguments, the following will also be passed to the program.
              *
              *     <dl><dt>-c <em>CONNECTOR_ID</em></dt>
@@ -6786,7 +7062,7 @@ export interface components {
              *     identity.
              *     </dd>
              *     </dl>
-             *      */
+             */
             command?: string[];
         };
         /**
@@ -6794,34 +7070,38 @@ export interface components {
          * @description The MappingExpression document type contains information about a mapping
          *     expression, including the input, match, output, and flags used to process
          *     this expression.
-         *
          */
         MappingExpression: {
-            /** @description Flag indicating the match should be executed as a case insensitive
+            /**
+             * @description Flag indicating the match should be executed as a case insensitive
              *     comparison. If not present, this defaults to false.
-             *      */
+             */
             ignore_case?: boolean;
-            /** @description Flag indicating the match expression should be done as a literal
+            /**
+             * @description Flag indicating the match expression should be done as a literal
              *     match, ignoring any special regular characters. If not present, this
              *     defaults to false.
-             *      */
+             */
             literal?: boolean;
-            /** @description An expression which is applied to the output performing interpolation
+            /**
+             * @description An expression which is applied to the output performing interpolation
              *     on source for determining if this mapping applies. This requires a
              *     full string match on the source.
-             *      */
+             */
             match?: string;
-            /** @description A string representing the result of the mapping if the match
+            /**
+             * @description A string representing the result of the mapping if the match
              *     succeeded. References to the original identity_set data can be
              *     interpolated as in the *source* property.  References to match
              *     groups from the *match* property can be interpolated with numbers
              *     (indices starting with 0) surrounded by curly brackets `{}`.
-             *      */
+             */
             output?: string;
-            /** @description A string comprised of text plus identity set data field names
+            /**
+             * @description A string comprised of text plus identity set data field names
              *     surrounded by curly brackets `{}` which are interpolated into the
              *     text.
-             *      */
+             */
             source?: string;
         };
         /**
@@ -6829,7 +7109,6 @@ export interface components {
          * @description The ExpressionIdentityMapping defines a set of identity mapping expressions
          *     to map Globus Auth identity data to a connector-specific list of account
          *     names.
-         *
          */
         ExpressionIdentityMapping_1_0_0: {
             /**
@@ -6845,7 +7124,6 @@ export interface components {
          * LimitExceeded_1_0_0
          * @description Error details when a user would be authorized, but the endpoint has reached
          *     a hard resource limit on the type of object being created.
-         *
          */
         LimitExceeded_1_0_0: {
             /**
@@ -6858,14 +7136,12 @@ export interface components {
         /**
          * MissingRoleEntrySchema
          * @description Missing required role details.
-         *
          */
         MissingRoleEntrySchema: {
             /**
              * Format: uuid
              * @description The collection which the role must apply to. If omitted, the role
              *     must apply to an endpoint.
-             *
              */
             collection?: string;
             /** @enum {string} */
@@ -6875,7 +7151,6 @@ export interface components {
          * MissingRequiredRole_1_0_0
          * @description Error details when a user has authenticated but lacks a role to be able to
          *     perform the requested operation.
-         *
          */
         MissingRequiredRole_1_0_0: {
             /**
@@ -6891,7 +7166,6 @@ export interface components {
          * MissingRequiredScopes_1_0_0
          * @description Error details when a user has authenticated but lacks an OAuth scope to be
          *     able to perform the requested operation.
-         *
          */
         MissingRequiredScopes_1_0_0: {
             /**
@@ -6910,7 +7184,6 @@ export interface components {
          *     may have one or more IP addresses, TCP incoming and outgoing port ranges,
          *     and a *status* value indicating whether it is configured to actively
          *     respond to requests or is in maintenance mode.
-         *
          */
         Node_1_0_0: {
             /**
@@ -6923,7 +7196,6 @@ export interface components {
              * Format: uuid
              * @description Unique id string this node. This is system generated and may not be
              *     included in create requests.
-             *
              */
             id?: string;
             /** @description Allowed port range for incoming TCP data connections */
@@ -6937,7 +7209,6 @@ export interface components {
              *     be removed from the DNS entries for this endpoint and will return an
              *     error on any attempt to use the Manager API or attempt a Transfer
              *     using this node.
-             *
              * @enum {string}
              */
             status: "active" | "inactive";
@@ -6951,7 +7222,6 @@ export interface components {
          *     respond to requests or is in maintenance mode.
          *
          *     Version 1.1.0 adds support for setting the data interface on a node.
-         *
          */
         Node_1_1_0: {
             /**
@@ -6966,7 +7236,6 @@ export interface components {
              * Format: uuid
              * @description Unique id string this node. This is system generated and may not be
              *     included in create requests.
-             *
              */
             id?: string;
             /** @description Allowed port range for incoming TCP data connections */
@@ -6980,7 +7249,6 @@ export interface components {
              *     be removed from the DNS entries for this endpoint and will return an
              *     error on any attempt to use the Manager API or attempt a Transfer
              *     using this node.
-             *
              * @enum {string}
              */
             status: "active" | "inactive";
@@ -6996,7 +7264,6 @@ export interface components {
          *     Version 1.1.0 adds support for setting the data interface on a node.
          *
          *     Version 1.2.0 adds support for setting an IPv6 data interface on a node.
-         *
          */
         Node_1_2_0: {
             /**
@@ -7013,7 +7280,6 @@ export interface components {
              * Format: uuid
              * @description Unique id string this node. This is system generated and may not be
              *     included in create requests.
-             *
              */
             id?: string;
             /** @description Allowed port range for incoming TCP data connections */
@@ -7027,7 +7293,6 @@ export interface components {
              *     be removed from the DNS entries for this endpoint and will return an
              *     error on any attempt to use the Manager API or attempt a Transfer
              *     using this node.
-             *
              * @enum {string}
              */
             status: "active" | "inactive";
@@ -7037,7 +7302,6 @@ export interface components {
          * @description Error details when a user has authenticated but does not
          *     have an identity from the required domain to perform the
          *     requested action.
-         *
          */
         NotFromAllowedDomain_1_0_0: {
             /**
@@ -7053,7 +7317,6 @@ export interface components {
          * NotResourceOwner_1_0_0
          * @description Error details when a user has authenticated but is not the owner of the
          *     resource being acted upon.
-         *
          */
         NotResourceOwner_1_0_0: {
             /**
@@ -7079,15 +7342,15 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "subscription_admin_verified#1.0.0";
-            /** @description Value of the subscription_admin_verified property of a collection.
+            /**
+             * @description Value of the subscription_admin_verified property of a collection.
              *     This can be set or cleared by a subscription group administrator.
-             *      */
+             */
             subscription_admin_verified: boolean;
         };
         /**
          * OwnerString_1_0_0
          * @description Owner string document
-         *
          */
         OwnerString_1_0_0: {
             /**
@@ -7107,7 +7370,6 @@ export interface components {
          * @description This is the result envelope returned from all operations in this API. Each
          *     operation may add properties to this base document type with additional
          *     operation-specific data values.
-         *
          */
         Result_1_0_0: {
             /**
@@ -7123,16 +7385,16 @@ export interface components {
             /**
              * @description Boolean flag indicating whether or not additional pages of response
              *     data may be requested by passing the marker to the same operation.
-             *
              * @default false
              */
             has_next_page: boolean;
             /** @description Numeric HTTP response code */
             http_response_code: number;
-            /** @description Opaque marker that may be passed to this API call to fetch the next
+            /**
+             * @description Opaque marker that may be passed to this API call to fetch the next
              *     page of results if the returned document has `has_next_page` set to
              *     true.
-             *      */
+             */
             marker?: string | null;
             /** @description Message describing this result */
             message?: string;
@@ -7145,7 +7407,6 @@ export interface components {
          *
          *     Version 1.1.0 adds optional authorization_parameters to help process
          *     authorization or authentication errors
-         *
          */
         Result_1_1_0: {
             /**
@@ -7164,16 +7425,16 @@ export interface components {
             /**
              * @description Boolean flag indicating whether or not additional pages of response
              *     data may be requested by passing the marker to the same operation.
-             *
              * @default false
              */
             has_next_page: boolean;
             /** @description Numeric HTTP response code */
             http_response_code: number;
-            /** @description Opaque marker that may be passed to this API call to fetch the next
+            /**
+             * @description Opaque marker that may be passed to this API call to fetch the next
              *     page of results if the returned document has `has_next_page` set to
              *     true.
-             *      */
+             */
             marker?: string | null;
             /** @description Message describing this result */
             message?: string;
@@ -7182,7 +7443,6 @@ export interface components {
          * ResourceConflict_1_0_0
          * @description Error details when the caller has attempted to update an object that
          *     results in a conflict with some other object.
-         *
          */
         ResourceConflict_1_0_0: {
             /**
@@ -7191,15 +7451,13 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "resource_conflict#1.0.0";
-            /** @description List of other resources which conflict with this proposed change.
-             *      */
+            /** @description List of other resources which conflict with this proposed change. */
             resources?: string[];
         };
         /**
          * Role_1_0_0
          * @description The "Role" document type represents the assignment of a role on an
          *     Endpoint or Collection to a Globus identity or group.
-         *
          */
         Role_1_0_0: {
             /**
@@ -7212,7 +7470,6 @@ export interface components {
              * Format: uuid
              * @description Unique id string for this role assignment. This is system generated
              *     and should not be included in create requests.
-             *
              */
             id?: string;
             /** @description Globus Auth identity or group id URN */
@@ -7221,7 +7478,6 @@ export interface components {
              * Format: uuid
              * @description Collection Id. This value is omitted when creating an endpoint role
              *     or when creating role definitions when creating "collections.
-             *
              */
             collection?: string | null;
             /**
@@ -7246,7 +7502,6 @@ export interface components {
          *     mapped account user name. If you have an account system that has usernames
          *     without a simple relationship to your users' Globus identities, or that
          *     requires interfacing with an accounting system, this may be necessary.
-         *
          */
         IdentityMapping: components["schemas"]["ExternalIdentityMapping_1_0_0"] | components["schemas"]["ExpressionIdentityMapping_1_0_0"];
         /**
@@ -7263,7 +7518,6 @@ export interface components {
          *     requirements are for the storage gateway, and the algorithm to
          *     map Globus identities to the user namespace of the storage
          *     gateway (e.g. local accounts).
-         *
          */
         StorageGateway_1_0_0: {
             /**
@@ -7272,73 +7526,79 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "storage_gateway#1.0.0";
-            /** @description List of allowed domains. Users creating credentials or collections
+            /**
+             * @description List of allowed domains. Users creating credentials or collections
              *     on this storage gateway must have an identity in one of these domains.
-             *      */
+             */
             allowed_domains?: string[];
             /**
              * @deprecated
              * @description Alias for **authentication_timeout_mins**
              */
             authentication_assurance_timeout?: number | null;
-            /** @description Timeout (in minutes) during which a user is required to have
+            /**
+             * @description Timeout (in minutes) during which a user is required to have
              *     authenticated to access files or create user credentials on this
              *     storage gateway.
              *
              *     For a high assurance storage gateway, this must be done within the
              *     current Globus Auth session, otherwise, the caller can perform the
              *     authentication with any application which uses Globus Auth.
-             *      */
+             */
             authentication_timeout_mins?: number | null;
             /**
              * Format: uuid
              * @description Id of the connector type that this storage gateway interacts with.
-             *
              */
             connector_id?: string;
             /** @description Flag indicating that this storage gateway has been deleted */
             deleted?: boolean;
             /** @description Name of the storage gateway */
             display_name?: string;
-            /** @description Flag indicating if the storage_gateway requires high assurance features.
-             *      */
+            /** @description Flag indicating if the storage_gateway requires high assurance features. */
             high_assurance?: boolean | null;
             /**
              * Format: uuid
              * @description Unique id for this storage gateway
              */
             id?: string;
-            /** @description List of identity mappings to apply to user identities to determine
+            /**
+             * @description List of identity mappings to apply to user identities to determine
              *     what connector-specific accounts are available for access.
-             *      */
+             */
             identity_mappings?: components["schemas"]["IdentityMapping"][] | null;
-            /** @description Name of the DSI module to load by the GridFTP server when accessing
+            /**
+             * @description Name of the DSI module to load by the GridFTP server when accessing
              *     this storage gateway.
-             *      */
+             */
             load_dsi_module?: string | null;
             /** @description Connector-specific storage policies */
             policies?: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["S3StoragePolicies_1_3_0"] | components["schemas"]["AzureBlobStoragePolicies_1_0_0"] | components["schemas"]["AzureBlobStoragePolicies_1_1_0"] | components["schemas"]["BlackPearlStoragePolicies_1_0_0"] | components["schemas"]["BoxStorage_1_0_0"] | components["schemas"]["BoxStorage_1_1_0"] | components["schemas"]["BoxStorage_1_2_0"] | components["schemas"]["CephStoragePolicies_1_0_0"] | components["schemas"]["DropboxStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_1_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_0_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_1_0"] | components["schemas"]["HPSSStoragePolicies_1_0_0"] | components["schemas"]["HPSSStoragePolicies_1_1_0"] | components["schemas"]["IrodsStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_1_0"] | components["schemas"]["PosixStoragePolicies_1_0_0"] | components["schemas"]["PosixStagingStoragePolicies_1_0_0"];
-            /** @description Local POSIX user the GridFTP server should run as when accessing
+            /**
+             * @description Local POSIX user the GridFTP server should run as when accessing
              *     this storage gateway.
-             *      */
+             */
             process_user?: string | null;
             /**
              * @deprecated
              * @description Alias for **high_assurance**
              */
             require_high_assurance?: boolean | null;
-            /** @description Path restrictions within this storage gateway. Paths are
+            /**
+             * @description Path restrictions within this storage gateway. Paths are
              *     interpreted as absolute paths in the file namespace of the
              *     connector.
-             *      */
+             */
             restrict_paths?: unknown | components["schemas"]["PathRestrictions"];
-            /** @description List of connector-specific usernames allowed to access this storage
+            /**
+             * @description List of connector-specific usernames allowed to access this storage
              *     gateway.
-             *      */
+             */
             users_allow?: string[] | null;
-            /** @description List of connector-specific usernames denied access to this storage
+            /**
+             * @description List of connector-specific usernames denied access to this storage
              *     gateway.
-             *      */
+             */
             users_deny?: string[] | null;
         };
         /**
@@ -7358,7 +7618,6 @@ export interface components {
          *
          *     Version 1.1.0 includes support for multi-factor authentication requirements
          *     for high assurance storage gateways.
-         *
          */
         StorageGateway_1_1_0: {
             /**
@@ -7367,55 +7626,58 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "storage_gateway#1.1.0";
-            /** @description List of allowed domains. Users creating credentials or collections
+            /**
+             * @description List of allowed domains. Users creating credentials or collections
              *     on this storage gateway must have an identity in one of these domains.
-             *      */
+             */
             allowed_domains?: string[];
             /**
              * @deprecated
              * @description Alias for **authentication_timeout_mins**
              */
             authentication_assurance_timeout?: number | null;
-            /** @description Timeout (in minutes) during which a user is required to have
+            /**
+             * @description Timeout (in minutes) during which a user is required to have
              *     authenticated to access files or create user credentials on this
              *     storage gateway.
              *
              *     For a high assurance storage gateway, this must be done within the
              *     current Globus Auth session, otherwise, the caller can perform the
              *     authentication with any application which uses Globus Auth.
-             *      */
+             */
             authentication_timeout_mins?: number | null;
             /**
              * Format: uuid
              * @description Id of the connector type that this storage gateway interacts with.
-             *
              */
             connector_id?: string;
             /** @description Flag indicating that this storage gateway has been deleted */
             deleted?: boolean;
             /** @description Name of the storage gateway */
             display_name?: string;
-            /** @description Flag indicating if the storage_gateway requires high assurance features.
-             *      */
+            /** @description Flag indicating if the storage_gateway requires high assurance features. */
             high_assurance?: boolean | null;
             /**
              * Format: uuid
              * @description Unique id for this storage gateway
              */
             id?: string;
-            /** @description List of identity mappings to apply to user identities to determine
+            /**
+             * @description List of identity mappings to apply to user identities to determine
              *     what connector-specific accounts are available for access.
-             *      */
+             */
             identity_mappings?: components["schemas"]["IdentityMapping"][] | null;
-            /** @description Name of the DSI module to load by the GridFTP server when accessing
+            /**
+             * @description Name of the DSI module to load by the GridFTP server when accessing
              *     this storage gateway.
-             *      */
+             */
             load_dsi_module?: string | null;
             /** @description Connector-specific storage policies */
             policies?: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["S3StoragePolicies_1_3_0"] | components["schemas"]["AzureBlobStoragePolicies_1_0_0"] | components["schemas"]["AzureBlobStoragePolicies_1_1_0"] | components["schemas"]["BlackPearlStoragePolicies_1_0_0"] | components["schemas"]["BoxStorage_1_0_0"] | components["schemas"]["BoxStorage_1_1_0"] | components["schemas"]["BoxStorage_1_2_0"] | components["schemas"]["CephStoragePolicies_1_0_0"] | components["schemas"]["DropboxStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_1_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_0_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_1_0"] | components["schemas"]["HPSSStoragePolicies_1_0_0"] | components["schemas"]["HPSSStoragePolicies_1_1_0"] | components["schemas"]["IrodsStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_1_0"] | components["schemas"]["PosixStoragePolicies_1_0_0"] | components["schemas"]["PosixStagingStoragePolicies_1_0_0"];
-            /** @description Local POSIX user the GridFTP server should run as when accessing
+            /**
+             * @description Local POSIX user the GridFTP server should run as when accessing
              *     this storage gateway.
-             *      */
+             */
             process_user?: string | null;
             /**
              * @deprecated
@@ -7425,22 +7687,24 @@ export interface components {
             /**
              * @description Flag indicating if the storage_gateway requires multi-factor
              *     authentication. Only usable on high assurance storage gateways.
-             *
              * @default false
              */
             require_mfa: boolean;
-            /** @description Path restrictions within this storage gateway. Paths are
+            /**
+             * @description Path restrictions within this storage gateway. Paths are
              *     interpreted as absolute paths in the file namespace of the
              *     connector.
-             *      */
+             */
             restrict_paths?: unknown | components["schemas"]["PathRestrictions"];
-            /** @description List of connector-specific usernames allowed to access this storage
+            /**
+             * @description List of connector-specific usernames allowed to access this storage
              *     gateway.
-             *      */
+             */
             users_allow?: string[] | null;
-            /** @description List of connector-specific usernames denied access to this storage
+            /**
+             * @description List of connector-specific usernames denied access to this storage
              *     gateway.
-             *      */
+             */
             users_deny?: string[] | null;
         };
         /**
@@ -7462,7 +7726,6 @@ export interface components {
          *     for high assurance storage gateways.
          *
          *     Version 1.2.0 includes support for admin managed credentials.
-         *
          */
         StorageGateway_1_2_0: {
             /**
@@ -7474,59 +7737,61 @@ export interface components {
             /**
              * @description Flag indicating if the storage_gateway allows endpoint administrators
              *     to manage user credentials on behalf of other users.
-             *
              * @default false
              */
             admin_managed_credentials: boolean;
-            /** @description List of allowed domains. Users creating credentials or collections
+            /**
+             * @description List of allowed domains. Users creating credentials or collections
              *     on this storage gateway must have an identity in one of these domains.
-             *      */
+             */
             allowed_domains?: string[];
             /**
              * @deprecated
              * @description Alias for **authentication_timeout_mins**
              */
             authentication_assurance_timeout?: number | null;
-            /** @description Timeout (in minutes) during which a user is required to have
+            /**
+             * @description Timeout (in minutes) during which a user is required to have
              *     authenticated to access files or create user credentials on this
              *     storage gateway.
              *
              *     For a high assurance storage gateway, this must be done within the
              *     current Globus Auth session, otherwise, the caller can perform the
              *     authentication with any application which uses Globus Auth.
-             *      */
+             */
             authentication_timeout_mins?: number | null;
             /**
              * Format: uuid
              * @description Id of the connector type that this storage gateway interacts with.
-             *
              */
             connector_id?: string;
             /** @description Flag indicating that this storage gateway has been deleted */
             deleted?: boolean;
             /** @description Name of the storage gateway */
             display_name?: string;
-            /** @description Flag indicating if the storage_gateway requires high assurance features.
-             *      */
+            /** @description Flag indicating if the storage_gateway requires high assurance features. */
             high_assurance?: boolean | null;
             /**
              * Format: uuid
              * @description Unique id for this storage gateway
              */
             id?: string;
-            /** @description List of identity mappings to apply to user identities to determine
+            /**
+             * @description List of identity mappings to apply to user identities to determine
              *     what connector-specific accounts are available for access.
-             *      */
+             */
             identity_mappings?: components["schemas"]["IdentityMapping"][] | null;
-            /** @description Name of the DSI module to load by the GridFTP server when accessing
+            /**
+             * @description Name of the DSI module to load by the GridFTP server when accessing
              *     this storage gateway.
-             *      */
+             */
             load_dsi_module?: string | null;
             /** @description Connector-specific storage policies */
             policies?: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["S3StoragePolicies_1_3_0"] | components["schemas"]["AzureBlobStoragePolicies_1_0_0"] | components["schemas"]["AzureBlobStoragePolicies_1_1_0"] | components["schemas"]["BlackPearlStoragePolicies_1_0_0"] | components["schemas"]["BoxStorage_1_0_0"] | components["schemas"]["BoxStorage_1_1_0"] | components["schemas"]["BoxStorage_1_2_0"] | components["schemas"]["CephStoragePolicies_1_0_0"] | components["schemas"]["DropboxStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_1_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_0_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_1_0"] | components["schemas"]["HPSSStoragePolicies_1_0_0"] | components["schemas"]["HPSSStoragePolicies_1_1_0"] | components["schemas"]["IrodsStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_1_0"] | components["schemas"]["PosixStoragePolicies_1_0_0"] | components["schemas"]["PosixStagingStoragePolicies_1_0_0"];
-            /** @description Local POSIX user the GridFTP server should run as when accessing
+            /**
+             * @description Local POSIX user the GridFTP server should run as when accessing
              *     this storage gateway.
-             *      */
+             */
             process_user?: string | null;
             /**
              * @deprecated
@@ -7536,22 +7801,24 @@ export interface components {
             /**
              * @description Flag indicating if the storage_gateway requires multi-factor
              *     authentication. Only usable on high assurance storage gateways.
-             *
              * @default false
              */
             require_mfa: boolean;
-            /** @description Path restrictions within this storage gateway. Paths are
+            /**
+             * @description Path restrictions within this storage gateway. Paths are
              *     interpreted as absolute paths in the file namespace of the
              *     connector.
-             *      */
+             */
             restrict_paths?: unknown | components["schemas"]["PathRestrictions"];
-            /** @description List of connector-specific usernames allowed to access this storage
+            /**
+             * @description List of connector-specific usernames allowed to access this storage
              *     gateway.
-             *      */
+             */
             users_allow?: string[] | null;
-            /** @description List of connector-specific usernames denied access to this storage
+            /**
+             * @description List of connector-specific usernames denied access to this storage
              *     gateway.
-             *      */
+             */
             users_deny?: string[] | null;
         };
         /**
@@ -7576,7 +7843,6 @@ export interface components {
          *
          *     Version 1.3.0 includes support for overriding the endpoint's network use
          *     parameters on a storage gateway.
-         *
          */
         StorageGateway_1_3_0: {
             /**
@@ -7588,62 +7854,65 @@ export interface components {
             /**
              * @description Flag indicating if the storage_gateway allows endpoint administrators
              *     to manage user credentials on behalf of other users.
-             *
              * @default false
              */
             admin_managed_credentials: boolean;
-            /** @description List of allowed domains. Users creating credentials or collections
+            /**
+             * @description List of allowed domains. Users creating credentials or collections
              *     on this storage gateway must have an identity in one of these domains.
-             *      */
+             */
             allowed_domains?: string[];
             /**
              * @deprecated
              * @description Alias for **authentication_timeout_mins**
              */
             authentication_assurance_timeout?: number | null;
-            /** @description Timeout (in minutes) during which a user is required to have
+            /**
+             * @description Timeout (in minutes) during which a user is required to have
              *     authenticated to access files or create user credentials on this
              *     storage gateway.
              *
              *     For a high assurance storage gateway, this must be done within the
              *     current Globus Auth session, otherwise, the caller can perform the
              *     authentication with any application which uses Globus Auth.
-             *      */
+             */
             authentication_timeout_mins?: number | null;
             /**
              * Format: uuid
              * @description Id of the connector type that this storage gateway interacts with.
-             *
              */
             connector_id?: string;
             /** @description Flag indicating that this storage gateway has been deleted */
             deleted?: boolean;
             /** @description Name of the storage gateway */
             display_name?: string;
-            /** @description Flag indicating if the storage_gateway requires high assurance features.
-             *      */
+            /** @description Flag indicating if the storage_gateway requires high assurance features. */
             high_assurance?: boolean | null;
             /**
              * Format: uuid
              * @description Unique id for this storage gateway
              */
             id?: string;
-            /** @description List of identity mappings to apply to user identities to determine
+            /**
+             * @description List of identity mappings to apply to user identities to determine
              *     what connector-specific accounts are available for access.
-             *      */
+             */
             identity_mappings?: components["schemas"]["IdentityMapping"][] | null;
-            /** @description Name of the DSI module to load by the GridFTP server when accessing
+            /**
+             * @description Name of the DSI module to load by the GridFTP server when accessing
              *     this storage gateway.
-             *      */
+             */
             load_dsi_module?: string | null;
-            /** @description Admin-specified value when the **network_use** property's value is
+            /**
+             * @description Admin-specified value when the **network_use** property's value is
              *     `custom`; otherwise the preset value for the specified
              *     **network_use**.
-             *      */
+             */
             max_concurrency?: number;
-            /** @description Admin-specified value when the **network_use** property's value is
+            /**
+             * @description Admin-specified value when the **network_use** property's value is
              *     `custom`; otherwise the preset value for the specified **network_use**.
-             *      */
+             */
             max_parallelism?: number;
             /**
              * @description Control how Globus interacts with this endpoint over the network.
@@ -7663,23 +7932,25 @@ export interface components {
              *           endpoint admin. When setting this level, you must also set
              *           the **max_concurrency**, **preferred_concurrency**,
              *           **max_parallelism**, and **preferred_parallelism** properties.
-             *
              * @enum {string|null}
              */
             network_use?: "normal" | "minimal" | "aggressive" | "custom" | null;
             /** @description Connector-specific storage policies */
             policies?: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["S3StoragePolicies_1_3_0"] | components["schemas"]["AzureBlobStoragePolicies_1_0_0"] | components["schemas"]["AzureBlobStoragePolicies_1_1_0"] | components["schemas"]["BlackPearlStoragePolicies_1_0_0"] | components["schemas"]["BoxStorage_1_0_0"] | components["schemas"]["BoxStorage_1_1_0"] | components["schemas"]["BoxStorage_1_2_0"] | components["schemas"]["CephStoragePolicies_1_0_0"] | components["schemas"]["DropboxStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_1_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_0_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_1_0"] | components["schemas"]["HPSSStoragePolicies_1_0_0"] | components["schemas"]["HPSSStoragePolicies_1_1_0"] | components["schemas"]["IrodsStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_1_0"] | components["schemas"]["PosixStoragePolicies_1_0_0"] | components["schemas"]["PosixStagingStoragePolicies_1_0_0"];
-            /** @description Admin-specified value when the **network_use** property's value is
+            /**
+             * @description Admin-specified value when the **network_use** property's value is
              *     `custom`; otherwise the preset value for the specified **network_use**.
-             *      */
+             */
             preferred_concurrency?: number;
-            /** @description Admin-specified value when the **network_use** property's value is
+            /**
+             * @description Admin-specified value when the **network_use** property's value is
              *     `custom`; otherwise the preset value for the specified **network_use**.
-             *      */
+             */
             preferred_parallelism?: number;
-            /** @description Local POSIX user the GridFTP server should run as when accessing
+            /**
+             * @description Local POSIX user the GridFTP server should run as when accessing
              *     this storage gateway.
-             *      */
+             */
             process_user?: string | null;
             /**
              * @deprecated
@@ -7689,29 +7960,30 @@ export interface components {
             /**
              * @description Flag indicating if the storage_gateway requires multi-factor
              *     authentication. Only usable on high assurance storage gateways.
-             *
              * @default false
              */
             require_mfa: boolean;
-            /** @description Path restrictions within this storage gateway. Paths are
+            /**
+             * @description Path restrictions within this storage gateway. Paths are
              *     interpreted as absolute paths in the file namespace of the
              *     connector.
-             *      */
+             */
             restrict_paths?: unknown | components["schemas"]["PathRestrictions"];
-            /** @description List of connector-specific usernames allowed to access this storage
+            /**
+             * @description List of connector-specific usernames allowed to access this storage
              *     gateway.
-             *      */
+             */
             users_allow?: string[] | null;
-            /** @description List of connector-specific usernames denied access to this storage
+            /**
+             * @description List of connector-specific usernames denied access to this storage
              *     gateway.
-             *      */
+             */
             users_deny?: string[] | null;
         };
         /**
          * StorageGatewayNotFound_1_0_0
          * @description Error details when a storage gateway no longer exists when accessing a
          *     collection.
-         *
          */
         StorageGatewayNotFound_1_0_0: {
             /**
@@ -7730,7 +8002,6 @@ export interface components {
          * SubscriptionRequired_1_0_0
          * @description Error details when the caller has attempted to access a feature
          *     not supported by the endpoint's subscription.
-         *
          */
         SubscriptionRequired_1_0_0: {
             /**
@@ -7748,7 +8019,6 @@ export interface components {
          * UserCredential_1_0_0
          * @description Credential information for an identity on a particular storage gateway and
          *     its related collections.
-         *
          */
         UserCredential_1_0_0: {
             /**
@@ -7782,27 +8052,28 @@ export interface components {
             invalid?: boolean;
             /** @description Connector-specific user credential policies */
             policies?: components["schemas"]["S3UserCredentialPolicies_1_0_0"] | components["schemas"]["S3UserCredentialPolicies_1_1_0"] | components["schemas"]["S3UserCredentialPolicies_1_2_0"] | components["schemas"]["AzureBlobUserCredentialPolicies_1_0_0"] | components["schemas"]["BlackPearlUserCredentialPolicies_1_0_0"] | components["schemas"]["BoxUserCredential_1_0_0"] | components["schemas"]["BoxUserCredential_1_1_0"] | components["schemas"]["CephUserCredentialPolicies_1_0_0"] | components["schemas"]["DropboxUserCredentialPolicies_1_0_0"] | components["schemas"]["GoogleCloudStorageUserCredentialPolicies_1_0_0"] | components["schemas"]["GoogleDriveUserCredentialPolicies_1_0_0"] | components["schemas"]["HPSSUserCredentialPolicies_1_0_0"] | components["schemas"]["IrodsUserCredentialPolicies_1_0_0"] | components["schemas"]["OneDriveUserCredentialPolicies_1_0_0"] | components["schemas"]["PosixUserCredentialPolicies_1_0_0"] | components["schemas"]["PosixStagingUserCredentialPolicies_1_0_0"];
-            /** @description Flag indicating that this credential has been fully provisioned. If
+            /**
+             * @description Flag indicating that this credential has been fully provisioned. If
              *     this is false and the invalid property is true, then the credential
              *     was created during login and patching it to add the missing data
              *     should be presented to the user as initializing the credential.
-             *      */
+             */
             provisioned?: boolean;
             /**
              * Format: uuid
              * @description Storage Gateway this credential is associated with
              */
             storage_gateway_id?: string;
-            /** @description Connector-specific username that this credential is associated
+            /**
+             * @description Connector-specific username that this credential is associated
              *     with. If the connector supports identity mapping, this matches the
              *     result of the mapping applied to identity_id.
-             *      */
+             */
             username?: string;
         };
         /**
          * S3StoragePolicies_1_0_0
          * @description Connector-specific storage gateway policies for the S3 connector
-         *
          */
         S3StoragePolicies_1_0_0: {
             /**
@@ -7811,18 +8082,20 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "s3_storage_policies#1.0.0";
-            /** @description List of buckets not owned by the collection owner that will be shown
+            /**
+             * @description List of buckets not owned by the collection owner that will be shown
              *     in the root of collections created at the base of this storage gateway.
-             *      */
+             */
             s3_buckets?: string[];
             /**
              * @description URL of the S3 API endpoint
              * @example https://s3.amazonaws.com
              */
             s3_endpoint?: string;
-            /** @description Flag indicating if a Globus User must register a user credential in
+            /**
+             * @description Flag indicating if a Globus User must register a user credential in
              *     order to create a guest collection on this storage gateway.
-             *      */
+             */
             s3_user_credential_required?: boolean;
         };
         /**
@@ -7830,7 +8103,6 @@ export interface components {
          * @description Connector-specific storage gateway policies for the S3 connector
          *
          *     Version 1.1.0 adds support for the s3_requester_pays property
-         *
          */
         S3StoragePolicies_1_1_0: {
             /**
@@ -7839,24 +8111,27 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "s3_storage_policies#1.1.0";
-            /** @description List of buckets not owned by the collection owner that will be shown
+            /**
+             * @description List of buckets not owned by the collection owner that will be shown
              *     in the root of collections created at the base of this storage gateway.
-             *      */
+             */
             s3_buckets?: string[];
             /**
              * @description URL of the S3 API endpoint
              * @example https://s3.amazonaws.com
              */
             s3_endpoint?: string;
-            /** @description Flag indicating that S3 operations will be charged to the account of
+            /**
+             * @description Flag indicating that S3 operations will be charged to the account of
              *     the registered credentials. Credentials used with a storage gateway
              *     that has the s3_requester_pays property set to true are invalid unless
              *     they also have this property set to true as an acknowledgement.
-             *      */
+             */
             s3_requester_pays?: boolean;
-            /** @description Flag indicating if a Globus User must register a user credential in
+            /**
+             * @description Flag indicating if a Globus User must register a user credential in
              *     order to create a guest collection on this storage gateway.
-             *      */
+             */
             s3_user_credential_required?: boolean;
         };
         /**
@@ -7866,7 +8141,6 @@ export interface components {
          *     Version 1.1.0 adds support for the s3_requester_pays property
          *
          *     Version 1.2.0 adds support for the s3_allow_multi_keys property
-         *
          */
         S3StoragePolicies_1_2_0: {
             /**
@@ -7875,28 +8149,32 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "s3_storage_policies#1.2.0";
-            /** @description Allow users of this gateway to add multiple s3 IAM keys to their
+            /**
+             * @description Allow users of this gateway to add multiple s3 IAM keys to their
              *     credentials
-             *      */
+             */
             s3_allow_multi_keys?: boolean;
-            /** @description List of buckets not owned by the collection owner that will be shown
+            /**
+             * @description List of buckets not owned by the collection owner that will be shown
              *     in the root of collections created at the base of this storage gateway.
-             *      */
+             */
             s3_buckets?: string[];
             /**
              * @description URL of the S3 API endpoint
              * @example https://s3.amazonaws.com
              */
             s3_endpoint?: string;
-            /** @description Flag indicating that S3 operations will be charged to the account of
+            /**
+             * @description Flag indicating that S3 operations will be charged to the account of
              *     the registered credentials. Credentials used with a storage gateway
              *     that has the s3_requester_pays property set to true are invalid unless
              *     they also have this property set to true as an acknowledgement.
-             *      */
+             */
             s3_requester_pays?: boolean;
-            /** @description Flag indicating if a Globus User must register a user credential in
+            /**
+             * @description Flag indicating if a Globus User must register a user credential in
              *     order to create a guest collection on this storage gateway.
-             *      */
+             */
             s3_user_credential_required?: boolean;
         };
         /**
@@ -7908,7 +8186,6 @@ export interface components {
          *     Version 1.2.0 adds support for the s3_allow_multi_keys property
          *
          *     Version 1.3.0 adds support for the s3_storage_class and s3_restore properties
-         *
          */
         S3StoragePolicies_1_3_0: {
             /**
@@ -7917,42 +8194,47 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "s3_storage_policies#1.3.0";
-            /** @description Allow users of this gateway to add multiple s3 IAM keys to their
+            /**
+             * @description Allow users of this gateway to add multiple s3 IAM keys to their
              *     credentials
-             *      */
+             */
             s3_allow_multi_keys?: boolean;
-            /** @description List of buckets not owned by the collection owner that will be shown
+            /**
+             * @description List of buckets not owned by the collection owner that will be shown
              *     in the root of collections created at the base of this storage gateway.
-             *      */
+             */
             s3_buckets?: string[];
             /**
              * @description URL of the S3 API endpoint
              * @example https://s3.amazonaws.com
              */
             s3_endpoint?: string;
-            /** @description Flag indicating that S3 operations will be charged to the account of
+            /**
+             * @description Flag indicating that S3 operations will be charged to the account of
              *     the registered credentials. Credentials used with a storage gateway
              *     that has the s3_requester_pays property set to true are invalid unless
              *     they also have this property set to true as an acknowledgement.
-             *      */
+             */
             s3_requester_pays?: boolean;
-            /** @description Allow transfer attempts to automatically restore objects from
+            /**
+             * @description Allow transfer attempts to automatically restore objects from
              *     Glacier and other archival storage classes.
-             *      */
+             */
             s3_restore?: boolean;
-            /** @description The storage class set for newly created objects.  When not set,
+            /**
+             * @description The storage class set for newly created objects.  When not set,
              *     objects will be written to the default storage class of the bucket.
-             *      */
+             */
             s3_storage_class?: string;
-            /** @description Flag indicating if a Globus User must register a user credential in
+            /**
+             * @description Flag indicating if a Globus User must register a user credential in
              *     order to create a guest collection on this storage gateway.
-             *      */
+             */
             s3_user_credential_required?: boolean;
         };
         /**
          * S3CollectionPolicies_1_0_0
          * @description Connector-specific collection policies for the S3 connector
-         *
          */
         S3CollectionPolicies_1_0_0: {
             /**
@@ -7965,7 +8247,6 @@ export interface components {
         /**
          * S3UserCredentialPolicies_1_0_0
          * @description Connector-specific user credential policies for the S3 connector
-         *
          */
         S3UserCredentialPolicies_1_0_0: {
             /**
@@ -7974,11 +8255,9 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "s3_user_credential_policies#1.0.0";
-            /** @description Access Key ID to use with the S3 API to access your buckets and objects.
-             *      */
+            /** @description Access Key ID to use with the S3 API to access your buckets and objects. */
             s3_key_id?: string | null;
-            /** @description Secret key to use with the S3 API to access your buckets and objects.
-             *      */
+            /** @description Secret key to use with the S3 API to access your buckets and objects. */
             s3_secret_key?: string | null;
         };
         /**
@@ -7986,7 +8265,6 @@ export interface components {
          * @description Connector-specific user credential policies for the S3 connector
          *
          *     Version 1.1.0 adds support for the s3_requester_pays property.
-         *
          */
         S3UserCredentialPolicies_1_1_0: {
             /**
@@ -7995,33 +8273,33 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "s3_user_credential_policies#1.1.0";
-            /** @description Access Key ID to use with the S3 API to access your buckets and objects.
-             *      */
+            /** @description Access Key ID to use with the S3 API to access your buckets and objects. */
             s3_key_id?: string | null;
-            /** @description Flag indicating the user acknowledges S3 operations will be charged to
+            /**
+             * @description Flag indicating the user acknowledges S3 operations will be charged to
              *     the account of this credential.  If this flag is true in the storage
              *     gateway policy, this must also be true or the credential will be invalid.
-             *      */
+             */
             s3_requester_pays?: boolean;
-            /** @description Secret key to use with the S3 API to access your buckets and objects.
-             *      */
+            /** @description Secret key to use with the S3 API to access your buckets and objects. */
             s3_secret_key?: string | null;
         };
         /** S3KeysPrefixPaths_1_0_0 */
         S3KeysPrefixPaths_1_0_0: {
-            /** @description A list of matching prefix strings. When a S3 object is being accessed
+            /**
+             * @description A list of matching prefix strings. When a S3 object is being accessed
              *     its virtual path <bucket>/<object> is matched against each string in
              *     this list. If the virtual path starts with a value in this list then
              *     the s3 keys in this object will be used.
-             *      */
+             */
             path_prefixes: string[];
-            /** @description Access Key ID to use with the S3 API to access your buckets and objects.
-             *      */
+            /** @description Access Key ID to use with the S3 API to access your buckets and objects. */
             s3_key_id?: string | null;
-            /** @description Secret key to use with the S3 API to access your buckets and objects.
+            /**
+             * @description Secret key to use with the S3 API to access your buckets and objects.
              *     If set to null when calling PATCH it indicates that this entry should
              *     be deleted.
-             *      */
+             */
             s3_secret_key?: string | null;
         };
         /**
@@ -8031,7 +8309,6 @@ export interface components {
          *     Version 1.1.0 adds support for the s3_requester_pays property.
          *
          *     Version 1.2.0 adds support for the s3_multi_keys property list.
-         *
          */
         S3UserCredentialPolicies_1_2_0: {
             /**
@@ -8040,25 +8317,22 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "s3_user_credential_policies#1.2.0";
-            /** @description Access Key ID to use with the S3 API to access your buckets and objects.
-             *      */
+            /** @description Access Key ID to use with the S3 API to access your buckets and objects. */
             s3_key_id?: string | null;
-            /** @description A list of path prefixes and S3 key pairs to use with them.
-             *      */
+            /** @description A list of path prefixes and S3 key pairs to use with them. */
             s3_multi_keys?: components["schemas"]["S3KeysPrefixPaths_1_0_0"][] | null;
-            /** @description Flag indicating the user acknowledges S3 operations will be charged to
+            /**
+             * @description Flag indicating the user acknowledges S3 operations will be charged to
              *     the account of this credential.  If this flag is true in the storage
              *     gateway policy, this must also be true or the credential will be invalid.
-             *      */
+             */
             s3_requester_pays?: boolean;
-            /** @description Secret key to use with the S3 API to access your buckets and objects.
-             *      */
+            /** @description Secret key to use with the S3 API to access your buckets and objects. */
             s3_secret_key?: string | null;
         };
         /**
          * AzureBlobStoragePolicies_1_0_0
          * @description Connector-specific storage gateway policies for the AzureBlob connector
-         *
          */
         AzureBlobStoragePolicies_1_0_0: {
             /**
@@ -8069,41 +8343,44 @@ export interface components {
             DATA_TYPE: "azure_blob_storage_policies#1.0.0";
             /** @description Azure Storage account to access with this storage gateway */
             account: string | null;
-            /** @description Flag indicating the Azure storage account has enabled Azure Data
+            /**
+             * @description Flag indicating the Azure storage account has enabled Azure Data
              *     Lake Gen2 hierarchical namespace support.
-             *      */
+             */
             adls: boolean | null;
-            /** @description URL of the auth callback that must be registered on the Microsoft
+            /**
+             * @description URL of the auth callback that must be registered on the Microsoft
              *     API console for the application client_id in order to process
              *     Microsoft credentials.
-             *      */
+             */
             readonly auth_callback?: string;
-            /** @description The method of authentication to Azure. "user" prompts the user to
+            /**
+             * @description The method of authentication to Azure. "user" prompts the user to
              *     log in to their Microsoft account via an oauth2 flow.
              *     "service_principal" uses the configured client_id and client_secret
              *     values to authenticate as an Azure service principal.
-             *      */
+             */
             auth_type: string | null;
-            /** @description Client ID registered with the Azure console to access Azure Blob.
-             *      */
+            /** @description Client ID registered with the Azure console to access Azure Blob. */
             client_id: string | null;
-            /** @description Secret created in the Azure console to access Azure Blob with the
+            /**
+             * @description Secret created in the Azure console to access Azure Blob with the
              *     client_id in this policy.
-             *      */
+             */
             secret: string | null;
             /** @description Tenant id of the Microsoft organization */
             tenant: string | null;
-            /** @description Flag indicating whether users must register a credential.  If true
+            /**
+             * @description Flag indicating whether users must register a credential.  If true
              *     (or if this property is missing), this storage gateway is
              *     configured for OAuth2 user authentication.  If false,
              *     authentication is configured by the admin.
-             *      */
+             */
             readonly user_credential_required?: boolean;
         };
         /**
          * AzureBlobStoragePolicies_1_1_0
          * @description Connector-specific storage gateway policies for the AzureBlob connector
-         *
          */
         AzureBlobStoragePolicies_1_1_0: {
             /**
@@ -8114,46 +8391,50 @@ export interface components {
             DATA_TYPE: "azure_blob_storage_policies#1.1.0";
             /** @description Azure Storage account to access with this storage gateway */
             account: string | null;
-            /** @description Flag indicating the Azure storage account has enabled Azure Data
+            /**
+             * @description Flag indicating the Azure storage account has enabled Azure Data
              *     Lake Gen2 hierarchical namespace support.
-             *      */
+             */
             adls: boolean | null;
-            /** @description If true, allow users to access personal or external Microsoft accounts.
+            /**
+             * @description If true, allow users to access personal or external Microsoft accounts.
              *     If false (the default), users must use the Microsoft account which
              *     matches the username their Globus credential maps to.
-             *      */
+             */
             allow_any_account?: boolean;
-            /** @description URL of the auth callback that must be registered on the Microsoft
+            /**
+             * @description URL of the auth callback that must be registered on the Microsoft
              *     API console for the application client_id in order to process
              *     Microsoft credentials.
-             *      */
+             */
             readonly auth_callback?: string;
-            /** @description The method of authentication to Azure. "user" prompts the user to
+            /**
+             * @description The method of authentication to Azure. "user" prompts the user to
              *     log in to their Microsoft account via an oauth2 flow.
              *     "service_principal" uses the configured client_id and client_secret
              *     values to authenticate as an Azure service principal.
-             *      */
+             */
             auth_type: string | null;
-            /** @description Client ID registered with the Azure console to access Azure Blob.
-             *      */
+            /** @description Client ID registered with the Azure console to access Azure Blob. */
             client_id: string | null;
-            /** @description Secret created in the Azure console to access Azure Blob with the
+            /**
+             * @description Secret created in the Azure console to access Azure Blob with the
              *     client_id in this policy.
-             *      */
+             */
             secret: string | null;
             /** @description Tenant id of the Microsoft organization */
             tenant: string | null;
-            /** @description Flag indicating whether users must register a credential.  If true
+            /**
+             * @description Flag indicating whether users must register a credential.  If true
              *     (or if this property is missing), this storage gateway is
              *     configured for OAuth2 user authentication.  If false,
              *     authentication is configured by the admin.
-             *      */
+             */
             readonly user_credential_required?: boolean;
         };
         /**
          * AzureBlobCollectionPolicies_1_0_0
          * @description Connector-specific collection policies for the AzureBlob connector
-         *
          */
         AzureBlobCollectionPolicies_1_0_0: {
             /**
@@ -8166,7 +8447,6 @@ export interface components {
         /**
          * AzureBlobUserCredentialPolicies_1_0_0
          * @description Connector-specific user credential policies for the AzureBlob connector
-         *
          */
         AzureBlobUserCredentialPolicies_1_0_0: {
             /**
@@ -8196,7 +8476,6 @@ export interface components {
         /**
          * BlackPearlStoragePolicies_1_0_0
          * @description Connector-specific storage gateway policies for the Blackpearl connector
-         *
          */
         BlackPearlStoragePolicies_1_0_0: {
             /**
@@ -8205,20 +8484,21 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "blackpearl_storage_policies#1.0.0";
-            /** @description Path to the file which provides mappings from usernames within the
+            /**
+             * @description Path to the file which provides mappings from usernames within the
              *     configured identity domain to the ID and secret associated with the
              *     user's BlackPearl account
-             *      */
+             */
             bp_access_id_file?: string;
-            /** @description The URL of the S3 endpoint of the BlackPearl appliance to use to
+            /**
+             * @description The URL of the S3 endpoint of the BlackPearl appliance to use to
              *     access collections on this Storage Gateway.
-             *      */
+             */
             s3_endpoint?: string;
         };
         /**
          * BlackPearlCollectionPolicies_1_0_0
          * @description Connector-specific collection policies for the BlackPearl connector
-         *
          */
         BlackPearlCollectionPolicies_1_0_0: {
             /**
@@ -8231,7 +8511,6 @@ export interface components {
         /**
          * BlackPearlUserCredentialPolicies_1_0_0
          * @description Connector-specific user credential policies for the Blackpearl connector
-         *
          */
         BlackPearlUserCredentialPolicies_1_0_0: {
             /**
@@ -8250,7 +8529,6 @@ export interface components {
          * @description Values from the Box JWT client configuration that the storage gateway uses
          *     to identify and authenticate with the Box API.  This is only set when
          *     configuring the storage gateway for Box enterprise authentication.
-         *
          */
         BoxAppSettings: {
             /** @description Box application keys */
@@ -8263,7 +8541,6 @@ export interface components {
         /**
          * BoxAppAuth
          * @description Key information used to perform JWT grants for using the Box API
-         *
          */
         BoxAppAuth: {
             /** @description Passphrase to decrypt the private key */
@@ -8276,7 +8553,6 @@ export interface components {
         /**
          * BoxStorage_1_0_0
          * @description Connector-specific storage gateway policies for the Box connector.
-         *
          */
         BoxStorage_1_0_0: {
             /**
@@ -8287,16 +8563,16 @@ export interface components {
             DATA_TYPE: "box_storage_policies#1.0.0";
             /** @description Box Application settings */
             boxAppSettings: components["schemas"]["BoxAppSettings"];
-            /** @description Identifies which Box Enterprise this storage gateway is authorized
+            /**
+             * @description Identifies which Box Enterprise this storage gateway is authorized
              *     access to. This is only set when configuring the storage gateway
              *     for Box enterprise authentication.
-             *      */
+             */
             enterpriseID: string;
         };
         /**
          * BoxStorage_1_1_0
          * @description Connector-specific storage gateway policies for the Box connector.
-         *
          */
         BoxStorage_1_1_0: {
             /**
@@ -8305,41 +8581,46 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "box_storage_policies#1.1.0";
-            /** @description URL of the auth callback that must be set on the Box developer
+            /**
+             * @description URL of the auth callback that must be set on the Box developer
              *     console for the Box application of client_id.
-             *      */
+             */
             readonly auth_callback?: string;
             boxAppSettings?: components["schemas"]["BoxAppSettings"];
-            /** @description Client ID of the Box OAuth2 application registered on the Box developer
+            /**
+             * @description Client ID of the Box OAuth2 application registered on the Box developer
              *     console.  This is only set when configuring the storage gateway for
              *     OAuth2 user authentication.
-             *      */
+             */
             client_id?: string;
-            /** @description Identifies which Box Enterprise this storage gateway is authorized
+            /**
+             * @description Identifies which Box Enterprise this storage gateway is authorized
              *     access to. This is only set when configuring the storage gateway for
              *     Box enterprise authentication.
-             *      */
+             */
             enterpriseID?: string;
-            /** @description Secret associated with the client_id set in this policy.  This is only
+            /**
+             * @description Secret associated with the client_id set in this policy.  This is only
              *     set when configuring the storage gateway for OAuth2 user
              *     authentication.
-             *      */
+             */
             secret?: string;
-            /** @description User API Rate Limit associated with this client ID in operations per
+            /**
+             * @description User API Rate Limit associated with this client ID in operations per
              *     second per user.
-             *      */
+             */
             user_api_rate_limit?: number;
-            /** @description Flag indicating whether users must register a credential.  If true,
+            /**
+             * @description Flag indicating whether users must register a credential.  If true,
              *     this storage gateway is configured for OAuth2 user authentication.  If
              *     false (and for older DATA_TYPE where this property is missing), this
              *     storage gateway is configured for enterprise authentication.
-             *      */
+             */
             readonly user_credential_required?: boolean;
         };
         /**
          * BoxStorage_1_2_0
          * @description Connector-specific storage gateway policies for the Box connector.
-         *
          */
         BoxStorage_1_2_0: {
             /**
@@ -8348,46 +8629,52 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "box_storage_policies#1.2.0";
-            /** @description If true, allow users to access personal or external Box accounts.
+            /**
+             * @description If true, allow users to access personal or external Box accounts.
              *     If false (the default), users must use the Box account which matches
              *     the username their Globus credential maps to.
-             *      */
+             */
             allow_any_account?: boolean;
-            /** @description URL of the auth callback that must be set on the Box developer
+            /**
+             * @description URL of the auth callback that must be set on the Box developer
              *     console for the Box application of client_id.
-             *      */
+             */
             readonly auth_callback?: string;
             boxAppSettings?: components["schemas"]["BoxAppSettings"];
-            /** @description Client ID of the Box OAuth2 application registered on the Box developer
+            /**
+             * @description Client ID of the Box OAuth2 application registered on the Box developer
              *     console.  This is only set when configuring the storage gateway for
              *     OAuth2 user authentication.
-             *      */
+             */
             client_id?: string;
-            /** @description Identifies which Box Enterprise this storage gateway is authorized
+            /**
+             * @description Identifies which Box Enterprise this storage gateway is authorized
              *     access to. This is only set when configuring the storage gateway for
              *     Box enterprise authentication.
-             *      */
+             */
             enterpriseID?: string;
-            /** @description Secret associated with the client_id set in this policy.  This is only
+            /**
+             * @description Secret associated with the client_id set in this policy.  This is only
              *     set when configuring the storage gateway for OAuth2 user
              *     authentication.
-             *      */
+             */
             secret?: string;
-            /** @description User API Rate Limit associated with this client ID in operations per
+            /**
+             * @description User API Rate Limit associated with this client ID in operations per
              *     second per user.
-             *      */
+             */
             user_api_rate_limit?: number;
-            /** @description Flag indicating whether users must register a credential.  If true,
+            /**
+             * @description Flag indicating whether users must register a credential.  If true,
              *     this storage gateway is configured for OAuth2 user authentication.  If
              *     false (and for older DATA_TYPE where this property is missing), this
              *     storage gateway is configured for enterprise authentication.
-             *      */
+             */
             readonly user_credential_required?: boolean;
         };
         /**
          * BoxCollectionPolicies_1_0_0
          * @description Connector-specific collection policies for the Box connector
-         *
          */
         BoxCollectionPolicies_1_0_0: {
             /**
@@ -8400,7 +8687,6 @@ export interface components {
         /**
          * BoxUserCredential_1_0_0
          * @description Connector-specific user credential policies for the Box connector
-         *
          */
         BoxUserCredential_1_0_0: {
             /**
@@ -8413,7 +8699,6 @@ export interface components {
         /**
          * BoxUserCredential_1_1_0
          * @description Connector-specific user credential policies for the Box connector
-         *
          */
         BoxUserCredential_1_1_0: {
             /**
@@ -8447,7 +8732,6 @@ export interface components {
         /**
          * CephStoragePolicies_1_0_0
          * @description Connector-specific storage gateway policies for the Ceph connector
-         *
          */
         CephStoragePolicies_1_0_0: {
             /**
@@ -8456,18 +8740,21 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "ceph_storage_policies#1.0.0";
-            /** @description Administrator key id used to authenticate with the ceph admin
+            /**
+             * @description Administrator key id used to authenticate with the ceph admin
              *     service to obtain user credentials.
-             *      */
+             */
             ceph_admin_key_id?: string;
-            /** @description Administrator secret key used to authenticate with the ceph admin
+            /**
+             * @description Administrator secret key used to authenticate with the ceph admin
              *     service to obtain user credentials.
-             *      */
+             */
             ceph_admin_secret_key?: string;
-            /** @description List of buckets not owned by the collection owner that will be
+            /**
+             * @description List of buckets not owned by the collection owner that will be
              *     shown in the root of collections created at the base of this
              *     Storage Gateway.
-             *      */
+             */
             s3_buckets?: string[];
             /** @description URL of the Ceph RADOS Gateway S3 API */
             s3_endpoint?: string;
@@ -8475,7 +8762,6 @@ export interface components {
         /**
          * CephCollectionPolicies_1_0_0
          * @description Connector-specific collection policies for the Ceph connector
-         *
          */
         CephCollectionPolicies_1_0_0: {
             /**
@@ -8488,7 +8774,6 @@ export interface components {
         /**
          * CephUserCredentialPolicies_1_0_0
          * @description Connector-specific user credential policies for the Ceph connector
-         *
          */
         CephUserCredentialPolicies_1_0_0: {
             /**
@@ -8501,7 +8786,6 @@ export interface components {
         /**
          * DropboxStoragePolicies_1_0_0
          * @description Connector-specific storage gateway policies for the Dropbox connector
-         *
          */
         DropboxStoragePolicies_1_0_0: {
             /**
@@ -8510,32 +8794,34 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "dropbox_storage_policies#1.0.0";
-            /** @description If true, allow users to access personal or external Dropbox accounts.
+            /**
+             * @description If true, allow users to access personal or external Dropbox accounts.
              *     If false (the default), users must use the Dropbox account which
              *     matches the username their Globus credential maps to.
-             *      */
+             */
             allow_any_account?: boolean;
-            /** @description URL of the auth callback that must be registered on the Dropbox App
+            /**
+             * @description URL of the auth callback that must be registered on the Dropbox App
              *     Console for the associated client_id in order to process Dropbox
              *     credentials.
-             *      */
+             */
             readonly auth_callback?: string;
-            /** @description Client ID (App key) of the app created in the Dropbox App Console
-             *      */
+            /** @description Client ID (App key) of the app created in the Dropbox App Console */
             client_id: string | null;
-            /** @description App secret of the app from the Dropbox App Console
+            /**
+             * @description App secret of the app from the Dropbox App Console
              *     policy.
-             *      */
+             */
             secret: string | null;
-            /** @description User API Rate Limit associated with this client ID in operations
+            /**
+             * @description User API Rate Limit associated with this client ID in operations
              *     per second per user.
-             *      */
+             */
             user_api_rate_limit?: number;
         };
         /**
          * DropboxCollectionPolicies_1_0_0
          * @description Connector-specific collection policies for the Dropbox connector
-         *
          */
         DropboxCollectionPolicies_1_0_0: {
             /**
@@ -8548,7 +8834,6 @@ export interface components {
         /**
          * DropboxUserCredentialPolicies_1_0_0
          * @description Connector-specific user credential policies for the Dropbox connector
-         *
          */
         DropboxUserCredentialPolicies_1_0_0: {
             /**
@@ -8593,7 +8878,6 @@ export interface components {
          * GoogleCloudStoragePolicies_1_0_0
          * @description Connector-specific storage gateway policies for the Google Cloud Storage
          *     connector
-         *
          */
         GoogleCloudStoragePolicies_1_0_0: {
             /**
@@ -8602,47 +8886,51 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "google_cloud_storage_policies#1.0.0";
-            /** @description URL of the auth callback that must be registered on the Google API
+            /**
+             * @description URL of the auth callback that must be registered on the Google API
              *     console for the application client_id in order to process "
              *     Google credentials.
-             *      */
+             */
             readonly auth_callback?: string;
-            /** @description The list of Google Cloud Storage buckets which the Storage Gateway
+            /**
+             * @description The list of Google Cloud Storage buckets which the Storage Gateway
              *     is allowed to access, as well as the list of buckets that will be
              *     shown in root level directory listings. If this list is unset,
              *     bucket access is unrestricted and all non public credential accessible
              *     buckets will be shown in root level directory listings. The value
              *     is a list of bucket names.
-             *      */
+             */
             buckets?: string[] | null;
-            /** @description Client ID registered with the Google Application console to access
+            /**
+             * @description Client ID registered with the Google Application console to access
              *     Google Cloud Storage.
-             *      */
+             */
             client_id: string | null;
-            /** @description The list of Google Cloud Storage project ids which the Storage Gateway
+            /**
+             * @description The list of Google Cloud Storage project ids which the Storage Gateway
              *     is allowed to access. If this list is unset, project access is
              *     unrestricted. The value is a list of project id strings.
-             *      */
+             */
             projects?: string[] | null;
-            /** @description Secret created to access access Google Cloud Storage with the client_id
+            /**
+             * @description Secret created to access access Google Cloud Storage with the client_id
              *     in this policy.
-             *      */
+             */
             secret: string | null;
-            /** @description Service account key to use when authenticating all storage access
-             *      */
+            /** @description Service account key to use when authenticating all storage access */
             service_account_key?: Record<string, unknown> | null;
-            /** @description Flag indicating whether users must register a credential.  If true (or
+            /**
+             * @description Flag indicating whether users must register a credential.  If true (or
              *     if this property is missing), this storage gateway is configured for
              *     OAuth2 user authentication.  If false, authentication is configured by
              *     the admin.
-             *      */
+             */
             readonly user_credential_required?: boolean;
         };
         /**
          * GoogleCloudStoragePolicies_1_1_0
          * @description Connector-specific storage gateway policies for the Google Cloud Storage
          *     connector
-         *
          */
         GoogleCloudStoragePolicies_1_1_0: {
             /**
@@ -8651,52 +8939,57 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "google_cloud_storage_policies#1.1.0";
-            /** @description If true, allow users to access personal or external Google accounts.
+            /**
+             * @description If true, allow users to access personal or external Google accounts.
              *     If false (the default), users must use the Google account which
              *     matches the username their Globus credential maps to.
-             *      */
+             */
             allow_any_account?: boolean;
-            /** @description URL of the auth callback that must be registered on the Google API
+            /**
+             * @description URL of the auth callback that must be registered on the Google API
              *     console for the application client_id in order to process "
              *     Google credentials.
-             *      */
+             */
             readonly auth_callback?: string;
-            /** @description The list of Google Cloud Storage buckets which the Storage Gateway
+            /**
+             * @description The list of Google Cloud Storage buckets which the Storage Gateway
              *     is allowed to access, as well as the list of buckets that will be
              *     shown in root level directory listings. If this list is unset,
              *     bucket access is unrestricted and all non public credential accessible
              *     buckets will be shown in root level directory listings. The value
              *     is a list of bucket names.
-             *      */
+             */
             buckets?: string[] | null;
-            /** @description Client ID registered with the Google Application console to access
+            /**
+             * @description Client ID registered with the Google Application console to access
              *     Google Cloud Storage.
-             *      */
+             */
             client_id: string | null;
-            /** @description The list of Google Cloud Storage project ids which the Storage Gateway
+            /**
+             * @description The list of Google Cloud Storage project ids which the Storage Gateway
              *     is allowed to access. If this list is unset, project access is
              *     unrestricted. The value is a list of project id strings.
-             *      */
+             */
             projects?: string[] | null;
-            /** @description Secret created to access access Google Cloud Storage with the client_id
+            /**
+             * @description Secret created to access access Google Cloud Storage with the client_id
              *     in this policy.
-             *      */
+             */
             secret: string | null;
-            /** @description Service account key to use when authenticating all storage access
-             *      */
+            /** @description Service account key to use when authenticating all storage access */
             service_account_key?: Record<string, unknown> | null;
-            /** @description Flag indicating whether users must register a credential.  If true (or
+            /**
+             * @description Flag indicating whether users must register a credential.  If true (or
              *     if this property is missing), this storage gateway is configured for
              *     OAuth2 user authentication.  If false, authentication is configured by
              *     the admin.
-             *      */
+             */
             readonly user_credential_required?: boolean;
         };
         /**
          * GoogleCloudStorageCollectionPolicies_1_0_0
          * @description Connector-specific collection policies for the Google Cloud Storage
          *     connector
-         *
          */
         GoogleCloudStorageCollectionPolicies_1_0_0: {
             /**
@@ -8705,17 +8998,17 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "google_cloud_storage_collection_policies#1.0.0";
-            /** @description Google Cloud Platform project ID value that is associated with this
+            /**
+             * @description Google Cloud Platform project ID value that is associated with this
              *     collection. If set, users must be a member of this project to access
              *     the collection.  If the storage gateway 'projects' property is set
              *     to exactly one project, that will be the default value for this property.
-             *      */
+             */
             project?: string;
         };
         /**
          * GoogleCloudStorageProject
          * @description A Google Cloud Platform project resource
-         *
          */
         GoogleCloudStorageProject: {
             /** @description The name of the project */
@@ -8727,7 +9020,6 @@ export interface components {
          * GoogleCloudStorageUserCredentialPolicies_1_0_0
          * @description Connector-specific user credential policies for the Google Cloud Storage
          *     connector
-         *
          */
         GoogleCloudStorageUserCredentialPolicies_1_0_0: {
             /**
@@ -8740,17 +9032,20 @@ export interface components {
             access_token?: string | null;
             /** @description OpenID Connect email property of this credential */
             email?: string;
-            /** @description List of Google Cloud Platform projects available for use with this
+            /**
+             * @description List of Google Cloud Platform projects available for use with this
              *     credential.
-             *      */
+             */
             projects?: components["schemas"]["GoogleCloudStorageProject"][];
-            /** @description Refresh token to generate new access tokens to use with the Google
+            /**
+             * @description Refresh token to generate new access tokens to use with the Google
              *     Cloud Storage API
-             *      */
+             */
             refresh_token?: string | null;
-            /** @description "
+            /**
+             * @description "
              *                     List of OAuth2 scopes associated with the tokens in this credential
-             *                      */
+             */
             scopes?: string[];
             /** @description OpenID Connect subject property of this credential */
             sub?: string;
@@ -8763,7 +9058,6 @@ export interface components {
         /**
          * GoogleDriveStoragePolicies_1_0_0
          * @description Connector-specific storage gateway policies for the Google Drive connector
-         *
          */
         GoogleDriveStoragePolicies_1_0_0: {
             /**
@@ -8772,18 +9066,21 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "google_drive_storage_policies#1.0.0";
-            /** @description URL of the auth callback that must be registered on the Google API
+            /**
+             * @description URL of the auth callback that must be registered on the Google API
              *     console for the application client_id in order to process Google
              *     credentials.
-             *      */
+             */
             readonly auth_callback?: string;
-            /** @description Client ID registered with the Google Application console to access
+            /**
+             * @description Client ID registered with the Google Application console to access
              *     Google Drive.
-             *      */
+             */
             client_id: string | null;
-            /** @description Secret created to access access Google Drive with the client_id
+            /**
+             * @description Secret created to access access Google Drive with the client_id
              *     in this policy.
-             *      */
+             */
             secret: string | null;
             /** @description User API Rate quota associated with this client ID */
             user_api_rate_quota?: number;
@@ -8791,7 +9088,6 @@ export interface components {
         /**
          * GoogleDriveStoragePolicies_1_1_0
          * @description Connector-specific storage gateway policies for the Google Drive connector
-         *
          */
         GoogleDriveStoragePolicies_1_1_0: {
             /**
@@ -8800,23 +9096,27 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "google_drive_storage_policies#1.1.0";
-            /** @description If true, allow users to access personal or external Google accounts.
+            /**
+             * @description If true, allow users to access personal or external Google accounts.
              *     If false (the default), users must use the Google account which
              *     matches the username their Globus credential maps to.
-             *      */
+             */
             allow_any_account?: boolean;
-            /** @description URL of the auth callback that must be registered on the Google API
+            /**
+             * @description URL of the auth callback that must be registered on the Google API
              *     console for the application client_id in order to process Google
              *     credentials.
-             *      */
+             */
             readonly auth_callback?: string;
-            /** @description Client ID registered with the Google Application console to access
+            /**
+             * @description Client ID registered with the Google Application console to access
              *     Google Drive.
-             *      */
+             */
             client_id: string | null;
-            /** @description Secret created to access access Google Drive with the client_id
+            /**
+             * @description Secret created to access access Google Drive with the client_id
              *     in this policy.
-             *      */
+             */
             secret: string | null;
             /** @description User API Rate quota associated with this client ID */
             user_api_rate_quota?: number;
@@ -8824,7 +9124,6 @@ export interface components {
         /**
          * GoogleDriveCollectionPolicies_1_0_0
          * @description Connector-specific collection policies for the Google Drive connector
-         *
          */
         GoogleDriveCollectionPolicies_1_0_0: {
             /**
@@ -8837,7 +9136,6 @@ export interface components {
         /**
          * GoogleDriveUserCredentialPolicies_1_0_0
          * @description Connector-specific user credential policies for the Google Drive connector
-         *
          */
         GoogleDriveUserCredentialPolicies_1_0_0: {
             /**
@@ -8873,7 +9171,6 @@ export interface components {
         /**
          * HPSSStoragePolicies_1_0_0
          * @description Connector-specific storage gateway policies for the HPSS connector
-         *
          */
         HPSSStoragePolicies_1_0_0: {
             /**
@@ -8885,7 +9182,6 @@ export interface components {
             /**
              * @description The type of authentication the connector will perform when logging
              *     into HPSS
-             *
              * @enum {string}
              */
             authentication_mech: "krb5" | "unix";
@@ -8893,14 +9189,14 @@ export interface components {
              * @description Authenticator used with authentication mech to perform authentication
              *     to HPSS. Format is: "<auth_type>:<auth_file>" where <auth_type>
              *     is one of "auth_keytab" or "auth_keyfile".
-             *
              * @example auth_keytab:/var/hpss/etc/gridftp.keytab
              */
             authenticator: string;
-            /** @description Flag that indicates if checksums should be stored within UDAs so that
+            /**
+             * @description Flag that indicates if checksums should be stored within UDAs so that
              *     sync-by-checksum transfers can verify the file without staging the file
              *     from tape.
-             *      */
+             */
             uda_checksum: boolean;
         };
         /** HPSSStoragePolicies_1_1_0 */
@@ -8914,7 +9210,6 @@ export interface components {
             /**
              * @description The type of authentication the connector will perform when logging
              *     into HPSS
-             *
              * @enum {string}
              */
             authentication_mech: "krb5" | "unix";
@@ -8922,26 +9217,26 @@ export interface components {
              * @description Authenticator used with authentication mech to perform authentication
              *     to HPSS. Format is: "<auth_type>:<auth_file>" where <auth_type>
              *     is one of "auth_keytab" or "auth_keyfile".
-             *
              * @example auth_keytab:/var/hpss/etc/gridftp.keytab
              */
             authenticator: string;
-            /** @description Name of the HPSS user in the keytab file that the GridFTP server will
+            /**
+             * @description Name of the HPSS user in the keytab file that the GridFTP server will
              *     use to authenticate to HPSS. This user must have the ability to switch
              *     to another HPSS user. Defaults to 'hpssftp' which is also handled special
              *     by HPSS with regards to the gate keeper.
-             *      */
+             */
             login_name?: string;
-            /** @description Flag that indicates if checksums should be stored within UDAs so that
+            /**
+             * @description Flag that indicates if checksums should be stored within UDAs so that
              *     sync-by-checksum transfers can verify the file without staging the file
              *     from tape.
-             *      */
+             */
             uda_checksum: boolean;
         };
         /**
          * HPSSCollectionPolicies_1_0_0
          * @description Connector-specific collection policies for the HPSS connector
-         *
          */
         HPSSCollectionPolicies_1_0_0: {
             /**
@@ -8954,7 +9249,6 @@ export interface components {
         /**
          * HPSSUserCredentialPolicies_1_0_0
          * @description Connector-specific user credential policies for the HPSS connector
-         *
          */
         HPSSUserCredentialPolicies_1_0_0: {
             /**
@@ -8967,7 +9261,6 @@ export interface components {
         /**
          * IrodsEnvironment
          * @description Variables to set in the iRODS client environment.
-         *
          */
         IrodsEnvironment: {
             /** @description Environment variable name */
@@ -8978,7 +9271,6 @@ export interface components {
         /**
          * IrodsStoragePolicies_1_0_0
          * @description Connector-specific storage gateway policies for the Irods connector
-         *
          */
         IrodsStoragePolicies_1_0_0: {
             /**
@@ -9003,7 +9295,6 @@ export interface components {
         /**
          * IrodsCollectionPolicies_1_0_0
          * @description Connector-specific collection policies for the Irods connector
-         *
          */
         IrodsCollectionPolicies_1_0_0: {
             /**
@@ -9016,7 +9307,6 @@ export interface components {
         /**
          * IrodsUserCredentialPolicies_1_0_0
          * @description Connector-specific user credential policies for the Irods connector
-         *
          */
         IrodsUserCredentialPolicies_1_0_0: {
             /**
@@ -9029,7 +9319,6 @@ export interface components {
         /**
          * OneDriveStoragePolicies_1_0_0
          * @description Connector-specific storage gateway policies for the OneDrive connector
-         *
          */
         OneDriveStoragePolicies_1_0_0: {
             /**
@@ -9038,31 +9327,33 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "onedrive_storage_policies#1.0.0";
-            /** @description URL of the auth callback that must be registered on the Microsoft API
+            /**
+             * @description URL of the auth callback that must be registered on the Microsoft API
              *     console for the application client_id in order to process Microsoft
              *     credentials.
-             *      */
+             */
             readonly auth_callback?: string;
-            /** @description Client ID registered with the Azure console to access OneDrive
-             *      */
+            /** @description Client ID registered with the Azure console to access OneDrive */
             client_id: string | null;
-            /** @description Secret created in the Azure console to access OneDrive with the
+            /**
+             * @description Secret created in the Azure console to access OneDrive with the
              *     client_id in this policy.
-             *      */
+             */
             secret: string | null;
-            /** @description Tenant ID of the Microsoft organization. Required when Supported
+            /**
+             * @description Tenant ID of the Microsoft organization. Required when Supported
              *     Account Types of the Azure application is set to Single tenant.
-             *      */
+             */
             tenant?: string | null;
-            /** @description User API Rate Limit associated with this client ID in operations per
+            /**
+             * @description User API Rate Limit associated with this client ID in operations per
              *     second per user.
-             *      */
+             */
             user_api_rate_limit?: number;
         };
         /**
          * OneDriveStoragePolicies_1_1_0
          * @description Connector-specific storage gateway policies for the OneDrive connector
-         *
          */
         OneDriveStoragePolicies_1_1_0: {
             /**
@@ -9071,36 +9362,39 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "onedrive_storage_policies#1.1.0";
-            /** @description If true, allow users to access personal or external Microsoft accounts.
+            /**
+             * @description If true, allow users to access personal or external Microsoft accounts.
              *     If false (the default), users must use the Microsoft account which
              *     matches the username their Globus credential maps to.
-             *      */
+             */
             allow_any_account?: boolean;
-            /** @description URL of the auth callback that must be registered on the Microsoft API
+            /**
+             * @description URL of the auth callback that must be registered on the Microsoft API
              *     console for the application client_id in order to process Microsoft
              *     credentials.
-             *      */
+             */
             readonly auth_callback?: string;
-            /** @description Client ID registered with the Azure console to access OneDrive
-             *      */
+            /** @description Client ID registered with the Azure console to access OneDrive */
             client_id: string | null;
-            /** @description Secret created in the Azure console to access OneDrive with the
+            /**
+             * @description Secret created in the Azure console to access OneDrive with the
              *     client_id in this policy.
-             *      */
+             */
             secret: string | null;
-            /** @description Tenant ID of the Microsoft organization. Required when Supported
+            /**
+             * @description Tenant ID of the Microsoft organization. Required when Supported
              *     Account Types of the Azure application is set to Single tenant.
-             *      */
+             */
             tenant?: string | null;
-            /** @description User API Rate Limit associated with this client ID in operations per
+            /**
+             * @description User API Rate Limit associated with this client ID in operations per
              *     second per user.
-             *      */
+             */
             user_api_rate_limit?: number;
         };
         /**
          * OneDriveCollectionPolicies_1_0_0
          * @description Connector-specific collection policies for the OneDrive connector
-         *
          */
         OneDriveCollectionPolicies_1_0_0: {
             /**
@@ -9113,7 +9407,6 @@ export interface components {
         /**
          * OneDriveUserCredentialPolicies_1_0_0
          * @description Connector-specific user credential policies for the OneDrive connector
-         *
          */
         OneDriveUserCredentialPolicies_1_0_0: {
             /**
@@ -9151,7 +9444,6 @@ export interface components {
         /**
          * PosixStoragePolicies_1_0_0
          * @description Connector-specific storage gateway policies for the POSIX connector.
-         *
          */
         PosixStoragePolicies_1_0_0: {
             /**
@@ -9160,17 +9452,14 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "posix_storage_policies#1.0.0";
-            /** @description List of POSIX group names allowed to access this storage gateway
-             *      */
+            /** @description List of POSIX group names allowed to access this storage gateway */
             groups_allow?: string[] | null;
-            /** @description List of POSIX group names denied access this storage gateway
-             *      */
+            /** @description List of POSIX group names denied access this storage gateway */
             groups_deny?: string[] | null;
         };
         /**
          * PosixCollectionPolicies_1_0_0
          * @description Connector-specific collection policies for the POSIX connector
-         *
          */
         PosixCollectionPolicies_1_0_0: {
             /**
@@ -9187,7 +9476,6 @@ export interface components {
          *
          *     Version 1.1.0 of the posix_collection_policies document adds the
          *     **sharing_groups_allow**, and **sharing_groups_deny** properties.
-         *
          */
         PosixCollectionPolicies_1_1_0: {
             /**
@@ -9196,18 +9484,17 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "posix_collection_policies#1.1.0";
-            /** @description List of POSIX group names allowed to create shares on this collection
-             *      */
+            /** @description List of POSIX group names allowed to create shares on this collection */
             sharing_groups_allow?: string[] | null;
-            /** @description List of POSIX group names denied access to create shares on this
+            /**
+             * @description List of POSIX group names denied access to create shares on this
              *     collection.
-             *      */
+             */
             sharing_groups_deny?: string[] | null;
         };
         /**
          * PosixUserCredentialPolicies_1_0_0
          * @description Connector-specific user credential policies for the POSIX connector
-         *
          */
         PosixUserCredentialPolicies_1_0_0: {
             /**
@@ -9221,7 +9508,6 @@ export interface components {
          * PosixStagingEnvironment
          * @description Variables to set in the environment when executing
          *     the stage_app.
-         *
          */
         PosixStagingEnvironment: {
             /** @description Environment variable name */
@@ -9232,7 +9518,6 @@ export interface components {
         /**
          * PosixStagingStoragePolicies_1_0_0
          * @description Connector-specific storage gateway policies for the POSIX Staging connector
-         *
          */
         PosixStagingStoragePolicies_1_0_0: {
             /**
@@ -9243,11 +9528,9 @@ export interface components {
             DATA_TYPE: "posix_staging_storage_policies#1.0.0";
             /** @description Variables to set in the environment when executing the stage_app */
             environment?: components["schemas"]["PosixStagingEnvironment"][];
-            /** @description List of POSIX group names allowed to access this storage gateway
-             *      */
+            /** @description List of POSIX group names allowed to access this storage gateway */
             groups_allow?: string[] | null;
-            /** @description List of POSIX group names denied access this storage gateway
-             *      */
+            /** @description List of POSIX group names denied access this storage gateway */
             groups_deny?: string[] | null;
             /** @description Path to the stage app */
             stage_app: string;
@@ -9255,7 +9538,6 @@ export interface components {
         /**
          * PosixStagingCollectionPolicies_1_0_0
          * @description Connector-specific collection policies for the POSIX Staging connector
-         *
          */
         PosixStagingCollectionPolicies_1_0_0: {
             /**
@@ -9264,18 +9546,17 @@ export interface components {
              * @enum {string}
              */
             DATA_TYPE: "posix_staging_collection_policies#1.0.0";
-            /** @description List of POSIX group names allowed to create shares on this collection
-             *      */
+            /** @description List of POSIX group names allowed to create shares on this collection */
             sharing_groups_allow?: string[] | null;
-            /** @description List of POSIX group names denied access to create shares on this
+            /**
+             * @description List of POSIX group names denied access to create shares on this
              *     collection.
-             *      */
+             */
             sharing_groups_deny?: string[] | null;
         };
         /**
          * PosixStagingUserCredentialPolicies_1_0_0
          * @description Connector-specific user credential policies for the POSIX Staging connector
-         *
          */
         PosixStagingUserCredentialPolicies_1_0_0: {
             /**
@@ -9296,14 +9577,12 @@ export interface components {
          *     Version 1.1.0 adds support for setting the data interface on a node.
          *
          *     Version 1.2.0 adds support for setting an IPv6 data interface on a node.
-         *
          */
         Node: components["schemas"]["Node_1_0_0"] | components["schemas"]["Node_1_1_0"] | components["schemas"]["Node_1_2_0"];
         /**
          * Batch
          * @description The Batch data type is used to specify multiple objects to operate
          *     on via a single REST API call.
-         *
          */
         Batch: components["schemas"]["Batch_1_0_0"];
         /**
@@ -9312,7 +9591,6 @@ export interface components {
          *     in order to perform this operation.
          *
          *     Version 1.1.0 adds the require_mfa property.
-         *
          */
         AuthenticationTimeout: components["schemas"]["AuthenticationTimeout_1_0_0"] | components["schemas"]["AuthenticationTimeout_1_1_0"];
         /**
@@ -9337,7 +9615,6 @@ export interface components {
          *     Multiple sharing policies can be defined for a mapped collection.  When a
          *     guest collection is created or accessed, only the policies relevant to the
          *     user which created the account are enforced.
-         *
          */
         SharingPolicy: components["schemas"]["SharingPolicy_1_0_0"];
         /**
@@ -9395,20 +9672,17 @@ export interface components {
          *
          *     Version 1.16.0 adds the preserve_modtime and https_methods property to the
          *     collection.
-         *
          */
         Collection: components["schemas"]["Collection_1_0_0"] | components["schemas"]["Collection_1_1_0"] | components["schemas"]["Collection_1_2_0"] | components["schemas"]["Collection_1_3_0"] | components["schemas"]["Collection_1_4_0"] | components["schemas"]["Collection_1_5_0"] | components["schemas"]["Collection_1_6_0"] | components["schemas"]["Collection_1_7_0"] | components["schemas"]["Collection_1_8_0"] | components["schemas"]["Collection_1_9_0"] | components["schemas"]["Collection_1_10_0"] | components["schemas"]["Collection_1_11_0"] | components["schemas"]["Collection_1_12_0"] | components["schemas"]["Collection_1_13_0"] | components["schemas"]["Collection_1_14_0"] | components["schemas"]["Collection_1_15_0"] | components["schemas"]["Collection_1_16_0"];
         /**
          * CollectionNotFound
          * @description Error details when a mapped collection no longer exists when accessing a
          *     guest collection.
-         *
          */
         CollectionNotFound: components["schemas"]["CollectionNotFound_1_0_0"];
         /**
          * CollectionOwner
          * @description Schema for processing the collection_owner#1.0.0 data type
-         *
          */
         CollectionOwner: components["schemas"]["CollectionOwner_1_0_0"];
         /**
@@ -9416,7 +9690,6 @@ export interface components {
          * @description Connector information document
          *
          *         Version 1.1.0 adds information about HA and BAA subscriptions.
-         *
          */
         Connector: components["schemas"]["Connector_1_0_0"] | components["schemas"]["Connector_1_1_0"];
         /**
@@ -9424,7 +9697,6 @@ export interface components {
          * @description Error details when a user has attempted to use a credential when creating a
          *     collection or logging in, but there are multiple mapped identities and none
          *     of them have a valid credential.
-         *
          */
         CredentialNotFound: components["schemas"]["CredentialNotFound_1_0_0"];
         /**
@@ -9441,26 +9713,22 @@ export interface components {
          *
          *     Version 1.2.0 of the endpoint includes read-only earliest_last_access
          *     to put a limit on collections which are missing a last_access value.
-         *
          */
         Endpoint: components["schemas"]["Endpoint_1_0_0"] | components["schemas"]["Endpoint_1_1_0"] | components["schemas"]["Endpoint_1_2_0"];
         /**
          * EndpointOwner
          * @description Schema for processing the endpoint_owner#1.0.0 data type
-         *
          */
         EndpointOwner: components["schemas"]["EndpointOwner_1_0_0"];
         /**
          * EndpointSubscription
          * @description Endpoint subscription
-         *
          */
         EndpointSubscription: components["schemas"]["EndpointSubscription_1_0_0"];
         /**
          * IdNotInIdentitySet
          * @description Error details when a user has authenticated but has requested to act as an
          *     identity not in the current identity set.
-         *
          */
         IdNotInIdentitySet: components["schemas"]["IdNotInIdentitySet_1_0_0"];
         /**
@@ -9468,48 +9736,41 @@ export interface components {
          * @description This document contains information about the Globus Connect
          *     Server, including its software and supported API version
          *     number.
-         *
          */
         Info: components["schemas"]["Info_1_0_0"];
         /**
          * InvalidCredential
          * @description Error details when the caller's identity maps to an account with a user
          *     credential that is in an invalid state.
-         *
          */
         InvalidCredential: components["schemas"]["InvalidCredential_1_0_0"];
         /**
          * InvalidInput
          * @description Error details when the caller has sent an invalid input document.
-         *
          */
         InvalidInput: components["schemas"]["InvalidInput_1_0_0"];
         /**
          * InvalidUser
          * @description Error details when the caller's identity does not map to valid local
          *     account.
-         *
          */
         InvalidUser: components["schemas"]["InvalidUser_1_0_0"];
         /**
          * LimitExceeded
          * @description Error details when a user would be authorized, but the endpoint has reached
          *     a hard resource limit on the type of object being created.
-         *
          */
         LimitExceeded: components["schemas"]["LimitExceeded_1_0_0"];
         /**
          * MissingRequiredRole
          * @description Error details when a user has authenticated but lacks a role to be able to
          *     perform the requested operation.
-         *
          */
         MissingRequiredRole: components["schemas"]["MissingRequiredRole_1_0_0"];
         /**
          * MissingRequiredScopes
          * @description Error details when a user has authenticated but lacks an OAuth scope to be
          *     able to perform the requested operation.
-         *
          */
         MissingRequiredScopes: components["schemas"]["MissingRequiredScopes_1_0_0"];
         /**
@@ -9517,14 +9778,12 @@ export interface components {
          * @description Error details when a user has authenticated but does not
          *     have an identity from the required domain to perform the
          *     requested action.
-         *
          */
         NotFromAllowedDomain: components["schemas"]["NotFromAllowedDomain_1_0_0"];
         /**
          * NotResourceOwner
          * @description Error details when a user has authenticated but is not the owner of the
          *     resource being acted upon.
-         *
          */
         NotResourceOwner: components["schemas"]["NotResourceOwner_1_0_0"];
         /**
@@ -9535,7 +9794,6 @@ export interface components {
         /**
          * OwnerString
          * @description Owner string document
-         *
          */
         OwnerString: components["schemas"]["OwnerString_1_0_0"];
         /**
@@ -9546,21 +9804,18 @@ export interface components {
          *
          *     Version 1.1.0 adds optional authorization_parameters to help process
          *     authorization or authentication errors
-         *
          */
         Result: components["schemas"]["Result_1_0_0"] | components["schemas"]["Result_1_1_0"];
         /**
          * ResourceConflict
          * @description Error details when the caller has attempted to update an object that
          *     results in a conflict with some other object.
-         *
          */
         ResourceConflict: components["schemas"]["ResourceConflict_1_0_0"];
         /**
          * Role
          * @description The "Role" document type represents the assignment of a role on an
          *     Endpoint or Collection to a Globus identity or group.
-         *
          */
         Role: components["schemas"]["Role_1_0_0"];
         /**
@@ -9585,28 +9840,24 @@ export interface components {
          *
          *     Version 1.3.0 includes support for overriding the endpoint's network use
          *     parameters on a storage gateway.
-         *
          */
         StorageGateway: components["schemas"]["StorageGateway_1_0_0"] | components["schemas"]["StorageGateway_1_1_0"] | components["schemas"]["StorageGateway_1_2_0"] | components["schemas"]["StorageGateway_1_3_0"];
         /**
          * StorageGatewayNotFound
          * @description Error details when a storage gateway no longer exists when accessing a
          *     collection.
-         *
          */
         StorageGatewayNotFound: components["schemas"]["StorageGatewayNotFound_1_0_0"];
         /**
          * SubscriptionRequired
          * @description Error details when the caller has attempted to access a feature
          *     not supported by the endpoint's subscription.
-         *
          */
         SubscriptionRequired: components["schemas"]["SubscriptionRequired_1_0_0"];
         /**
          * UserCredential
          * @description Credential information for an identity on a particular storage gateway and
          *     its related collections.
-         *
          */
         UserCredential: components["schemas"]["UserCredential_1_0_0"];
         /**
@@ -9618,13 +9869,11 @@ export interface components {
          *     Version 1.2.0 adds support for the s3_allow_multi_keys property
          *
          *     Version 1.3.0 adds support for the s3_storage_class and s3_restore properties
-         *
          */
         S3StoragePolicies: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["S3StoragePolicies_1_3_0"];
         /**
          * S3CollectionPolicies
          * @description Connector-specific collection policies for the S3 connector
-         *
          */
         S3CollectionPolicies: components["schemas"]["S3CollectionPolicies_1_0_0"];
         /**
@@ -9634,157 +9883,132 @@ export interface components {
          *     Version 1.1.0 adds support for the s3_requester_pays property.
          *
          *     Version 1.2.0 adds support for the s3_multi_keys property list.
-         *
          */
         S3UserCredentialPolicies: components["schemas"]["S3UserCredentialPolicies_1_0_0"] | components["schemas"]["S3UserCredentialPolicies_1_1_0"] | components["schemas"]["S3UserCredentialPolicies_1_2_0"];
         /**
          * ActiveScaleStoragePolicies
          * @description Connector-specific storage gateway policies for the ActiveScale connector.
          *     These are identical to s3 connector's storage gateway policies.
-         *
          */
         ActiveScaleStoragePolicies: components["schemas"]["S3StoragePolicies_1_0_0"];
         /**
          * ActiveScaleCollectionPolicies
          * @description Connector-specific storage gateway policies for the ActiveScale connector.
          *     These are identical to s3 connector's storage gateway policies.
-         *
          */
         ActiveScaleCollectionPolicies: components["schemas"]["S3CollectionPolicies"];
         /**
          * ActiveScaleUserCredentialPolicies
          * @description Connector-specific storage gateway policies for the ActiveScale connector.
          *     These are identical to s3 connector's storage gateway policies.
-         *
          */
         ActiveScaleUserCredentialPolicies: components["schemas"]["S3UserCredentialPolicies_1_0_0"];
         /**
          * AzureBlobStoragePolicies
          * @description Connector-specific storage gateway policies for the AzureBlob connector
-         *
          */
         AzureBlobStoragePolicies: components["schemas"]["AzureBlobStoragePolicies_1_0_0"] | components["schemas"]["AzureBlobStoragePolicies_1_1_0"];
         /**
          * AzureBlobCollectionPolicies
          * @description Connector-specific collection policies for the AzureBlob connector
-         *
          */
         AzureBlobCollectionPolicies: components["schemas"]["AzureBlobCollectionPolicies_1_0_0"];
         /**
          * AzureBlobUserCredentialPolicies
          * @description Connector-specific user credential policies for the AzureBlob connector
-         *
          */
         AzureBlobUserCredentialPolicies: components["schemas"]["AzureBlobUserCredentialPolicies_1_0_0"];
         /**
          * BlackPearlStoragePolicies
          * @description Connector-specific storage gateway policies for the Blackpearl connector
-         *
          */
         BlackPearlStoragePolicies: components["schemas"]["BlackPearlStoragePolicies_1_0_0"];
         /**
          * BlackPearlCollectionPolicies
          * @description Connector-specific collection policies for the BlackPearl connector
-         *
          */
         BlackPearlCollectionPolicies: components["schemas"]["BlackPearlCollectionPolicies_1_0_0"];
         /**
          * BlackPearlUserCredentialPolicies
          * @description Connector-specific user credential policies for the Blackpearl connector
-         *
          */
         BlackPearlUserCredentialPolicies: components["schemas"]["BlackPearlUserCredentialPolicies_1_0_0"];
         /**
          * BoxStoragePolicies
          * @description Connector-specific storage gateway policies for the Box connector.
-         *
          */
         BoxStoragePolicies: components["schemas"]["BoxStorage_1_0_0"] | components["schemas"]["BoxStorage_1_1_0"] | components["schemas"]["BoxStorage_1_2_0"];
         /**
          * BoxCollectionPolicies
          * @description Connector-specific collection policies for the Box connector
-         *
          */
         BoxCollectionPolicies: components["schemas"]["BoxCollectionPolicies_1_0_0"];
         /**
          * BoxUserCredentialPolicies
          * @description Connector-specific user credential policies for the Box connector
-         *
          */
         BoxUserCredentialPolicies: components["schemas"]["BoxUserCredential_1_0_0"] | components["schemas"]["BoxUserCredential_1_1_0"];
         /**
          * CephStoragePolicies
          * @description Connector-specific storage gateway policies for the Ceph connector
-         *
          */
         CephStoragePolicies: components["schemas"]["CephStoragePolicies_1_0_0"];
         /**
          * CephCollectionPolicies
          * @description Connector-specific collection policies for the Ceph connector
-         *
          */
         CephCollectionPolicies: components["schemas"]["CephCollectionPolicies_1_0_0"];
         /**
          * CephUserCredentialPolicies
          * @description Connector-specific user credential policies for the Ceph connector
-         *
          */
         CephUserCredentialPolicies: components["schemas"]["CephUserCredentialPolicies_1_0_0"];
         /**
          * DropboxStoragePolicies
          * @description Connector-specific storage gateway policies for the Dropbox connector
-         *
          */
         DropboxStoragePolicies: components["schemas"]["DropboxStoragePolicies_1_0_0"];
         /**
          * DropboxCollectionPolicies
          * @description Connector-specific collection policies for the Dropbox connector
-         *
          */
         DropboxCollectionPolicies: components["schemas"]["DropboxCollectionPolicies_1_0_0"];
         /**
          * DropboxUserCredentialPolicies
          * @description Connector-specific user credential policies for the Dropbox connector
-         *
          */
         DropboxUserCredentialPolicies: components["schemas"]["DropboxUserCredentialPolicies_1_0_0"];
         /**
          * GoogleCloudStoragePolicies
          * @description Connector-specific storage gateway policies for the Google Cloud Storage
          *     connector
-         *
          */
         GoogleCloudStoragePolicies: components["schemas"]["GoogleCloudStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_1_0"];
         /**
          * GoogleCloudStorageCollectionPolicies
          * @description Connector-specific collection policies for the Google Cloud Storage
          *     connector
-         *
          */
         GoogleCloudStorageCollectionPolicies: components["schemas"]["GoogleCloudStorageCollectionPolicies_1_0_0"];
         /**
          * GoogleCloudStorageUserCredentialPolicies
          * @description Connector-specific user credential policies for the Google Cloud Storage
          *     connector
-         *
          */
         GoogleCloudStorageUserCredentialPolicies: components["schemas"]["GoogleCloudStorageUserCredentialPolicies_1_0_0"];
         /**
          * GoogleDriveStoragePolicies
          * @description Connector-specific storage gateway policies for the Google Drive connector
-         *
          */
         GoogleDriveStoragePolicies: components["schemas"]["GoogleDriveStoragePolicies_1_0_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_1_0"];
         /**
          * GoogleDriveCollectionPolicies
          * @description Connector-specific collection policies for the Google Drive connector
-         *
          */
         GoogleDriveCollectionPolicies: components["schemas"]["GoogleDriveCollectionPolicies_1_0_0"];
         /**
          * GoogleDriveUserCredentialPolicies
          * @description Connector-specific user credential policies for the Google Drive connector
-         *
          */
         GoogleDriveUserCredentialPolicies: components["schemas"]["GoogleDriveUserCredentialPolicies_1_0_0"];
         /** HPSSStoragePolicies */
@@ -9792,55 +10016,46 @@ export interface components {
         /**
          * HPSSCollectionPolicies
          * @description Connector-specific collection policies for the HPSS connector
-         *
          */
         HPSSCollectionPolicies: components["schemas"]["HPSSCollectionPolicies_1_0_0"];
         /**
          * HPSSUserCredentialPolicies
          * @description Connector-specific user credential policies for the HPSS connector
-         *
          */
         HPSSUserCredentialPolicies: components["schemas"]["HPSSUserCredentialPolicies_1_0_0"];
         /**
          * IrodsStoragePolicies
          * @description Connector-specific storage gateway policies for the Irods connector
-         *
          */
         IrodsStoragePolicies: components["schemas"]["IrodsStoragePolicies_1_0_0"];
         /**
          * IrodsCollectionPolicies
          * @description Connector-specific collection policies for the Irods connector
-         *
          */
         IrodsCollectionPolicies: components["schemas"]["IrodsCollectionPolicies_1_0_0"];
         /**
          * IrodsUserCredentialPolicies
          * @description Connector-specific user credential policies for the Irods connector
-         *
          */
         IrodsUserCredentialPolicies: components["schemas"]["IrodsUserCredentialPolicies_1_0_0"];
         /**
          * OneDriveStoragePolicies
          * @description Connector-specific storage gateway policies for the OneDrive connector
-         *
          */
         OneDriveStoragePolicies: components["schemas"]["OneDriveStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_1_0"];
         /**
          * OneDriveCollectionPolicies
          * @description Connector-specific collection policies for the OneDrive connector
-         *
          */
         OneDriveCollectionPolicies: components["schemas"]["OneDriveCollectionPolicies_1_0_0"];
         /**
          * OneDriveUserCredentialPolicies
          * @description Connector-specific user credential policies for the OneDrive connector
-         *
          */
         OneDriveUserCredentialPolicies: components["schemas"]["OneDriveUserCredentialPolicies_1_0_0"];
         /**
          * PosixStoragePolicies
          * @description Connector-specific storage gateway policies for the POSIX connector.
-         *
          */
         PosixStoragePolicies: components["schemas"]["PosixStoragePolicies_1_0_0"];
         /**
@@ -9850,31 +10065,26 @@ export interface components {
          *
          *     Version 1.1.0 of the posix_collection_policies document adds the
          *     **sharing_groups_allow**, and **sharing_groups_deny** properties.
-         *
          */
         PosixCollectionPolicies: components["schemas"]["PosixCollectionPolicies_1_0_0"] | components["schemas"]["PosixCollectionPolicies_1_1_0"];
         /**
          * PosixUserCredentialPolicies
          * @description Connector-specific user credential policies for the POSIX connector
-         *
          */
         PosixUserCredentialPolicies: components["schemas"]["PosixUserCredentialPolicies_1_0_0"];
         /**
          * PosixStagingStoragePolicies
          * @description Connector-specific storage gateway policies for the POSIX Staging connector
-         *
          */
         PosixStagingStoragePolicies: components["schemas"]["PosixStagingStoragePolicies_1_0_0"];
         /**
          * PosixStagingCollectionPolicies
          * @description Connector-specific collection policies for the POSIX Staging connector
-         *
          */
         PosixStagingCollectionPolicies: components["schemas"]["PosixStagingCollectionPolicies_1_0_0"];
         /**
          * PosixStagingUserCredentialPolicies
          * @description Connector-specific user credential policies for the POSIX Staging connector
-         *
          */
         PosixStagingUserCredentialPolicies: components["schemas"]["PosixStagingUserCredentialPolicies_1_0_0"];
     };
@@ -9975,14 +10185,11 @@ export interface operations {
                 marker?: components["parameters"]["marker_query_parameter"];
                 /** @description Document values to include */
                 include?: "private_policies"[];
-                /** @description Filter to apply to the return set
-                 *      */
+                /** @description Filter to apply to the return set */
                 filter?: string[];
-                /** @description Filter collections which were created using this storage_gateway_id
-                 *      */
+                /** @description Filter collections which were created using this storage_gateway_id */
                 storage_gateway_id?: string;
-                /** @description Filter collections which were created using this mapped_collection_id
-                 *      */
+                /** @description Filter collections which were created using this mapped_collection_id */
                 mapped_collection_id?: string;
             };
             header?: never;
@@ -10092,14 +10299,11 @@ export interface operations {
                 page_size?: components["parameters"]["page_size_query_parameter"];
                 /** @description Pagination marker for a paginated response */
                 marker?: components["parameters"]["marker_query_parameter"];
-                /** @description Filter to apply to the return set
-                 *      */
+                /** @description Filter to apply to the return set */
                 filter?: string[];
-                /** @description Filter collections which were created using this storage_gateway_id
-                 *      */
+                /** @description Filter collections which were created using this storage_gateway_id */
                 storage_gateway_id?: string;
-                /** @description Filter collections which were created using this mapped_collection_id
-                 *      */
+                /** @description Filter collections which were created using this mapped_collection_id */
                 mapped_collection_id?: string;
             };
             header?: never;
@@ -11244,9 +11448,10 @@ export interface operations {
     putNode: {
         parameters: {
             query?: {
-                /** @description Flag indicating whether to request all roles assignments for the endpoint
+                /**
+                 * @description Flag indicating whether to request all roles assignments for the endpoint
                  *     or collection.
-                 *      */
+                 */
                 include?: "node"[];
             };
             header?: never;
@@ -11341,9 +11546,10 @@ export interface operations {
     patchNode: {
         parameters: {
             query?: {
-                /** @description Flag indicating whether to request all roles assignments for the endpoint
+                /**
+                 * @description Flag indicating whether to request all roles assignments for the endpoint
                  *     or collection.
-                 *      */
+                 */
                 include?: "node"[];
             };
             header?: never;
@@ -11404,9 +11610,10 @@ export interface operations {
                 marker?: components["parameters"]["marker_query_parameter"];
                 /** @description ID of the collection */
                 collection_id?: components["parameters"]["collection_id_query_parameter"];
-                /** @description Flag indicating whether to request all roles assignments for the endpoint
+                /**
+                 * @description Flag indicating whether to request all roles assignments for the endpoint
                  *     or collection.
-                 *      */
+                 */
                 include?: "all_roles"[];
             };
             header?: never;
@@ -12064,11 +12271,12 @@ export interface operations {
                 page_size?: components["parameters"]["page_size_query_parameter"];
                 /** @description Pagination marker for a paginated response */
                 marker?: components["parameters"]["marker_query_parameter"];
-                /** @description Credentials to include. If set to **all**, then -
+                /**
+                 * @description Credentials to include. If set to **all**, then -
                  *     credentials owned by other users are returned if the storage gateway allows
                  *     admin_managed_credentials and the caller has an endpoint:administrator or
                  *     endpoint:owner role.
-                 *      */
+                 */
                 include?: "all"[];
                 /** @description ID of the Storage Gateway */
                 storage_gateway?: string;
