@@ -1,0 +1,153 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`tunnel create 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "320",
+    "content-type": "application/json",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "data": {
+      "attributes": {
+        "label": "A new label",
+        "lifetime_mins": 60,
+        "restartable": true,
+        "submission_id": "example-submission-id",
+      },
+      "relationships": {
+        "initiator": {
+          "data": {
+            "id": "example-access-point-id",
+            "type": "StreamAccessPoint",
+          },
+        },
+        "listener": {
+          "data": {
+            "id": "example-access-point-id",
+            "type": "StreamAccessPoint",
+          },
+        },
+      },
+      "type": "Tunnel",
+    },
+  },
+  "method": "POST",
+  "url": "https://transfer.api.globusonline.org/v2/tunnels",
+}
+`;
+
+exports[`tunnel get 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globusonline.org/v2/tunnels/example-tunnel-id",
+}
+`;
+
+exports[`tunnel getAll 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globusonline.org/v2/tunnels",
+}
+`;
+
+exports[`tunnel getEventList 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": undefined,
+  "method": "GET",
+  "url": "https://transfer.api.globusonline.org/v2/tunnels/example-tunnel-id/events",
+}
+`;
+
+exports[`tunnel remove 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": undefined,
+  "method": "DELETE",
+  "url": "https://transfer.api.globusonline.org/v2/tunnels/example-tunnel-id",
+}
+`;
+
+exports[`tunnel start 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "115",
+    "content-type": "application/json",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "data": {
+      "attributes": {
+        "payload": {
+          "label": "Started Tunnel",
+          "listener_ip_address": "1.1.1.1",
+          "listener_port": 8080,
+        },
+      },
+    },
+  },
+  "method": "PATCH",
+  "url": "https://transfer.api.globusonline.org/v2/tunnels/example-tunnel-id",
+}
+`;
+
+exports[`tunnel stop 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "81",
+    "content-type": "application/json",
+    "host": "transfer.api.globusonline.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "data": {
+      "attributes": {
+        "payload": {
+          "label": "Stopped Tunnel",
+        },
+        "state": "STOPPING",
+      },
+    },
+  },
+  "method": "PATCH",
+  "url": "https://transfer.api.globusonline.org/v2/tunnels/example-tunnel-id",
+}
+`;
