@@ -35,8 +35,7 @@ const SCHEMAS = [
     filename: path.join(OPEN_API_TYPES_DIR, `search.ts`),
   },
   {
-    /** @todo update to production when released */
-    url: 'https://transfer.api.test.globuscs.info/v2/openapi.json',
+    url: 'https://transfer.api.globus.org/v2/openapi.json',
     filename: path.join(OPEN_API_TYPES_DIR, `transfer.ts`),
   },
 ];

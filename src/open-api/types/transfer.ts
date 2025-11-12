@@ -97,50 +97,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/private/gcs/stream_access_points": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Stream Access Points Post
-         * @description Create a stream access point
-         */
-        post: operations["stream_access_points_post_private_gcs_stream_access_points_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/private/gcs/stream_access_points/{stream_access_point_uuid}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * Stream Access Points Delete
-         * @description Delete a stream access point by UUID
-         */
-        delete: operations["stream_access_points_delete_private_gcs_stream_access_points__stream_access_point_uuid__delete"];
-        options?: never;
-        head?: never;
-        /**
-         * Stream Access Points Patch
-         * @description Update a stream access point by UUID
-         */
-        patch: operations["stream_access_points_patch_private_gcs_stream_access_points__stream_access_point_uuid__patch"];
-        trace?: never;
-    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -259,29 +215,6 @@ export interface components {
              */
             organization?: string | null;
         };
-        /** StreamAccessPointAttributesPatch */
-        StreamAccessPointAttributesPatch: {
-            /** Display Name */
-            display_name?: string | null;
-            /** Tlsftp Server */
-            tlsftp_server?: string | null;
-            /** Advertised Owner */
-            advertised_owner?: string | null;
-            /** Contact Email */
-            contact_email?: string | null;
-            /** Contact Info */
-            contact_info?: string | null;
-            /** Department */
-            department?: string | null;
-            /** Description */
-            description?: string | null;
-            /** Info Link */
-            info_link?: string | null;
-            /** Keywords */
-            keywords?: string | null;
-            /** Organization */
-            organization?: string | null;
-        };
         /** StreamAccessPointDataRelationship */
         StreamAccessPointDataRelationship: {
             data?: components["schemas"]["StreamAccessPointResourceIdentifier"] | null;
@@ -292,37 +225,6 @@ export interface components {
             data: components["schemas"]["StreamAccessPointResponseResource"][];
             links?: components["schemas"]["JsonAPIPaginationLinks"] | null;
             meta: components["schemas"]["JsonApiTopLevelMetaInformation"];
-        };
-        /** StreamAccessPointRequestResource */
-        StreamAccessPointRequestResource: {
-            /**
-             * Type
-             * @default StreamAccessPoint
-             * @constant
-             */
-            type: "StreamAccessPoint";
-            /**
-             * Id
-             * Format: uuid
-             * @description Unique identifier of the stream access point
-             */
-            id: string;
-            /** @description Attributes belonging to a stream access point */
-            attributes: components["schemas"]["StreamAccessPointAttributes"];
-        };
-        /** StreamAccessPointRequestResourcePatch */
-        StreamAccessPointRequestResourcePatch: {
-            attributes: components["schemas"]["StreamAccessPointAttributesPatch"];
-            /** Id */
-            id?: string | null;
-        };
-        /** StreamAccessPointRequestTopLevel */
-        StreamAccessPointRequestTopLevel: {
-            data: components["schemas"]["StreamAccessPointRequestResource"];
-        };
-        /** StreamAccessPointRequestTopLevelPatch */
-        StreamAccessPointRequestTopLevelPatch: {
-            data: components["schemas"]["StreamAccessPointRequestResourcePatch"];
         };
         /** StreamAccessPointResourceIdentifier */
         StreamAccessPointResourceIdentifier: {
@@ -877,105 +779,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["TunnelEventListingTopLevel"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    stream_access_points_post_private_gcs_stream_access_points_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["StreamAccessPointRequestTopLevel"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StreamAccessPointResponseTopLevel"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    stream_access_points_delete_private_gcs_stream_access_points__stream_access_point_uuid__delete: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                stream_access_point_uuid: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonApiAbstractResourceResponseTopLevel"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    stream_access_points_patch_private_gcs_stream_access_points__stream_access_point_uuid__patch: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                stream_access_point_uuid: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["StreamAccessPointRequestTopLevelPatch"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StreamAccessPointResponseTopLevel"];
                 };
             };
             /** @description Validation Error */

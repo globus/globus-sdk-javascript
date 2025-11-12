@@ -1,5 +1,6 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
-import { ID, SCOPES } from '../config.js';
+import { ID as service } from '../config.js';
+import { RESOURCE_SERVERS } from '../../auth/config.js';
 
 import type {
   ServiceMethod,
@@ -7,6 +8,9 @@ import type {
   JSONFetchResponse,
 } from '../../../services/types.js';
 import type { operations } from '../../../open-api/types/transfer.js';
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const resource_server = RESOURCE_SERVERS[service];
 
 type GetAllOperation = operations['tunnels_list_tunnels_get'];
 /**
@@ -18,8 +22,8 @@ export const getAll = function (
 ): Promise<JSONFetchResponse<GetAllOperation['responses']['200']['content']['application/json']>> {
   return serviceRequest(
     {
-      service: ID,
-      scope: SCOPES.ALL,
+      service,
+      resource_server,
       path: `/v2/tunnels`,
     },
     options,
@@ -41,8 +45,8 @@ export const get = function (
 ): Promise<JSONFetchResponse<GetOperation['responses']['200']['content']['application/json']>> {
   return serviceRequest(
     {
-      service: ID,
-      scope: SCOPES.ALL,
+      service,
+      resource_server,
       path: `/v2/tunnels/${tunnel_uuid}`,
     },
     options,
@@ -66,8 +70,8 @@ export const create = function (
 ): Promise<JSONFetchResponse<CreateOperation['responses']['201']['content']['application/json']>> {
   return serviceRequest(
     {
-      service: ID,
-      scope: SCOPES.ALL,
+      service,
+      resource_server,
       path: `/v2/tunnels`,
       method: HTTP_METHODS.POST,
     },
@@ -90,8 +94,8 @@ export const remove = function (
 ): Promise<JSONFetchResponse<DeleteOperation['responses']['200']['content']['application/json']>> {
   return serviceRequest(
     {
-      service: ID,
-      scope: SCOPES.ALL,
+      service,
+      resource_server,
       path: `/v2/tunnels/${tunnel_uuid}`,
       method: HTTP_METHODS.DELETE,
     },
@@ -119,8 +123,8 @@ export const start = function (
 ): Promise<JSONFetchResponse<PatchOperation['responses']['200']['content']['application/json']>> {
   return serviceRequest(
     {
-      service: ID,
-      scope: SCOPES.ALL,
+      service,
+      resource_server,
       path: `/v2/tunnels/${tunnel_uuid}`,
       method: HTTP_METHODS.PATCH,
     },
@@ -146,8 +150,8 @@ export const stop = function (
 ): Promise<JSONFetchResponse<PatchOperation['responses']['200']['content']['application/json']>> {
   return serviceRequest(
     {
-      service: ID,
-      scope: SCOPES.ALL,
+      service,
+      resource_server,
       path: `/v2/tunnels/${tunnel_uuid}`,
       method: HTTP_METHODS.PATCH,
     },
@@ -176,8 +180,8 @@ export const getEventList = function (
 > {
   return serviceRequest(
     {
-      service: ID,
-      scope: SCOPES.ALL,
+      service,
+      resource_server,
       path: `/v2/tunnels/${tunnel_uuid}/events`,
     },
     options,
