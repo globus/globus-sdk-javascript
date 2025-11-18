@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.0](https://github.com/globus/globus-sdk-javascript/compare/v6.1.0...v6.2.0) (2025-11-18)
+
+
+### Features
+
+* **Search, Typescript:** add type generic to search.query.post ([#647](https://github.com/globus/globus-sdk-javascript/issues/647)) ([94133f2](https://github.com/globus/globus-sdk-javascript/commit/94133f2815bb02c6290a01030a6fe836f93190a3))
+* **Streams:** add methods and types for Streams ([#682](https://github.com/globus/globus-sdk-javascript/issues/682)) ([ee563ca](https://github.com/globus/globus-sdk-javascript/commit/ee563ca9ad0329ae68934c8bdb16495f679d4fac))
+
+
+### Bug Fixes
+
+* **Transfer, Typescript:** transfer.endpointSearch return type ([#664](https://github.com/globus/globus-sdk-javascript/issues/664)) ([f001164](https://github.com/globus/globus-sdk-javascript/commit/f001164a259fb7003566ca274091a392dded2c0d))
+* Update Compute host for OpenAPI spec and documentation ([#659](https://github.com/globus/globus-sdk-javascript/issues/659)) ([d7f614f](https://github.com/globus/globus-sdk-javascript/commit/d7f614f7d8d26bbbf799debc9c34a767df421c80))
+
 ## [6.1.0](https://github.com/globus/globus-sdk-javascript/compare/v6.0.1...v6.1.0) (2025-09-11)
 
 
