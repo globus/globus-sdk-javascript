@@ -34,6 +34,10 @@ const SCHEMAS = [
     url: 'https://search.api.globus.org/autodoc/openapi.json',
     filename: path.join(OPEN_API_TYPES_DIR, `search.ts`),
   },
+  {
+    url: 'https://transfer.api.globus.org/v2/openapi.json',
+    filename: path.join(OPEN_API_TYPES_DIR, `transfer.ts`),
+  },
 ];
 
 function generate() {
