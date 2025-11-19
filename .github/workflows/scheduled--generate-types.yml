@@ -49,7 +49,7 @@ jobs:
           script: |
             const { repo, owner } = context.repo;
             const result = await github.rest.pulls.create({
-              title: 'chore(Compute, Timer, Groups, GCS Manager API, Search): Updates OpenAPI generated types for Globus Service APIs',
+              title: 'chore(Compute, Timer, Groups, GCS Manager API, Search, Transfer): Updates OpenAPI generated types for Globus Service APIs',
               owner,
               repo,
               head: 'bot-openapi-types',
