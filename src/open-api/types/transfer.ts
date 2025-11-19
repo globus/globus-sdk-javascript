@@ -546,9 +546,11 @@ export interface operations {
                 "page[limit]"?: number;
                 /** @description Limit results to stream access points on Globus Connect Server endpoints where the user has an `administrator` role */
                 "filter[endpoint_admin]"?: boolean;
-                /** @description [
+                /**
+                 * @description [
                  *       "Limit results to stream access points that match on an attribute; each attribute is weighted equally"
-                 *     ] */
+                 *     ]
+                 */
                 "filter[fulltext]"?: string | null;
             };
             header?: never;
