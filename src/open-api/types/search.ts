@@ -22,6 +22,7 @@ export interface paths {
                     /** @description Set to true to allow this operation to return data with visibility which does not include the current user. Only allowed for index admins and owners. */
                     bypass_visible_to?: boolean;
                     filter_principal_sets?: string[];
+                    fields?: ("visible_to" | "principal_sets" | "content")[];
                     offset?: number;
                 };
                 header?: never;
@@ -1105,6 +1106,8 @@ export interface components {
             };
             entry_id?: string;
             matched_principal_sets?: string[];
+            visible_to?: string[];
+            principal_sets?: string[];
         };
         GMetaResult: {
             /** @default 2019-08-27 */
@@ -1989,7 +1992,18 @@ export interface components {
             mode: "advanced_query_string";
             default_operator: string;
         };
-        QSettings: components["schemas"]["SimpleQSettings"] | components["schemas"]["AdvancedQSettings"];
+        TextMatchQSettings: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            mode: "text_match";
+            /** @default and */
+            default_operator: string;
+            /** @default 1 */
+            fuzziness: number;
+        };
+        QSettings: components["schemas"]["SimpleQSettings"] | components["schemas"]["AdvancedQSettings"] | components["schemas"]["TextMatchQSettings"];
         GSearchRequestBodyV1: {
             q?: string;
             /** @default 10 */
@@ -2006,6 +2020,12 @@ export interface components {
              * @enum {string}
              */
             "@version": "query#1.0.0";
+            /**
+             * @default [
+             *       "content"
+             *     ]
+             */
+            fields: ("visible_to" | "principal_sets" | "content")[];
             offset?: number;
             facets?: components["schemas"]["GFacetV1"][];
             filters?: components["schemas"]["GFilterV1"][];
@@ -2053,6 +2073,12 @@ export interface components {
             "@version": "scroll#1.0.0";
             filters?: components["schemas"]["GFilterV1"][];
             q_settings?: components["schemas"]["QSettings"];
+            /**
+             * @default [
+             *       "content"
+             *     ]
+             */
+            fields: ("visible_to" | "principal_sets" | "content")[];
         };
         GScrollRequest: components["schemas"]["GScrollRequest2017"] | components["schemas"]["GScrollRequestV1"];
         GScrollResponse: {
