@@ -36,7 +36,9 @@ export function createStorageMock() {
    * Ensure `Object.keys` calls behave similiar to real `Storage`.
    */
   mock = new Proxy(mock, {
-    ownKeys: (target) => Object.keys(target.store),
+    ownKeys(target) {
+      return Reflect.ownKeys(target.store);
+    },
     getOwnPropertyDescriptor: () => ({
       enumerable: true,
       configurable: true,
