@@ -6,8 +6,20 @@ import type { ServiceMethod, ServiceMethodDynamicSegments } from '../../../types
 export * as consents from './consents.js';
 
 /**
+ * @see https://docs.globus.org/api/auth/reference/#identity-resource
+ */
+export type Identity = {
+  id: string;
+  username: string;
+  status: 'unused' | 'used' | 'private' | 'closed';
+  email: string;
+  name: string;
+  organization: string;
+};
+
+/**
  * Fetch a single Identity by ID.
- * @see https://docs.globus.org/api/auth/reference/#get_identities
+ * @see https://docs.globus.org/api/auth/reference/#get_identity
  */
 export const get = function (identity_id, options = {}, sdkOptions?) {
   return serviceRequest(
