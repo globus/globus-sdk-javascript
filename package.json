@@ -84,7 +84,7 @@
     "generate:docs": "npx typedoc --tsconfig tsconfig.package.json",
     "generate:types": "node ./scripts/open-api/generate-types.mjs",
     "publish-to-npm": "npm run build && npm publish --access public",
-    "publish-to-npm:next": "npm run build && npm publish --access public --tag next"
+    "publish-to-npm:next": "npm run build && npm publish --access public --tag next --dry-run"
   },
   "homepage": "https://github.com/globus/globus-sdk-javascript#readme",
   "bugs": {
