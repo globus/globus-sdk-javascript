@@ -1965,10 +1965,13 @@ export interface components {
             run_monitors?: components["schemas"]["RunMonitors"];
             run_managers?: components["schemas"]["RunManagers"];
             /**
+             * @deprecated
              * @description The role the requesting user has on the Run.
              * @enum {string}
              */
-            user_role: "run_monitor" | "run_manager" | "run_owner";
+            user_role: "run_monitor" | "run_manager" | "run_owner" | "flow_run_monitor" | "flow_run_manager";
+            /** @description The list of all roles the requesting user has on the Run. */
+            user_roles?: ("run_monitor" | "run_manager" | "run_owner" | "flow_run_monitor" | "flow_run_manager")[];
             tags: components["schemas"]["Tags"];
         };
         ValidateRun: {
@@ -2254,7 +2257,9 @@ export interface components {
              * @description The role the requesting user has on the Flow.
              * @enum {string}
              */
-            user_role?: "flow_viewer" | "flow_starter" | "flow_administrator" | "flow_owner";
+            user_role?: "flow_viewer" | "flow_starter" | "flow_administrator" | "flow_owner" | "run_monitor" | "run_manager";
+            /** @description The list of all roles the requesting user has on the Flow. */
+            user_roles?: ("flow_viewer" | "flow_starter" | "flow_administrator" | "flow_owner" | "run_monitor" | "run_manager")[];
             /**
              * @description A set of Principal URN values, or the value "public"
              *     indicating the identity of users who can view the Flow
