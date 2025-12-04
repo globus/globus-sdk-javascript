@@ -85,3 +85,20 @@ The UMD distribution is provided for use in web applications and environments th
 ```
 
 Currently, the UMD distribution only provides the default entrypoint for the package.
+
+
+## Releases
+The `@globus/sdk` package follows semantic versioning and is published to [npm](https://www.npmjs.com/package/@globus/sdk).
+
+### Stable Releases
+Stable versions are published to npm with the `latest` tag and can be installed with:
+```sh
+npm install @globus/sdk
+```
+
+### Canary Builds
+Canary builds are automatically published from the `main` branch on every commit, allowing you to integrate the latest changes before they're included in a stable release. These pre-release versions are tagged with `canary` on npm and can be installed with:
+```sh
+npm install @globus/sdk@canary
+```
+Note: Canary builds are intended for testing and edge-development purposes. They may contain breaking changes or unstable features and are not commonly used in production environments.
