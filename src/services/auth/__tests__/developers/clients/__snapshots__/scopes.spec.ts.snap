@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`client scopes create 1`] = `
 {
@@ -6,15 +6,17 @@ exports[`client scopes create 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "content-length": "84",
+    "content-length": "94",
     "content-type": "application/json",
     "host": "auth.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": {
-    "description": "This is a scope",
-    "name": "My New Scope",
-    "scope_suffix": "some-suffix",
+    "scope": {
+      "description": "This is a scope",
+      "name": "My New Scope",
+      "scope_suffix": "some-suffix",
+    },
   },
   "method": "POST",
   "url": "https://auth.globus.org/v2/api/clients/mock-client-id/scopes",

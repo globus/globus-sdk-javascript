@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`policies create 1`] = `
 {
@@ -6,17 +6,19 @@ exports[`policies create 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "content-length": "154",
+    "content-length": "165",
     "content-type": "application/json",
     "host": "auth.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": {
-    "authentication_assurance_timeout": 3600,
-    "description": "testing",
-    "display_name": "My New Policy",
-    "high_assurance": true,
-    "project_id": "my-fake-project-uuid",
+    "policy": {
+      "authentication_assurance_timeout": 3600,
+      "description": "testing",
+      "display_name": "My New Policy",
+      "high_assurance": true,
+      "project_id": "my-fake-project-uuid",
+    },
   },
   "method": "POST",
   "url": "https://auth.globus.org/v2/api/policies",
@@ -72,14 +74,16 @@ exports[`policies update 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "content-length": "70",
+    "content-length": "81",
     "content-type": "application/json",
     "host": "auth.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": {
-    "description": "new description",
-    "display_name": "Updated Policy Name",
+    "policy": {
+      "description": "new description",
+      "display_name": "Updated Policy Name",
+    },
   },
   "method": "PUT",
   "url": "https://auth.globus.org/v2/api/policies/6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9",

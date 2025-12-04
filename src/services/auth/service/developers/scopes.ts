@@ -6,6 +6,7 @@ import type {
   ServiceMethod,
   ServiceMethodDynamicSegments,
 } from '../../../types.js';
+import { ResourceEnvelope } from './index.js';
 
 type DependentScope = {
   scope: string;
@@ -26,6 +27,7 @@ export type Scope = {
   advertised: boolean;
   allows_refresh_token: boolean;
 };
+export type WrappedScope = ResourceEnvelope<'scope', Scope>;
 
 /**
  * Return a single scope by id
@@ -41,7 +43,7 @@ export const get = function (scope_id, options = {}, sdkOptions?) {
     options,
     sdkOptions,
   );
-} satisfies ServiceMethodDynamicSegments<string, Record<string, any>>;
+} satisfies ServiceMethodDynamicSegments<string, {}>;
 
 /**
  * Return a list of scopes
@@ -59,7 +61,6 @@ export const getAll = function (options = {}, sdkOptions?) {
   );
 } satisfies ServiceMethod<{
   query?: { ids?: string } | { scope_strings?: string };
-  headers?: Record<string, string>;
   payload?: never;
 }>;
 
@@ -73,7 +74,11 @@ export type ScopeUpdate = Partial<Omit<ScopeCreate, 'scope_suffix'>>;
  * Update a scope by id.
  * @see https://docs.globus.org/api/auth/reference/#update_scope
  */
-export const update = function (scope_id, options, sdkOptions?): Promise<JSONFetchResponse<Scope>> {
+export const update = function (
+  scope_id,
+  options,
+  sdkOptions?,
+): Promise<JSONFetchResponse<WrappedScope>> {
   return serviceRequest(
     {
       service: ID,
@@ -81,7 +86,7 @@ export const update = function (scope_id, options, sdkOptions?): Promise<JSONFet
       path: `/v2/api/scopes/${scope_id}`,
       method: HTTP_METHODS.PUT,
     },
-    options,
+    { ...options, payload: { scope: options?.payload } },
     sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
@@ -100,7 +105,7 @@ export const remove = function (
   scope_id,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<Scope>> {
+): Promise<JSONFetchResponse<WrappedScope>> {
   return serviceRequest(
     {
       service: ID,

@@ -6,6 +6,7 @@ import type {
   ServiceMethod,
   ServiceMethodDynamicSegments,
 } from '../../../../types.js';
+import { ResourceEnvelope } from '../index.js';
 
 export * as credentials from './credentials.js';
 export * as scopes from './scopes.js';
@@ -37,7 +38,7 @@ export type Client = {
   visibility: 'public' | 'private';
   scopes: string[];
   fqdns: string[];
-  redirect_uris?: string[];
+  redirect_uris: string[];
   links: { terms_and_conditions?: string; privacy_policy?: string };
   required_idp: string | null;
   preselect_idp: string | null;
@@ -46,6 +47,7 @@ export type Client = {
   userinfo_from_effective_identity: boolean;
   prompt_for_named_grant: boolean;
 };
+type WrappedClient = ResourceEnvelope<'client', Client>;
 
 /**
  * Return a specific client by id.
@@ -62,7 +64,7 @@ export const get = function (client_id, options = {}, sdkOptions?) {
     options,
     sdkOptions,
   );
-} satisfies ServiceMethodDynamicSegments<string, Record<string, any>>;
+} satisfies ServiceMethodDynamicSegments<string, {}>;
 
 /**
  * Return a list of clients the authenticated entity is an owner of, or the client
@@ -84,21 +86,21 @@ export const getAll = function (options = {}, sdkOptions?) {
   query?: {
     fqdn?: string;
   };
-  headers?: Record<string, string>;
   payload?: never;
 }>;
 
-type OptionalClientCreateFields = Omit<
-  Client,
-  'id' | 'name' | 'public_client' | 'grant_types' | 'scopes' | 'fqdns'
->;
-type ClientCreate = Pick<Client, 'name' | 'public_client'> & Partial<OptionalClientCreateFields>;
+type OptionalClientCreateFields = Omit<Client, 'id' | 'name' | 'grant_types' | 'scopes' | 'fqdns'>;
+type ClientCreate = (
+  | Pick<Client, 'name' | 'public_client'>
+  | Pick<Client, 'name' | 'client_type'>
+) &
+  Partial<OptionalClientCreateFields>;
 
 /**
  * Create a new client
  * @see https://docs.globus.org/api/auth/reference/#create_client
  */
-export const create = function (options, sdkOptions?): Promise<JSONFetchResponse<Client>> {
+export const create = function (options, sdkOptions?): Promise<JSONFetchResponse<WrappedClient>> {
   return serviceRequest(
     {
       service: ID,
@@ -106,7 +108,7 @@ export const create = function (options, sdkOptions?): Promise<JSONFetchResponse
       path: `/v2/api/clients`,
       method: HTTP_METHODS.POST,
     },
-    options,
+    { ...options, payload: { client: options?.payload } },
     sdkOptions,
   );
 } satisfies ServiceMethod<{
@@ -133,7 +135,7 @@ export const createNativeApp = function (
       path: `/v2/api/clients`,
       method: HTTP_METHODS.POST,
     },
-    options,
+    { ...options, payload: { client: options?.payload } },
     sdkOptions,
   );
 } satisfies ServiceMethod<{
@@ -161,7 +163,7 @@ export const update = function (
   client_id,
   options,
   sdkOptions?,
-): Promise<JSONFetchResponse<Client>> {
+): Promise<JSONFetchResponse<WrappedClient>> {
   return serviceRequest(
     {
       service: ID,
@@ -169,7 +171,7 @@ export const update = function (
       path: `/v2/api/clients/${client_id}`,
       method: HTTP_METHODS.PUT,
     },
-    options,
+    { ...options, payload: { client: options?.payload } },
     sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
@@ -188,7 +190,7 @@ export const remove = function (
   client_id,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<Client>> {
+): Promise<JSONFetchResponse<WrappedClient>> {
   return serviceRequest(
     {
       service: ID,

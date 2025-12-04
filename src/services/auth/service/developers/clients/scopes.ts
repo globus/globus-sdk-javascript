@@ -2,7 +2,7 @@ import { ID, SCOPES } from '../../../config.js';
 import { HTTP_METHODS, serviceRequest } from '../../../../shared.js';
 
 import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../../../types.js';
-import type { Scope, ScopeCreate } from '../scopes.js';
+import type { ScopeCreate, WrappedScope } from '../scopes.js';
 
 /**
  * Return a single scope by id for the specified client.
@@ -18,10 +18,7 @@ export const get = function ({ client_id, scope_id }, options = {}, sdkOptions?)
     options,
     sdkOptions,
   );
-} satisfies ServiceMethodDynamicSegments<
-  { client_id: string; scope_id: string },
-  Record<string, any>
->;
+} satisfies ServiceMethodDynamicSegments<{ client_id: string; scope_id: string }, {}>;
 
 /**
  * Create a new scope for each registered FQDN and the id of the client.
@@ -31,7 +28,7 @@ export const create = function (
   client_id,
   options,
   sdkOptions?,
-): Promise<JSONFetchResponse<Scope>> {
+): Promise<JSONFetchResponse<WrappedScope>> {
   return serviceRequest(
     {
       service: ID,
@@ -39,7 +36,7 @@ export const create = function (
       path: `/v2/api/clients/${client_id}/scopes`,
       method: HTTP_METHODS.POST,
     },
-    options,
+    { ...options, payload: { scope: options?.payload } },
     sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<

@@ -2,6 +2,7 @@ import { ID, SCOPES } from '../../../config.js';
 import { HTTP_METHODS, serviceRequest } from '../../../../shared.js';
 
 import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../../../types.js';
+import { ResourceEnvelope } from '../index.js';
 
 /**
  * @see https://docs.globus.org/api/auth/reference/#client_credential_resource
@@ -10,9 +11,10 @@ export type Credential = {
   id: string;
   client: string;
   name: string;
-  secret: string;
+  secret: string | null;
   created: string;
 };
+type WrappedCredential = ResourceEnvelope<'credential', Credential>;
 
 /**
  * Retrieves a list of all credentials owned by the authenticated entity.
@@ -29,7 +31,7 @@ export const getAll = function (client_id, options = {}, sdkOptions?) {
     options,
     sdkOptions,
   );
-} satisfies ServiceMethodDynamicSegments<string, Record<string, any>>;
+} satisfies ServiceMethodDynamicSegments<string, {}>;
 
 type CredentialCreate = {
   name: string;
@@ -43,7 +45,7 @@ export const create = function (
   client_id,
   options,
   sdkOptions?,
-): Promise<JSONFetchResponse<Credential>> {
+): Promise<JSONFetchResponse<WrappedCredential>> {
   return serviceRequest(
     {
       service: ID,
@@ -51,7 +53,7 @@ export const create = function (
       path: `/v2/api/clients/${client_id}/credentials`,
       method: HTTP_METHODS.POST,
     },
-    options,
+    { ...options, payload: { credential: options?.payload } },
     sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
@@ -70,7 +72,7 @@ export const remove = function (
   { client_id, credential_id }: { client_id: string; credential_id: string },
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<Credential>> {
+): Promise<JSONFetchResponse<WrappedCredential>> {
   return serviceRequest(
     {
       service: ID,

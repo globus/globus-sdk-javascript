@@ -8,6 +8,7 @@ import type {
   ServiceMethodDynamicSegments,
 } from '../../../types.js';
 import { Identity } from '../identities/index.js';
+import { ResourceEnvelope } from './index.js';
 
 type ProjectAdminIDs =
   | {
@@ -34,6 +35,7 @@ export type Project = {
     groups: components['schemas']['GroupReadModel'][];
   } & ProjectAdminIDs;
 };
+type WrappedProject = ResourceEnvelope<'project', Project>;
 
 /**
  * Return a specific project by id if the authenticated entity is an admin of that project.
@@ -50,7 +52,7 @@ export const get = function (project_id, options = {}, sdkOptions?) {
     options,
     sdkOptions,
   );
-} satisfies ServiceMethodDynamicSegments<string, Record<string, any>>;
+} satisfies ServiceMethodDynamicSegments<string, {}>;
 
 /**
  * Return a list of projects the authenticated entity is an admin of.
@@ -68,7 +70,6 @@ export const getAll = function (options = {}, sdkOptions?) {
     sdkOptions,
   );
 } satisfies ServiceMethod<{
-  headers?: Record<string, string>;
   payload?: never;
 }>;
 
@@ -80,7 +81,7 @@ type ProjectCreate = Pick<Project, 'display_name' | 'contact_email'> & ProjectAd
  *
  * @see https://docs.globus.org/api/auth/reference/#create_project
  */
-export const create = function (options, sdkOptions?): Promise<JSONFetchResponse<Project>> {
+export const create = function (options, sdkOptions?): Promise<JSONFetchResponse<WrappedProject>> {
   return serviceRequest(
     {
       service: ID,
@@ -88,7 +89,7 @@ export const create = function (options, sdkOptions?): Promise<JSONFetchResponse
       path: `/v2/api/projects`,
       method: HTTP_METHODS.POST,
     },
-    options,
+    { ...options, payload: { project: options?.payload } },
     sdkOptions,
   );
 } satisfies ServiceMethod<{
@@ -105,7 +106,7 @@ export const update = function (
   project_id,
   options,
   sdkOptions?,
-): Promise<JSONFetchResponse<Project>> {
+): Promise<JSONFetchResponse<WrappedProject>> {
   return serviceRequest(
     {
       service: ID,
@@ -113,7 +114,7 @@ export const update = function (
       path: `/v2/api/projects/${project_id}`,
       method: HTTP_METHODS.PUT,
     },
-    options,
+    { ...options, payload: { project: options?.payload } },
     sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
@@ -133,7 +134,7 @@ export const remove = function (
   project_id,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<Project>> {
+): Promise<JSONFetchResponse<WrappedProject>> {
   return serviceRequest(
     {
       service: ID,

@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`projects create 1`] = `
 {
@@ -6,18 +6,20 @@ exports[`projects create 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "content-length": "108",
+    "content-length": "120",
     "content-type": "application/json",
     "host": "auth.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": {
-    "admin_ids": [
-      "admin-id-1",
-      "admin-id-2",
-    ],
-    "contact_email": "contact@test.com",
-    "display_name": "My New Project",
+    "project": {
+      "admin_ids": [
+        "admin-id-1",
+        "admin-id-2",
+      ],
+      "contact_email": "contact@test.com",
+      "display_name": "My New Project",
+    },
   },
   "method": "POST",
   "url": "https://auth.globus.org/v2/api/projects",
@@ -73,14 +75,16 @@ exports[`projects update 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "content-length": "76",
+    "content-length": "88",
     "content-type": "application/json",
     "host": "auth.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": {
-    "contact_email": "new_email@test.com",
-    "display_name": "Updated Project Name",
+    "project": {
+      "contact_email": "new_email@test.com",
+      "display_name": "Updated Project Name",
+    },
   },
   "method": "PUT",
   "url": "https://auth.globus.org/v2/api/projects/6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9",

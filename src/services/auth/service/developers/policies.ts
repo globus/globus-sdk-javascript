@@ -6,6 +6,7 @@ import type {
   ServiceMethod,
   ServiceMethodDynamicSegments,
 } from '../../../types.js';
+import { ResourceEnvelope } from './index.js';
 
 /**
  * @see https://docs.globus.org/api/auth/reference/#policy_resource
@@ -14,13 +15,14 @@ export type Policy = {
   id: string;
   project_id: string;
   high_assurance: boolean;
-  authentication_assurance_timeout: number;
+  authentication_assurance_timeout: number | null;
   display_name: string;
   description: string;
-  domain_constraints_include?: string[];
-  domain_constraints_exclude?: string[];
-  required_mfa?: boolean;
+  domain_constraints_include: string[] | null;
+  domain_constraints_exclude: string[] | null;
+  required_mfa: boolean;
 };
+type WrappedPolicy = ResourceEnvelope<'policy', Policy>;
 
 /**
  * Returns a specific policy if the authenticated entity is an admin of the project owning the policy.
@@ -36,7 +38,7 @@ export const get = function (policy_id, options = {}, sdkOptions?) {
     options,
     sdkOptions,
   );
-} satisfies ServiceMethodDynamicSegments<string, Record<string, any>>;
+} satisfies ServiceMethodDynamicSegments<string, {}>;
 
 /**
  * Returns a list of policies the authenticated entity is an admin of.
@@ -53,17 +55,17 @@ export const getAll = function (options = {}, sdkOptions?) {
     sdkOptions,
   );
 } satisfies ServiceMethod<{
-  headers?: Record<string, string>;
   payload?: never;
 }>;
 
-type PolicyCreate = Omit<Policy, 'id'>;
+export type PolicyCreate = Pick<Policy, 'display_name' | 'description'> &
+  Partial<Omit<Policy, 'id'>>;
 
 /**
  * Create a new policy
  * @see https://docs.globus.org/api/auth/reference/#create_policy
  */
-export const create = function (options, sdkOptions?): Promise<JSONFetchResponse<Policy>> {
+export const create = function (options, sdkOptions?): Promise<JSONFetchResponse<WrappedPolicy>> {
   return serviceRequest(
     {
       service: ID,
@@ -71,7 +73,7 @@ export const create = function (options, sdkOptions?): Promise<JSONFetchResponse
       path: `/v2/api/policies`,
       method: HTTP_METHODS.POST,
     },
-    options,
+    { ...options, payload: { policy: options?.payload } },
     sdkOptions,
   );
 } satisfies ServiceMethod<{
@@ -87,7 +89,7 @@ export const update = function (
   policy_id,
   options,
   sdkOptions?,
-): Promise<JSONFetchResponse<Policy>> {
+): Promise<JSONFetchResponse<WrappedPolicy>> {
   return serviceRequest(
     {
       service: ID,
@@ -95,7 +97,7 @@ export const update = function (
       path: `/v2/api/policies/${policy_id}`,
       method: HTTP_METHODS.PUT,
     },
-    options,
+    { ...options, payload: { policy: options?.payload } },
     sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
@@ -114,7 +116,7 @@ export const remove = function (
   policy_id,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<Policy>> {
+): Promise<JSONFetchResponse<WrappedPolicy>> {
   return serviceRequest(
     {
       service: ID,
