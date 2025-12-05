@@ -23,12 +23,17 @@ export type Policy = {
   required_mfa: boolean;
 };
 type WrappedPolicy = ResourceEnvelope<'policy', Policy>;
+type WrappedPolicies = ResourceEnvelope<'policies', Policy[]>;
 
 /**
  * Returns a specific policy if the authenticated entity is an admin of the project owning the policy.
  * @see https://docs.globus.org/api/auth/reference/#get_policies
  */
-export const get = function (policy_id, options = {}, sdkOptions?) {
+export const get = function (
+  policy_id,
+  options = {},
+  sdkOptions?,
+): Promise<JSONFetchResponse<WrappedPolicy>> {
   return serviceRequest(
     {
       service: ID,
@@ -44,7 +49,10 @@ export const get = function (policy_id, options = {}, sdkOptions?) {
  * Returns a list of policies the authenticated entity is an admin of.
  * @see https://docs.globus.org/api/auth/reference/#get_policies
  */
-export const getAll = function (options = {}, sdkOptions?) {
+export const getAll = function (
+  options = {},
+  sdkOptions?,
+): Promise<JSONFetchResponse<WrappedPolicies>> {
   return serviceRequest(
     {
       service: ID,

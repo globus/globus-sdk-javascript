@@ -8,7 +8,11 @@ import type { ScopeCreate, WrappedScope } from '../scopes.js';
  * Return a single scope by id for the specified client.
  * @see https://docs.globus.org/api/auth/reference/#get_scopes
  */
-export const get = function ({ client_id, scope_id }, options = {}, sdkOptions?) {
+export const get = function (
+  { client_id, scope_id },
+  options = {},
+  sdkOptions?,
+): Promise<JSONFetchResponse<WrappedScope>> {
   return serviceRequest(
     {
       service: ID,

@@ -36,12 +36,17 @@ export type Project = {
   } & ProjectAdminIDs;
 };
 type WrappedProject = ResourceEnvelope<'project', Project>;
+type WrappedProjects = ResourceEnvelope<'projects', Project[]>;
 
 /**
  * Return a specific project by id if the authenticated entity is an admin of that project.
  * @see https://docs.globus.org/api/auth/reference/#get_projects
  */
-export const get = function (project_id, options = {}, sdkOptions?) {
+export const get = function (
+  project_id,
+  options = {},
+  sdkOptions?,
+): Promise<JSONFetchResponse<WrappedProject>> {
   return serviceRequest(
     {
       service: ID,
@@ -58,7 +63,10 @@ export const get = function (project_id, options = {}, sdkOptions?) {
  * Return a list of projects the authenticated entity is an admin of.
  * @see https://docs.globus.org/api/auth/reference/#get_projects
  */
-export const getAll = function (options = {}, sdkOptions?) {
+export const getAll = function (
+  options = {},
+  sdkOptions?,
+): Promise<JSONFetchResponse<WrappedProjects>> {
   return serviceRequest(
     {
       service: ID,

@@ -15,12 +15,17 @@ export type Credential = {
   created: string;
 };
 type WrappedCredential = ResourceEnvelope<'credential', Credential>;
+type WrappedCredentials = ResourceEnvelope<'credentials', Credential[]>;
 
 /**
  * Retrieves a list of all credentials owned by the authenticated entity.
  * @see https://docs.globus.org/api/auth/reference/#get_client_credentials
  */
-export const getAll = function (client_id, options = {}, sdkOptions?) {
+export const getAll = function (
+  client_id,
+  options = {},
+  sdkOptions?,
+): Promise<JSONFetchResponse<WrappedCredentials>> {
   return serviceRequest(
     {
       service: ID,

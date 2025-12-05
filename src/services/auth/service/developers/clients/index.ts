@@ -48,12 +48,17 @@ export type Client = {
   prompt_for_named_grant: boolean;
 };
 type WrappedClient = ResourceEnvelope<'client', Client>;
+type WrappedClients = ResourceEnvelope<'clients', Client[]>;
 
 /**
  * Return a specific client by id.
  * @see https://docs.globus.org/api/auth/reference/#get_clients
  */
-export const get = function (client_id, options = {}, sdkOptions?) {
+export const get = function (
+  client_id,
+  options = {},
+  sdkOptions?,
+): Promise<JSONFetchResponse<WrappedClient>> {
   return serviceRequest(
     {
       service: ID,
@@ -71,7 +76,10 @@ export const get = function (client_id, options = {}, sdkOptions?) {
  * associated with the specified fqdn.
  * @see https://docs.globus.org/api/auth/reference/#get_clients
  */
-export const getAll = function (options = {}, sdkOptions?) {
+export const getAll = function (
+  options = {},
+  sdkOptions?,
+): Promise<JSONFetchResponse<WrappedClients>> {
   return serviceRequest(
     {
       service: ID,
@@ -85,6 +93,7 @@ export const getAll = function (options = {}, sdkOptions?) {
 } satisfies ServiceMethod<{
   query?: {
     fqdn?: string;
+    project_id?: string;
   };
   payload?: never;
 }>;

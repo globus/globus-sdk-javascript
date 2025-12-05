@@ -28,12 +28,17 @@ export type Scope = {
   allows_refresh_token: boolean;
 };
 export type WrappedScope = ResourceEnvelope<'scope', Scope>;
+export type WrappedScopes = ResourceEnvelope<'scopes', Scope[]>;
 
 /**
  * Return a single scope by id
  * @see https://docs.globus.org/api/auth/reference/#get_scopes
  */
-export const get = function (scope_id, options = {}, sdkOptions?) {
+export const get = function (
+  scope_id,
+  options = {},
+  sdkOptions?,
+): Promise<JSONFetchResponse<WrappedScope>> {
   return serviceRequest(
     {
       service: ID,
@@ -49,7 +54,10 @@ export const get = function (scope_id, options = {}, sdkOptions?) {
  * Return a list of scopes
  * @see https://docs.globus.org/api/auth/reference/#get_scopes
  */
-export const getAll = function (options = {}, sdkOptions?) {
+export const getAll = function (
+  options = {},
+  sdkOptions?,
+): Promise<JSONFetchResponse<WrappedScopes>> {
   return serviceRequest(
     {
       service: ID,
