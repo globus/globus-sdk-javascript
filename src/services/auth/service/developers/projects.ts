@@ -10,16 +10,6 @@ import type {
 import { Identity } from '../identities/index.js';
 import { ResourceEnvelope } from './index.js';
 
-type ProjectAdminIDs =
-  | {
-      admin_ids: string[];
-      admin_group_ids?: string[];
-    }
-  | {
-      admin_ids?: string[];
-      admin_group_ids: string[];
-    };
-
 type ProjectIdentity = Identity & { identity_provider: string; identity_type: string };
 
 /**
@@ -33,7 +23,9 @@ export type Project = {
   admins: {
     identities: ProjectIdentity[];
     groups: components['schemas']['GroupReadModel'][];
-  } & ProjectAdminIDs;
+  };
+  admin_ids: string[] | null;
+  admin_group_ids: string[] | null;
 };
 type WrappedProject = ResourceEnvelope<'project', Project>;
 type WrappedProjects = ResourceEnvelope<'projects', Project[]>;
@@ -82,7 +74,17 @@ export const getAll = function (
 }>;
 
 /** Note that project_name is an alias for display_name and is not submitted on create or update */
-type ProjectCreate = Pick<Project, 'display_name' | 'contact_email'> & ProjectAdminIDs;
+type ProjectCreate = Pick<Project, 'display_name' | 'contact_email'> &
+  (
+    | {
+        admin_ids: string[];
+        admin_group_ids?: string[];
+      }
+    | {
+        admin_ids?: string[];
+        admin_group_ids: string[];
+      }
+  );
 
 /**
  * Create a new project with a set of admins

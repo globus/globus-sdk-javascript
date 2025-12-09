@@ -137,7 +137,7 @@ type NativeAppCreate = {
 export const createNativeApp = function (
   options,
   sdkOptions?,
-): Promise<JSONFetchResponse<Record<string, any>>> {
+): Promise<JSONFetchResponse<WrappedClient>> {
   return serviceRequest(
     {
       service: ID,

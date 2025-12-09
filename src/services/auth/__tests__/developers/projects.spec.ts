@@ -1,10 +1,10 @@
-import { developerResource } from '../../index';
+import { developers } from '../../index';
 
 import { mirror } from '../../../../__mocks__/handlers';
 
 describe('projects', () => {
   test('get', async () => {
-    const result = await developerResource.projects.get('6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9');
+    const result = await developers.projects.get('6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9');
     const {
       req: { url, method, headers },
     } = await mirror(result);
@@ -17,7 +17,7 @@ describe('projects', () => {
   });
 
   test('getAll', async () => {
-    const result = await developerResource.projects.getAll();
+    const result = await developers.projects.getAll();
     const {
       req: { url, method, headers },
     } = await mirror(result);
@@ -33,7 +33,7 @@ describe('projects', () => {
     const {
       req: { url, method, headers, json },
     } = await mirror(
-      await developerResource.projects.create({
+      await developers.projects.create({
         payload: {
           display_name: 'My New Project',
           contact_email: 'contact@test.com',
@@ -53,7 +53,7 @@ describe('projects', () => {
     const {
       req: { url, method, headers, json },
     } = await mirror(
-      await developerResource.projects.update('6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9', {
+      await developers.projects.update('6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9', {
         payload: {
           display_name: 'Updated Project Name',
           contact_email: 'new_email@test.com',
@@ -71,9 +71,7 @@ describe('projects', () => {
   test('remove', async () => {
     const {
       req: { url, method, headers, json },
-    } = await mirror(
-      await developerResource.projects.remove('6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9'),
-    );
+    } = await mirror(await developers.projects.remove('6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9'));
     expect({
       url,
       method,

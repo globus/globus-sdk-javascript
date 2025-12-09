@@ -1,10 +1,10 @@
-import { developerResource } from '../../../index';
+import { developers } from '../../../index';
 
 import { mirror } from '../../../../../__mocks__/handlers';
 
 describe('clients', () => {
   test('get', async () => {
-    const result = await developerResource.clients.get('6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9');
+    const result = await developers.clients.get('6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9');
     const {
       req: { url, method, headers },
     } = await mirror(result);
@@ -17,7 +17,7 @@ describe('clients', () => {
   });
 
   test('getAll', async () => {
-    const result = await developerResource.clients.getAll({ query: { fqdn: 'www.test.com' } });
+    const result = await developers.clients.getAll({ query: { fqdn: 'www.test.com' } });
     const {
       req: { url, method, headers },
     } = await mirror(result);
@@ -33,7 +33,7 @@ describe('clients', () => {
     const {
       req: { url, method, headers, json },
     } = await mirror(
-      await developerResource.clients.create({
+      await developers.clients.create({
         payload: {
           name: 'My Test Client',
           public_client: true,
@@ -56,7 +56,7 @@ describe('clients', () => {
     const {
       req: { url, method, headers, json },
     } = await mirror(
-      await developerResource.clients.createNativeApp({
+      await developers.clients.createNativeApp({
         payload: {
           name: 'My Native App',
           template_id: 'test-native-template-id',
@@ -75,7 +75,7 @@ describe('clients', () => {
     const {
       req: { url, method, headers, json },
     } = await mirror(
-      await developerResource.clients.update('6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9', {
+      await developers.clients.update('6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9', {
         payload: {
           name: 'Updated Client Name',
           visibility: 'public',
@@ -97,9 +97,7 @@ describe('clients', () => {
   test('remove', async () => {
     const {
       req: { url, method, headers, json },
-    } = await mirror(
-      await developerResource.clients.remove('6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9'),
-    );
+    } = await mirror(await developers.clients.remove('6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9'));
     expect({
       url,
       method,

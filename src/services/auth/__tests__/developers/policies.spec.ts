@@ -1,10 +1,10 @@
-import { developerResource } from '../../index';
+import { developers } from '../../index';
 
 import { mirror } from '../../../../__mocks__/handlers';
 
 describe('policies', () => {
   test('get', async () => {
-    const result = await developerResource.policies.get('6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9');
+    const result = await developers.policies.get('6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9');
     const {
       req: { url, method, headers },
     } = await mirror(result);
@@ -17,7 +17,7 @@ describe('policies', () => {
   });
 
   test('getAll', async () => {
-    const result = await developerResource.policies.getAll();
+    const result = await developers.policies.getAll();
     const {
       req: { url, method, headers },
     } = await mirror(result);
@@ -33,7 +33,7 @@ describe('policies', () => {
     const {
       req: { url, method, headers, json },
     } = await mirror(
-      await developerResource.policies.create({
+      await developers.policies.create({
         payload: {
           project_id: 'my-fake-project-uuid',
           high_assurance: true,
@@ -55,7 +55,7 @@ describe('policies', () => {
     const {
       req: { url, method, headers, json },
     } = await mirror(
-      await developerResource.policies.update('6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9', {
+      await developers.policies.update('6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9', {
         payload: {
           display_name: 'Updated Policy Name',
           description: 'new description',
@@ -73,9 +73,7 @@ describe('policies', () => {
   test('remove', async () => {
     const {
       req: { url, method, headers, json },
-    } = await mirror(
-      await developerResource.policies.remove('6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9'),
-    );
+    } = await mirror(await developers.policies.remove('6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9'));
     expect({
       url,
       method,

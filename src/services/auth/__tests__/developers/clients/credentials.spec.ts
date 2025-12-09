@@ -1,10 +1,10 @@
-import { developerResource } from '../../../index';
+import { developers } from '../../../index';
 
 import { mirror } from '../../../../../__mocks__/handlers';
 
 describe('client credentials', () => {
   test('getAll', async () => {
-    const result = await developerResource.clients.credentials.getAll('mock-client-id');
+    const result = await developers.clients.credentials.getAll('mock-client-id');
     const {
       req: { url, method, headers },
     } = await mirror(result);
@@ -20,7 +20,7 @@ describe('client credentials', () => {
     const {
       req: { url, method, headers, json },
     } = await mirror(
-      await developerResource.clients.credentials.create('mock-client-id', {
+      await developers.clients.credentials.create('mock-client-id', {
         payload: {
           name: 'New Credential',
         },
@@ -38,7 +38,7 @@ describe('client credentials', () => {
     const {
       req: { url, method, headers, json },
     } = await mirror(
-      await developerResource.clients.credentials.remove({
+      await developers.clients.credentials.remove({
         client_id: 'mock-client-id',
         credential_id: 'mock-credential-id',
       }),
