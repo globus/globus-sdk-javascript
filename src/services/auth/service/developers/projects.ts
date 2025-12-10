@@ -1,4 +1,3 @@
-import { components } from '../../../../open-api/types/groups';
 import { ID, SCOPES } from '../../config.js';
 import { HTTP_METHODS, serviceRequest } from '../../../shared.js';
 
@@ -10,7 +9,8 @@ import type {
 import { Identity } from '../identities/index.js';
 import { ResourceEnvelope } from './index.js';
 
-type ProjectIdentity = Identity & { identity_provider: string; identity_type: string };
+type AdminIdentity = Identity & { identity_provider: string; identity_type: string };
+type AdminGroup = { id: string };
 
 /**
  * @see https://docs.globus.org/api/auth/reference/#projects_resource
@@ -21,8 +21,8 @@ export type Project = {
   display_name: string;
   contact_email: string;
   admins: {
-    identities: ProjectIdentity[];
-    groups: components['schemas']['GroupReadModel'][];
+    identities: AdminIdentity[];
+    groups: AdminGroup[];
   };
   admin_ids: string[] | null;
   admin_group_ids: string[] | null;
