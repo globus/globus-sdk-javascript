@@ -385,7 +385,7 @@ export interface components {
              * @description Number of minutes the tunnel will exist once created
              * @default 360
              */
-            lifetime_mins: number | null;
+            lifetime_mins: number;
             /**
              * Restartable
              * @description Restart tunnel on failure
@@ -445,7 +445,7 @@ export interface components {
              * @description Number of minutes the tunnel will exist once created
              * @default 360
              */
-            lifetime_mins: number | null;
+            lifetime_mins: number;
             /**
              * Restartable
              * @description Restart tunnel on failure
