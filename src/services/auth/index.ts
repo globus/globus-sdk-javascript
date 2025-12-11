@@ -40,6 +40,7 @@ export function getTokenEndpoint() {
   return build(AUTH.ID, '/v2/oauth2/token');
 }
 
+export * as developers from './service/developers/index.js';
 export * as identities from './service/identities/index.js';
 export * as oauth2 from './service/oauth2/index.js';
 

@@ -18,6 +18,7 @@ export const HOSTS: Partial<Record<Environment, string>> = {
 };
 
 export const SCOPES = {
+  MANAGE_PROJECTS: 'urn:globus:auth:scope:auth.globus.org:manage_projects',
   VIEW_IDENTITIES: 'urn:globus:auth:scope:auth.globus.org:view_identities',
 };
 
