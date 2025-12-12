@@ -87,23 +87,35 @@ export type ServiceMethodOptions = BaseServiceMethodOptions | undefined | never;
 
 export type Segment = string | Record<string, string>;
 
-export type ServiceMethod<O extends ServiceMethodOptions, R extends Response = Response> = (
-  methodOptions?: O & BaseServiceMethodOptions,
-  sdkOptions?: SDKOptions,
-) => Promise<R>;
+type HasRequiredMethodOptions<O extends ServiceMethodOptions> = Partial<O> extends O ? false : true;
+
+export type ServiceMethod<O extends ServiceMethodOptions, R extends Response = Response> =
+  HasRequiredMethodOptions<O> extends true
+    ? (methodOptions: O & BaseServiceMethodOptions, sdkOptions?: SDKOptions) => Promise<R>
+    : (methodOptions?: O & BaseServiceMethodOptions, sdkOptions?: SDKOptions) => Promise<R>;
 
 export type ServiceMethodDynamicSegments<
   S extends Segment,
   O extends ServiceMethodOptions,
   R extends Response = Response,
-> = (
-  segments: S,
-  methodOptions?: O & {
-    query?: BaseServiceMethodOptions['query'];
-    headers?: BaseServiceMethodOptions['headers'];
-  },
-  sdkOptions?: SDKOptions,
-) => Promise<R>;
+> =
+  HasRequiredMethodOptions<O> extends true
+    ? (
+        segments: S,
+        methodOptions: O & {
+          query?: BaseServiceMethodOptions['query'];
+          headers?: BaseServiceMethodOptions['headers'];
+        },
+        sdkOptions?: SDKOptions,
+      ) => Promise<R>
+    : (
+        segments: S,
+        methodOptions?: O & {
+          query?: BaseServiceMethodOptions['query'];
+          headers?: BaseServiceMethodOptions['headers'];
+        },
+        sdkOptions?: SDKOptions,
+      ) => Promise<R>;
 
 /**
  * Provides a type-safe union of a subset of object keys.
