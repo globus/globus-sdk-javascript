@@ -87,23 +87,34 @@ export type ServiceMethodOptions = BaseServiceMethodOptions | undefined | never;
 
 export type Segment = string | Record<string, string>;
 
-export type ServiceMethod<O extends ServiceMethodOptions, R extends Response = Response> = (
-  methodOptions?: O & BaseServiceMethodOptions,
-  sdkOptions?: SDKOptions,
-) => Promise<R>;
+export type ServiceMethod<
+  O extends ServiceMethodOptions,
+  R extends Response = Response,
+> = O extends { payload: BaseServiceMethodOptions['payload'] } // If a `{ payload }` is defined in the definition, `methodOptions` will *not* be optional.
+  ? (methodOptions: O & BaseServiceMethodOptions, sdkOptions?: SDKOptions) => Promise<R>
+  : (methodOptions?: O & BaseServiceMethodOptions, sdkOptions?: SDKOptions) => Promise<R>;
 
 export type ServiceMethodDynamicSegments<
   S extends Segment,
   O extends ServiceMethodOptions,
   R extends Response = Response,
-> = (
-  segments: S,
-  methodOptions?: O & {
-    query?: BaseServiceMethodOptions['query'];
-    headers?: BaseServiceMethodOptions['headers'];
-  },
-  sdkOptions?: SDKOptions,
-) => Promise<R>;
+> = O extends { payload: BaseServiceMethodOptions['payload'] } // If a `{ payload }` is defined in the definition, `methodOptions` will *not* be optional.
+  ? (
+      segments: S,
+      methodOptions: O & {
+        query?: BaseServiceMethodOptions['query'];
+        headers?: BaseServiceMethodOptions['headers'];
+      },
+      sdkOptions?: SDKOptions,
+    ) => Promise<R>
+  : (
+      segments: S,
+      methodOptions?: O & {
+        query?: BaseServiceMethodOptions['query'];
+        headers?: BaseServiceMethodOptions['headers'];
+      },
+      sdkOptions?: SDKOptions,
+    ) => Promise<R>;
 
 /**
  * Provides a type-safe union of a subset of object keys.
