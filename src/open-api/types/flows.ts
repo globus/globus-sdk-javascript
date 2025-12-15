@@ -2254,12 +2254,13 @@ export interface components {
             /** @description A list of scopes according to RunAs values as defined in the Flow. */
             globus_auth_scopes_by_RunAs?: string[];
             /**
+             * @deprecated
              * @description The role the requesting user has on the Flow.
              * @enum {string}
              */
             user_role?: "flow_viewer" | "flow_starter" | "flow_administrator" | "flow_owner" | "run_monitor" | "run_manager";
             /** @description The list of all roles the requesting user has on the Flow. */
-            user_roles?: ("flow_viewer" | "flow_starter" | "flow_administrator" | "flow_owner" | "run_monitor" | "run_manager")[];
+            user_roles?: ("flow_viewer" | "flow_starter" | "flow_administrator" | "flow_owner" | "flow_run_monitor" | "flow_run_manager")[];
             /**
              * @description A set of Principal URN values, or the value "public"
              *     indicating the identity of users who can view the Flow
