@@ -102,18 +102,12 @@ export type ServiceMethodDynamicSegments<
   HasRequiredMethodOptions<O> extends true
     ? (
         segments: S,
-        methodOptions: O & {
-          query?: BaseServiceMethodOptions['query'];
-          headers?: BaseServiceMethodOptions['headers'];
-        },
+        methodOptions: O & BaseServiceMethodOptions,
         sdkOptions?: SDKOptions,
       ) => Promise<R>
     : (
         segments: S,
-        methodOptions?: O & {
-          query?: BaseServiceMethodOptions['query'];
-          headers?: BaseServiceMethodOptions['headers'];
-        },
+        methodOptions?: O & BaseServiceMethodOptions,
         sdkOptions?: SDKOptions,
       ) => Promise<R>;
 
