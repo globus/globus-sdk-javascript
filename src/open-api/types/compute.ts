@@ -43,26 +43,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v2/stats": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Compute Stats
-         * @description Get various usage stats.
-         */
-        get: operations["get_compute_stats_v2_stats_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/v2/get_amqp_result_connection_url": {
         parameters: {
             query?: never;
@@ -734,19 +714,6 @@ export interface components {
          * @enum {string}
          */
         BuildStatus: "provided" | "submitted" | "initialized" | "queued" | "building" | "ready" | "failed";
-        /**
-         * ComputeStatsResponse
-         * @example {
-         *       "total_function_invocations": 100
-         *     }
-         */
-        ComputeStatsResponse: {
-            /**
-             * Total Function Invocations
-             * @description Total function invocations
-             */
-            total_function_invocations: number;
-        };
         /**
          * ComputeVersionResponse
          * @example {
@@ -2854,26 +2821,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": string;
-                };
-            };
-        };
-    };
-    get_compute_stats_v2_stats_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ComputeStatsResponse"];
                 };
             };
         };
