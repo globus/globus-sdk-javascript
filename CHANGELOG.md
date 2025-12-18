@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.3.0](https://github.com/globus/globus-sdk-javascript/compare/v6.2.0...v6.3.0) (2025-12-18)
+
+
+### Features
+
+* **Developers:** Add support for Globus Auth Developer Resource API (https://docs.globus.org/api/auth/reference/#clients_and_scopes_api) ([#698](https://github.com/globus/globus-sdk-javascript/issues/698)) ([9181bc2](https://github.com/globus/globus-sdk-javascript/commit/9181bc252b9060ac79d75720a2d5a28b7ac040dd))
+
+
+### Bug Fixes
+
+* **Typescript:** use BaseServiceMethodOptions in ServiceMethodDynamicSegments ([#713](https://github.com/globus/globus-sdk-javascript/issues/713)) ([0fb2315](https://github.com/globus/globus-sdk-javascript/commit/0fb231578ed33d57f046e7eb6509cfb6c9e2139d))
+
 ## [6.2.0](https://github.com/globus/globus-sdk-javascript/compare/v6.1.0...v6.2.0) (2025-11-18)
 
 
