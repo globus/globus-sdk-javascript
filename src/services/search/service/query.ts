@@ -1,7 +1,7 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
 
-import type { JSONFetchResponse, SDKOptions } from '../../types.js';
+import type { JSONFetchResponse, SDKOptions, ServiceMethodOptions } from '../../types.js';
 import type { OpenAPI } from '../index.js';
 import type { ResultFormatVersion } from '../types.js';
 
@@ -54,7 +54,7 @@ export type GSearchResult<C extends Content = Content> = {
  */
 export const get = function <C extends Content = Content>(
   index_id: string,
-  options?: {
+  options?: ServiceMethodOptions & {
     /**
      * @see https://docs.globus.org/api/search/reference/get_query/#parameters
      */
@@ -105,7 +105,7 @@ export type GSearchRequest = {
  */
 export const post = function <C extends Content = Content>(
   index_id: string,
-  options: {
+  options: ServiceMethodOptions & {
     payload: GSearchRequest;
   },
   sdkOptions?: SDKOptions,
