@@ -1905,6 +1905,155 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/registered_apis": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Registered APIs
+         * @description Retrieve a listing of Registered APIs available to a user
+         *     according to the permissions (role) they have on the Registered API.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description An opaque token used to iterate through pages of returned Registered APIs.
+                     *     If provided, all other query arguments will be ignored.
+                     *     The marker encodes all state in a given query,
+                     *     therefore it's unnecessary to provide query arguments
+                     *     once an initial marker has been received.
+                     */
+                    marker?: string;
+                    /**
+                     * @description The number of results to return in a single paged response.
+                     * @example 50
+                     */
+                    per_page?: number;
+                    /**
+                     * @description Return Registered APIs for which the user has one of the supplied roles.
+                     *     The role the user has on the Registered API dictates the operations they
+                     *     can perform. If multiple roles are specified (comma-separated), the user
+                     *     will have at least one of the specified roles on each Registered API returned.
+                     *     If not provided, only Registered APIs for which the caller has "owner"
+                     *     role will be returned.
+                     * @example [
+                     *       "owner",
+                     *       "administrator"
+                     *     ]
+                     */
+                    filter_roles?: ("owner" | "administrator" | "viewer")[];
+                    /**
+                     * @description Ordering criteria to apply to the list of Registered APIs.
+                     *
+                     *     This field is a comma-separated list of sort criteria,
+                     *     and follows this syntax:
+                     *
+                     *     ```
+                     *     CRITERION1[,CRITERION2[,...]]
+                     *     ```
+                     *
+                     *     and each individual `CRITERION` follows this syntax:
+                     *
+                     *     ```
+                     *     FIELD ORDERING
+                     *     ```
+                     *
+                     *     The first value, `FIELD`, indicates the field to sort by;
+                     *     the second value, `ORDERING`, indicates the sorting order.
+                     *
+                     *     When additional comma-separated criteria are added,
+                     *     the first criterion will be used to sort the data;
+                     *     subsequent criteria will be applied for ties.
+                     *
+                     *     Supported fields are:
+                     *
+                     *     - `id`
+                     *     - `name`
+                     *     - `created_timestamp`
+                     *     - `updated_timestamp`
+                     *
+                     *     Supported orderings are:
+                     *
+                     *     - `ASC`
+                     *     - `DESC`
+                     * @example [
+                     *       "name ASC",
+                     *       "id DESC"
+                     *     ]
+                     */
+                    orderby?: components["parameters"]["list_registered_apis_orderby"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /**
+                 * @description The requestor has successfully authenticated and queried the Flows
+                 *     service for the Registered APIs available for them.
+                 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            registered_apis: components["schemas"]["RegisteredApiSummary"][];
+                            /** @description The number of Registered APIs returned. */
+                            limit: number;
+                            /**
+                             * @description An opaque pagination token for iterating through returned
+                             *     Registered APIs. Null if there are no more pages.
+                             */
+                            marker?: string | null;
+                            /** @description Whether there are more results available. */
+                            has_next_page: boolean;
+                        };
+                    };
+                };
+                /** @description There was an issue parsing the query parameters. */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description The requestor presented a token with insufficient scopes. */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description The requested resource was not found. */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description The request's query parameters did not pass validation. */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -2381,6 +2530,32 @@ export interface components {
         FlowScopes: {
             [key: string]: string[];
         };
+        RegisteredApiSummary: {
+            /**
+             * Format: uuid
+             * @description The unique identifier for the Registered API.
+             */
+            id: string;
+            /**
+             * @description A non-unique, human-friendly name used for displaying the
+             *     Registered API to end users.
+             */
+            name: string;
+            /** @description A detailed description of the Registered API. */
+            description: string;
+            /**
+             * Format: date-time
+             * @description A timezone-aware ISO8601 format string that represents the time at
+             *     which the Registered API was created.
+             */
+            created_timestamp: string;
+            /**
+             * Format: date-time
+             * @description A timezone-aware ISO8601 format string that represents the time at
+             *     which the Registered API was last updated.
+             */
+            updated_timestamp: string;
+        };
         BatchRunUpdateOperation: {
             tags?: string[];
             run_managers?: components["schemas"]["PrincipalURN"][];
@@ -2567,6 +2742,46 @@ export interface components {
          *     ]
          */
         list_runs_orderby: string[];
+        /**
+         * @description Ordering criteria to apply to the list of Registered APIs.
+         *
+         *     This field is a comma-separated list of sort criteria,
+         *     and follows this syntax:
+         *
+         *     ```
+         *     CRITERION1[,CRITERION2[,...]]
+         *     ```
+         *
+         *     and each individual `CRITERION` follows this syntax:
+         *
+         *     ```
+         *     FIELD ORDERING
+         *     ```
+         *
+         *     The first value, `FIELD`, indicates the field to sort by;
+         *     the second value, `ORDERING`, indicates the sorting order.
+         *
+         *     When additional comma-separated criteria are added,
+         *     the first criterion will be used to sort the data;
+         *     subsequent criteria will be applied for ties.
+         *
+         *     Supported fields are:
+         *
+         *     - `id`
+         *     - `name`
+         *     - `created_timestamp`
+         *     - `updated_timestamp`
+         *
+         *     Supported orderings are:
+         *
+         *     - `ASC`
+         *     - `DESC`
+         * @example [
+         *       "name ASC",
+         *       "id DESC"
+         *     ]
+         */
+        list_registered_apis_orderby: string[];
     };
     requestBodies: never;
     headers: never;
