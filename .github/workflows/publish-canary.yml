@@ -19,6 +19,7 @@ jobs:
           node-version: lts/jod
           registry-url: 'https://registry.npmjs.org'
           scope: '@globus'
+      - run: npm install -g npm@latest
       - run: npm ci
       - name: Generate Pre-Release Version
         id: version
