@@ -105,7 +105,7 @@ exports[`tunnel start 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "content-length": "115",
+    "content-length": "103",
     "content-type": "application/json",
     "host": "transfer.api.globusonline.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
@@ -113,11 +113,9 @@ exports[`tunnel start 1`] = `
   "json": {
     "data": {
       "attributes": {
-        "payload": {
-          "label": "Started Tunnel",
-          "listener_ip_address": "1.1.1.1",
-          "listener_port": 8080,
-        },
+        "label": "Started Tunnel",
+        "listener_ip_address": "1.1.1.1",
+        "listener_port": 8080,
       },
     },
   },
@@ -132,7 +130,7 @@ exports[`tunnel stop 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "content-length": "81",
+    "content-length": "69",
     "content-type": "application/json",
     "host": "transfer.api.globusonline.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
@@ -140,9 +138,7 @@ exports[`tunnel stop 1`] = `
   "json": {
     "data": {
       "attributes": {
-        "payload": {
-          "label": "Stopped Tunnel",
-        },
+        "label": "Stopped Tunnel",
         "state": "STOPPING",
       },
     },

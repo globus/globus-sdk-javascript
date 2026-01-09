@@ -128,7 +128,7 @@ export const start = function (
       path: `/v2/tunnels/${tunnel_uuid}`,
       method: HTTP_METHODS.PATCH,
     },
-    { payload: { data: { attributes: { ...options } } } },
+    { payload: { data: { attributes: { ...options.payload } } } },
     sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
@@ -155,7 +155,7 @@ export const stop = function (
       path: `/v2/tunnels/${tunnel_uuid}`,
       method: HTTP_METHODS.PATCH,
     },
-    { payload: { data: { attributes: { ...options, state: 'STOPPING' } } } },
+    { payload: { data: { attributes: { ...options.payload, state: 'STOPPING' } } } },
     sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
