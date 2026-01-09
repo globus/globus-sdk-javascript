@@ -86,6 +86,7 @@
     "publish-to-npm": "npm run build && npm publish --access public",
     "publish-to-npm:canary": "npm run build && npm publish --access public --tag canary"
   },
+  "repository": "github:globus/globus-sdk-javascript",
   "homepage": "https://github.com/globus/globus-sdk-javascript#readme",
   "bugs": {
     "url": "https://github.com/globus/globus-sdk-javascript/issues"
