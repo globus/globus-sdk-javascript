@@ -4,7 +4,9 @@ on:
     branches:
       - main
 permissions:
+  id-token: write
   contents: read
+
 jobs:
   publish-next:
     runs-on: ubuntu-latest
@@ -39,7 +41,4 @@ jobs:
       - name: Update package.json version
         run: |
           jq '.version = "${{ steps.version.outputs.version }}"' package.json > package.json.tmp && mv package.json.tmp package.json
-
       - run: npm run publish-to-npm:canary
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
