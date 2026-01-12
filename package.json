@@ -84,7 +84,10 @@
     "generate:docs": "npx typedoc --tsconfig tsconfig.package.json",
     "generate:types": "node ./scripts/open-api/generate-types.mjs"
   },
-  "repository": "github:globus/globus-sdk-javascript",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/globus/globus-sdk-javascript.git"
+  },
   "homepage": "https://github.com/globus/globus-sdk-javascript#readme",
   "bugs": {
     "url": "https://github.com/globus/globus-sdk-javascript/issues"
