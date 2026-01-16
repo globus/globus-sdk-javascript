@@ -8,7 +8,9 @@ export interface paths {
         };
         /**
          * Stream Access Points List
-         * @description Get a list of all stream access points
+         * @description Get a list of all stream access points.
+         *
+         *     If the user provides a UUID in filter_fulltext, test if it's a SAP UUID and return that SAP directly.
          */
         get: operations["stream_access_points_list_stream_access_points_get"];
         put?: never;
@@ -337,15 +339,15 @@ export interface components {
              */
             label?: string | null;
             /**
-             * Listener Ip Address
-             * @description IP address of listening LAN contact
-             */
-            listener_ip_address?: string | null;
-            /**
              * Listener Port
              * @description Port number of listening LAN contact
              */
             listener_port?: number | null;
+            /**
+             * Listener Ip Address
+             * @description IP address of listening LAN contact
+             */
+            listener_ip_address?: string | null;
             /**
              * State
              * @description Short description of tunnel state
@@ -370,16 +372,26 @@ export interface components {
         /** TunnelRequestAttributes */
         TunnelRequestAttributes: {
             /**
+             * Label
+             * @description Updatable friendly identifier for the tunnel
+             */
+            label?: string | null;
+            /**
+             * Listener Port
+             * @description Port number of listening LAN contact
+             */
+            listener_port?: number | null;
+            /**
+             * Listener Ip Address
+             * @description IP address of listening LAN contact
+             */
+            listener_ip_address?: string | null;
+            /**
              * Submission Id
              * Format: uuid
              * @description Client-generated UUID for tunnel creation request; use same value on retry to prevent duplicate requests
              */
             submission_id: string;
-            /**
-             * Label
-             * @description Updatable friendly identifier for the tunnel
-             */
-            label?: string | null;
             /**
              * Lifetime Mins
              * @description Number of minutes the tunnel will exist once created
@@ -392,16 +404,6 @@ export interface components {
              * @default false
              */
             restartable: boolean;
-            /**
-             * Listener Ip Address
-             * @description IP address of listening LAN contact
-             */
-            listener_ip_address?: string | null;
-            /**
-             * Listener Port
-             * @description Port number of listening LAN contact
-             */
-            listener_port?: number | null;
         };
         /** TunnelRequestRelationships */
         TunnelRequestRelationships: {
@@ -430,16 +432,26 @@ export interface components {
         /** TunnelResponseAttributes */
         TunnelResponseAttributes: {
             /**
+             * Label
+             * @description Updatable friendly identifier for the tunnel
+             */
+            label?: string | null;
+            /**
+             * Listener Port
+             * @description Port number of listening LAN contact
+             */
+            listener_port?: number | null;
+            /**
+             * Listener Ip Address
+             * @description IP address of listening LAN contact
+             */
+            listener_ip_address?: string | null;
+            /**
              * Submission Id
              * Format: uuid
              * @description Client-generated UUID for tunnel creation request; use same value on retry to prevent duplicate requests
              */
             submission_id: string;
-            /**
-             * Label
-             * @description Updatable friendly identifier for the tunnel
-             */
-            label?: string | null;
             /**
              * Lifetime Mins
              * @description Number of minutes the tunnel will exist once created
@@ -452,16 +464,6 @@ export interface components {
              * @default false
              */
             restartable: boolean;
-            /**
-             * Listener Ip Address
-             * @description IP address of listening LAN contact
-             */
-            listener_ip_address?: string | null;
-            /**
-             * Listener Port
-             * @description Port number of listening LAN contact
-             */
-            listener_port?: number | null;
             /**
              * Initiator Ip Address
              * @description IP address of initiating LAN contact
