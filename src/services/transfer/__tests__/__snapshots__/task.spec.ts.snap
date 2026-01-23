@@ -7,12 +7,12 @@ exports[`task cancel 1`] = `
     "accept-encoding": "gzip,deflate",
     "connection": "close",
     "content-length": "0",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": undefined,
   "method": "POST",
-  "url": "https://transfer.api.globusonline.org/v0.10/task/example-task-id/cancel",
+  "url": "https://transfer.api.globus.org/v0.10/task/example-task-id/cancel",
 }
 `;
 
@@ -22,11 +22,11 @@ exports[`task get 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
-  "url": "https://transfer.api.globusonline.org/v0.10/task/example-task-id",
+  "url": "https://transfer.api.globus.org/v0.10/task/example-task-id",
 }
 `;
 
@@ -36,11 +36,11 @@ exports[`task getAll 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
-  "url": "https://transfer.api.globusonline.org/v0.10/task_list",
+  "url": "https://transfer.api.globus.org/v0.10/task_list",
 }
 `;
 
@@ -50,12 +50,12 @@ exports[`task getEventList 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": undefined,
   "method": "GET",
-  "url": "https://transfer.api.globusonline.org/v0.10/task/example-task-id/event_list?filters=iserror%3A1",
+  "url": "https://transfer.api.globus.org/v0.10/task/example-task-id/event_list?filters=iserror%3A1",
 }
 `;
 
@@ -65,12 +65,12 @@ exports[`task getPauseInfo 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": undefined,
   "method": "GET",
-  "url": "https://transfer.api.globusonline.org/v0.10/task/example-task-id/pause_info",
+  "url": "https://transfer.api.globus.org/v0.10/task/example-task-id/pause_info",
 }
 `;
 
@@ -80,12 +80,12 @@ exports[`task getSkippedErrors 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": undefined,
   "method": "GET",
-  "url": "https://transfer.api.globusonline.org/v0.10/task/example-task-id/skipped_errors?marker=10",
+  "url": "https://transfer.api.globus.org/v0.10/task/example-task-id/skipped_errors?marker=10",
 }
 `;
 
@@ -95,12 +95,12 @@ exports[`task getSuccessfulTransfers 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": undefined,
   "method": "GET",
-  "url": "https://transfer.api.globusonline.org/v0.10/task/example-task-id/successful_transfers?marker=1",
+  "url": "https://transfer.api.globus.org/v0.10/task/example-task-id/successful_transfers?marker=1",
 }
 `;
 
@@ -111,12 +111,12 @@ exports[`task remove 1`] = `
     "accept-encoding": "gzip,deflate",
     "connection": "close",
     "content-length": "0",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": undefined,
   "method": "POST",
-  "url": "https://transfer.api.globusonline.org/v0.10/task/example-task-id/remove",
+  "url": "https://transfer.api.globus.org/v0.10/task/example-task-id/remove",
 }
 `;
 
@@ -128,13 +128,13 @@ exports[`task update 1`] = `
     "connection": "close",
     "content-length": "24",
     "content-type": "application/json",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": {
     "label": "A new label.",
   },
   "method": "PUT",
-  "url": "https://transfer.api.globusonline.org/v0.10/task/example-task-id",
+  "url": "https://transfer.api.globus.org/v0.10/task/example-task-id",
 }
 `;

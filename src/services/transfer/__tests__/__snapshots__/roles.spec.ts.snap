@@ -8,7 +8,7 @@ exports[`roles create 1`] = `
     "connection": "close",
     "content-length": "108",
     "content-type": "application/json",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": {
@@ -18,7 +18,7 @@ exports[`roles create 1`] = `
     "role": "activity_manager",
   },
   "method": "POST",
-  "url": "https://transfer.api.globusonline.org/v0.10/endpoint/example-collection-id/role",
+  "url": "https://transfer.api.globus.org/v0.10/endpoint/example-collection-id/role",
 }
 `;
 
@@ -28,11 +28,11 @@ exports[`roles get 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
-  "url": "https://transfer.api.globusonline.org/v0.10/endpoint/example-endpoint-id/role/example-role-id",
+  "url": "https://transfer.api.globus.org/v0.10/endpoint/example-endpoint-id/role/example-role-id",
 }
 `;
 
@@ -42,11 +42,11 @@ exports[`roles getAll 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
-  "url": "https://transfer.api.globusonline.org/v0.10/endpoint/example-endpoint-id/role_list",
+  "url": "https://transfer.api.globus.org/v0.10/endpoint/example-endpoint-id/role_list",
 }
 `;
 
@@ -56,11 +56,11 @@ exports[`roles remove 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": undefined,
   "method": "DELETE",
-  "url": "https://transfer.api.globusonline.org/v0.10/endpoint/example-collection-id/role/example-role-id",
+  "url": "https://transfer.api.globus.org/v0.10/endpoint/example-collection-id/role/example-role-id",
 }
 `;

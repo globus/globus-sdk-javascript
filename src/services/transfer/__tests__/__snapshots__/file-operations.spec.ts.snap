@@ -6,11 +6,11 @@ exports[`transfer.file-operations ls 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
-  "url": "https://transfer.api.globusonline.org/v0.10/operation/endpoint/c591c905-2674-4227-9d31-1ff9485945a7/ls?path=%2F%7E%2F",
+  "url": "https://transfer.api.globus.org/v0.10/operation/endpoint/c591c905-2674-4227-9d31-1ff9485945a7/ls?path=%2F%7E%2F",
 }
 `;
 
@@ -22,7 +22,7 @@ exports[`transfer.file-operations mkdir 1`] = `
     "connection": "close",
     "content-length": "47",
     "content-type": "application/json",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": {
@@ -30,7 +30,7 @@ exports[`transfer.file-operations mkdir 1`] = `
     "path": "/~/new-directory",
   },
   "method": "POST",
-  "url": "https://transfer.api.globusonline.org/v0.10/operation/endpoint/c591c905-2674-4227-9d31-1ff9485945a7/mkdir",
+  "url": "https://transfer.api.globus.org/v0.10/operation/endpoint/c591c905-2674-4227-9d31-1ff9485945a7/mkdir",
 }
 `;
 
@@ -42,11 +42,11 @@ exports[`transfer.file-operations rename 1`] = `
     "connection": "close",
     "content-length": "75",
     "content-type": "application/json",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "POST",
-  "url": "https://transfer.api.globusonline.org/v0.10/operation/endpoint/c591c905-2674-4227-9d31-1ff9485945a7/rename",
+  "url": "https://transfer.api.globus.org/v0.10/operation/endpoint/c591c905-2674-4227-9d31-1ff9485945a7/rename",
 }
 `;
 
@@ -56,11 +56,11 @@ exports[`transfer.file-operations stat 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
-  "url": "https://transfer.api.globusonline.org/v0.10/operation/endpoint/c591c905-2674-4227-9d31-1ff9485945a7/stat?path=%2F%7E%2Fmy-file",
+  "url": "https://transfer.api.globus.org/v0.10/operation/endpoint/c591c905-2674-4227-9d31-1ff9485945a7/stat?path=%2F%7E%2Fmy-file",
 }
 `;
 
@@ -72,10 +72,10 @@ exports[`transfer.file-operations symlink 1`] = `
     "connection": "close",
     "content-length": "96",
     "content-type": "application/json",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "POST",
-  "url": "https://transfer.api.globusonline.org/v0.10/operation/endpoint/c591c905-2674-4227-9d31-1ff9485945a7/symlink",
+  "url": "https://transfer.api.globus.org/v0.10/operation/endpoint/c591c905-2674-4227-9d31-1ff9485945a7/symlink",
 }
 `;

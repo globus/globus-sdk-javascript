@@ -8,7 +8,7 @@ exports[`tunnel create 1`] = `
     "connection": "close",
     "content-length": "320",
     "content-type": "application/json",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": {
@@ -37,7 +37,7 @@ exports[`tunnel create 1`] = `
     },
   },
   "method": "POST",
-  "url": "https://transfer.api.globusonline.org/v2/tunnels",
+  "url": "https://transfer.api.globus.org/v2/tunnels",
 }
 `;
 
@@ -47,11 +47,11 @@ exports[`tunnel get 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
-  "url": "https://transfer.api.globusonline.org/v2/tunnels/example-tunnel-id",
+  "url": "https://transfer.api.globus.org/v2/tunnels/example-tunnel-id",
 }
 `;
 
@@ -61,11 +61,11 @@ exports[`tunnel getAll 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
-  "url": "https://transfer.api.globusonline.org/v2/tunnels",
+  "url": "https://transfer.api.globus.org/v2/tunnels",
 }
 `;
 
@@ -75,12 +75,12 @@ exports[`tunnel getEventList 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": undefined,
   "method": "GET",
-  "url": "https://transfer.api.globusonline.org/v2/tunnels/example-tunnel-id/events",
+  "url": "https://transfer.api.globus.org/v2/tunnels/example-tunnel-id/events",
 }
 `;
 
@@ -90,12 +90,12 @@ exports[`tunnel remove 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": undefined,
   "method": "DELETE",
-  "url": "https://transfer.api.globusonline.org/v2/tunnels/example-tunnel-id",
+  "url": "https://transfer.api.globus.org/v2/tunnels/example-tunnel-id",
 }
 `;
 
@@ -107,7 +107,7 @@ exports[`tunnel start 1`] = `
     "connection": "close",
     "content-length": "103",
     "content-type": "application/json",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": {
@@ -120,7 +120,7 @@ exports[`tunnel start 1`] = `
     },
   },
   "method": "PATCH",
-  "url": "https://transfer.api.globusonline.org/v2/tunnels/example-tunnel-id",
+  "url": "https://transfer.api.globus.org/v2/tunnels/example-tunnel-id",
 }
 `;
 
@@ -132,7 +132,7 @@ exports[`tunnel stop 1`] = `
     "connection": "close",
     "content-length": "69",
     "content-type": "application/json",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": {
@@ -144,6 +144,6 @@ exports[`tunnel stop 1`] = `
     },
   },
   "method": "PATCH",
-  "url": "https://transfer.api.globusonline.org/v2/tunnels/example-tunnel-id",
+  "url": "https://transfer.api.globus.org/v2/tunnels/example-tunnel-id",
 }
 `;

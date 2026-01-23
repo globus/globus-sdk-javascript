@@ -8,7 +8,7 @@ exports[`collectionBookmarks create 1`] = `
     "connection": "close",
     "content-length": "88",
     "content-type": "application/json",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": {
@@ -17,7 +17,7 @@ exports[`collectionBookmarks create 1`] = `
     "path": "/my/bookmark/path",
   },
   "method": "POST",
-  "url": "https://transfer.api.globusonline.org/v0.10/bookmark",
+  "url": "https://transfer.api.globus.org/v0.10/bookmark",
 }
 `;
 
@@ -27,11 +27,11 @@ exports[`collectionBookmarks get 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
-  "url": "https://transfer.api.globusonline.org/v0.10/bookmark/my-bookmark-id",
+  "url": "https://transfer.api.globus.org/v0.10/bookmark/my-bookmark-id",
 }
 `;
 
@@ -41,11 +41,11 @@ exports[`collectionBookmarks getAll 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
-  "url": "https://transfer.api.globusonline.org/v0.10/bookmark_list",
+  "url": "https://transfer.api.globus.org/v0.10/bookmark_list",
 }
 `;
 
@@ -55,12 +55,12 @@ exports[`collectionBookmarks remove 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": undefined,
   "method": "DELETE",
-  "url": "https://transfer.api.globusonline.org/v0.10/bookmark/my-bookmark-id",
+  "url": "https://transfer.api.globus.org/v0.10/bookmark/my-bookmark-id",
 }
 `;
 
@@ -72,13 +72,13 @@ exports[`collectionBookmarks update 1`] = `
     "connection": "close",
     "content-length": "19",
     "content-type": "application/json",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": {
     "name": "New Name",
   },
   "method": "PUT",
-  "url": "https://transfer.api.globusonline.org/v0.10/bookmark/my-bookmark-id",
+  "url": "https://transfer.api.globus.org/v0.10/bookmark/my-bookmark-id",
 }
 `;
