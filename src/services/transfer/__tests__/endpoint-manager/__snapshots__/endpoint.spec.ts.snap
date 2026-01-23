@@ -6,11 +6,11 @@ exports[`endpointManager.endpoint get 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
-  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/endpoint/c591c905-2674-4227-9d31-1ff9485945a7",
+  "url": "https://transfer.api.globus.org/v0.10/endpoint_manager/endpoint/c591c905-2674-4227-9d31-1ff9485945a7",
 }
 `;
 
@@ -20,11 +20,11 @@ exports[`endpointManager.endpoint getAccessList 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
-  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/endpoint/c591c905-2674-4227-9d31-1ff9485945a7/access_list",
+  "url": "https://transfer.api.globus.org/v0.10/endpoint_manager/endpoint/c591c905-2674-4227-9d31-1ff9485945a7/access_list",
 }
 `;
 
@@ -34,11 +34,11 @@ exports[`endpointManager.endpoint getHostedEndpoints 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
-  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/endpoint/c591c905-2674-4227-9d31-1ff9485945a7/hosted_endpoint_list",
+  "url": "https://transfer.api.globus.org/v0.10/endpoint_manager/endpoint/c591c905-2674-4227-9d31-1ff9485945a7/hosted_endpoint_list",
 }
 `;
 
@@ -48,10 +48,10 @@ exports[`endpointManager.endpoint getMonitoredEndpoints 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
-  "url": "https://transfer.api.globusonline.org/v0.10/endpoint_manager/monitored_endpoints",
+  "url": "https://transfer.api.globus.org/v0.10/endpoint_manager/monitored_endpoints",
 }
 `;

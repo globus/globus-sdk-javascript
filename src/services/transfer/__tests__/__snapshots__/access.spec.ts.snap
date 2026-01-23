@@ -8,7 +8,7 @@ exports[`access create 1`] = `
     "connection": "close",
     "content-length": "59",
     "content-type": "application/json",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": {
@@ -17,7 +17,7 @@ exports[`access create 1`] = `
     "principal_type": "anonymous",
   },
   "method": "POST",
-  "url": "https://transfer.api.globusonline.org/v0.10/endpoint/example-endpoint-id/access",
+  "url": "https://transfer.api.globus.org/v0.10/endpoint/example-endpoint-id/access",
 }
 `;
 
@@ -27,11 +27,11 @@ exports[`access get 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
-  "url": "https://transfer.api.globusonline.org/v0.10/endpoint/example-endpoint-id/access/example-access-rule-id",
+  "url": "https://transfer.api.globus.org/v0.10/endpoint/example-endpoint-id/access/example-access-rule-id",
 }
 `;
 
@@ -41,11 +41,11 @@ exports[`access getAll 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
-  "url": "https://transfer.api.globusonline.org/v0.10/endpoint/example-endpoint-id/access_list",
+  "url": "https://transfer.api.globus.org/v0.10/endpoint/example-endpoint-id/access_list",
 }
 `;
 
@@ -55,12 +55,12 @@ exports[`access remove 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": undefined,
   "method": "DELETE",
-  "url": "https://transfer.api.globusonline.org/v0.10/endpoint/example-endpoint-id/access/example-access-rule-id",
+  "url": "https://transfer.api.globus.org/v0.10/endpoint/example-endpoint-id/access/example-access-rule-id",
 }
 `;
 
@@ -72,13 +72,13 @@ exports[`access update 1`] = `
     "connection": "close",
     "content-length": "20",
     "content-type": "application/json",
-    "host": "transfer.api.globusonline.org",
+    "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "json": {
     "permissions": "rw",
   },
   "method": "PUT",
-  "url": "https://transfer.api.globusonline.org/v0.10/endpoint/example-endpoint-id/access/example-access-rule-id",
+  "url": "https://transfer.api.globus.org/v0.10/endpoint/example-endpoint-id/access/example-access-rule-id",
 }
 `;

@@ -490,7 +490,7 @@ describe.only('serviceRequest', () => {
     it('does not retry when an `AuthorizationRequirementsError` is encountered', async () => {
       const spy = jest.spyOn(manager, 'refreshToken');
       server.use(
-        http.get('https://transfer.api.globusonline.org/fake-resource', () =>
+        http.get('https://transfer.api.globus.org/fake-resource', () =>
           HttpResponse.json(
             {
               authorization_parameters: {},
@@ -515,7 +515,7 @@ describe.only('serviceRequest', () => {
     it('does not retry a request that is configured to prevent retries', async () => {
       const spy = jest.spyOn(manager, 'refreshToken');
       server.use(
-        http.get('https://transfer.api.globusonline.org/fake-resource', () =>
+        http.get('https://transfer.api.globus.org/fake-resource', () =>
           HttpResponse.json({}, { status: 401 }),
         ),
       );
@@ -551,7 +551,7 @@ describe.only('serviceRequest', () => {
     it('does not retry a request that is not "ok", but not a 401', async () => {
       const spy = jest.spyOn(manager, 'refreshToken');
       server.use(
-        http.get('https://transfer.api.globusonline.org/fake-resource', () =>
+        http.get('https://transfer.api.globus.org/fake-resource', () =>
           HttpResponse.json({}, { status: 500 }),
         ),
       );
@@ -574,7 +574,7 @@ describe.only('serviceRequest', () => {
          * The first request will return a 401, which should trigger a token refresh.
          */
         http.get(
-          'https://transfer.api.globusonline.org/fake-resource',
+          'https://transfer.api.globus.org/fake-resource',
           () =>
             HttpResponse.json(
               {
@@ -626,7 +626,7 @@ describe.only('serviceRequest', () => {
     it('returns the initial response when refresh fails', async () => {
       server.use(
         http.get(
-          'https://transfer.api.globusonline.org/fake-resource',
+          'https://transfer.api.globus.org/fake-resource',
           () =>
             HttpResponse.json(
               {
@@ -649,7 +649,7 @@ describe.only('serviceRequest', () => {
             },
           ),
         ),
-        http.get('https://transfer.api.globusonline.org/fake-resource', () =>
+        http.get('https://transfer.api.globus.org/fake-resource', () =>
           HttpResponse.json(null, {
             status: 500,
           }),

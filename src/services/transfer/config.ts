@@ -8,7 +8,7 @@ export const SCOPES = {
 
 export const HOSTS: Partial<Record<Environment, string>> = {
   sandbox: 'transfer.api.sandbox.globuscs.info',
-  production: 'transfer.api.globusonline.org',
+  production: 'transfer.api.globus.org',
   staging: 'transfer.api.staging.globuscs.info',
   integration: 'transfer.api.integration.globuscs.info',
   test: 'transfer.api.test.globuscs.info',
