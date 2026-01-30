@@ -848,6 +848,69 @@ export interface paths {
         patch: operations["patchStorageGateway"];
         trace?: never;
     };
+    "/api/stream_gateways": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List stream gateways
+         * @description List the stream gateways on an endpoint.
+         *
+         *     This operation requires either the endpoint to have the `public` property
+         *     set to true, the caller to have a role that allows viewing this endpoint.
+         */
+        get: operations["listStreamGateways"];
+        put?: never;
+        /**
+         * Create a stream gateway
+         * @description Create a stream gateway on an endpoint. On success, this operation returns
+         *     a copy of the created gateway with the system generated id added.
+         */
+        post: operations["postStreamGateway"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/stream_gateways/{stream_gateway_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a stream gateway
+         * @description Get a stream gateway's definition.
+         *
+         *     This operation requires either the endpoint to have the `public` property
+         *     set to true, or the caller to have a role that allows viewing this
+         *     endpoint.
+         */
+        get: operations["getStreamGateway"];
+        put?: never;
+        post?: never;
+        /**
+         * Delete a stream gateway
+         * @description Delete a stream gateway.
+         */
+        delete: operations["deleteStreamGateway"];
+        options?: never;
+        head?: never;
+        /**
+         * Update a stream gateway
+         * @description Update a stream gateway, changing only the properties included in the input
+         *     document. It returns a document containing the stream gateway after the
+         *     changes have been applied. Items explicitly set to null in the input are
+         *     removed from the stream gateway.
+         */
+        patch: operations["patchStreamGateway"];
+        trace?: never;
+    };
     "/api/user_credentials": {
         parameters: {
             query?: never;
@@ -930,6 +993,53 @@ export interface paths {
          *     in its identity set.
          */
         patch: operations["patchUserCredential"];
+        trace?: never;
+    };
+    "/api/lan_secrets": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a lan secret
+         * @description Create a lan secret on a stream gateway.
+         *
+         *     The caller is authorized based on the stream gateway identity
+         *     policies, so users with no assigned roles on the endpoint may
+         *     be permitted to access this operation.
+         */
+        post: operations["postLanSecret"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/lan_secrets/{lan_secret_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete a lan secret
+         * @description Delete a lan secret.
+         *
+         *     The caller must have the identity_id of the lan secret in its identity
+         *     set.
+         */
+        delete: operations["deleteLanSecret"];
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/v1/user_credentials": {
@@ -6445,7 +6555,7 @@ export interface components {
          * Connector_1_1_0
          * @description Connector information document
          *
-         *         Version 1.1.0 adds information about HA and BAA subscriptions.
+         *             Version 1.1.0 adds information about HA and BAA subscriptions.
          */
         Connector_1_1_0: {
             /**
@@ -7121,6 +7231,82 @@ export interface components {
             mappings?: components["schemas"]["MappingExpression"][];
         };
         /**
+         * LanSecretCreate_1_0_0
+         * @description Request to create a LAN secret
+         */
+        LanSecretCreate_1_0_0: {
+            /**
+             * @description Type of this document
+             * @default lan_secret_create#1.0.0
+             * @enum {string}
+             */
+            DATA_TYPE: "lan_secret_create#1.0.0";
+            /** @description Expiration time for this lan secret */
+            expires_in_mins?: number;
+            /**
+             * Format: uuid
+             * @description Optional requested identity_id to be used with the lan_secret. If
+             *     present, the caller must have the identity in the active identity
+             *     set and have a valid mapping for that identity in the stream
+             *     gateway policy. If not present the first identity in the caller's
+             *     identity set which meets the stream gateway's access policy will be
+             *     used.
+             */
+            identity_id?: string;
+            /**
+             * Format: uuid
+             * @description ID of the stream access point that this secret can be used with.
+             */
+            stream_access_point_id: string;
+            /**
+             * Format: uuid
+             * @description ID of the tunnel that this secret can be used with.
+             */
+            tunnel_id: string;
+            /**
+             * @description Optional requested username to be used with the lan_secret. If
+             *     present, the caller's identity (perhaps constrained by the
+             *     identity_id property of the create document) must be mappable
+             *     to this username by the stream gateway's identity policy.
+             */
+            username?: string;
+        };
+        /**
+         * LanSecret_1_0_0
+         * @description LAN secret information used by a globus identity to access a tunnel.
+         */
+        LanSecret_1_0_0: {
+            /**
+             * @description Type of this document
+             * @default lan_secret#1.0.0
+             * @enum {string}
+             */
+            DATA_TYPE: "lan_secret#1.0.0";
+            /**
+             * Format: uuid
+             * @description ID of the secret. Usable for deleting this secreet before its timeout
+             */
+            id?: string;
+            /** @description Globus identity id this secret is associated_with */
+            identity_id?: string;
+            /** @description LAN secret used to make connections to a Globus streaming tunnel. */
+            secret?: string;
+            /**
+             * Format: uuid
+             * @description ID of the stream access point that this secret can be used with.
+             */
+            stream_access_point_id?: string;
+            /** @description Expiration time for this lan secret (as a posix timestamp) */
+            expires?: number;
+            /**
+             * Format: uuid
+             * @description ID of the tunnel that this secret can be used with.
+             */
+            tunnel_id?: string;
+            /** @description Username this secret is associated_with */
+            username?: string;
+        };
+        /**
          * LimitExceeded_1_0_0
          * @description Error details when a user would be authorized, but the endpoint has reached
          *     a hard resource limit on the type of object being created.
@@ -7297,6 +7483,63 @@ export interface components {
              */
             status: "active" | "inactive";
         };
+        /** NamedNetworkAddress */
+        NamedNetworkAddress: {
+            /** @description IP address */
+            address: string;
+            /** @description Optional network name that this network is associated with */
+            network_name?: string | null;
+        };
+        /**
+         * Node_1_3_0
+         * @description Services for Globus Connect Server endpoints may be deployed on multiple
+         *     different physical resources, referred to as data transfer nodes. Each node
+         *     may have one or more IP addresses, TCP incoming and outgoing port ranges,
+         *     and a *status* value indicating whether it is configured to actively
+         *     respond to requests or is in maintenance mode.
+         *
+         *     Version 1.1.0 adds support for setting the data interface on a node.
+         *
+         *     Version 1.2.0 adds support for setting an IPv6 data interface on a node.
+         *
+         *     Version 1.3.0 adds support for setting LAN addresses with associated network names and
+         *     a port range for internal TCP data connections used with stream gateways
+         */
+        Node_1_3_0: {
+            /**
+             * @description Type of this document
+             * @default node#1.3.0
+             * @enum {string}
+             */
+            DATA_TYPE: "node#1.3.0";
+            /** @description IP address on which this node listens for data transfers */
+            data_interface?: string | null;
+            /** @description IPv6 address on which this node listens for data transfers */
+            data_interface6?: string | null;
+            /**
+             * Format: uuid
+             * @description Unique id string this node. This is system generated and may not be
+             *     included in create requests.
+             */
+            id?: string;
+            /** @description Allowed port range for incoming TCP data connections */
+            incoming_port_range?: number[];
+            /** @description Allowed port range for internal TCP data connections to stream gateways */
+            internal_stream_port_range?: number[];
+            /** @description List of IP addresses for this node */
+            ip_addresses: string[];
+            lan_addresses?: components["schemas"]["NamedNetworkAddress"][];
+            /** @description Port range used as the source for outgoing TCP data connections */
+            outgoing_port_range?: number[];
+            /**
+             * @description Current status of the Node. If a Node is marked *inactive*, it will
+             *     be removed from the DNS entries for this endpoint and will return an
+             *     error on any attempt to use the Manager API or attempt a Transfer
+             *     using this node.
+             * @enum {string}
+             */
+            status: "active" | "inactive";
+        };
         /**
          * NotFromAllowedDomain_1_0_0
          * @description Error details when a user has authenticated but does not
@@ -7405,8 +7648,8 @@ export interface components {
          *     operation may add properties to this base document type with additional
          *     operation-specific data values.
          *
-         *     Version 1.1.0 adds optional authorization_parameters to help process
-         *     authorization or authentication errors
+         *         Version 1.1.0 adds optional authorization_parameters to help process
+         *         authorization or authentication errors
          */
         Result_1_1_0: {
             /**
@@ -7997,6 +8240,93 @@ export interface components {
              * @description Storage gateway ID
              */
             storage_gateway_id?: string;
+        };
+        /**
+         * StreamGateway_1_0_0
+         * @description A stream gateway provides the access policies for the endpoint's
+         *     local and wide-area networks to create stream connections between
+         *     applications running on this endpoint's local network and another
+         *     endpoint's local network.
+         */
+        StreamGateway_1_0_0: {
+            /**
+             * @description Type of this document
+             * @default stream_gateway#1.0.0
+             * @enum {string}
+             */
+            DATA_TYPE: "stream_gateway#1.0.0";
+            /**
+             * @description List of allowed domains. Users creating lan_secrets or accessing
+             *     tunnels on this gateway must have an identity in one of these
+             *     domains.
+             */
+            allowed_domains?: string[];
+            /**
+             * @description Timeout (in minutes) during which a user is required to have
+             *     authenticated to create a tunnel on this gateway.
+             */
+            authentication_timeout_mins?: number | null;
+            /** @description Email address of the support contact for the stream access point */
+            contact_email?: string;
+            /**
+             * @description Other non-email contact information for the stream access point,
+             *     e.g. phone and mailing address
+             */
+            contact_info?: string;
+            /** @description Flag indicating that this gateway has been deleted */
+            deleted?: boolean;
+            /** @description Department which operates the stream access point */
+            department?: string;
+            /** @description Description of the stream access point */
+            description?: string;
+            /** @description Name of the stream access point */
+            display_name?: string;
+            /** @description Read-only DNS domain. */
+            domain_name?: string;
+            /**
+             * Format: uuid
+             * @description Unique id for this stream gateway
+             */
+            id?: string;
+            /**
+             * @description List of identity mappings to apply to user identities to determine
+             *     what connector-specific accounts are available for access.
+             */
+            identity_mappings?: components["schemas"]["IdentityMapping"][] | null;
+            /**
+             * @description Link to a web page with more information about the stream
+             *     access point
+             */
+            info_link?: string;
+            /**
+             * @description List of search keywords for the endpoint. Optional. Unicode string,
+             *     max 1024 characters total across all strings.
+             */
+            keywords?: string[];
+            /**
+             * @description If set, the name of the lan to use when connecting to this
+             *     streaming gateway. This corresponds to the *network_name*
+             *     property associated with lan addresses in nodes associated with
+             *     this endpoint.
+             */
+            lan_name?: string | null;
+            /**
+             * @description If true, users of this stream gateway must create and use a
+             *     lan secret to connect to a stream. Otherwise, that step
+             *     is optional.
+             */
+            lan_secret_required?: boolean;
+            /**
+             * @description Organization that operates the stream access point.
+             *     Optional unicode string, max 1000 characters, no new lines.
+             */
+            organization?: string;
+            /** @description URL for the TLSFTP server used for tunnel control. */
+            readonly tlsftp_url?: string;
+            /** @description List of mapped usernames allowed to access this gateway. */
+            users_allow?: string[] | null;
+            /** @description List of mapped usernames denied access to this gateway. */
+            users_deny?: string[] | null;
         };
         /**
          * SubscriptionRequired_1_0_0
@@ -9577,8 +9907,11 @@ export interface components {
          *     Version 1.1.0 adds support for setting the data interface on a node.
          *
          *     Version 1.2.0 adds support for setting an IPv6 data interface on a node.
+         *
+         *     Version 1.3.0 adds support for setting LAN addresses with associated network names and
+         *     a port range for internal TCP data connections used with stream gateways
          */
-        Node: components["schemas"]["Node_1_0_0"] | components["schemas"]["Node_1_1_0"] | components["schemas"]["Node_1_2_0"];
+        Node: components["schemas"]["Node_1_0_0"] | components["schemas"]["Node_1_1_0"] | components["schemas"]["Node_1_2_0"] | components["schemas"]["Node_1_3_0"];
         /**
          * Batch
          * @description The Batch data type is used to specify multiple objects to operate
@@ -9689,7 +10022,7 @@ export interface components {
          * Connector
          * @description Connector information document
          *
-         *         Version 1.1.0 adds information about HA and BAA subscriptions.
+         *             Version 1.1.0 adds information about HA and BAA subscriptions.
          */
         Connector: components["schemas"]["Connector_1_0_0"] | components["schemas"]["Connector_1_1_0"];
         /**
@@ -9756,6 +10089,16 @@ export interface components {
          */
         InvalidUser: components["schemas"]["InvalidUser_1_0_0"];
         /**
+         * LanSecretCreate
+         * @description Request to create a LAN secret
+         */
+        LanSecretCreate: components["schemas"]["LanSecretCreate_1_0_0"];
+        /**
+         * LanSecret
+         * @description LAN secret information used by a globus identity to access a tunnel.
+         */
+        LanSecret: components["schemas"]["LanSecret_1_0_0"];
+        /**
          * LimitExceeded
          * @description Error details when a user would be authorized, but the endpoint has reached
          *     a hard resource limit on the type of object being created.
@@ -9802,8 +10145,8 @@ export interface components {
          *     operation may add properties to this base document type with additional
          *     operation-specific data values.
          *
-         *     Version 1.1.0 adds optional authorization_parameters to help process
-         *     authorization or authentication errors
+         *         Version 1.1.0 adds optional authorization_parameters to help process
+         *         authorization or authentication errors
          */
         Result: components["schemas"]["Result_1_0_0"] | components["schemas"]["Result_1_1_0"];
         /**
@@ -9848,6 +10191,14 @@ export interface components {
          *     collection.
          */
         StorageGatewayNotFound: components["schemas"]["StorageGatewayNotFound_1_0_0"];
+        /**
+         * StreamGateway
+         * @description A stream gateway provides the access policies for the endpoint's
+         *     local and wide-area networks to create stream connections between
+         *     applications running on this endpoint's local network and another
+         *     endpoint's local network.
+         */
+        StreamGateway: components["schemas"]["StreamGateway_1_0_0"];
         /**
          * SubscriptionRequired
          * @description Error details when the caller has attempted to access a feature
@@ -12264,6 +12615,200 @@ export interface operations {
             422: components["responses"]["ValidationError"];
         };
     };
+    listStreamGateways: {
+        parameters: {
+            query?: {
+                /** @description Maximum page size for a paginated response */
+                page_size?: components["parameters"]["page_size_query_parameter"];
+                /** @description Pagination marker for a paginated response */
+                marker?: components["parameters"]["marker_query_parameter"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description List stream gateways response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code?: "success";
+                        data?: components["schemas"]["StreamGateway"][];
+                    } & components["schemas"]["Result"];
+                };
+            };
+        };
+    };
+    postStreamGateway: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description New stream gateway definition */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["StreamGateway"];
+            };
+        };
+        responses: {
+            /** @description Post stream gateways response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code?: "success";
+                        data?: components["schemas"]["StreamGateway"][];
+                    } & components["schemas"]["Result"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code?: "permission_denied";
+                        /** @enum {unknown} */
+                        http_response_code?: 403;
+                        detail?: string | components["schemas"]["MissingRequiredRole"];
+                    } & components["schemas"]["Result"];
+                };
+            };
+            415: components["responses"]["UnsupportedMediaError"];
+            422: components["responses"]["ValidationError"];
+        };
+    };
+    getStreamGateway: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of the stream gateway */
+                stream_gateway_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Get stream gateways response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code?: "success";
+                        data?: components["schemas"]["StreamGateway"][];
+                    } & components["schemas"]["Result"];
+                };
+            };
+            404: components["responses"]["NotFound"];
+        };
+    };
+    deleteStreamGateway: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of the stream gateway */
+                stream_gateway_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Delete stream gateway response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Result"];
+                };
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code?: "permission_denied";
+                        /** @enum {unknown} */
+                        http_response_code?: 403;
+                        detail?: string | components["schemas"]["MissingRequiredRole"];
+                    } & components["schemas"]["Result"];
+                };
+            };
+            404: components["responses"]["NotFound"];
+        };
+    };
+    patchStreamGateway: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of the stream gateway */
+                stream_gateway_id: string;
+            };
+            cookie?: never;
+        };
+        /** @description Updates to the stream gateway definition */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["StreamGateway"];
+            };
+        };
+        responses: {
+            /** @description Update stream gateway response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code?: "success";
+                        data?: components["schemas"]["StreamGateway"][];
+                    } & components["schemas"]["Result"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code?: "permission_denied";
+                        /** @enum {unknown} */
+                        http_response_code?: 403;
+                        detail?: string | components["schemas"]["MissingRequiredRole"];
+                    } & components["schemas"]["Result"];
+                };
+            };
+            404: components["responses"]["NotFound"];
+            415: components["responses"]["UnsupportedMediaError"];
+            422: components["responses"]["ValidationError"];
+        };
+    };
     listUserCredentials: {
         parameters: {
             query?: {
@@ -12516,6 +13061,77 @@ export interface operations {
             404: components["responses"]["NotFound"];
             415: components["responses"]["UnsupportedMediaError"];
             422: components["responses"]["ValidationError"];
+        };
+    };
+    postLanSecret: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Lan secret request */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LanSecretCreate"];
+            };
+        };
+        responses: {
+            /** @description Create lan secret response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code?: "success";
+                        data?: components["schemas"]["LanSecret"][];
+                    } & components["schemas"]["Result"];
+                };
+            };
+            400: components["responses"]["BadRequestError"];
+            415: components["responses"]["UnsupportedMediaError"];
+            422: components["responses"]["ValidationError"];
+        };
+    };
+    deleteLanSecret: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Id of the lan secret */
+                lan_secret_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Delete lan secret response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Result"];
+                };
+            };
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code?: "permission_denied";
+                        /** @enum {unknown} */
+                        http_response_code?: 403;
+                        detail?: string | components["schemas"]["NotResourceOwner"];
+                    } & components["schemas"]["Result"];
+                };
+            };
+            404: components["responses"]["NotFound"];
         };
     };
     postUserCredentials: {
