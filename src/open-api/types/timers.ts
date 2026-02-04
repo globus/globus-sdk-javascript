@@ -450,11 +450,6 @@ export interface components {
             /** Detail */
             detail?: Record<string, unknown>;
         };
-        /** JobListResponse */
-        JobListResponse: {
-            /** Jobs */
-            jobs: (components["schemas"]["FlowTimerRead"] | components["schemas"]["JobRead"])[];
-        };
         /** JobRead */
         JobRead: {
             /** Name */
@@ -914,11 +909,11 @@ export interface operations {
                  * @description List only jobs with names containing the argument as a substring
                  *             (case-insensitive).
                  */
-                filter_name?: string | null;
+                filter_name?: string;
                 /** @description Filter listed jobs to only those submitted after the specified date. */
-                submitted_after?: string | null;
+                submitted_after?: string;
                 /** @description Filter listed jobs to only those submitted before the specified date. */
-                submitted_before?: string | null;
+                submitted_before?: string;
                 /** @description [DEPRECATED] Equivalent to 'filter_status=active'. */
                 filter_active?: boolean;
                 /** @description [DEPRECATED] Equivalent to 'filter_status=ended'. */
@@ -928,7 +923,7 @@ export interface operations {
                  *             list. Valid statuses are 'active', 'inactive', and 'ended'.
                  *             Defaults to 'active,inactive,ended'.
                  */
-                filter_status?: string | null;
+                filter_status?: string;
                 /** @description Limit the number of results returned per job. */
                 result_count?: number;
                 /**
@@ -939,7 +934,7 @@ export interface operations {
                  *             jobs in reverse alphabetical order on name; `submitted_at` (with no ordering
                  *             specified) would list oldest jobs first.
                  */
-                order?: string | null;
+                order?: string;
             };
             header?: never;
             path?: never;
@@ -953,7 +948,9 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["JobListResponse"];
+                    "application/json": {
+                        jobs?: (components["schemas"]["FlowTimerRead"] | components["schemas"]["JobRead"])[];
+                    };
                 };
             };
             /** @description Validation Error */
@@ -1003,7 +1000,7 @@ export interface operations {
     read_job_jobs__job_id__get: {
         parameters: {
             query?: {
-                results_pt?: string | null;
+                results_pt?: string;
                 page_size?: number;
             };
             header?: never;
@@ -1103,7 +1100,7 @@ export interface operations {
     resume_job_jobs__job_id__resume_post: {
         parameters: {
             query?: {
-                update_credentials?: boolean | null;
+                update_credentials?: boolean;
             };
             header?: never;
             path: {
