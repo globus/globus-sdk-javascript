@@ -236,7 +236,7 @@ export const stat = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    query?: {
+    query: {
       path: string;
       local_user?: string;
     };
