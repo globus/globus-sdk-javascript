@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.3.0](https://github.com/globus/globus-sdk-javascript/compare/v6.2.0...v6.3.0) (2026-02-04)
+
+
+### Features
+
+* **Developers:** Add support for Globus Auth Developer Resource API (https://docs.globus.org/api/auth/reference/#clients_and_scopes_api) ([#698](https://github.com/globus/globus-sdk-javascript/issues/698)) ([9181bc2](https://github.com/globus/globus-sdk-javascript/commit/9181bc252b9060ac79d75720a2d5a28b7ac040dd))
+
+
+### Bug Fixes
+
+* **Streams:** Ensures `payload` wrapper is not included in Tunnel RPC methods payload processing.  ([#721](https://github.com/globus/globus-sdk-javascript/issues/721)) ([8eef7eb](https://github.com/globus/globus-sdk-javascript/commit/8eef7eb533ed169a37a343d3f4c005dc46671c8e))
+* **Transfer, Typescript:** Mark `fileOperations.stat` `query` parameter as required. ([#737](https://github.com/globus/globus-sdk-javascript/issues/737)) ([c051957](https://github.com/globus/globus-sdk-javascript/commit/c05195797f155fc28f738dcd6dc203ab6c486dac))
+* **Transfer:** Updates Transfer API host to transfer.api.globus.org ([#732](https://github.com/globus/globus-sdk-javascript/issues/732)) ([2afde47](https://github.com/globus/globus-sdk-javascript/commit/2afde472d99808fde7d88e2e84342fdb25d913c5))
+* **Typescript:** use BaseServiceMethodOptions in ServiceMethodDynamicSegments ([#713](https://github.com/globus/globus-sdk-javascript/issues/713)) ([0fb2315](https://github.com/globus/globus-sdk-javascript/commit/0fb231578ed33d57f046e7eb6509cfb6c9e2139d))
+
 ## [6.2.0](https://github.com/globus/globus-sdk-javascript/compare/v6.1.0...v6.2.0) (2025-11-18)
 
 
