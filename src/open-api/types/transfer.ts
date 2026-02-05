@@ -116,9 +116,10 @@ export interface components {
             type: string;
             /**
              * Id
+             * Format: uuid
              * @description Unique identifier for Globus Connect Server endpoint
              */
-            id?: string | null;
+            id: string;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -138,9 +139,10 @@ export interface components {
             type: string;
             /**
              * Id
+             * Format: uuid
              * @description Unique identifier for a Globus Auth identity
              */
-            id?: string | null;
+            id: string;
         };
         /** JsonAPIPaginationLinks */
         JsonAPIPaginationLinks: {
@@ -241,7 +243,7 @@ export interface components {
              * Format: uuid
              * @description Unique identifier of the stream access point
              */
-            id?: string;
+            id: string;
         };
         /** StreamAccessPointResponseRelationships */
         StreamAccessPointResponseRelationships: {
@@ -261,7 +263,7 @@ export interface components {
              * Format: uuid
              * @description Unique identifier of the stream access point
              */
-            id?: string;
+            id: string;
             /** @description Attributes belonging to a stream access point */
             attributes: components["schemas"]["StreamAccessPointAttributes"];
             /** @description Entities related to a stream access point */
@@ -320,7 +322,7 @@ export interface components {
              * Id
              * @description Unique identifier of the event
              */
-            id?: number;
+            id: number;
             /** @description Attributes of the event */
             attributes: components["schemas"]["TunnelEventAttributes"] | null;
         };
@@ -476,9 +478,10 @@ export interface components {
             initiator_port?: number | null;
             /**
              * Created Time
+             * Format: date-time
              * @description Date and time when the tunnel was created
              */
-            created_time?: string | null;
+            created_time: string;
             /**
              * State
              * @description Short description of tunnel state
@@ -495,7 +498,7 @@ export interface components {
             /** @description Stream access point for initiator application */
             initiator: components["schemas"]["StreamAccessPointDataRelationship"];
             /** @description Globus Auth identity that created the tunnel */
-            owner?: components["schemas"]["IdentityDataRelationship"] | null;
+            owner: components["schemas"]["IdentityDataRelationship"];
         };
         /** TunnelResponseResource */
         TunnelResponseResource: {
@@ -510,11 +513,11 @@ export interface components {
              * Format: uuid
              * @description Unique identifier of the tunnel
              */
-            id?: string;
+            id: string;
             /** @description Attributes of the tunnel */
             attributes: components["schemas"]["TunnelResponseAttributes"];
             /** @description Entities related to the tunnel */
-            relationships?: components["schemas"]["TunnelResponseRelationships"];
+            relationships: components["schemas"]["TunnelResponseRelationships"];
         };
         /** TunnelResponseTopLevel */
         TunnelResponseTopLevel: {
