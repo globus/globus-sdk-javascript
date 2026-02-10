@@ -1,6 +1,6 @@
 import {
   serviceRequest,
-  normalizeServiceMethodArgsWithSegments,
+  wrapServiceMethodWithSegments,
 } from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
 
@@ -13,23 +13,33 @@ import type { ResultFormatVersion } from '../types.js';
  *
  * @see https://docs.globus.org/api/search/reference/get_subject/
  */
-export const get = function (arg1: any, arg2?: any, arg3?: any) {
-  const { segments: index_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'search.subject.get',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.SEARCH,
-      path: `/v1/index/${index_id}/subject`,
+export const get = wrapServiceMethodWithSegments(
+  'search.subject.get',
+  function (
+    index_id: string,
+    options?: {
+      /**
+       * @see https://docs.globus.org/api/search/reference/get_subject/#parameters
+       */
+      query: {
+        subject: string;
+        result_format_version?: ResultFormatVersion | string;
+        bypass_visible_to?: 'true' | 'false';
+      };
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ) {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.SEARCH,
+        path: `/v1/index/${index_id}/subject`,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     /**

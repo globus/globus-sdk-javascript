@@ -1,8 +1,8 @@
 import {
   HTTP_METHODS,
   serviceRequest,
-  normalizeServiceMethodArgs,
-  normalizeServiceMethodArgsWithSegments,
+  wrapServiceMethod,
+  wrapServiceMethodWithSegments,
 } from '../../shared.js';
 
 import { ID, SCOPES } from '../config.js';
@@ -93,21 +93,27 @@ export type TaskListDocument = {
  * Get a list of tasks submitted by the current user.
  * @see https://docs.globus.org/api/transfer/task/#get_task_list
  */
-export const getAll = function (
-  arg1?: any,
-  arg2?: any,
-): Promise<JSONFetchResponse<PaginatedResponse<'Offset', TaskListDocument>>> {
-  const { request, options } = normalizeServiceMethodArgs('transfer.task.getAll', arg1, arg2);
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/task_list`,
+export const getAll = wrapServiceMethod(
+  'transfer.task.getAll',
+  function (
+    options?: {
+      query?: QueryParameters<'Offset'>;
+      headers?: Record<string, string>;
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethod<{
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<PaginatedResponse<'Offset', TaskListDocument>>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/task_list`,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethod<{
   query?: QueryParameters<'Offset'>;
   headers?: Record<string, string>;
   payload?: never;
@@ -117,27 +123,27 @@ export const getAll = function (
  * Fetch a task by its UUID.
  * @see https://docs.globus.org/api/transfer/task/#get_task_by_id
  */
-export const get = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<TaskDocument>> {
-  const { segments: task_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.task.get',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/task/${task_id}`,
+export const get = wrapServiceMethodWithSegments(
+  'transfer.task.get',
+  function (
+    task_id: string,
+    options?: {
+      query?: never;
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<TaskDocument>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/task/${task_id}`,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     query?: never;
@@ -148,36 +154,36 @@ export const get = function (
 /**
  * @see https://docs.globus.org/api/transfer/task/#update_task_by_id
  */
-export const update = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<
-  JSONFetchResponse<{
-    DATA_TYPE: 'result';
-    code: 'Updated';
-    message: string;
-    request_id: string;
-    resource: `/task/${string}/cancel`;
-  }>
-> {
-  const { segments: task_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.task.update',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/task/${task_id}`,
-      method: HTTP_METHODS.PUT,
+export const update = wrapServiceMethodWithSegments(
+  'transfer.task.update',
+  function (
+    task_id: string,
+    options?: {
+      query?: never;
+      payload: Record<string, string>;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<
+    JSONFetchResponse<{
+      DATA_TYPE: 'result';
+      code: 'Updated';
+      message: string;
+      request_id: string;
+      resource: `/task/${string}/cancel`;
+    }>
+  > {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/task/${task_id}`,
+        method: HTTP_METHODS.PUT,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     query?: never;
@@ -188,28 +194,28 @@ export const update = function (
 /**
  * @see https://docs.globus.org/api/transfer/task/#cancel_task_by_id
  */
-export const cancel = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<TaskDocument>> {
-  const { segments: task_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.task.cancel',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/task/${task_id}/cancel`,
-      method: HTTP_METHODS.POST,
+export const cancel = wrapServiceMethodWithSegments(
+  'transfer.task.cancel',
+  function (
+    task_id: string,
+    options?: {
+      query?: never;
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<TaskDocument>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/task/${task_id}/cancel`,
+        method: HTTP_METHODS.POST,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     query?: never;
@@ -220,28 +226,28 @@ export const cancel = function (
 /**
  * @see https://docs.globus.org/api/transfer/task/#remove_task_by_id
  */
-export const remove = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<TaskDocument>> {
-  const { segments: task_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.task.remove',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/task/${task_id}/remove`,
-      method: HTTP_METHODS.POST,
+export const remove = wrapServiceMethodWithSegments(
+  'transfer.task.remove',
+  function (
+    task_id: string,
+    options?: {
+      query?: never;
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<TaskDocument>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/task/${task_id}/remove`,
+        method: HTTP_METHODS.POST,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     query?: never;
@@ -269,27 +275,28 @@ export type TaskEventListDocument = {
 /**
  * @see https://docs.globus.org/api/transfer/task/#get_event_list
  */
-export const getEventList = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<PaginatedResponse<'Offset', TaskEventListDocument>>> {
-  const { segments: task_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.task.getEventList',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/task/${task_id}/event_list`,
+export const getEventList = wrapServiceMethodWithSegments(
+  'transfer.task.getEventList',
+  function (
+    task_id: string,
+    options?: {
+      query?: QueryParameters<'Offset'>;
+      headers?: Record<string, string>;
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<PaginatedResponse<'Offset', TaskEventListDocument>>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/task/${task_id}/event_list`,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     query?: QueryParameters<'Offset'>;
@@ -323,27 +330,28 @@ export type SuccessfulTransfersListDocument = {
 /**
  * @see https://docs.globus.org/api/transfer/task/#get_task_successful_transfers
  */
-export const getSuccessfulTransfers = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<SuccessfulTransfersListDocument>> {
-  const { segments: task_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.task.getSuccessfulTransfers',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/task/${task_id}/successful_transfers`,
+export const getSuccessfulTransfers = wrapServiceMethodWithSegments(
+  'transfer.task.getSuccessfulTransfers',
+  function (
+    task_id: string,
+    options?: {
+      query?: QueryParameters<'Marker'>;
+      headers?: Record<string, string>;
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<SuccessfulTransfersListDocument>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/task/${task_id}/successful_transfers`,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     query?: QueryParameters<'Marker'>;
@@ -381,27 +389,28 @@ export type SkippedErrorsListDocument = {
 /**
  * @see https://docs.globus.org/api/transfer/task/#get_task_skipped_errors
  */
-export const getSkippedErrors = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<PaginatedResponse<'Marker', SkippedErrorsListDocument>>> {
-  const { segments: task_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.task.getSkippedErrors',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/task/${task_id}/skipped_errors`,
+export const getSkippedErrors = wrapServiceMethodWithSegments(
+  'transfer.task.getSkippedErrors',
+  function (
+    task_id: string,
+    options?: {
+      query?: QueryParameters<'Marker'>;
+      headers?: Record<string, string>;
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<PaginatedResponse<'Marker', SkippedErrorsListDocument>>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/task/${task_id}/skipped_errors`,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     query?: QueryParameters<'Marker'>;
@@ -434,27 +443,28 @@ type PauseInfoLimitedDocument = {
 /**
  * @see https://docs.globus.org/api/transfer/task/#get_task_pause_info
  */
-export const getPauseInfo = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<PauseInfoLimitedDocument>> {
-  const { segments: task_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.task.getPauseInfo',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/task/${task_id}/pause_info`,
+export const getPauseInfo = wrapServiceMethodWithSegments(
+  'transfer.task.getPauseInfo',
+  function (
+    task_id: string,
+    options?: {
+      query?: never;
+      headers?: Record<string, string>;
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<PauseInfoLimitedDocument>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/task/${task_id}/pause_info`,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     query?: never;

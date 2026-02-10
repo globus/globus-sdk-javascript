@@ -1,8 +1,8 @@
 import {
   HTTP_METHODS,
   serviceRequest,
-  normalizeServiceMethodArgs,
-  normalizeServiceMethodArgsWithSegments,
+  wrapServiceMethod,
+  wrapServiceMethodWithSegments,
 } from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
 
@@ -245,27 +245,27 @@ export type EndpointListDocument = {
 /**
  * Fetch an endpoint by its UUID.
  */
-export const get = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<EndpointDocument>> {
-  const { segments: endpoint_xid, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.endpoint.get',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/endpoint/${endpoint_xid}`,
+export const get = wrapServiceMethodWithSegments(
+  'transfer.endpoint.get',
+  function (
+    endpoint_xid: string,
+    options?: {
+      query?: never;
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<EndpointDocument>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/endpoint/${endpoint_xid}`,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     query?: never;
@@ -316,23 +316,30 @@ export type CreateResponse = {
  *
  * @see https://docs.globus.org/api/transfer/gcp_management/#create_guest_collection
  */
-export const create = function (arg1?: any, arg2?: any): Promise<JSONFetchResponse<CreateResponse>> {
-  const { request, options } = normalizeServiceMethodArgs('transfer.endpoint.create', arg1, arg2);
-  if (request?.payload) {
-    Object.assign(request.payload, { DATA_TYPE: 'shared_endpoint' });
-  }
-
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: '/v0.10/shared_endpoint',
-      method: HTTP_METHODS.POST,
+export const create = wrapServiceMethod(
+  'transfer.endpoint.create',
+  function (
+    options?: {
+      payload?: CreatePayload;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethod<{
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<CreateResponse>> {
+    if (options?.payload) {
+      Object.assign(options.payload, { DATA_TYPE: 'shared_endpoint' });
+    }
+
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: '/v0.10/shared_endpoint',
+        method: HTTP_METHODS.POST,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethod<{
   payload?: CreatePayload;
 }>;
 
@@ -373,32 +380,32 @@ export type UpdateResponse = {
  *
  * @see https://docs.globus.org/api/transfer/gcp_management/#update_collection_by_id
  */
-export const update = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<UpdateResponse>> {
-  const { segments: endpoint_xid, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.endpoint.update',
-    arg1,
-    arg2,
-    arg3,
-  );
-  if (request?.payload) {
-    Object.assign(request.payload, { DATA_TYPE: 'endpoint' });
-  }
-
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/endpoint/${endpoint_xid}`,
-      method: HTTP_METHODS.PUT,
+export const update = wrapServiceMethodWithSegments(
+  'transfer.endpoint.update',
+  function (
+    endpoint_xid: string,
+    options?: {
+      payload: UpdatePayload;
+      query?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<UpdateResponse>> {
+    if (options?.payload) {
+      Object.assign(options.payload, { DATA_TYPE: 'endpoint' });
+    }
+
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/endpoint/${endpoint_xid}`,
+        method: HTTP_METHODS.PUT,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     payload: UpdatePayload;
@@ -421,28 +428,28 @@ export type RemoveResponse = {
  *
  * @see https://docs.globus.org/api/transfer/gcp_management/#delete_endpoint_by_id
  */
-export const remove = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<RemoveResponse>> {
-  const { segments: endpoint_xid, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.endpoint.remove',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/endpoint/${endpoint_xid}`,
-      method: HTTP_METHODS.DELETE,
+export const remove = wrapServiceMethodWithSegments(
+  'transfer.endpoint.remove',
+  function (
+    endpoint_xid: string,
+    options?: {
+      query?: never;
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<RemoveResponse>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/endpoint/${endpoint_xid}`,
+        method: HTTP_METHODS.DELETE,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     query?: never;

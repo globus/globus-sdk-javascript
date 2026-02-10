@@ -2,7 +2,7 @@ import { ID } from '../../config.js';
 import {
   HTTP_METHODS,
   serviceRequest,
-  normalizeServiceMethodArgs,
+  wrapServiceMethod,
 } from '../../../../services/shared.js';
 
 import type { ServiceMethod, ServiceMethodOptions } from '../../../types.js';
@@ -82,20 +82,34 @@ function injectServiceOptions(
 /**
  * @see https://docs.globus.org/api/auth/reference/#dependent_token_grant_post_v2oauth2token
  */
-export const token = function (arg1?: any, arg2?: any) {
-  const { request, options } = normalizeServiceMethodArgs('auth.oauth2.token.token', arg1, arg2);
-  return serviceRequest(
-    {
-      service: ID,
-      scope: undefined,
-      path: `/v2/oauth2/token`,
-      method: HTTP_METHODS.POST,
-      preventRetry: true,
+export const token = wrapServiceMethod(
+  'auth.oauth2.token.token',
+  function (
+    options?: {
+      payload?: ExchangePayload;
+      query?: {
+        /**
+         * Include tokens for all scopes that the user has consented to, for the requesting client.
+         * @private
+         */
+        include_consented_scopes?: boolean;
+      };
     },
-    injectServiceOptions(request),
-    options,
-  );
-} satisfies ServiceMethod<{
+    sdkOptions?,
+  ) {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: undefined,
+        path: `/v2/oauth2/token`,
+        method: HTTP_METHODS.POST,
+        preventRetry: true,
+      },
+      injectServiceOptions(options || {}),
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethod<{
   payload?: ExchangePayload;
   query?: {
     /**
@@ -115,27 +129,30 @@ export const exchange = token;
  * Token Introspection
  * @see https://docs.globus.org/api/auth/reference/#token-introspect
  */
-export const introspect = function (arg1: any, arg2?: any) {
-  const { request, options } = normalizeServiceMethodArgs(
-    'auth.oauth2.token.introspect',
-    arg1,
-    arg2,
-  );
-  if (!request?.payload) {
-    throw new Error(`'payload' is required for introspect`);
-  }
-  return serviceRequest(
-    {
-      service: ID,
-      scope: undefined,
-      path: `/v2/oauth2/token/introspect`,
-      method: HTTP_METHODS.POST,
-      preventRetry: true,
+export const introspect = wrapServiceMethod(
+  'auth.oauth2.token.introspect',
+  function (
+    options?: {
+      payload: IntrospectPayload;
     },
-    injectServiceOptions(request),
-    options,
-  );
-} satisfies ServiceMethod<{
+    sdkOptions?,
+  ) {
+    if (!options?.payload) {
+      throw new Error(`'payload' is required for introspect`);
+    }
+    return serviceRequest(
+      {
+        service: ID,
+        scope: undefined,
+        path: `/v2/oauth2/token/introspect`,
+        method: HTTP_METHODS.POST,
+        preventRetry: true,
+      },
+      injectServiceOptions(options || {}),
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethod<{
   payload: IntrospectPayload;
 }>;
 
@@ -143,23 +160,30 @@ export const introspect = function (arg1: any, arg2?: any) {
  * Token Revocation
  * @see https://docs.globus.org/api/auth/reference/#token-revoke
  */
-export const revoke = function (arg1: any, arg2?: any) {
-  const { request, options } = normalizeServiceMethodArgs('auth.oauth2.token.revoke', arg1, arg2);
-  if (!request?.payload) {
-    throw new Error(`'payload' is required for revoke`);
-  }
-  return serviceRequest(
-    {
-      service: ID,
-      scope: undefined,
-      path: `/v2/oauth2/token/revoke`,
-      method: HTTP_METHODS.POST,
-      preventRetry: true,
+export const revoke = wrapServiceMethod(
+  'auth.oauth2.token.revoke',
+  function (
+    options?: {
+      payload: RevokePayload;
     },
-    injectServiceOptions(request),
-    options,
-  );
-} satisfies ServiceMethod<{
+    sdkOptions?,
+  ) {
+    if (!options?.payload) {
+      throw new Error(`'payload' is required for revoke`);
+    }
+    return serviceRequest(
+      {
+        service: ID,
+        scope: undefined,
+        path: `/v2/oauth2/token/revoke`,
+        method: HTTP_METHODS.POST,
+        preventRetry: true,
+      },
+      injectServiceOptions(options || {}),
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethod<{
   payload: RevokePayload;
 }>;
 
@@ -167,23 +191,30 @@ export const revoke = function (arg1: any, arg2?: any) {
  * Token Refresh
  * @see https://docs.globus.org/api/auth/reference/#refresh_token_grant
  */
-export const refresh = function (arg1: any, arg2?: any) {
-  const { request, options } = normalizeServiceMethodArgs('auth.oauth2.token.refresh', arg1, arg2);
-  if (!request?.payload) {
-    throw new Error(`'payload' is required for revoke`);
-  }
-  return serviceRequest(
-    {
-      service: ID,
-      scope: undefined,
-      path: `/v2/oauth2/token`,
-      method: HTTP_METHODS.POST,
-      preventRetry: true,
+export const refresh = wrapServiceMethod(
+  'auth.oauth2.token.refresh',
+  function (
+    options?: {
+      payload: RefreshPayload;
     },
-    injectServiceOptions(request),
-    options,
-  );
-} satisfies ServiceMethod<{
+    sdkOptions?,
+  ) {
+    if (!options?.payload) {
+      throw new Error(`'payload' is required for revoke`);
+    }
+    return serviceRequest(
+      {
+        service: ID,
+        scope: undefined,
+        path: `/v2/oauth2/token`,
+        method: HTTP_METHODS.POST,
+        preventRetry: true,
+      },
+      injectServiceOptions(options || {}),
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethod<{
   payload: RefreshPayload;
 }>;
 
@@ -191,26 +222,29 @@ export const refresh = function (arg1: any, arg2?: any) {
  * @private
  * @deprecated Rather than using `validate` to check if a token is valid, it is recommended to make a request to the resource server with the token and handle the error response.
  */
-export const validate = function (arg1: any, arg2?: any) {
-  const { request, options } = normalizeServiceMethodArgs(
-    'auth.oauth2.token.validate',
-    arg1,
-    arg2,
-  );
-  if (!request?.payload) {
-    throw new Error(`'payload' is required for validate`);
-  }
-  return serviceRequest(
-    {
-      service: ID,
-      scope: undefined,
-      path: `/v2/oauth2/token/validate`,
-      method: HTTP_METHODS.POST,
-      preventRetry: true,
+export const validate = wrapServiceMethod(
+  'auth.oauth2.token.validate',
+  function (
+    options?: {
+      payload: ValidatePayload;
     },
-    injectServiceOptions(request),
-    options,
-  );
-} satisfies ServiceMethod<{
+    sdkOptions?,
+  ) {
+    if (!options?.payload) {
+      throw new Error(`'payload' is required for validate`);
+    }
+    return serviceRequest(
+      {
+        service: ID,
+        scope: undefined,
+        path: `/v2/oauth2/token/validate`,
+        method: HTTP_METHODS.POST,
+        preventRetry: true,
+      },
+      injectServiceOptions(options || {}),
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethod<{
   payload: ValidatePayload;
 }>;

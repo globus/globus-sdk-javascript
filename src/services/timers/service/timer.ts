@@ -1,7 +1,7 @@
 import {
   HTTP_METHODS,
   serviceRequest,
-  normalizeServiceMethodArgs,
+  wrapServiceMethod,
 } from '../../shared.js';
 import { ID } from '../config.js';
 
@@ -50,18 +50,25 @@ type TimerCreatePayload = {
   };
 };
 
-export const create = function (arg1: any, arg2?: any) {
-  const { request, options } = normalizeServiceMethodArgs('timers.timer.create', arg1, arg2);
-  return serviceRequest(
-    {
-      service: ID,
-      resource_server: RESOURCE_SERVERS.TIMERS,
-      path: '/v2/timer',
-      method: HTTP_METHODS.POST,
+export const create = wrapServiceMethod(
+  'timers.timer.create',
+  function (
+    options?: {
+      payload: TimerCreatePayload;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethod<{
+    sdkOptions?,
+  ) {
+    return serviceRequest(
+      {
+        service: ID,
+        resource_server: RESOURCE_SERVERS.TIMERS,
+        path: '/v2/timer',
+        method: HTTP_METHODS.POST,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethod<{
   payload: TimerCreatePayload;
 }>;

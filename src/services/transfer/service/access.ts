@@ -1,7 +1,7 @@
 import {
   HTTP_METHODS,
   serviceRequest,
-  normalizeServiceMethodArgsWithSegments,
+  wrapServiceMethodWithSegments,
 } from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
 import { QueryParameters } from '../types.js';
@@ -36,27 +36,27 @@ export type AccessListDocument = {
 /**
  * @see https://docs.globus.org/api/transfer/permissions/#get_permission_list
  */
-export const getAll = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<AccessListDocument>> {
-  const { segments: endpoint_xid, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.access.getAll',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/endpoint/${endpoint_xid}/access_list`,
+export const getAll = wrapServiceMethodWithSegments(
+  'transfer.access.getAll',
+  function (
+    endpoint_xid: string,
+    options?: {
+      query?: QueryParameters<'Offset'>;
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<AccessListDocument>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/endpoint/${endpoint_xid}/access_list`,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     query?: QueryParameters<'Offset'>;
@@ -67,28 +67,27 @@ export const getAll = function (
 /**
  * @see https://docs.globus.org/api/transfer/permissions/#create_permission
  */
-export const create = function (
-  arg1: any,
-  arg2: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<AccessDocument>> {
-  const { segments: endpoint_xid, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.access.create',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/endpoint/${endpoint_xid}/access`,
-      method: HTTP_METHODS.POST,
+export const create = wrapServiceMethodWithSegments(
+  'transfer.access.create',
+  function (
+    endpoint_xid: string,
+    options?: {
+      payload: Partial<AccessDocument>;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<AccessDocument>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/endpoint/${endpoint_xid}/access`,
+        method: HTTP_METHODS.POST,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     payload: Partial<AccessDocument>;
@@ -98,27 +97,27 @@ export const create = function (
 /**
  * @see https://docs.globus.org/api/transfer/permissions/#get_permission_by_id
  */
-export const get = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<AccessDocument>> {
-  const { segments: { endpoint_xid, id }, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.access.get',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/endpoint/${endpoint_xid}/access/${id}`,
+export const get = wrapServiceMethodWithSegments(
+  'transfer.access.get',
+  function (
+    { endpoint_xid, id }: { endpoint_xid: string; id: string },
+    options?: {
+      query?: never;
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<AccessDocument>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/endpoint/${endpoint_xid}/access/${id}`,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   { endpoint_xid: string; id: string },
   {
     query?: never;
@@ -129,36 +128,36 @@ export const get = function (
 /**
  * @see https://docs.globus.org/api/transfer/permissions/#update_permission
  */
-export const update = function (
-  arg1: any,
-  arg2: any,
-  arg3?: any,
-): Promise<
-  JSONFetchResponse<{
-    DATA_TYPE: 'result';
-    code: 'Updated';
-    message: string;
-    request_id: string;
-    resource: `/endpoint/${string}/access/${string}`;
-  }>
-> {
-  const { segments: { endpoint_xid, id }, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.access.update',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/endpoint/${endpoint_xid}/access/${id}`,
-      method: HTTP_METHODS.PUT,
+export const update = wrapServiceMethodWithSegments(
+  'transfer.access.update',
+  function (
+    { endpoint_xid, id }: { endpoint_xid: string; id: string },
+    options?: {
+      query?: never;
+      payload: Partial<AccessDocument>;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<
+    JSONFetchResponse<{
+      DATA_TYPE: 'result';
+      code: 'Updated';
+      message: string;
+      request_id: string;
+      resource: `/endpoint/${string}/access/${string}`;
+    }>
+  > {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/endpoint/${endpoint_xid}/access/${id}`,
+        method: HTTP_METHODS.PUT,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   { endpoint_xid: string; id: string },
   {
     query?: never;
@@ -169,36 +168,36 @@ export const update = function (
 /**
  * @see https://docs.globus.org/api/transfer/permissions/#delete_permissoin
  */
-export const remove = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<
-  JSONFetchResponse<{
-    DATA_TYPE: 'result';
-    code: 'Deleted';
-    message: string;
-    request_id: string;
-    resource: `/endpoint/${string}/access/${string}`;
-  }>
-> {
-  const { segments: { endpoint_xid, id }, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.access.remove',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/endpoint/${endpoint_xid}/access/${id}`,
-      method: HTTP_METHODS.DELETE,
+export const remove = wrapServiceMethodWithSegments(
+  'transfer.access.remove',
+  function (
+    { endpoint_xid, id }: { endpoint_xid: string; id: string },
+    options?: {
+      query?: never;
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<
+    JSONFetchResponse<{
+      DATA_TYPE: 'result';
+      code: 'Deleted';
+      message: string;
+      request_id: string;
+      resource: `/endpoint/${string}/access/${string}`;
+    }>
+  > {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/endpoint/${endpoint_xid}/access/${id}`,
+        method: HTTP_METHODS.DELETE,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   { endpoint_xid: string; id: string },
   {
     query?: never;

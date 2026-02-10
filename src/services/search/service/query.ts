@@ -1,7 +1,7 @@
 import {
   HTTP_METHODS,
   serviceRequest,
-  normalizeServiceMethodArgsWithSegments,
+  wrapServiceMethodWithSegments,
 } from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
 
@@ -56,27 +56,24 @@ export type GSearchResult<C extends Content = Content> = {
  *
  * @see https://docs.globus.org/api/search/reference/get_query/
  */
-export const get = function <C extends Content = Content>(
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<GSearchResult<C>>> {
-  const { segments: index_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'search.query.get',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.SEARCH,
-      path: `/v1/index/${index_id}/search`,
-    },
-    request,
-    options,
-  );
-};
+export const get = wrapServiceMethodWithSegments(
+  'search.query.get',
+  function <C extends Content = Content>(
+    index_id: string,
+    options?: ServiceMethodOptions,
+    sdkOptions?: SDKOptions,
+  ): Promise<JSONFetchResponse<GSearchResult<C>>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.SEARCH,
+        path: `/v1/index/${index_id}/search`,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+);
 
 /**
  * @see https://docs.globus.org/api/search/reference/post_query/#gsearchrequest
@@ -100,28 +97,25 @@ export type GSearchRequest = {
  *
  * @see https://docs.globus.org/api/search/reference/post_query/
  */
-export const post = function <C extends Content = Content>(
-  arg1: any,
-  arg2: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<GSearchResult<C>>> {
-  const { segments: index_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'search.query.post',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.SEARCH,
-      path: `/v1/index/${index_id}/search`,
-      method: HTTP_METHODS.POST,
-    },
-    request,
-    options,
-  );
-};
+export const post = wrapServiceMethodWithSegments(
+  'search.query.post',
+  function <C extends Content = Content>(
+    index_id: string,
+    options?: ServiceMethodOptions & { payload?: GSearchRequest },
+    sdkOptions?: SDKOptions,
+  ): Promise<JSONFetchResponse<GSearchResult<C>>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.SEARCH,
+        path: `/v1/index/${index_id}/search`,
+        method: HTTP_METHODS.POST,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+);
 
 /**
  * @see https://docs.globus.org/api/search/reference/post_query/#gfilter

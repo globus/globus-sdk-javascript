@@ -1,8 +1,8 @@
 import {
   HTTP_METHODS,
   serviceRequest,
-  normalizeServiceMethodArgs,
-  normalizeServiceMethodArgsWithSegments,
+  wrapServiceMethod,
+  wrapServiceMethodWithSegments,
 } from '../../../shared.js';
 
 import { ID, SCOPES } from '../../config.js';
@@ -40,30 +40,31 @@ export type PauseRuleDocument = {
  * Get a list of pause rules on endpoints that the current user has the "activity_monitor" role on.
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_pause_rules
  */
-export const getAll = function (
-  arg1?: any,
-  arg2?: any,
-): Promise<
-  JSONFetchResponse<{
-    DATA_TYPE: 'pause_rule_list';
-    DATA: PauseRuleDocument[];
-  }>
-> {
-  const { request, options } = normalizeServiceMethodArgs(
-    'transfer.endpoint-manager.pause-rule.getAll',
-    arg1,
-    arg2,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/endpoint_manager/pause_rule_list`,
+export const getAll = wrapServiceMethod(
+  'transfer.endpoint-manager.pause-rule.getAll',
+  function (
+    options?: {
+      query?: { filter_endpoint?: string; filter_host_endpoint?: string };
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethod<{
+    sdkOptions?,
+  ): Promise<
+    JSONFetchResponse<{
+      DATA_TYPE: 'pause_rule_list';
+      DATA: PauseRuleDocument[];
+    }>
+  > {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/endpoint_manager/pause_rule_list`,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethod<{
   query?: { filter_endpoint?: string; filter_host_endpoint?: string };
   payload?: never;
 }>;
@@ -71,26 +72,26 @@ export const getAll = function (
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#create_pause_rule
  */
-export const create = function (
-  arg1: any,
-  arg2?: any,
-): Promise<JSONFetchResponse<PauseRuleDocument>> {
-  const { request, options } = normalizeServiceMethodArgs(
-    'transfer.endpoint-manager.pause-rule.create',
-    arg1,
-    arg2,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/endpoint_manager/pause_rule`,
-      method: HTTP_METHODS.POST,
+export const create = wrapServiceMethod(
+  'transfer.endpoint-manager.pause-rule.create',
+  function (
+    options?: {
+      payload: Partial<PauseRuleDocument>;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethod<{
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<PauseRuleDocument>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/endpoint_manager/pause_rule`,
+        method: HTTP_METHODS.POST,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethod<{
   payload: Partial<PauseRuleDocument>;
 }>;
 
@@ -98,27 +99,27 @@ export const create = function (
  * Fetch a pause_rule by its UUID.
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_pause_rule
  */
-export const get = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<PauseRuleDocument>> {
-  const { segments: pause_rule_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.endpoint-manager.pause-rule.get',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/endpoint_manager/pause_rule/${pause_rule_id}`,
+export const get = wrapServiceMethodWithSegments(
+  'transfer.endpoint-manager.pause-rule.get',
+  function (
+    pause_rule_id: string,
+    options?: {
+      query?: never;
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<PauseRuleDocument>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/endpoint_manager/pause_rule/${pause_rule_id}`,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     query?: never;
@@ -129,28 +130,28 @@ export const get = function (
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#update_pause_rule
  */
-export const update = function (
-  arg1: any,
-  arg2: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<PauseRuleDocument>> {
-  const { segments: pause_rule_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.endpoint-manager.pause-rule.update',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/endpoint_manager/pause_rule/${pause_rule_id}`,
-      method: HTTP_METHODS.PUT,
+export const update = wrapServiceMethodWithSegments(
+  'transfer.endpoint-manager.pause-rule.update',
+  function (
+    pause_rule_id: string,
+    options?: {
+      query?: never;
+      payload: Partial<PauseRuleDocument>;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<PauseRuleDocument>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/endpoint_manager/pause_rule/${pause_rule_id}`,
+        method: HTTP_METHODS.PUT,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     query?: never;
@@ -161,36 +162,36 @@ export const update = function (
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#delete_pause_rule
  */
-export const remove = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<
-  JSONFetchResponse<{
-    DATA_TYPE: 'result';
-    code: 'Deleted';
-    message: string;
-    request_id: string;
-    resource: string;
-  }>
-> {
-  const { segments: pause_rule_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.endpoint-manager.pause-rule.remove',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/endpoint_manager/pause_rule/${pause_rule_id}`,
-      method: HTTP_METHODS.DELETE,
+export const remove = wrapServiceMethodWithSegments(
+  'transfer.endpoint-manager.pause-rule.remove',
+  function (
+    pause_rule_id: string,
+    options?: {
+      query?: never;
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<
+    JSONFetchResponse<{
+      DATA_TYPE: 'result';
+      code: 'Deleted';
+      message: string;
+      request_id: string;
+      resource: string;
+    }>
+  > {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/endpoint_manager/pause_rule/${pause_rule_id}`,
+        method: HTTP_METHODS.DELETE,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     query?: never;

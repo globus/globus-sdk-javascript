@@ -1,7 +1,7 @@
 import {
   HTTP_METHODS,
   serviceRequest,
-  normalizeServiceMethodArgsWithSegments,
+  wrapServiceMethodWithSegments,
 } from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
 
@@ -35,27 +35,24 @@ export type IndexRoleListResponse = {
  *
  * @see https://docs.globus.org/api/search/reference/role_list/
  */
-export const getAll = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<IndexRoleListResponse>> {
-  const { segments: index_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'search.roles.getAll',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v1/index/${index_id}/role_list`,
-    },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<string, {}>;
+export const getAll = wrapServiceMethodWithSegments(
+  'search.roles.getAll',
+  function (
+    index_id: string,
+    options?: {},
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<IndexRoleListResponse>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v1/index/${index_id}/role_list`,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<string, {}>;
 
 export type SearchIndexRoleCreate = Pick<IndexRole, 'role_name' | 'principal'>;
 
@@ -64,28 +61,27 @@ export type SearchIndexRoleCreate = Pick<IndexRole, 'role_name' | 'principal'>;
  *
  * @see https://docs.globus.org/api/search/reference/role_create/
  */
-export const create = function (
-  arg1: any,
-  arg2: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<IndexRole>> {
-  const { segments: index_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'search.roles.create',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v1/index/${index_id}/role`,
-      method: HTTP_METHODS.POST,
+export const create = wrapServiceMethodWithSegments(
+  'search.roles.create',
+  function (
+    index_id: string,
+    options?: {
+      payload: SearchIndexRoleCreate;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<IndexRole>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v1/index/${index_id}/role`,
+        method: HTTP_METHODS.POST,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     payload: SearchIndexRoleCreate;
@@ -103,28 +99,28 @@ export type SearchIndexRoleDeleted = {
  *
  * @see https://docs.globus.org/api/search/reference/role_delete/
  */
-export const remove = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<SearchIndexRoleDeleted>> {
-  const { segments: { index_id, role_id }, request, options } = normalizeServiceMethodArgsWithSegments(
-    'search.roles.remove',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v1/index/${index_id}/role/${role_id}`,
-      method: HTTP_METHODS.DELETE,
+export const remove = wrapServiceMethodWithSegments(
+  'search.roles.remove',
+  function (
+    { index_id, role_id }: { index_id: string; role_id: string },
+    options?: {
+      query?: never;
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<SearchIndexRoleDeleted>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v1/index/${index_id}/role/${role_id}`,
+        method: HTTP_METHODS.DELETE,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   { index_id: string; role_id: string },
   {
     query?: never;

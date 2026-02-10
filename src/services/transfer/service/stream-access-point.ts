@@ -1,7 +1,7 @@
 import {
   serviceRequest,
-  normalizeServiceMethodArgs,
-  normalizeServiceMethodArgsWithSegments,
+  wrapServiceMethod,
+  wrapServiceMethodWithSegments,
 } from '../../shared.js';
 import { ID as service } from '../config.js';
 import { RESOURCE_SERVERS } from '../../auth/config.js';
@@ -20,21 +20,26 @@ type GetAllOperation = operations['stream_access_points_list_stream_access_point
 /**
  * Get a list of all stream access points.
  */
-export const getAll = function (
-  arg1?: any,
-  arg2?: any,
-): Promise<JSONFetchResponse<GetAllOperation['responses']['200']['content']['application/json']>> {
-  const { request, options } = normalizeServiceMethodArgs('transfer.stream-access-point.getAll', arg1, arg2);
-  return serviceRequest(
-    {
-      service,
-      resource_server,
-      path: `/v2/stream_access_points`,
+export const getAll = wrapServiceMethod(
+  'transfer.stream-access-point.getAll',
+  function (
+    options?: {
+      query?: GetAllOperation['parameters']['query'];
+      payload?: GetAllOperation['requestBody'];
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethod<{
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<GetAllOperation['responses']['200']['content']['application/json']>> {
+    return serviceRequest(
+      {
+        service,
+        resource_server,
+        path: `/v2/stream_access_points`,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethod<{
   query?: GetAllOperation['parameters']['query'];
   payload?: GetAllOperation['requestBody'];
 }>;
@@ -44,27 +49,27 @@ type GetOperation =
 /**
  * Fetch a stream-access-point by its UUID.
  */
-export const get = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<GetOperation['responses']['200']['content']['application/json']>> {
-  const { segments: stream_access_point_uuid, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.stream-access-point.get',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service,
-      resource_server,
-      path: `/v2/stream_access_points/${stream_access_point_uuid}`,
+export const get = wrapServiceMethodWithSegments(
+  'transfer.stream-access-point.get',
+  function (
+    stream_access_point_uuid: string,
+    options?: {
+      query?: GetOperation['parameters']['query'];
+      payload?: GetOperation['requestBody'];
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<GetOperation['responses']['200']['content']['application/json']>> {
+    return serviceRequest(
+      {
+        service,
+        resource_server,
+        path: `/v2/stream_access_points/${stream_access_point_uuid}`,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     query?: GetOperation['parameters']['query'];

@@ -2,24 +2,31 @@ import { ID } from '../../config.js';
 import {
   HTTP_METHODS,
   serviceRequest,
-  normalizeServiceMethodArgs,
+  wrapServiceMethod,
 } from '../../../../services/shared.js';
 
 import type { ServiceMethod } from '../../../types.js';
 
-export const userinfo = function (arg1?: any, arg2?: any) {
-  const { request, options } = normalizeServiceMethodArgs('auth.oauth2.userinfo', arg1, arg2);
-  return serviceRequest(
-    {
-      service: ID,
-      scope: undefined,
-      path: `/v2/oauth2/userinfo`,
-      method: HTTP_METHODS.GET,
+export const userinfo = wrapServiceMethod(
+  'auth.oauth2.userinfo',
+  function (
+    options?: {
+      payload: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethod<{
+    sdkOptions?,
+  ) {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: undefined,
+        path: `/v2/oauth2/userinfo`,
+        method: HTTP_METHODS.GET,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethod<{
   payload: never;
 }>;
 

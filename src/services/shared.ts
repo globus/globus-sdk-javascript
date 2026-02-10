@@ -62,65 +62,96 @@ function isConfigObject<S extends Segment, O extends ServiceMethodOptions>(
 }
 
 /**
- * Normalize service method arguments for methods WITHOUT dynamic segments.
- * Supports both legacy positional arguments and new configuration object.
- * @private
+ * Wraps a service method to support both legacy positional arguments and new configuration object pattern.
+ *
+ * This wrapper allows service methods to maintain their original signature while supporting the new
+ * configuration object pattern. When legacy support is removed, simply unwrap the function.
+ *
+ * @param methodName - Name of the method for deprecation warnings (e.g., 'groups.getMyGroups')
+ * @param fn - The original service method function with standard signature
+ * @returns A function that accepts both calling patterns
+ *
+ * @example
+ * ```typescript
+ * // Wrap the method
+ * export const getMyGroups = wrapServiceMethod(
+ *   'groups.getMyGroups',
+ *   function(options?, sdkOptions?) {
+ *     return serviceRequest({...}, options, sdkOptions);
+ *   }
+ * );
+ *
+ * // Later, to remove legacy support, just unwrap:
+ * export const getMyGroups = function(options?, sdkOptions?) {
+ *   return serviceRequest({...}, options, sdkOptions);
+ * };
+ * ```
  */
-export function normalizeServiceMethodArgs<O extends ServiceMethodOptions>(
+export function wrapServiceMethod<O extends ServiceMethodOptions, R extends Response>(
   methodName: string,
-  arg1?: ServiceMethodConfig<never, O> | (O & ServiceMethodOptions),
-  arg2?: SDKOptions,
-): { request?: O & ServiceMethodOptions; options?: SDKOptions } {
-  // New signature: configuration object
-  if (arg1 !== undefined && isConfigObject<never, O>(arg1)) {
-    return {
-      request: arg1.request,
-      options: arg1.options,
-    };
-  }
+  fn: (methodOptions?: O & ServiceMethodOptions, sdkOptions?: SDKOptions) => Promise<R>,
+): (arg1?: any, arg2?: any) => Promise<R> {
+  return function (arg1?: any, arg2?: any): Promise<R> {
+    // New signature: configuration object
+    if (arg1 !== undefined && isConfigObject<never, O>(arg1)) {
+      return fn(arg1.request, arg1.options);
+    }
 
-  // Legacy signature: positional arguments
-  if (arg1 !== undefined || arg2 !== undefined) {
-    emitDeprecationWarning(methodName, false);
-  }
-  return {
-    request: arg1 as O & ServiceMethodOptions,
-    options: arg2,
+    // Legacy signature: positional arguments
+    if (arg1 !== undefined || arg2 !== undefined) {
+      emitDeprecationWarning(methodName, false);
+    }
+    return fn(arg1, arg2);
   };
 }
 
 /**
- * Normalize service method arguments for methods WITH dynamic segments.
- * Supports both legacy positional arguments and new configuration object.
- * @private
+ * Wraps a service method with dynamic segments to support both legacy positional arguments
+ * and new configuration object pattern.
+ *
+ * This wrapper allows service methods to maintain their original signature while supporting the new
+ * configuration object pattern. When legacy support is removed, simply unwrap the function.
+ *
+ * @param methodName - Name of the method for deprecation warnings (e.g., 'groups.get')
+ * @param fn - The original service method function with standard signature
+ * @returns A function that accepts both calling patterns
+ *
+ * @example
+ * ```typescript
+ * // Wrap the method
+ * export const get = wrapServiceMethodWithSegments(
+ *   'groups.get',
+ *   function(group_id, options?, sdkOptions?) {
+ *     return serviceRequest({...}, options, sdkOptions);
+ *   }
+ * );
+ *
+ * // Later, to remove legacy support, just unwrap:
+ * export const get = function(group_id, options?, sdkOptions?) {
+ *   return serviceRequest({...}, options, sdkOptions);
+ * };
+ * ```
  */
-export function normalizeServiceMethodArgsWithSegments<
+export function wrapServiceMethodWithSegments<
   S extends Segment,
   O extends ServiceMethodOptions,
+  R extends Response,
 >(
   methodName: string,
-  arg1: ServiceMethodConfig<S, O> | S,
-  arg2?: O & ServiceMethodOptions,
-  arg3?: SDKOptions,
-): { segments: S; request?: O & ServiceMethodOptions; options?: SDKOptions } {
-  // New signature: configuration object
-  if (isConfigObject<S, O>(arg1)) {
-    if (arg1.segments === undefined) {
-      throw new Error(`${methodName}: 'segments' is required in configuration object`);
+  fn: (segments: S, methodOptions?: O & ServiceMethodOptions, sdkOptions?: SDKOptions) => Promise<R>,
+): (arg1: any, arg2?: any, arg3?: any) => Promise<R> {
+  return function (arg1: any, arg2?: any, arg3?: any): Promise<R> {
+    // New signature: configuration object
+    if (isConfigObject<S, O>(arg1)) {
+      if (arg1.segments === undefined) {
+        throw new Error(`${methodName}: 'segments' is required in configuration object`);
+      }
+      return fn(arg1.segments, arg1.request, arg1.options);
     }
-    return {
-      segments: arg1.segments,
-      request: arg1.request,
-      options: arg1.options,
-    };
-  }
 
-  // Legacy signature: positional arguments
-  emitDeprecationWarning(methodName, true);
-  return {
-    segments: arg1 as S,
-    request: arg2,
-    options: arg3,
+    // Legacy signature: positional arguments
+    emitDeprecationWarning(methodName, true);
+    return fn(arg1, arg2, arg3);
   };
 }
 

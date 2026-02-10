@@ -1,8 +1,8 @@
 import {
   HTTP_METHODS,
   serviceRequest,
-  normalizeServiceMethodArgs,
-  normalizeServiceMethodArgsWithSegments,
+  wrapServiceMethod,
+  wrapServiceMethodWithSegments,
 } from '../../../shared.js';
 import { ID, SCOPES } from '../../config.js';
 
@@ -61,35 +61,48 @@ export type EndpointManagerTaskDocument = TaskDocument & {
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_tasks
  */
-export const getAll = function (
-  arg1?: any,
-  arg2?: any,
-): Promise<
-  JSONFetchResponse<
-    PaginatedResponse<
-      'LastKey',
-      {
-        DATA_TYPE: 'task_list';
-        DATA: EndpointManagerTaskDocument[];
-      }
-    >
-  >
-> {
-  const { request, options } = normalizeServiceMethodArgs(
-    'transfer.endpoint-manager.task.getAll',
-    arg1,
-    arg2,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/task_list`,
+export const getAll = wrapServiceMethod(
+  'transfer.endpoint-manager.task.getAll',
+  function (
+    options?: {
+      query?: QueryParameters<
+        {
+          filter_status?: string;
+          filter_task_id?: string;
+          filter_owner_id?: string;
+          filter_endpoint?: string;
+          filter_is_paused?: boolean;
+          filter_completion_time?: string;
+          filter_min_faults?: number;
+          filter_local_user?: string;
+        },
+        'LastKey'
+      >;
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethod<{
+    sdkOptions?,
+  ): Promise<
+    JSONFetchResponse<
+      PaginatedResponse<
+        'LastKey',
+        {
+          DATA_TYPE: 'task_list';
+          DATA: EndpointManagerTaskDocument[];
+        }
+      >
+    >
+  > {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/task_list`,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethod<{
   query?: QueryParameters<
     {
       filter_status?: string;
@@ -109,27 +122,27 @@ export const getAll = function (
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_task
  */
-export const get = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<EndpointManagerTaskDocument>> {
-  const { segments: task_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.endpoint-manager.task.get',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/endpoint_manager/task/${task_id}`,
+export const get = wrapServiceMethodWithSegments(
+  'transfer.endpoint-manager.task.get',
+  function (
+    task_id: string,
+    options?: {
+      query?: never;
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<EndpointManagerTaskDocument>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/endpoint_manager/task/${task_id}`,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     query?: never;
@@ -151,32 +164,37 @@ export type AdminCancelDocument = {
 /**
  * @see https://docs.globus.org/api/transfer/advanced_collection_management/#cancel_tasks
  */
-export const cancel = function (
-  arg1: any,
-  arg2?: any,
-): Promise<
-  JSONFetchResponse<{
-    DATA_TYPE: 'admin_cancel';
-    readonly id?: AdminCancelDocument['id'];
-    readonly done?: AdminCancelDocument['done'];
-  }>
-> {
-  const { request, options } = normalizeServiceMethodArgs(
-    'transfer.endpoint-manager.task.cancel',
-    arg1,
-    arg2,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/endpoint_manager/admin_cancel`,
-      method: HTTP_METHODS.POST,
+export const cancel = wrapServiceMethod(
+  'transfer.endpoint-manager.task.cancel',
+  function (
+    options?: {
+      query?: never;
+      payload: {
+        DATA_TYPE: AdminCancelDocument['DATA_TYPE'];
+        task_id_list: AdminCancelDocument['task_id_list'];
+        message: AdminCancelDocument['message'];
+      };
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethod<{
+    sdkOptions?,
+  ): Promise<
+    JSONFetchResponse<{
+      DATA_TYPE: 'admin_cancel';
+      readonly id?: AdminCancelDocument['id'];
+      readonly done?: AdminCancelDocument['done'];
+    }>
+  > {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/endpoint_manager/admin_cancel`,
+        method: HTTP_METHODS.POST,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethod<{
   query?: never;
   payload: {
     DATA_TYPE: AdminCancelDocument['DATA_TYPE'];
@@ -188,28 +206,28 @@ export const cancel = function (
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_cancel_status_by_id
  */
-export const getAdminCancel = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<AdminCancelDocument>> {
-  const { segments: admin_cancel_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.endpoint-manager.task.getAdminCancel',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/endpoint_manager/admin_cancel/${admin_cancel_id}`,
-      method: HTTP_METHODS.POST,
+export const getAdminCancel = wrapServiceMethodWithSegments(
+  'transfer.endpoint-manager.task.getAdminCancel',
+  function (
+    admin_cancel_id: string,
+    options?: {
+      query?: never;
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<AdminCancelDocument>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/endpoint_manager/admin_cancel/${admin_cancel_id}`,
+        method: HTTP_METHODS.POST,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     query?: never;
@@ -220,27 +238,27 @@ export const getAdminCancel = function (
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_task_events
  */
-export const getEventList = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<PaginatedResponse<'Offset', TaskEventListDocument>>> {
-  const { segments: task_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.endpoint-manager.task.getEventList',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/endpoint_manager/task/${task_id}/event_list`,
+export const getEventList = wrapServiceMethodWithSegments(
+  'transfer.endpoint-manager.task.getEventList',
+  function (
+    task_id: string,
+    options?: {
+      query?: QueryParameters<{ filter_is_error?: 1 }, 'Offset'>;
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<PaginatedResponse<'Offset', TaskEventListDocument>>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/endpoint_manager/task/${task_id}/event_list`,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     query?: QueryParameters<{ filter_is_error?: 1 }, 'Offset'>;
@@ -251,27 +269,27 @@ export const getEventList = function (
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_task_successful_transfers_as_admin
  */
-export const getSuccessfulTransfers = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<PaginatedResponse<'Marker', SuccessfulTransferDocument>>> {
-  const { segments: task_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.endpoint-manager.task.getSuccessfulTransfers',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/endpoint_manager/task/${task_id}/successful_transfers`,
+export const getSuccessfulTransfers = wrapServiceMethodWithSegments(
+  'transfer.endpoint-manager.task.getSuccessfulTransfers',
+  function (
+    task_id: string,
+    options?: {
+      query?: QueryParameters<'Marker'>;
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<PaginatedResponse<'Marker', SuccessfulTransferDocument>>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/endpoint_manager/task/${task_id}/successful_transfers`,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     query?: QueryParameters<'Marker'>;
@@ -282,27 +300,27 @@ export const getSuccessfulTransfers = function (
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_task_skipped_errors_transfers_as_admin
  */
-export const getSkippedErrors = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<PaginatedResponse<'Marker', SkippedErrorsListDocument>>> {
-  const { segments: task_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.endpoint-manager.task.getSkippedErrors',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/endpoint_manager/task/${task_id}/skipped_errors`,
+export const getSkippedErrors = wrapServiceMethodWithSegments(
+  'transfer.endpoint-manager.task.getSkippedErrors',
+  function (
+    task_id: string,
+    options?: {
+      query?: QueryParameters<'Marker'>;
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<PaginatedResponse<'Marker', SkippedErrorsListDocument>>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/endpoint_manager/task/${task_id}/skipped_errors`,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     query?: QueryParameters<'Marker'>;
@@ -322,26 +340,27 @@ export type AdminPauseDocument = {
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#pause_tasks_as_admin
  */
-export const pause = function (
-  arg1: any,
-  arg2?: any,
-): Promise<JSONFetchResponse<AdminPauseDocument>> {
-  const { request, options } = normalizeServiceMethodArgs(
-    'transfer.endpoint-manager.task.pause',
-    arg1,
-    arg2,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/endpoint_manager/admin_pause`,
-      method: HTTP_METHODS.POST,
+export const pause = wrapServiceMethod(
+  'transfer.endpoint-manager.task.pause',
+  function (
+    options?: {
+      query?: never;
+      payload?: Pick<AdminPauseDocument, 'task_id_list' | 'message' | 'DATA_TYPE'>;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethod<{
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<AdminPauseDocument>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/endpoint_manager/admin_pause`,
+        method: HTTP_METHODS.POST,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethod<{
   query?: never;
   payload?: Pick<AdminPauseDocument, 'task_id_list' | 'message' | 'DATA_TYPE'>;
 }>;
@@ -356,26 +375,27 @@ export type AdminResumeDocument = {
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#resume_tasks_as_admin
  */
-export const resume = function (
-  arg1: any,
-  arg2?: any,
-): Promise<JSONFetchResponse<AdminResumeDocument>> {
-  const { request, options } = normalizeServiceMethodArgs(
-    'transfer.endpoint-manager.task.resume',
-    arg1,
-    arg2,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/endpoint_manager/admin_resume`,
-      method: HTTP_METHODS.POST,
+export const resume = wrapServiceMethod(
+  'transfer.endpoint-manager.task.resume',
+  function (
+    options?: {
+      query?: never;
+      payload?: AdminResumeDocument;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethod<{
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<AdminResumeDocument>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/endpoint_manager/admin_resume`,
+        method: HTTP_METHODS.POST,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethod<{
   query?: never;
   payload?: AdminResumeDocument;
 }>;
@@ -383,27 +403,27 @@ export const resume = function (
 /**
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_task_pause_info_as_admin
  */
-export const getPauseInfo = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<JSONFetchResponse<PauseRuleDocument>> {
-  const { segments: task_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'transfer.endpoint-manager.task.getPauseInfo',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      scope: SCOPES.ALL,
-      path: `/v0.10/endpoint_manager/task/${task_id}/pause_info`,
+export const getPauseInfo = wrapServiceMethodWithSegments(
+  'transfer.endpoint-manager.task.getPauseInfo',
+  function (
+    task_id: string,
+    options?: {
+      query?: never;
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<JSONFetchResponse<PauseRuleDocument>> {
+    return serviceRequest(
+      {
+        service: ID,
+        scope: SCOPES.ALL,
+        path: `/v0.10/endpoint_manager/task/${task_id}/pause_info`,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     query?: never;

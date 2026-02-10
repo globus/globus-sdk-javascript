@@ -1,8 +1,8 @@
 import {
   HTTP_METHODS,
   serviceRequest,
-  normalizeServiceMethodArgs,
-  normalizeServiceMethodArgsWithSegments,
+  wrapServiceMethod,
+  wrapServiceMethodWithSegments,
 } from '../../../shared.js';
 import { ID } from '../../config.js';
 import { RESOURCE_SERVERS } from '../../../auth/config.js';
@@ -17,26 +17,31 @@ import type {
 /**
  * @see https://timer.automate.globus.org/redoc#tag/jobs/operation/list_jobs_jobs__get
  */
-export const getAll = function (
-  arg1?: any,
-  arg2?: any,
-): Promise<
-  JSONFetchResponse<
-    OpenAPI.operations['list_jobs_jobs__get']['responses']['200']['content']['application/json']
-  >
-> {
-  const { request, options } = normalizeServiceMethodArgs('timers.jobs.getAll', arg1, arg2);
-  return serviceRequest(
-    {
-      service: ID,
-      resource_server: RESOURCE_SERVERS[ID],
-      path: '/jobs',
-      method: HTTP_METHODS.GET,
+export const getAll = wrapServiceMethod(
+  'timers.jobs.getAll',
+  function (
+    options?: {
+      query?: OpenAPI.operations['list_jobs_jobs__get']['parameters']['query'];
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethod<{
+    sdkOptions?,
+  ): Promise<
+    JSONFetchResponse<
+      OpenAPI.operations['list_jobs_jobs__get']['responses']['200']['content']['application/json']
+    >
+  > {
+    return serviceRequest(
+      {
+        service: ID,
+        resource_server: RESOURCE_SERVERS[ID],
+        path: '/jobs',
+        method: HTTP_METHODS.GET,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethod<{
   query?: OpenAPI.operations['list_jobs_jobs__get']['parameters']['query'];
   payload?: never;
 }>;
@@ -44,32 +49,32 @@ export const getAll = function (
 /**
  * @see https://timer.automate.globus.org/redoc#tag/jobs/operation/read_job_jobs__job_id__get
  */
-export const get = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<
-  JSONFetchResponse<
-    OpenAPI.operations['read_job_jobs__job_id__get']['responses']['200']['content']['application/json']
-  >
-> {
-  const { segments: job_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'timers.jobs.get',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      resource_server: RESOURCE_SERVERS[ID],
-      path: `/jobs/${job_id}`,
-      method: HTTP_METHODS.GET,
+export const get = wrapServiceMethodWithSegments(
+  'timers.jobs.get',
+  function (
+    job_id: string,
+    options?: {
+      query?: OpenAPI.operations['read_job_jobs__job_id__get']['parameters']['query'];
+      payload?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<
+    JSONFetchResponse<
+      OpenAPI.operations['read_job_jobs__job_id__get']['responses']['200']['content']['application/json']
+    >
+  > {
+    return serviceRequest(
+      {
+        service: ID,
+        resource_server: RESOURCE_SERVERS[ID],
+        path: `/jobs/${job_id}`,
+        method: HTTP_METHODS.GET,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     query?: OpenAPI.operations['read_job_jobs__job_id__get']['parameters']['query'];
@@ -80,32 +85,31 @@ export const get = function (
 /**
  * @see https://timer.automate.globus.org/redoc#tag/jobs/operation/update_job_jobs__job_id__patch
  */
-export const patch = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<
-  JSONFetchResponse<
-    OpenAPI.operations['update_job_jobs__job_id__patch']['responses']['200']['content']['application/json']
-  >
-> {
-  const { segments: job_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'timers.jobs.patch',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      resource_server: RESOURCE_SERVERS[ID],
-      path: `/jobs/${job_id}`,
-      method: HTTP_METHODS.PATCH,
+export const patch = wrapServiceMethodWithSegments(
+  'timers.jobs.patch',
+  function (
+    job_id: string,
+    options?: {
+      payload: OpenAPI.operations['update_job_jobs__job_id__patch']['requestBody']['content']['application/json'];
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<
+    JSONFetchResponse<
+      OpenAPI.operations['update_job_jobs__job_id__patch']['responses']['200']['content']['application/json']
+    >
+  > {
+    return serviceRequest(
+      {
+        service: ID,
+        resource_server: RESOURCE_SERVERS[ID],
+        path: `/jobs/${job_id}`,
+        method: HTTP_METHODS.PATCH,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     payload: OpenAPI.operations['update_job_jobs__job_id__patch']['requestBody']['content']['application/json'];
@@ -115,32 +119,33 @@ export const patch = function (
 /**
  * @see https://timer.automate.globus.org/redoc#tag/jobs/operation/pause_job_jobs__job_id__pause_post
  */
-export const pause = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<
-  JSONFetchResponse<
-    OpenAPI.operations['pause_job_jobs__job_id__pause_post']['responses']['200']['content']['application/json']
-  >
-> {
-  const { segments: job_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'timers.jobs.pause',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      resource_server: RESOURCE_SERVERS[ID],
-      path: `/jobs/${job_id}/pause`,
-      method: HTTP_METHODS.POST,
+export const pause = wrapServiceMethodWithSegments(
+  'timers.jobs.pause',
+  function (
+    job_id: string,
+    options?: {
+      payload?: never;
+      body?: never;
+      query?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<
+    JSONFetchResponse<
+      OpenAPI.operations['pause_job_jobs__job_id__pause_post']['responses']['200']['content']['application/json']
+    >
+  > {
+    return serviceRequest(
+      {
+        service: ID,
+        resource_server: RESOURCE_SERVERS[ID],
+        path: `/jobs/${job_id}/pause`,
+        method: HTTP_METHODS.POST,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     payload?: never;
@@ -152,32 +157,33 @@ export const pause = function (
 /**
  * @see https://timer.automate.globus.org/redoc#tag/jobs/operation/resume_job_jobs__job_id__resume_post
  */
-export const resume = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<
-  JSONFetchResponse<
-    OpenAPI.operations['resume_job_jobs__job_id__resume_post']['responses']['200']['content']['application/json']
-  >
-> {
-  const { segments: job_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'timers.jobs.resume',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      resource_server: RESOURCE_SERVERS[ID],
-      path: `/jobs/${job_id}/resume`,
-      method: HTTP_METHODS.POST,
+export const resume = wrapServiceMethodWithSegments(
+  'timers.jobs.resume',
+  function (
+    job_id: string,
+    options?: {
+      payload?: never;
+      body?: never;
+      query?: OpenAPI.operations['resume_job_jobs__job_id__resume_post']['parameters']['query'];
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<
+    JSONFetchResponse<
+      OpenAPI.operations['resume_job_jobs__job_id__resume_post']['responses']['200']['content']['application/json']
+    >
+  > {
+    return serviceRequest(
+      {
+        service: ID,
+        resource_server: RESOURCE_SERVERS[ID],
+        path: `/jobs/${job_id}/resume`,
+        method: HTTP_METHODS.POST,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     payload?: never;
@@ -189,32 +195,33 @@ export const resume = function (
 /**
  * @see https://timer.automate.globus.org/redoc#tag/jobs/operation/delete_timer_jobs__timer_id__delete
  */
-export const remove = function (
-  arg1: any,
-  arg2?: any,
-  arg3?: any,
-): Promise<
-  JSONFetchResponse<
-    OpenAPI.operations['delete_timer_jobs__timer_id__delete']['responses']['200']['content']['application/json']
-  >
-> {
-  const { segments: job_id, request, options } = normalizeServiceMethodArgsWithSegments(
-    'timers.jobs.remove',
-    arg1,
-    arg2,
-    arg3,
-  );
-  return serviceRequest(
-    {
-      service: ID,
-      resource_server: RESOURCE_SERVERS[ID],
-      path: `/jobs/${job_id}`,
-      method: HTTP_METHODS.DELETE,
+export const remove = wrapServiceMethodWithSegments(
+  'timers.jobs.remove',
+  function (
+    job_id: string,
+    options?: {
+      payload?: never;
+      body?: never;
+      query?: never;
     },
-    request,
-    options,
-  );
-} satisfies ServiceMethodDynamicSegments<
+    sdkOptions?,
+  ): Promise<
+    JSONFetchResponse<
+      OpenAPI.operations['delete_timer_jobs__timer_id__delete']['responses']['200']['content']['application/json']
+    >
+  > {
+    return serviceRequest(
+      {
+        service: ID,
+        resource_server: RESOURCE_SERVERS[ID],
+        path: `/jobs/${job_id}`,
+        method: HTTP_METHODS.DELETE,
+      },
+      options,
+      sdkOptions,
+    );
+  },
+) satisfies ServiceMethodDynamicSegments<
   string,
   {
     payload?: never;
