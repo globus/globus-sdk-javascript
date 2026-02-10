@@ -1,5 +1,9 @@
 import { ID } from '../../config.js';
-import { HTTP_METHODS, serviceRequest } from '../../../../services/shared.js';
+import {
+  HTTP_METHODS,
+  serviceRequest,
+  normalizeServiceMethodArgs,
+} from '../../../../services/shared.js';
 
 import type { ServiceMethod, ServiceMethodOptions } from '../../../types.js';
 
@@ -78,7 +82,8 @@ function injectServiceOptions(
 /**
  * @see https://docs.globus.org/api/auth/reference/#dependent_token_grant_post_v2oauth2token
  */
-export const token = function (options = {}, sdkOptions?) {
+export const token = function (arg1?: any, arg2?: any) {
+  const { request, options } = normalizeServiceMethodArgs('auth.oauth2.token.token', arg1, arg2);
   return serviceRequest(
     {
       service: ID,
@@ -87,8 +92,8 @@ export const token = function (options = {}, sdkOptions?) {
       method: HTTP_METHODS.POST,
       preventRetry: true,
     },
-    injectServiceOptions(options),
-    sdkOptions,
+    injectServiceOptions(request),
+    options,
   );
 } satisfies ServiceMethod<{
   payload?: ExchangePayload;
@@ -110,8 +115,13 @@ export const exchange = token;
  * Token Introspection
  * @see https://docs.globus.org/api/auth/reference/#token-introspect
  */
-export const introspect = function (options, sdkOptions?) {
-  if (!options?.payload) {
+export const introspect = function (arg1: any, arg2?: any) {
+  const { request, options } = normalizeServiceMethodArgs(
+    'auth.oauth2.token.introspect',
+    arg1,
+    arg2,
+  );
+  if (!request?.payload) {
     throw new Error(`'payload' is required for introspect`);
   }
   return serviceRequest(
@@ -122,8 +132,8 @@ export const introspect = function (options, sdkOptions?) {
       method: HTTP_METHODS.POST,
       preventRetry: true,
     },
-    injectServiceOptions(options),
-    sdkOptions,
+    injectServiceOptions(request),
+    options,
   );
 } satisfies ServiceMethod<{
   payload: IntrospectPayload;
@@ -133,8 +143,9 @@ export const introspect = function (options, sdkOptions?) {
  * Token Revocation
  * @see https://docs.globus.org/api/auth/reference/#token-revoke
  */
-export const revoke = function (options, sdkOptions?) {
-  if (!options?.payload) {
+export const revoke = function (arg1: any, arg2?: any) {
+  const { request, options } = normalizeServiceMethodArgs('auth.oauth2.token.revoke', arg1, arg2);
+  if (!request?.payload) {
     throw new Error(`'payload' is required for revoke`);
   }
   return serviceRequest(
@@ -145,8 +156,8 @@ export const revoke = function (options, sdkOptions?) {
       method: HTTP_METHODS.POST,
       preventRetry: true,
     },
-    injectServiceOptions(options),
-    sdkOptions,
+    injectServiceOptions(request),
+    options,
   );
 } satisfies ServiceMethod<{
   payload: RevokePayload;
@@ -156,8 +167,9 @@ export const revoke = function (options, sdkOptions?) {
  * Token Refresh
  * @see https://docs.globus.org/api/auth/reference/#refresh_token_grant
  */
-export const refresh = function (options, sdkOptions?) {
-  if (!options?.payload) {
+export const refresh = function (arg1: any, arg2?: any) {
+  const { request, options } = normalizeServiceMethodArgs('auth.oauth2.token.refresh', arg1, arg2);
+  if (!request?.payload) {
     throw new Error(`'payload' is required for revoke`);
   }
   return serviceRequest(
@@ -168,8 +180,8 @@ export const refresh = function (options, sdkOptions?) {
       method: HTTP_METHODS.POST,
       preventRetry: true,
     },
-    injectServiceOptions(options),
-    sdkOptions,
+    injectServiceOptions(request),
+    options,
   );
 } satisfies ServiceMethod<{
   payload: RefreshPayload;
@@ -179,8 +191,13 @@ export const refresh = function (options, sdkOptions?) {
  * @private
  * @deprecated Rather than using `validate` to check if a token is valid, it is recommended to make a request to the resource server with the token and handle the error response.
  */
-export const validate = function (options, sdkOptions?) {
-  if (!options?.payload) {
+export const validate = function (arg1: any, arg2?: any) {
+  const { request, options } = normalizeServiceMethodArgs(
+    'auth.oauth2.token.validate',
+    arg1,
+    arg2,
+  );
+  if (!request?.payload) {
     throw new Error(`'payload' is required for validate`);
   }
   return serviceRequest(
@@ -191,8 +208,8 @@ export const validate = function (options, sdkOptions?) {
       method: HTTP_METHODS.POST,
       preventRetry: true,
     },
-    injectServiceOptions(options),
-    sdkOptions,
+    injectServiceOptions(request),
+    options,
   );
 } satisfies ServiceMethod<{
   payload: ValidatePayload;

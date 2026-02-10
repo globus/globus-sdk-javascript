@@ -1,4 +1,8 @@
-import { serviceRequest } from '../../shared.js';
+import {
+  serviceRequest,
+  normalizeServiceMethodArgs,
+  normalizeServiceMethodArgsWithSegments,
+} from '../../shared.js';
 import { ID as service } from '../config.js';
 import { RESOURCE_SERVERS } from '../../auth/config.js';
 
@@ -17,17 +21,18 @@ type GetAllOperation = operations['stream_access_points_list_stream_access_point
  * Get a list of all stream access points.
  */
 export const getAll = function (
-  options?,
-  sdkOptions?,
+  arg1?: any,
+  arg2?: any,
 ): Promise<JSONFetchResponse<GetAllOperation['responses']['200']['content']['application/json']>> {
+  const { request, options } = normalizeServiceMethodArgs('transfer.stream-access-point.getAll', arg1, arg2);
   return serviceRequest(
     {
       service,
       resource_server,
       path: `/v2/stream_access_points`,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethod<{
   query?: GetAllOperation['parameters']['query'];
@@ -40,18 +45,24 @@ type GetOperation =
  * Fetch a stream-access-point by its UUID.
  */
 export const get = function (
-  stream_access_point_uuid,
-  options?,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<JSONFetchResponse<GetOperation['responses']['200']['content']['application/json']>> {
+  const { segments: stream_access_point_uuid, request, options } = normalizeServiceMethodArgsWithSegments(
+    'transfer.stream-access-point.get',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service,
       resource_server,
       path: `/v2/stream_access_points/${stream_access_point_uuid}`,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,

@@ -1,5 +1,8 @@
 import { ID, SCOPES } from '../../config.js';
-import { serviceRequest } from '../../../../services/shared.js';
+import {
+  serviceRequest,
+  normalizeServiceMethodArgsWithSegments,
+} from '../../../../services/shared.js';
 
 import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../../types.js';
 
@@ -23,17 +26,23 @@ export type Consent = {
 };
 
 export const getAll = function (
-  identity_id,
-  options = {},
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<JSONFetchResponse<{ consents: Consent[] }>> {
+  const { segments: identity_id, request, options } = normalizeServiceMethodArgsWithSegments(
+    'auth.identities.consents.getAll',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
       scope: SCOPES.VIEW_IDENTITIES,
       path: `/v2/api/identities/${identity_id}/consents`,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<string, Record<string, any>>;

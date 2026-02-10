@@ -5,7 +5,7 @@ import { getSDKOptions, Service } from '../core/global.js';
 import { isAuthorizationRequirementsError } from '../core/errors.js';
 import { RESOURCE_SERVERS } from './auth/config.js';
 import { isRefreshToken } from './auth/index.js';
-import type { ServiceMethodOptions, SDKOptions } from './types.js';
+import type { ServiceMethodOptions, SDKOptions, ServiceMethodConfig, Segment } from './types.js';
 import type {
   GCSConfiguration,
   UnauthenticatedGCSConfiguration,
@@ -18,6 +18,110 @@ export enum HTTP_METHODS {
   DELETE = 'DELETE',
   PUT = 'PUT',
   PATCH = 'PATCH',
+}
+
+/**
+ * Track which methods have already shown deprecation warnings to avoid spam.
+ * @private
+ */
+const deprecationWarningShown = new Set<string>();
+
+/**
+ * Emit a deprecation warning for legacy positional argument usage.
+ * @private
+ */
+function emitDeprecationWarning(methodName: string, hasSegments: boolean): void {
+  const key = `${methodName}-${hasSegments}`;
+  if (deprecationWarningShown.has(key)) {
+    return;
+  }
+  deprecationWarningShown.add(key);
+
+  const newSignature = hasSegments
+    ? `${methodName}({ segments, request, options })`
+    : `${methodName}({ request, options })`;
+
+  console.warn(
+    `⚠️  DEPRECATION WARNING: Calling ${methodName} with positional arguments is deprecated. ` +
+      `Please use the configuration object pattern instead: ${newSignature}`,
+  );
+}
+
+/**
+ * Check if the first argument is a configuration object.
+ * @private
+ */
+function isConfigObject<S extends Segment, O extends ServiceMethodOptions>(
+  firstArg: unknown,
+): firstArg is ServiceMethodConfig<S, O> {
+  return (
+    typeof firstArg === 'object' &&
+    firstArg !== null &&
+    ('segments' in firstArg || 'request' in firstArg || 'options' in firstArg)
+  );
+}
+
+/**
+ * Normalize service method arguments for methods WITHOUT dynamic segments.
+ * Supports both legacy positional arguments and new configuration object.
+ * @private
+ */
+export function normalizeServiceMethodArgs<O extends ServiceMethodOptions>(
+  methodName: string,
+  arg1?: ServiceMethodConfig<never, O> | (O & ServiceMethodOptions),
+  arg2?: SDKOptions,
+): { request?: O & ServiceMethodOptions; options?: SDKOptions } {
+  // New signature: configuration object
+  if (arg1 !== undefined && isConfigObject<never, O>(arg1)) {
+    return {
+      request: arg1.request,
+      options: arg1.options,
+    };
+  }
+
+  // Legacy signature: positional arguments
+  if (arg1 !== undefined || arg2 !== undefined) {
+    emitDeprecationWarning(methodName, false);
+  }
+  return {
+    request: arg1 as O & ServiceMethodOptions,
+    options: arg2,
+  };
+}
+
+/**
+ * Normalize service method arguments for methods WITH dynamic segments.
+ * Supports both legacy positional arguments and new configuration object.
+ * @private
+ */
+export function normalizeServiceMethodArgsWithSegments<
+  S extends Segment,
+  O extends ServiceMethodOptions,
+>(
+  methodName: string,
+  arg1: ServiceMethodConfig<S, O> | S,
+  arg2?: O & ServiceMethodOptions,
+  arg3?: SDKOptions,
+): { segments: S; request?: O & ServiceMethodOptions; options?: SDKOptions } {
+  // New signature: configuration object
+  if (isConfigObject<S, O>(arg1)) {
+    if (arg1.segments === undefined) {
+      throw new Error(`${methodName}: 'segments' is required in configuration object`);
+    }
+    return {
+      segments: arg1.segments,
+      request: arg1.request,
+      options: arg1.options,
+    };
+  }
+
+  // Legacy signature: positional arguments
+  emitDeprecationWarning(methodName, true);
+  return {
+    segments: arg1 as S,
+    request: arg2,
+    options: arg3,
+  };
 }
 
 /**

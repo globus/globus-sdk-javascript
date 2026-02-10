@@ -1,4 +1,8 @@
-import { HTTP_METHODS, serviceRequest } from '../../shared.js';
+import {
+  HTTP_METHODS,
+  serviceRequest,
+  normalizeServiceMethodArgs,
+} from '../../shared.js';
 import { ID } from '../config.js';
 
 import type { OpenAPI } from '../index.js';
@@ -46,7 +50,8 @@ type TimerCreatePayload = {
   };
 };
 
-export const create = function (options, sdkOptions?) {
+export const create = function (arg1: any, arg2?: any) {
+  const { request, options } = normalizeServiceMethodArgs('timers.timer.create', arg1, arg2);
   return serviceRequest(
     {
       service: ID,
@@ -54,8 +59,8 @@ export const create = function (options, sdkOptions?) {
       path: '/v2/timer',
       method: HTTP_METHODS.POST,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethod<{
   payload: TimerCreatePayload;

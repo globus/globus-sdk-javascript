@@ -1,4 +1,8 @@
-import { HTTP_METHODS, serviceRequest } from '../../shared.js';
+import {
+  HTTP_METHODS,
+  serviceRequest,
+  normalizeServiceMethodArgsWithSegments,
+} from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
 
 import type { JSONFetchResponse, SDKOptions, ServiceMethodOptions } from '../../types.js';
@@ -53,31 +57,24 @@ export type GSearchResult<C extends Content = Content> = {
  * @see https://docs.globus.org/api/search/reference/get_query/
  */
 export const get = function <C extends Content = Content>(
-  index_id: string,
-  options?: ServiceMethodOptions & {
-    /**
-     * @see https://docs.globus.org/api/search/reference/get_query/#parameters
-     */
-    query?: {
-      q: string;
-      offset?: `${number}` | number;
-      limit?: `${number}` | number;
-      advanced?: 'true' | 'false';
-      bypass_visible_to?: 'true' | 'false';
-      result_format_version?: string;
-      filter_principal_sets?: string;
-    };
-  },
-  sdkOptions?: SDKOptions,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<JSONFetchResponse<GSearchResult<C>>> {
+  const { segments: index_id, request, options } = normalizeServiceMethodArgsWithSegments(
+    'search.query.get',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
       scope: SCOPES.SEARCH,
       path: `/v1/index/${index_id}/search`,
     },
+    request,
     options,
-    sdkOptions,
   );
 };
 
@@ -104,12 +101,16 @@ export type GSearchRequest = {
  * @see https://docs.globus.org/api/search/reference/post_query/
  */
 export const post = function <C extends Content = Content>(
-  index_id: string,
-  options: ServiceMethodOptions & {
-    payload: GSearchRequest;
-  },
-  sdkOptions?: SDKOptions,
+  arg1: any,
+  arg2: any,
+  arg3?: any,
 ): Promise<JSONFetchResponse<GSearchResult<C>>> {
+  const { segments: index_id, request, options } = normalizeServiceMethodArgsWithSegments(
+    'search.query.post',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
@@ -117,8 +118,8 @@ export const post = function <C extends Content = Content>(
       path: `/v1/index/${index_id}/search`,
       method: HTTP_METHODS.POST,
     },
+    request,
     options,
-    sdkOptions,
   );
 };
 

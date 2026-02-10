@@ -1,4 +1,7 @@
-import { serviceRequest } from '../../shared.js';
+import {
+  serviceRequest,
+  normalizeServiceMethodArgs,
+} from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
 
 import type { JSONFetchResponse, ServiceMethod } from '../../../services/types.js';
@@ -43,12 +46,13 @@ export type EndpointSearchResult = PaginatedResponse<
  * @see https://docs.globus.org/api/transfer/endpoint_search/#endpoint_search
  */
 export const endpointSearch = function (
-  options?,
-  sdkOptions?,
+  arg1?: any,
+  arg2?: any,
 ): Promise<JSONFetchResponse<EndpointSearchResult>> {
+  const { request, options } = normalizeServiceMethodArgs('transfer.endpoint-search.endpointSearch', arg1, arg2);
   const serviceRequestOptions = {
-    ...options,
-    query: options?.query,
+    ...request,
+    query: request?.query,
   };
   return serviceRequest(
     {
@@ -57,7 +61,7 @@ export const endpointSearch = function (
       path: `/v0.10/endpoint_search`,
     },
     serviceRequestOptions,
-    sdkOptions,
+    options,
   );
 } satisfies ServiceMethod<
   {

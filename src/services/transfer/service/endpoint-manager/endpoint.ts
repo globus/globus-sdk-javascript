@@ -1,4 +1,8 @@
-import { serviceRequest } from '../../../shared.js';
+import {
+  serviceRequest,
+  normalizeServiceMethodArgs,
+  normalizeServiceMethodArgsWithSegments,
+} from '../../../shared.js';
 import { ID, SCOPES } from '../../config.js';
 
 import type {
@@ -15,18 +19,24 @@ import { EndpointDocument, EndpointListDocument } from '../endpoint.js';
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#mc_get_endpoint
  */
 export const get = function (
-  endpoint_xid,
-  options?,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<JSONFetchResponse<EndpointDocument>> {
+  const { segments: endpoint_xid, request, options } = normalizeServiceMethodArgsWithSegments(
+    'transfer.endpoint-manager.endpoint.get',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
       scope: SCOPES.ALL,
       path: `/v0.10/endpoint_manager/endpoint/${endpoint_xid}`,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,
@@ -40,18 +50,24 @@ export const get = function (
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_hosted_endpoint_list
  */
 export const getHostedEndpoints = function (
-  endpoint_xid,
-  options?,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<JSONFetchResponse<PaginatedResponse<'Offset', EndpointListDocument>>> {
+  const { segments: endpoint_xid, request, options } = normalizeServiceMethodArgsWithSegments(
+    'transfer.endpoint-manager.endpoint.getHostedEndpoints',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
       scope: SCOPES.ALL,
       path: `/v0.10/endpoint_manager/endpoint/${endpoint_xid}/hosted_endpoint_list`,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,
@@ -65,18 +81,24 @@ export const getHostedEndpoints = function (
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_task_events
  */
 export const getAccessList = function (
-  endpoint_xid,
-  options?,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<JSONFetchResponse<AccessListDocument>> {
+  const { segments: endpoint_xid, request, options } = normalizeServiceMethodArgsWithSegments(
+    'transfer.endpoint-manager.endpoint.getAccessList',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
       scope: SCOPES.ALL,
       path: `/v0.10/endpoint_manager/endpoint/${endpoint_xid}/access_list`,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,
@@ -90,8 +112,8 @@ export const getAccessList = function (
  * @see https://docs.globus.org/api/transfer/advanced_endpoint_management/#get_monitored_endpoints
  */
 export const getMonitoredEndpoints = function (
-  options = {},
-  sdkOptions?,
+  arg1?: any,
+  arg2?: any,
 ): Promise<
   JSONFetchResponse<
     PaginatedResponse<
@@ -102,14 +124,19 @@ export const getMonitoredEndpoints = function (
     >
   >
 > {
+  const { request, options } = normalizeServiceMethodArgs(
+    'transfer.endpoint-manager.endpoint.getMonitoredEndpoints',
+    arg1,
+    arg2,
+  );
   return serviceRequest(
     {
       service: ID,
       scope: SCOPES.ALL,
       path: `/v0.10/endpoint_manager/monitored_endpoints`,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethod<{
   query?: QueryParameters<'Offset'>;

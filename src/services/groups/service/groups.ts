@@ -1,6 +1,11 @@
 import { ID } from '../config.js';
 import { RESOURCE_SERVERS } from '../../auth/config.js';
-import { HTTP_METHODS, serviceRequest } from '../../shared.js';
+import {
+  HTTP_METHODS,
+  serviceRequest,
+  normalizeServiceMethodArgs,
+  normalizeServiceMethodArgsWithSegments,
+} from '../../shared.js';
 
 import type { OpenAPI } from '../index.js';
 
@@ -14,21 +19,22 @@ import type {
  * @see https://groups.api.globus.org/redoc#tag/groups/operation/get_my_groups_and_memberships_v2_groups_my_groups_get
  */
 export const getMyGroups = function (
-  options?,
-  sdkOptions?,
+  arg1?: any,
+  arg2?: any,
 ): Promise<
   JSONFetchResponse<
     OpenAPI.operations['get_my_groups_and_memberships_v2_groups_my_groups_get']['responses']['200']['content']['application/json']
   >
 > {
+  const { request, options } = normalizeServiceMethodArgs('groups.getMyGroups', arg1, arg2);
   return serviceRequest(
     {
       service: ID,
       resource_server: RESOURCE_SERVERS.GROUPS,
       path: `/v2/groups/my_groups`,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethod<{
   query?: {
@@ -43,22 +49,28 @@ export const getMyGroups = function (
  * @see https://groups.api.globus.org/redoc#tag/groups/operation/get_group_v2_groups__group_id__get
  */
 export const get = function (
-  group_id,
-  options?,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<
   JSONFetchResponse<
     OpenAPI.operations['get_group_v2_groups__group_id__get']['responses']['200']['content']['application/json']
   >
 > {
+  const { segments: group_id, request, options } = normalizeServiceMethodArgsWithSegments(
+    'groups.get',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
       resource_server: RESOURCE_SERVERS.GROUPS,
       path: `/v2/groups/${group_id}`,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   OpenAPI.operations['get_group_v2_groups__group_id__get']['parameters']['path']['group_id'],
@@ -72,13 +84,14 @@ export const get = function (
  * @see https://groups.api.globus.org/redoc#tag/groups/operation/create_group_v2_groups_post
  */
 export const create = function (
-  options,
-  sdkOptions?,
+  arg1?: any,
+  arg2?: any,
 ): Promise<
   JSONFetchResponse<
     OpenAPI.operations['create_group_v2_groups_post']['responses']['201']['content']['application/json']
   >
 > {
+  const { request, options } = normalizeServiceMethodArgs('groups.create', arg1, arg2);
   return serviceRequest(
     {
       service: ID,
@@ -86,8 +99,8 @@ export const create = function (
       path: '/v2/groups',
       method: HTTP_METHODS.POST,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethod<{
   query?: never;
@@ -99,14 +112,20 @@ export const create = function (
  * @see https://groups.api.globus.org/redoc#tag/groups/operation/delete_group_v2_groups__group_id__delete
  */
 export const remove = function (
-  group_id,
-  options?,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<
   JSONFetchResponse<
     OpenAPI.operations['delete_group_v2_groups__group_id__delete']['responses']['200']['content']['application/json']
   >
 > {
+  const { segments: group_id, request, options } = normalizeServiceMethodArgsWithSegments(
+    'groups.remove',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
@@ -114,8 +133,8 @@ export const remove = function (
       path: `/v2/groups/${group_id}`,
       method: HTTP_METHODS.DELETE,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   OpenAPI.operations['delete_group_v2_groups__group_id__delete']['parameters']['path']['group_id'],
@@ -127,14 +146,20 @@ export const remove = function (
  * @see https://groups.api.globus.org/redoc#tag/groups/operation/update_group_v2_groups__group_id__put
  * */
 export const update = function (
-  group_id,
-  options,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<
   JSONFetchResponse<
     OpenAPI.operations['update_group_v2_groups__group_id__put']['responses']['200']['content']['application/json']
   >
 > {
+  const { segments: group_id, request, options } = normalizeServiceMethodArgsWithSegments(
+    'groups.update',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
@@ -142,8 +167,8 @@ export const update = function (
       path: `/v2/groups/${group_id}`,
       method: HTTP_METHODS.PUT,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   OpenAPI.operations['update_group_v2_groups__group_id__put']['parameters']['path']['group_id'],
@@ -158,21 +183,22 @@ export const update = function (
  * @see https://groups.api.globus.org/redoc#tag/groups/operation/get_statuses_v2_groups_statuses_get
  */
 export const getStatuses = function (
-  options?,
-  sdkOptions?,
+  arg1?: any,
+  arg2?: any,
 ): Promise<
   JSONFetchResponse<
     OpenAPI.operations['get_statuses_v2_groups_statuses_get']['responses']['200']['content']['application/json']
   >
 > {
+  const { request, options } = normalizeServiceMethodArgs('groups.getStatuses', arg1, arg2);
   return serviceRequest(
     {
       service: ID,
       resource_server: RESOURCE_SERVERS.GROUPS,
       path: `/v2/groups/statuses`,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethod<{
   query?: never;

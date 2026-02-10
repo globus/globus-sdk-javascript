@@ -1,4 +1,9 @@
-import { HTTP_METHODS, serviceRequest } from '../../shared.js';
+import {
+  HTTP_METHODS,
+  serviceRequest,
+  normalizeServiceMethodArgs,
+  normalizeServiceMethodArgsWithSegments,
+} from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
 
 import type {
@@ -44,33 +49,40 @@ export type IndexList = {
  * @see https://docs.globus.org/api/search/reference/index_show/
  */
 export const get = function (
-  index_id,
-  options?,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<JSONFetchResponse<IndexWithPermissions>> {
+  const { segments: index_id, request, options } = normalizeServiceMethodArgsWithSegments(
+    'search.index.get',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
       // scope: SCOPES.ALL,
       path: `/v1/index/${index_id}`,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<string, {}>;
 
 /**
  * @see https://docs.globus.org/api/search/reference/index_list/
  */
-export const getAll = function (options?, sdkOptions?): Promise<JSONFetchResponse<IndexList>> {
+export const getAll = function (arg1?: any, arg2?: any): Promise<JSONFetchResponse<IndexList>> {
+  const { request, options } = normalizeServiceMethodArgs('search.index.getAll', arg1, arg2);
   return serviceRequest(
     {
       service: ID,
       scope: SCOPES.ALL,
       path: `/v1/index_list`,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethod<{}>;
 
@@ -82,7 +94,8 @@ type IndexCreate = {
 /**
  * @see https://docs.globus.org/api/search/reference/index_create/
  */
-export const create = function (options, sdkOptions?): Promise<JSONFetchResponse<GSearchIndex>> {
+export const create = function (arg1: any, arg2?: any): Promise<JSONFetchResponse<GSearchIndex>> {
+  const { request, options } = normalizeServiceMethodArgs('search.index.create', arg1, arg2);
   return serviceRequest(
     {
       service: ID,
@@ -90,8 +103,8 @@ export const create = function (options, sdkOptions?): Promise<JSONFetchResponse
       path: `/v1/index`,
       method: HTTP_METHODS.POST,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethod<{
   payload: IndexCreate;
@@ -106,10 +119,16 @@ type IndexDeleteResponse = {
  * @see https://docs.globus.org/api/search/reference/index_delete/
  */
 export const remove = function (
-  index_id,
-  options?,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<JSONFetchResponse<IndexDeleteResponse>> {
+  const { segments: index_id, request, options } = normalizeServiceMethodArgsWithSegments(
+    'search.index.remove',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
@@ -117,8 +136,8 @@ export const remove = function (
       path: `/v1/index/${index_id}`,
       method: HTTP_METHODS.DELETE,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,
@@ -137,10 +156,16 @@ type IndexReopenResponse = {
  * @see https://docs.globus.org/api/search/reference/index_reopen/
  */
 export const reopen = function (
-  index_id,
-  options?,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<JSONFetchResponse<IndexReopenResponse>> {
+  const { segments: index_id, request, options } = normalizeServiceMethodArgsWithSegments(
+    'search.index.reopen',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
@@ -148,8 +173,8 @@ export const reopen = function (
       path: `/v1/index/${index_id}/reopen`,
       method: HTTP_METHODS.POST,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,
@@ -213,10 +238,16 @@ export type GMetaEntry = {
 };
 
 export const ingest = function (
-  index_id,
-  options?,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<JSONFetchResponse<IngestResponse>> {
+  const { segments: index_id, request, options } = normalizeServiceMethodArgsWithSegments(
+    'search.index.ingest',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
@@ -224,8 +255,8 @@ export const ingest = function (
       path: `/v1/index/${index_id}/ingest`,
       method: HTTP_METHODS.POST,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,

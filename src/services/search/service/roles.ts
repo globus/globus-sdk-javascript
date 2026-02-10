@@ -1,4 +1,8 @@
-import { HTTP_METHODS, serviceRequest } from '../../shared.js';
+import {
+  HTTP_METHODS,
+  serviceRequest,
+  normalizeServiceMethodArgsWithSegments,
+} from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
 
 import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../types.js';
@@ -32,18 +36,24 @@ export type IndexRoleListResponse = {
  * @see https://docs.globus.org/api/search/reference/role_list/
  */
 export const getAll = function (
-  index_id,
-  options?,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<JSONFetchResponse<IndexRoleListResponse>> {
+  const { segments: index_id, request, options } = normalizeServiceMethodArgsWithSegments(
+    'search.roles.getAll',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
       scope: SCOPES.ALL,
       path: `/v1/index/${index_id}/role_list`,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<string, {}>;
 
@@ -55,10 +65,16 @@ export type SearchIndexRoleCreate = Pick<IndexRole, 'role_name' | 'principal'>;
  * @see https://docs.globus.org/api/search/reference/role_create/
  */
 export const create = function (
-  index_id,
-  options,
-  sdkOptions?,
+  arg1: any,
+  arg2: any,
+  arg3?: any,
 ): Promise<JSONFetchResponse<IndexRole>> {
+  const { segments: index_id, request, options } = normalizeServiceMethodArgsWithSegments(
+    'search.roles.create',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
@@ -66,8 +82,8 @@ export const create = function (
       path: `/v1/index/${index_id}/role`,
       method: HTTP_METHODS.POST,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,
@@ -88,10 +104,16 @@ export type SearchIndexRoleDeleted = {
  * @see https://docs.globus.org/api/search/reference/role_delete/
  */
 export const remove = function (
-  { index_id, role_id },
-  options?,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<JSONFetchResponse<SearchIndexRoleDeleted>> {
+  const { segments: { index_id, role_id }, request, options } = normalizeServiceMethodArgsWithSegments(
+    'search.roles.remove',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
@@ -99,8 +121,8 @@ export const remove = function (
       path: `/v1/index/${index_id}/role/${role_id}`,
       method: HTTP_METHODS.DELETE,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   { index_id: string; role_id: string },

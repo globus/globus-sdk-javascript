@@ -1,4 +1,8 @@
-import { HTTP_METHODS, serviceRequest } from '../../shared.js';
+import {
+  HTTP_METHODS,
+  serviceRequest,
+  normalizeServiceMethodArgsWithSegments,
+} from '../../shared.js';
 
 import { ID, SCOPES } from '../config.js';
 
@@ -30,18 +34,24 @@ export type RoleListDocument = {
  * @see https://docs.globus.org/api/transfer/roles/#role_list
  */
 export const getAll = function (
-  endpoint_id: string,
-  options = {},
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<JSONFetchResponse<RoleListDocument>> {
+  const { segments: endpoint_id, request, options } = normalizeServiceMethodArgsWithSegments(
+    'transfer.roles.getAll',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
       scope: SCOPES.ALL,
       path: `/v0.10/endpoint/${endpoint_id}/role_list`,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,
@@ -56,18 +66,24 @@ export const getAll = function (
  * @see https://docs.globus.org/api/transfer/roles/#get_role_by_id
  */
 export const get = function (
-  { endpoint_id, role_id },
-  options?,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<JSONFetchResponse<RoleDocument>> {
+  const { segments: { endpoint_id, role_id }, request, options } = normalizeServiceMethodArgsWithSegments(
+    'transfer.roles.get',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
       scope: SCOPES.ALL,
       path: `/v0.10/endpoint/${endpoint_id}/role/${role_id}`,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   { endpoint_id: string; role_id: string },
@@ -82,10 +98,16 @@ export const get = function (
  * @see https://docs.globus.org/api/transfer/roles/#create_role
  */
 export const create = function (
-  collection_id: string,
-  options,
-  sdkOptions?,
+  arg1: any,
+  arg2: any,
+  arg3?: any,
 ): Promise<JSONFetchResponse<RoleDocument>> {
+  const { segments: collection_id, request, options } = normalizeServiceMethodArgsWithSegments(
+    'transfer.roles.create',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
@@ -93,8 +115,8 @@ export const create = function (
       path: `/v0.10/endpoint/${collection_id}/role`,
       method: HTTP_METHODS.POST,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,
@@ -108,9 +130,9 @@ export const create = function (
  * @see https://docs.globus.org/api/transfer/roles/#delete_globus_connect_personal_collection_role_by_id
  */
 export const remove = function (
-  { collection_id, role_id },
-  options?,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<
   JSONFetchResponse<{
     DATA_TYPE: 'result';
@@ -120,6 +142,12 @@ export const remove = function (
     resource: `/endpoint/${string}/role/${string}`;
   }>
 > {
+  const { segments: { collection_id, role_id }, request, options } = normalizeServiceMethodArgsWithSegments(
+    'transfer.roles.remove',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
@@ -127,8 +155,8 @@ export const remove = function (
       path: `/v0.10/endpoint/${collection_id}/role/${role_id}`,
       method: HTTP_METHODS.DELETE,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   { collection_id: string; role_id: string },

@@ -1,5 +1,10 @@
 import { ID, SCOPES } from '../config.js';
-import { HTTP_METHODS, serviceRequest } from '../../../services/shared.js';
+import {
+  HTTP_METHODS,
+  serviceRequest,
+  normalizeServiceMethodArgs,
+  normalizeServiceMethodArgsWithSegments,
+} from '../../../services/shared.js';
 
 import type { OpenAPI } from '../index.js';
 
@@ -13,21 +18,22 @@ import type {
  * @see https://globusonline.github.io/globus-flows/#tag/Flows/paths/~1flows/get
  */
 export const getAll = function (
-  options?,
-  sdkOptions?,
+  arg1?: any,
+  arg2?: any,
 ): Promise<
   JSONFetchResponse<
     OpenAPI.paths['/flows']['get']['responses']['200']['content']['application/json']
   >
 > {
+  const { request, options } = normalizeServiceMethodArgs('flows.getAll', arg1, arg2);
   return serviceRequest(
     {
       service: ID,
       scope: SCOPES.VIEW_FLOWS,
       path: `/flows`,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethod<{
   query?: OpenAPI.paths['/flows']['get']['parameters']['query'];
@@ -37,22 +43,28 @@ export const getAll = function (
  * @see https://globusonline.github.io/globus-flows/#tag/Flows/paths/~1flows~1{flow_id}/get
  */
 export const get = function (
-  flow_id,
-  options?,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<
   JSONFetchResponse<
     OpenAPI.paths['/flows/{flow_id}']['get']['responses']['200']['content']['application/json']
   >
 > {
+  const { segments: flow_id, request, options } = normalizeServiceMethodArgsWithSegments(
+    'flows.get',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
       scope: SCOPES.VIEW_FLOWS,
       path: `/flows/${flow_id}`,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,
@@ -65,14 +77,20 @@ export const get = function (
  * @see https://globusonline.github.io/globus-flows/#tag/Flows/paths/~1flows~1{flow_id}/delete
  */
 export const remove = function (
-  flow_id,
-  options?,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<
   JSONFetchResponse<
     OpenAPI.paths['/flows/{flow_id}']['delete']['responses']['200']['content']['application/json']
   >
 > {
+  const { segments: flow_id, request, options } = normalizeServiceMethodArgsWithSegments(
+    'flows.remove',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       scope: SCOPES.MANAGE_FLOWS,
@@ -80,8 +98,8 @@ export const remove = function (
       path: `/flows/${flow_id}`,
       method: HTTP_METHODS.DELETE,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,
@@ -96,14 +114,20 @@ export const remove = function (
  * @see https://globusonline.github.io/globus-flows/#tag/Runs/paths/~1flows~1%7Bflow_id%7D~1run/post
  */
 export const run = function (
-  flow_id,
-  options?,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<
   JSONFetchResponse<
     OpenAPI.paths['/flows/{flow_id}/run']['post']['responses']['201']['content']['application/json']
   >
 > {
+  const { segments: flow_id, request, options } = normalizeServiceMethodArgsWithSegments(
+    'flows.run',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
@@ -111,8 +135,8 @@ export const run = function (
       path: `/flows/${flow_id}/run`,
       method: HTTP_METHODS.POST,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,
@@ -132,14 +156,15 @@ export type ValidationLocationError = OpenAPI.components['schemas']['LocationErr
  * @see https://globusonline.github.io/globus-flows/#tag/Flows/paths/~1flows~1validate/post
  */
 export const validate = function (
-  options,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
 ): Promise<
   JSONFetchResponse<
     | OpenAPI.paths['/flows/validate']['post']['responses']['200']['content']['application/json']
     | OpenAPI.paths['/flows/validate']['post']['responses']['422']['content']['application/json']
   >
 > {
+  const { request, options } = normalizeServiceMethodArgs('flows.validate', arg1, arg2);
   return serviceRequest(
     {
       service: ID,
@@ -147,8 +172,8 @@ export const validate = function (
       path: `/flows/validate`,
       method: HTTP_METHODS.POST,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethod<{
   query?: never;
@@ -160,13 +185,14 @@ export const validate = function (
  * @see https://globusonline.github.io/globus-flows/#tag/Flows/paths/~1flows/post
  */
 export const create = function (
-  options?,
-  sdkOptions?,
+  arg1?: any,
+  arg2?: any,
 ): Promise<
   JSONFetchResponse<
     OpenAPI.paths['/flows']['post']['responses']['201']['content']['application/json']
   >
 > {
+  const { request, options } = normalizeServiceMethodArgs('flows.create', arg1, arg2);
   return serviceRequest(
     {
       service: ID,
@@ -174,8 +200,8 @@ export const create = function (
       path: `/flows`,
       method: HTTP_METHODS.POST,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethod<{
   query?: never;
@@ -192,14 +218,20 @@ export const deploy = create;
  * @see https://globusonline.github.io/globus-flows/#tag/Flows/paths/~1flows~1{flow_id}/put
  */
 export const update = function (
-  flow_id,
-  options?,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<
   JSONFetchResponse<
     OpenAPI.paths['/flows/{flow_id}']['put']['responses']['200']['content']['application/json']
   >
 > {
+  const { segments: flow_id, request, options } = normalizeServiceMethodArgsWithSegments(
+    'flows.update',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
@@ -207,8 +239,8 @@ export const update = function (
       path: `/flows/${flow_id}`,
       method: HTTP_METHODS.PUT,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,

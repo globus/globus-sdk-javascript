@@ -1,4 +1,8 @@
-import { HTTP_METHODS, serviceRequest } from '../../shared.js';
+import {
+  HTTP_METHODS,
+  serviceRequest,
+  normalizeServiceMethodArgsWithSegments,
+} from '../../shared.js';
 import { getHeadersForService } from '../shared.js';
 import { ID, SCOPES } from '../config.js';
 
@@ -84,18 +88,24 @@ export type DirectoryListingQuery = QueryParameters<
  * @see https://docs.globus.org/api/transfer/file_operations/#list_directory_contents
  */
 export const ls = function (
-  endpoint_xid,
-  options?,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<JSONFetchResponse<FileListDocument | DirectoryListingError>> {
+  const { segments: endpoint_xid, request, options } = normalizeServiceMethodArgsWithSegments(
+    'transfer.file-operations.ls',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
       scope: SCOPES.ALL,
       path: `/v0.10/operation/endpoint/${endpoint_xid}/ls`,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,
@@ -110,15 +120,21 @@ export const ls = function (
  *
  * @see https://docs.globus.org/api/transfer/file_operations/#make_directory
  */
-export const mkdir = function (endpoint_xid, options, sdkOptions?) {
+export const mkdir = function (arg1: any, arg2: any, arg3?: any) {
+  const { segments: endpoint_xid, request, options } = normalizeServiceMethodArgsWithSegments(
+    'transfer.file-operations.mkdir',
+    arg1,
+    arg2,
+    arg3,
+  );
   const serviceRequestOptions = {
     payload: {
       DATA_TYPE: 'mkdir',
-      ...options?.payload,
+      ...request?.payload,
     },
     headers: {
       ...getHeadersForService(HTTP_METHODS.POST),
-      ...options?.headers,
+      ...request?.headers,
     },
   };
   return serviceRequest(
@@ -129,7 +145,7 @@ export const mkdir = function (endpoint_xid, options, sdkOptions?) {
       method: HTTP_METHODS.POST,
     },
     serviceRequestOptions,
-    sdkOptions,
+    options,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,
@@ -146,15 +162,21 @@ export const mkdir = function (endpoint_xid, options, sdkOptions?) {
  *
  * @see https://docs.globus.org/api/transfer/file_operations/#rename
  */
-export const rename = function (endpoint_xid, options, sdkOptions?) {
+export const rename = function (arg1: any, arg2: any, arg3?: any) {
+  const { segments: endpoint_xid, request, options } = normalizeServiceMethodArgsWithSegments(
+    'transfer.file-operations.rename',
+    arg1,
+    arg2,
+    arg3,
+  );
   const serviceRequestOptions = {
     payload: {
       DATA_TYPE: 'rename',
-      ...options?.payload,
+      ...request?.payload,
     },
     headers: {
       ...getHeadersForService(HTTP_METHODS.POST),
-      ...options?.headers,
+      ...request?.headers,
     },
   };
   return serviceRequest(
@@ -165,7 +187,7 @@ export const rename = function (endpoint_xid, options, sdkOptions?) {
       method: HTTP_METHODS.POST,
     },
     serviceRequestOptions,
-    sdkOptions,
+    options,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,
@@ -183,15 +205,21 @@ export const rename = function (endpoint_xid, options, sdkOptions?) {
  *
  * @see https://docs.globus.org/api/transfer/file_operations/#symlink
  */
-export const symlink = function (endpoint_xid, options, sdkOptions?) {
+export const symlink = function (arg1: any, arg2: any, arg3?: any) {
+  const { segments: endpoint_xid, request, options } = normalizeServiceMethodArgsWithSegments(
+    'transfer.file-operations.symlink',
+    arg1,
+    arg2,
+    arg3,
+  );
   const serviceRequestOptions = {
     payload: {
       DATA_TYPE: 'symlink',
-      ...options?.payload,
+      ...request?.payload,
     },
     headers: {
       ...getHeadersForService(HTTP_METHODS.POST),
-      ...options?.headers,
+      ...request?.headers,
     },
   };
   return serviceRequest(
@@ -202,7 +230,7 @@ export const symlink = function (endpoint_xid, options, sdkOptions?) {
       method: HTTP_METHODS.POST,
     },
     serviceRequestOptions,
-    sdkOptions,
+    options,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,
@@ -220,18 +248,24 @@ export const symlink = function (endpoint_xid, options, sdkOptions?) {
  * @see https://docs.globus.org/api/transfer/file_operations/#stat
  */
 export const stat = function (
-  endpoint_xid,
-  options,
-  sdkOptions?,
+  arg1: any,
+  arg2: any,
+  arg3?: any,
 ): Promise<JSONFetchResponse<FileDocument>> {
+  const { segments: endpoint_xid, request, options } = normalizeServiceMethodArgsWithSegments(
+    'transfer.file-operations.stat',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
       scope: SCOPES.ALL,
       path: `/v0.10/operation/endpoint/${endpoint_xid}/stat`,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,

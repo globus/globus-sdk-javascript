@@ -1,4 +1,9 @@
-import { HTTP_METHODS, serviceRequest } from '../../shared.js';
+import {
+  HTTP_METHODS,
+  serviceRequest,
+  normalizeServiceMethodArgs,
+  normalizeServiceMethodArgsWithSegments,
+} from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
 
 import type {
@@ -27,17 +32,18 @@ export type BookmarkListDocument = {
  * @see https://docs.globus.org/api/transfer/collection_bookmarks/#get_list_of_bookmarks
  */
 export const getAll = function (
-  options?,
-  sdkOptions?,
+  arg1?: any,
+  arg2?: any,
 ): Promise<JSONFetchResponse<BookmarkListDocument>> {
+  const { request, options } = normalizeServiceMethodArgs('transfer.collection-bookmarks.getAll', arg1, arg2);
   return serviceRequest(
     {
       service: ID,
       scope: SCOPES.ALL,
       path: `/v0.10/bookmark_list`,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethod<{
   query?: never;
@@ -48,9 +54,10 @@ export const getAll = function (
  * @see https://docs.globus.org/api/transfer/collection_bookmarks/#create_bookmark
  */
 export const create = function (
-  options,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
 ): Promise<JSONFetchResponse<BookmarkDocument>> {
+  const { request, options } = normalizeServiceMethodArgs('transfer.collection-bookmarks.create', arg1, arg2);
   return serviceRequest(
     {
       service: ID,
@@ -58,8 +65,8 @@ export const create = function (
       path: `/v0.10/bookmark`,
       method: HTTP_METHODS.POST,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethod<{
   payload: Partial<BookmarkDocument>;
@@ -69,18 +76,24 @@ export const create = function (
  * @see https://docs.globus.org/api/transfer/collection_bookmarks/#get_bookmark_by_id
  */
 export const get = function (
-  bookmark_id,
-  options?,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<JSONFetchResponse<BookmarkDocument>> {
+  const { segments: bookmark_id, request, options } = normalizeServiceMethodArgsWithSegments(
+    'transfer.collection-bookmarks.get',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
       scope: SCOPES.ALL,
       path: `/v0.10/bookmark/${bookmark_id}`,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,
@@ -94,10 +107,16 @@ export const get = function (
  * @see https://docs.globus.org/api/transfer/collection_bookmarks/#update_bookmark
  */
 export const update = function (
-  bookmark_id,
-  options,
-  sdkOptions?,
+  arg1: any,
+  arg2: any,
+  arg3?: any,
 ): Promise<JSONFetchResponse<BookmarkDocument>> {
+  const { segments: bookmark_id, request, options } = normalizeServiceMethodArgsWithSegments(
+    'transfer.collection-bookmarks.update',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
@@ -105,8 +124,8 @@ export const update = function (
       path: `/v0.10/bookmark/${bookmark_id}`,
       method: HTTP_METHODS.PUT,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,
@@ -120,9 +139,9 @@ export const update = function (
  * @see https://docs.globus.org/api/transfer/collection_bookmarks/#delete_bookmark_by_id
  */
 export const remove = function (
-  bookmark_id,
-  options?,
-  sdkOptions?,
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
 ): Promise<
   JSONFetchResponse<{
     DATA_TYPE: 'result';
@@ -132,6 +151,12 @@ export const remove = function (
     request_id: string;
   }>
 > {
+  const { segments: bookmark_id, request, options } = normalizeServiceMethodArgsWithSegments(
+    'transfer.collection-bookmarks.remove',
+    arg1,
+    arg2,
+    arg3,
+  );
   return serviceRequest(
     {
       service: ID,
@@ -139,8 +164,8 @@ export const remove = function (
       path: `/v0.10/bookmark/${bookmark_id}`,
       method: HTTP_METHODS.DELETE,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
   string,

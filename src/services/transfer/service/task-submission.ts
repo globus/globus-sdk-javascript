@@ -1,4 +1,8 @@
-import { HTTP_METHODS, serviceRequest } from '../../shared.js';
+import {
+  HTTP_METHODS,
+  serviceRequest,
+  normalizeServiceMethodArgs,
+} from '../../shared.js';
 
 import { getHeadersForService } from '../shared.js';
 import { ID, SCOPES } from '../config.js';
@@ -168,17 +172,18 @@ export type DeleteFields = CommonTransferAndDeleteFields & {
  * @see https://docs.globus.org/api/transfer/task_submit/#submit_delete_task
  */
 export const submitDelete = function (
-  options,
-  sdkOptions?: SDKOptions,
+  arg1: any,
+  arg2?: any,
 ): Promise<JSONFetchResponse<DeleteResult | DeleteError>> {
+  const { request, options } = normalizeServiceMethodArgs('transfer.task-submission.submitDelete', arg1, arg2);
   const serviceRequestOptions = {
     payload: {
       DATA_TYPE: 'delete',
-      ...options?.payload,
+      ...request?.payload,
     },
     headers: {
       ...getHeadersForService(HTTP_METHODS.POST),
-      ...options?.headers,
+      ...request?.headers,
     },
   };
   return serviceRequest(
@@ -189,7 +194,7 @@ export const submitDelete = function (
       method: HTTP_METHODS.POST,
     },
     serviceRequestOptions,
-    sdkOptions,
+    options,
   );
 } satisfies ServiceMethod<{
   payload: Omit<DeleteFields, 'DATA_TYPE'>;
@@ -199,17 +204,18 @@ export const submitDelete = function (
  * @see https://docs.globus.org/api/transfer/task_submit/#submit_transfer_task
  */
 export const submitTransfer = function (
-  options,
-  sdkOptions?: SDKOptions,
+  arg1: any,
+  arg2?: any,
 ): Promise<JSONFetchResponse<TransferResult | TransferError>> {
+  const { request, options } = normalizeServiceMethodArgs('transfer.task-submission.submitTransfer', arg1, arg2);
   const serviceRequestOptions = {
     payload: {
       DATA_TYPE: 'transfer',
-      ...options?.payload,
+      ...request?.payload,
     },
     headers: {
       ...getHeadersForService(HTTP_METHODS.POST),
-      ...options?.headers,
+      ...request?.headers,
     },
   };
   return serviceRequest(
@@ -220,7 +226,7 @@ export const submitTransfer = function (
       method: HTTP_METHODS.POST,
     },
     serviceRequestOptions,
-    sdkOptions,
+    options,
   );
 } satisfies ServiceMethod<{
   payload: Omit<TransferFields, 'DATA_TYPE'>;
@@ -238,17 +244,18 @@ type SubmissionId = {
  * @see https://docs.globus.org/api/transfer/task_submit/#get_submission_id
  */
 export const submissionId = function (
-  options?,
-  sdkOptions?,
+  arg1?: any,
+  arg2?: any,
 ): Promise<JSONFetchResponse<SubmissionId>> {
+  const { request, options } = normalizeServiceMethodArgs('transfer.task-submission.submissionId', arg1, arg2);
   return serviceRequest(
     {
       service: ID,
       scope: SCOPES.ALL,
       path: `/v0.10/submission_id`,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethod<{
   query?: never;

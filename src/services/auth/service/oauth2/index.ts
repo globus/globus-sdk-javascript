@@ -1,9 +1,14 @@
 import { ID } from '../../config.js';
-import { HTTP_METHODS, serviceRequest } from '../../../../services/shared.js';
+import {
+  HTTP_METHODS,
+  serviceRequest,
+  normalizeServiceMethodArgs,
+} from '../../../../services/shared.js';
 
 import type { ServiceMethod } from '../../../types.js';
 
-export const userinfo = function (options?, sdkOptions?) {
+export const userinfo = function (arg1?: any, arg2?: any) {
+  const { request, options } = normalizeServiceMethodArgs('auth.oauth2.userinfo', arg1, arg2);
   return serviceRequest(
     {
       service: ID,
@@ -11,8 +16,8 @@ export const userinfo = function (options?, sdkOptions?) {
       path: `/v2/oauth2/userinfo`,
       method: HTTP_METHODS.GET,
     },
+    request,
     options,
-    sdkOptions,
   );
 } satisfies ServiceMethod<{
   payload: never;

@@ -87,29 +87,60 @@ export type ServiceMethodOptions = BaseServiceMethodOptions | undefined | never;
 
 export type Segment = string | Record<string, string>;
 
-type HasRequiredMethodOptions<O extends ServiceMethodOptions> = Partial<O> extends O ? false : true;
+/**
+ * Configuration object for service methods.
+ * This is the new preferred way to call service methods.
+ */
+export type ServiceMethodConfig<
+  S extends Segment = never,
+  O extends ServiceMethodOptions = ServiceMethodOptions,
+> = {
+  /**
+   * URL segments for dynamic paths.
+   */
+  segments?: S;
+  /**
+   * Request options including query parameters, payload, headers, etc.
+   */
+  request?: O & BaseServiceMethodOptions;
+  /**
+   * SDK-level options including environment and authorization manager.
+   */
+  options?: SDKOptions;
+};
 
-export type ServiceMethod<O extends ServiceMethodOptions, R extends Response = Response> =
-  HasRequiredMethodOptions<O> extends true
-    ? (methodOptions: O & BaseServiceMethodOptions, sdkOptions?: SDKOptions) => Promise<R>
-    : (methodOptions?: O & BaseServiceMethodOptions, sdkOptions?: SDKOptions) => Promise<R>;
+/**
+ * Service method without dynamic URL segments.
+ * Supports both legacy positional arguments and new configuration object.
+ *
+ * The implementation accepts `any` parameters and uses runtime normalization
+ * to support both calling patterns:
+ * - New: `method({ request: {...}, options: {...} })`
+ * - Legacy (deprecated): `method(methodOptions, sdkOptions)`
+ */
+export type ServiceMethod<O extends ServiceMethodOptions, R extends Response = Response> = (
+  arg1?: any,
+  arg2?: any,
+) => Promise<R>;
 
+/**
+ * Service method with dynamic URL segments.
+ * Supports both legacy positional arguments and new configuration object.
+ *
+ * The implementation accepts `any` parameters and uses runtime normalization
+ * to support both calling patterns:
+ * - New: `method({ segments: ..., request: {...}, options: {...} })`
+ * - Legacy (deprecated): `method(segments, methodOptions, sdkOptions)`
+ */
 export type ServiceMethodDynamicSegments<
   S extends Segment,
   O extends ServiceMethodOptions,
   R extends Response = Response,
-> =
-  HasRequiredMethodOptions<O> extends true
-    ? (
-        segments: S,
-        methodOptions: O & BaseServiceMethodOptions,
-        sdkOptions?: SDKOptions,
-      ) => Promise<R>
-    : (
-        segments: S,
-        methodOptions?: O & BaseServiceMethodOptions,
-        sdkOptions?: SDKOptions,
-      ) => Promise<R>;
+> = (
+  arg1: any,
+  arg2?: any,
+  arg3?: any,
+) => Promise<R>;
 
 /**
  * Provides a type-safe union of a subset of object keys.
