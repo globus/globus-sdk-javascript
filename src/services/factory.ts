@@ -65,8 +65,22 @@ type DeriveMethodSignatureFromPath<
  */
 export function createServiceMethodFactory<const TPath extends string>(
   config: Omit<ServiceRequestDSL, 'path'> & {
+    /**
+     * The path template for the service method.
+     * - This can include path parameters in `{}` braces.
+     * @example '/v2/tunnels/{tunnel_uuid}'
+     * @example '/jobs'
+     * @example '/flows/{flow_id}/runs/{run_id}'
+     */
     path: TPath;
-    transform?: <TPayload extends ServiceMethodPayload>(payload: TPayload) => TPayload;
+    /**
+     * Optional transform function to modify the incoming service method payload.
+     * - This can be used to modify path parameters, query parameters, or the request body before
+     *   the request is made.
+     */
+    transform?: <TPayload extends ServiceMethodPayload>(
+      payload: TPayload,
+    ) => TPayload | ServiceMethodPayload;
   },
 ) {
   return {
@@ -84,13 +98,17 @@ export function createServiceMethodFactory<const TPath extends string>(
        */
       return ((payload?: any) => {
         let path: string = pathTemplate;
-        if (payload) {
-          path = path.replace(/\{(\w+)\}/g, (_: string, key: string) => payload[key] ?? `{${key}}`);
+        let processedPayload = payload;
+        if (processedPayload && config.transform) {
+          processedPayload = config.transform(payload);
         }
-        return serviceRequest(
-          { ...rest, path },
-          config.transform ? config.transform(payload) : payload,
-        );
+        if (processedPayload) {
+          path = path.replace(
+            /\{(\w+)\}/g,
+            (_: string, key: string) => processedPayload[key] ?? `{${key}}`,
+          );
+        }
+        return serviceRequest({ ...rest, path }, processedPayload);
       }) as DeriveMethodSignatureFromPath<TPath, TPayload, TResponse>;
     },
   };
