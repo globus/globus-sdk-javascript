@@ -124,11 +124,11 @@ export const start = createServiceMethodFactory({
   path: `/v2/tunnels/{id}`,
   method: HTTP_METHODS.PATCH,
   transform: (payload) => ({
+    ...payload,
     request: {
       ...payload?.request,
       data: { data: { attributes: payload?.request?.data } },
     },
-    options: payload?.options,
   }),
 }).generate<
   {
