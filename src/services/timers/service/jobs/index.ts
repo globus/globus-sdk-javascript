@@ -19,7 +19,7 @@ export const getAll = createServiceMethodFactory({
   {
     request?: {
       query?: OpenAPI.operations['list_jobs_jobs__get']['parameters']['query'];
-      payload?: never;
+      data?: never;
     };
   },
   JSONFetchResponse<
@@ -39,7 +39,7 @@ export const get = createServiceMethodFactory({
   {
     request?: {
       query?: OpenAPI.operations['read_job_jobs__job_id__get']['parameters']['query'];
-      payload?: never;
+      data?: never;
     };
   },
   JSONFetchResponse<
