@@ -115,31 +115,33 @@ export const remove = function (
 type PatchOperation = operations['tunnels_patch_tunnels__tunnel_uuid__patch'];
 type PatchPayload =
   PatchOperation['requestBody']['content']['application/json']['data']['attributes'];
+
 /**
  * Start a tunnel that's in the `AWAITING_LISTENER` state.
  */
-export const start = createServiceMethodFactory({
-  service,
-  resource_server,
-  path: `/v2/tunnels/{id}`,
-  method: HTTP_METHODS.PATCH,
-  transform: (payload) => ({
-    ...payload,
-    request: {
-      ...payload?.request,
-      data: { data: { attributes: payload?.request?.data } },
+export const start = function (
+  tunnel_uuid,
+  options,
+  sdkOptions?,
+): Promise<JSONFetchResponse<PatchOperation['responses']['200']['content']['application/json']>> {
+  return serviceRequest(
+    {
+      service,
+      resource_server,
+      path: `/v2/tunnels/${tunnel_uuid}`,
+      method: HTTP_METHODS.PATCH,
     },
-  }),
-}).generate<
+    { payload: { data: { attributes: { ...options.payload } } } },
+    sdkOptions,
+  );
+} satisfies ServiceMethodDynamicSegments<
+  string,
   {
-    request?: {
-      query?: PatchOperation['parameters']['query'];
-      data: NonNullable<Pick<PatchPayload, 'listener_ip_address' | 'listener_port'>> &
-        Pick<PatchPayload, 'label'>;
-    };
-  },
-  JSONFetchResponse<PatchOperation['responses']['200']['content']['application/json']>
->();
+    query?: PatchOperation['parameters']['query'];
+    payload: NonNullable<Pick<PatchPayload, 'listener_ip_address' | 'listener_port'>> &
+      Pick<PatchPayload, 'label'>;
+  }
+>;
 
 /**
  * Stop a tunnel that isn't already in the `STOPPED` or `STOPPING` state.
@@ -195,3 +197,51 @@ export const getEventList = function (
     payload?: GetEventsOperation['requestBody'];
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  getAll: createServiceMethodFactory({
+    service,
+    resource_server,
+    path: `/v2/tunnels`,
+  }).generate<{
+    request?: {
+      query?: GetAllOperation['parameters']['query'];
+      payload?: GetAllOperation['requestBody'];
+    };
+  }>(),
+  get: createServiceMethodFactory({
+    service,
+    resource_server,
+    path: `/v2/tunnels/{id}`,
+  }).generate<{
+    request?: {
+      query?: GetOperation['parameters']['query'];
+      payload?: GetOperation['requestBody'];
+    };
+  }>(),
+  start: createServiceMethodFactory({
+    service,
+    resource_server,
+    path: `/v2/tunnels/{id}`,
+    method: HTTP_METHODS.PATCH,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { data: { attributes: payload?.request?.data } },
+      },
+    }),
+  }).generate<
+    {
+      request?: {
+        query?: PatchOperation['parameters']['query'];
+        data: NonNullable<Pick<PatchPayload, 'listener_ip_address' | 'listener_port'>> &
+          Pick<PatchPayload, 'label'>;
+      };
+    },
+    JSONFetchResponse<PatchOperation['responses']['200']['content']['application/json']>
+  >(),
+};

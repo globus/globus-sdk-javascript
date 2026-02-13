@@ -81,14 +81,11 @@ describe('tunnel', () => {
     const {
       req: { url, method, headers, json },
     } = await mirror(
-      await tunnel.start({
-        id: 'example-tunnel-id',
-        request: {
-          data: {
-            listener_ip_address: '1.1.1.1',
-            listener_port: 8080,
-            label: 'Started Tunnel',
-          },
+      await tunnel.start('example-tunnel-id', {
+        payload: {
+          listener_ip_address: '1.1.1.1',
+          listener_port: 8080,
+          label: 'Started Tunnel',
         },
       }),
     );
@@ -124,5 +121,52 @@ describe('tunnel', () => {
       headers,
       json,
     }).toMatchSnapshot();
+  });
+
+  describe('next', () => {
+    test('getAll', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(await tunnel.next.getAll());
+      expect({
+        url,
+        method,
+        headers,
+      }).toMatchSnapshot();
+    });
+
+    test('get', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(await tunnel.next.get({ id: 'example-tunnel-id' }));
+      expect({
+        url,
+        method,
+        headers,
+      }).toMatchSnapshot();
+    });
+
+    test('start', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await tunnel.next.start({
+          id: 'example-tunnel-id',
+          request: {
+            data: {
+              listener_ip_address: '1.1.1.1',
+              listener_port: 8080,
+              label: 'Started Tunnel',
+            },
+          },
+        }),
+      );
+      expect({
+        url,
+        method,
+        headers,
+        json,
+      }).toMatchSnapshot();
+    });
   });
 });

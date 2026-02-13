@@ -3,49 +3,67 @@ import { ID } from '../../config.js';
 import { RESOURCE_SERVERS } from '../../../auth/config.js';
 
 import type { OpenAPI } from '../../index.js';
-import type { ServiceMethodDynamicSegments, JSONFetchResponse } from '../../../types.js';
-
-import { createServiceMethodFactory } from '../../../factory.js';
+import type {
+  ServiceMethod,
+  ServiceMethodDynamicSegments,
+  JSONFetchResponse,
+} from '../../../types.js';
 
 /**
  * @see https://timer.automate.globus.org/redoc#tag/jobs/operation/list_jobs_jobs__get
  */
-export const getAll = createServiceMethodFactory({
-  service: ID,
-  resource_server: RESOURCE_SERVERS[ID],
-  path: '/jobs',
-  method: HTTP_METHODS.GET,
-}).generate<
-  {
-    request?: {
-      query?: OpenAPI.operations['list_jobs_jobs__get']['parameters']['query'];
-      data?: never;
-    };
-  },
+export const getAll = function (
+  options?,
+  sdkOptions?,
+): Promise<
   JSONFetchResponse<
     OpenAPI.operations['list_jobs_jobs__get']['responses']['200']['content']['application/json']
   >
->();
+> {
+  return serviceRequest(
+    {
+      service: ID,
+      resource_server: RESOURCE_SERVERS[ID],
+      path: '/jobs',
+      method: HTTP_METHODS.GET,
+    },
+    options,
+    sdkOptions,
+  );
+} satisfies ServiceMethod<{
+  query?: OpenAPI.operations['list_jobs_jobs__get']['parameters']['query'];
+  payload?: never;
+}>;
 
 /**
  * @see https://timer.automate.globus.org/redoc#tag/jobs/operation/read_job_jobs__job_id__get
  */
-export const get = createServiceMethodFactory({
-  service: ID,
-  resource_server: RESOURCE_SERVERS[ID],
-  path: '/jobs/{id}',
-  method: HTTP_METHODS.GET,
-}).generate<
-  {
-    request?: {
-      query?: OpenAPI.operations['read_job_jobs__job_id__get']['parameters']['query'];
-      data?: never;
-    };
-  },
+export const get = function (
+  job_id,
+  options?,
+  sdkOptions?,
+): Promise<
   JSONFetchResponse<
     OpenAPI.operations['read_job_jobs__job_id__get']['responses']['200']['content']['application/json']
   >
->();
+> {
+  return serviceRequest(
+    {
+      service: ID,
+      resource_server: RESOURCE_SERVERS[ID],
+      path: `/jobs/${job_id}`,
+      method: HTTP_METHODS.GET,
+    },
+    options,
+    sdkOptions,
+  );
+} satisfies ServiceMethodDynamicSegments<
+  string,
+  {
+    query?: OpenAPI.operations['read_job_jobs__job_id__get']['parameters']['query'];
+    payload?: never;
+  }
+>;
 
 /**
  * @see https://timer.automate.globus.org/redoc#tag/jobs/operation/update_job_jobs__job_id__patch
