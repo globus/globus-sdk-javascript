@@ -24,7 +24,7 @@ export enum HTTP_METHODS {
  * Our domain-specific language for describing service requests.
  * @private
  */
-type ServiceRequestDSL = {
+export type ServiceRequestDSL = {
   /**
    * The service that the request will be made to.
    */
