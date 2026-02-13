@@ -1,15 +1,16 @@
 import { ServiceRequestDSL, serviceRequest as legacyServiceRequest } from './shared.js';
 import { SDKOptions, ServiceMethodOptions } from './types.js';
 
+type RequestOptions = Omit<ServiceMethodOptions, 'payload'> & {
+  /**
+   * `payload` has been renamed to `data` to better reflect its purpose and avoid confusion with
+   * the `ServiceMethodPayload`/object.
+   */
+  data?: Record<string, unknown>;
+};
+
 type ServiceMethodPayload = {
-  path?: string | Record<string, string>;
-  request?: Omit<ServiceMethodOptions, 'payload'> & {
-    /**
-     * `payload` has been renamed to `data` to better reflect its purpose and avoid confusion with
-     * the `ServiceMethodPayload`/object.
-     */
-    data?: Record<string, unknown>;
-  };
+  request?: RequestOptions;
   options?: SDKOptions;
 };
 
