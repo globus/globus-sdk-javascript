@@ -3,13 +3,15 @@ import { mirror } from '../../../__mocks__/handlers';
 
 test('jobs.getAll', async () => {
   const result = await jobs.getAll({
-    query: {
-      filter_name: 'job_name',
-      filter_status: 'active,inactive,ended',
-      order: 'name asc',
-      result_count: 1,
-      submitted_after: '1970-01-01T12:00:0Z',
-      submitted_before: '2300-01-01T12:00:0Z',
+    request: {
+      query: {
+        filter_name: 'job_name',
+        filter_status: 'active,inactive,ended',
+        order: 'name asc',
+        result_count: 1,
+        submitted_after: '1970-01-01T12:00:0Z',
+        submitted_before: '2300-01-01T12:00:0Z',
+      },
     },
   });
   const json = await mirror(result);
@@ -33,9 +35,12 @@ test('jobs.getAll', async () => {
 });
 
 test('jobs.get', async () => {
-  const result = await jobs.get('example-job-id', {
-    query: {
-      page_size: 50,
+  const result = await jobs.get({
+    id: 'example-job-id',
+    request: {
+      query: {
+        page_size: 50,
+      },
     },
   });
   const json = await mirror(result);
