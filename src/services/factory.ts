@@ -45,22 +45,43 @@ export type ServiceMethod<TPayload extends ServiceMethodPayload, R extends Respo
  * ExtractPathParams<'/v2/tunnels/{tunnel_uuid}'> // { tunnel_uuid: string }
  * ExtractPathParams<'/v2/tunnels'> // {}
  */
-export type ExtractPathParams<T extends string> = T extends `${string}{${infer Param}}${infer Rest}`
+type ExtractPathParams<T extends string> = T extends `${string}{${infer Param}}${infer Rest}`
   ? { [K in Param]: string } & ExtractPathParams<Rest>
   : {};
 
+/**
+ * Derives the appropriate method signature based on the presence of path parameters.
+ */
+type DeriveMethodSignatureFromPath<
+  TPath extends string,
+  TPayload extends ServiceMethodPayload,
+  TResponse extends Response,
+> = [keyof ExtractPathParams<TPath>] extends [never]
+  ? ServiceMethod<TPayload, TResponse>
+  : (payload: ExtractPathParams<TPath> & TPayload & ServiceMethodPayload) => Promise<TResponse>;
+
+/**
+ * Factory function to create service methods.
+ */
 export function createServiceMethodFactory<const TPath extends string>(
   config: Omit<ServiceRequestDSL, 'path'> & {
     path: TPath;
-    transform?: (payload: ServiceMethodPayload) => ServiceMethodPayload;
+    transform?: <TPayload extends ServiceMethodPayload>(payload: TPayload) => TPayload;
   },
 ) {
   return {
+    /**
+     * Generates a strongly-typed service method based on the provided configuration.
+     */
     generate<
       TPayload extends ServiceMethodPayload = ServiceMethodPayload,
       TResponse extends Response = Response,
     >() {
       const { path: pathTemplate, ...rest } = config;
+      /**
+       * The actual service method function.
+       * - `payload` is initially set as `any`, but will be properly typed in the return type (cast).
+       */
       return ((payload?: any) => {
         let path: string = pathTemplate;
         if (payload) {
@@ -70,11 +91,7 @@ export function createServiceMethodFactory<const TPath extends string>(
           { ...rest, path },
           config.transform ? config.transform(payload) : payload,
         );
-      }) as [keyof ExtractPathParams<TPath>] extends [never]
-        ? ServiceMethod<TPayload, TResponse>
-        : (
-            payload: ExtractPathParams<TPath> & TPayload & ServiceMethodPayload,
-          ) => Promise<TResponse>;
+      }) as DeriveMethodSignatureFromPath<TPath, TPayload, TResponse>;
     },
   };
 }
