@@ -3,7 +3,13 @@ import { SDKOptions, ServiceMethodOptions } from './types.js';
 
 type ServiceMethodPayload = {
   path?: string | Record<string, string>;
-  request?: ServiceMethodOptions;
+  request?: Omit<ServiceMethodOptions, 'payload'> & {
+    /**
+     * `payload` has been renamed to `data` to better reflect its purpose and avoid confusion with
+     * the `ServiceMethodPayload`/object.
+     */
+    data?: Record<string, unknown>;
+  };
   options?: SDKOptions;
 };
 
@@ -12,7 +18,17 @@ function serviceRequest(
   config: ServiceRequestDSL,
   payload?: ServiceMethodPayload,
 ): Promise<Response> {
-  return legacyServiceRequest.call(this, config, payload?.request, payload?.options);
+  /**
+   * The legacy `serviceRequest` expects the new `data` property to be sent as the `payload`.
+   */
+  const rewritePayload = {
+    ...payload,
+    request: {
+      ...payload?.request,
+      payload: payload?.request?.data,
+    },
+  };
+  return legacyServiceRequest.call(this, config, rewritePayload?.request, rewritePayload?.options);
 }
 
 type HasRequiredServiceMethodPayload<TPayload extends ServiceMethodPayload> =
@@ -34,8 +50,10 @@ export type ExtractPathParams<T extends string> = T extends `${string}{${infer P
   : {};
 
 export function createServiceMethodFactory<const TPath extends string>(
-  config: Omit<ServiceRequestDSL, 'path'> & { path: TPath },
-  transform?: (payload: any) => ServiceMethodPayload,
+  config: Omit<ServiceRequestDSL, 'path'> & {
+    path: TPath;
+    transform?: (payload: ServiceMethodPayload) => ServiceMethodPayload;
+  },
 ) {
   return {
     generate<
@@ -48,7 +66,10 @@ export function createServiceMethodFactory<const TPath extends string>(
         if (payload) {
           path = path.replace(/\{(\w+)\}/g, (_: string, key: string) => payload[key] ?? `{${key}}`);
         }
-        return serviceRequest({ ...rest, path }, transform ? transform(payload) : payload);
+        return serviceRequest(
+          { ...rest, path },
+          config.transform ? config.transform(payload) : payload,
+        );
       }) as [keyof ExtractPathParams<TPath>] extends [never]
         ? ServiceMethod<TPayload, TResponse>
         : (

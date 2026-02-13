@@ -7,6 +7,8 @@ import type {
   ServiceMethodDynamicSegments,
   JSONFetchResponse,
 } from '../../../services/types.js';
+import { createServiceMethodFactory } from '../../factory.js';
+
 import type { operations } from '../../../open-api/types/transfer.js';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -116,29 +118,28 @@ type PatchPayload =
 /**
  * Start a tunnel that's in the `AWAITING_LISTENER` state.
  */
-export const start = function (
-  tunnel_uuid,
-  options,
-  sdkOptions?,
-): Promise<JSONFetchResponse<PatchOperation['responses']['200']['content']['application/json']>> {
-  return serviceRequest(
-    {
-      service,
-      resource_server,
-      path: `/v2/tunnels/${tunnel_uuid}`,
-      method: HTTP_METHODS.PATCH,
+export const start = createServiceMethodFactory({
+  service,
+  resource_server,
+  path: `/v2/tunnels/{id}`,
+  method: HTTP_METHODS.PATCH,
+  transform: (payload) => ({
+    request: {
+      ...payload?.request,
+      data: { data: { attributes: payload?.request?.data } },
     },
-    { payload: { data: { attributes: { ...options.payload } } } },
-    sdkOptions,
-  );
-} satisfies ServiceMethodDynamicSegments<
-  string,
+    options: payload?.options,
+  }),
+}).generate<
   {
-    query?: PatchOperation['parameters']['query'];
-    payload: NonNullable<Pick<PatchPayload, 'listener_ip_address' | 'listener_port'>> &
-      Pick<PatchPayload, 'label'>;
-  }
->;
+    request?: {
+      query?: PatchOperation['parameters']['query'];
+      data: NonNullable<Pick<PatchPayload, 'listener_ip_address' | 'listener_port'>> &
+        Pick<PatchPayload, 'label'>;
+    };
+  },
+  JSONFetchResponse<PatchOperation['responses']['200']['content']['application/json']>
+>();
 
 /**
  * Stop a tunnel that isn't already in the `STOPPED` or `STOPPING` state.

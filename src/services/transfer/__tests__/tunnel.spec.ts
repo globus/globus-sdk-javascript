@@ -81,11 +81,14 @@ describe('tunnel', () => {
     const {
       req: { url, method, headers, json },
     } = await mirror(
-      await tunnel.start('example-tunnel-id', {
-        payload: {
-          listener_ip_address: '1.1.1.1',
-          listener_port: 8080,
-          label: 'Started Tunnel',
+      await tunnel.start({
+        id: 'example-tunnel-id',
+        request: {
+          data: {
+            listener_ip_address: '1.1.1.1',
+            listener_port: 8080,
+            label: 'Started Tunnel',
+          },
         },
       }),
     );
