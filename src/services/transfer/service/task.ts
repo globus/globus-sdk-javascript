@@ -232,7 +232,7 @@ export type EventDocument = {
 };
 
 export type TaskEventListDocument = {
-  DATA_TYPE: 'task_event_list';
+  DATA_TYPE: 'event_list';
   DATA: EventDocument[];
 };
 
