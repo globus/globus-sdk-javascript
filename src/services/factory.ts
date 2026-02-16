@@ -66,7 +66,11 @@ type DeriveMethodSignatureFromPath<
  * Factory function to create service methods.
  */
 export function createServiceMethodFactory<const TPath extends string>(
-  config: Omit<ServiceRequestDSL, 'path'> & {
+  /**
+   * Configuration for the service method.
+   * @todo In next major release, `scope` will no longer be supported (by `serviceRequest`) and we can update this type.
+   */
+  config: Omit<ServiceRequestDSL, 'path' | 'scope'> & {
     /**
      * The path template for the service method.
      * - This can include path parameters in `{}` braces.
