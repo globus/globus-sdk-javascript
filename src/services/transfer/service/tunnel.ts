@@ -206,22 +206,28 @@ export const next = {
     service,
     resource_server,
     path: `/v2/tunnels`,
-  }).generate<{
-    request?: {
-      query?: GetAllOperation['parameters']['query'];
-      payload?: GetAllOperation['requestBody'];
-    };
-  }>(),
+  }).generate<
+    {
+      request?: {
+        query?: GetAllOperation['parameters']['query'];
+        payload?: GetAllOperation['requestBody'];
+      };
+    },
+    JSONFetchResponse<GetAllOperation['responses']['200']['content']['application/json']>
+  >(),
   get: createServiceMethodFactory({
     service,
     resource_server,
     path: `/v2/tunnels/{id}`,
-  }).generate<{
-    request?: {
-      query?: GetOperation['parameters']['query'];
-      payload?: GetOperation['requestBody'];
-    };
-  }>(),
+  }).generate<
+    {
+      request?: {
+        query?: GetOperation['parameters']['query'];
+        payload?: GetOperation['requestBody'];
+      };
+    },
+    JSONFetchResponse<GetOperation['responses']['200']['content']['application/json']>
+  >(),
   start: createServiceMethodFactory({
     service,
     resource_server,
