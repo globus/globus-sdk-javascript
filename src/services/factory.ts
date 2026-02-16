@@ -1,7 +1,7 @@
 import { ServiceRequestDSL, serviceRequest as legacyServiceRequest } from './shared.js';
-import { SDKOptions, ServiceMethodOptions } from './types.js';
+import { SDKOptions, BaseServiceMethodOptions } from './types.js';
 
-type RequestOptions = Omit<ServiceMethodOptions, 'payload'> & {
+type RequestOptions = Omit<BaseServiceMethodOptions, 'payload'> & {
   /**
    * `payload` has been renamed to `data` to better reflect its purpose and avoid confusion with
    * the `ServiceMethodPayload`/object.
