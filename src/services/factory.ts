@@ -19,17 +19,18 @@ function serviceRequest(
   config: ServiceRequestDSL,
   payload?: ServiceMethodPayload,
 ): Promise<Response> {
-  /**
-   * The legacy `serviceRequest` expects the new `data` property to be sent as the `payload`.
-   */
-  const rewritePayload = {
-    ...payload,
-    request: {
-      ...payload?.request,
-      payload: payload?.request?.data,
-    },
+  const { data, ...rest } = payload?.request || {};
+  const methodOptions = {
+    ...rest,
+    /**
+     * The legacy `serviceRequest` expects the new `data` property to be sent as the `payload`.
+     */
+    payload: data,
   };
-  return legacyServiceRequest.call(this, config, rewritePayload?.request, rewritePayload?.options);
+
+  const sdkOptions = payload?.options;
+
+  return legacyServiceRequest.call(this, config, methodOptions, sdkOptions);
 }
 
 type HasRequiredServiceMethodPayload<TPayload extends ServiceMethodPayload> =
