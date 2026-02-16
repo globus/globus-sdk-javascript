@@ -137,6 +137,30 @@ exports[`tunnel next start 1`] = `
 }
 `;
 
+exports[`tunnel next stop 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "69",
+    "content-type": "application/json",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "data": {
+      "attributes": {
+        "label": "Stopped Tunnel",
+        "state": "STOPPING",
+      },
+    },
+  },
+  "method": "PATCH",
+  "url": "https://transfer.api.globus.org/v2/tunnels/example-tunnel-id",
+}
+`;
+
 exports[`tunnel remove 1`] = `
 {
   "headers": {

@@ -2,6 +2,8 @@ import { tunnel } from '../index';
 
 import { mirror } from '../../../__mocks__/handlers';
 
+const TUNNEL_UUID = 'example-tunnel-id';
+
 describe('tunnel', () => {
   test('getAll', async () => {
     const {
@@ -17,7 +19,7 @@ describe('tunnel', () => {
   test('get', async () => {
     const {
       req: { url, method, headers },
-    } = await mirror(await tunnel.get('example-tunnel-id'));
+    } = await mirror(await tunnel.get(TUNNEL_UUID));
     expect({
       url,
       method,
@@ -77,16 +79,18 @@ describe('tunnel', () => {
     }).toMatchSnapshot();
   });
 
+  const START_PAYLOAD = {
+    listener_ip_address: '1.1.1.1',
+    listener_port: 8080,
+    label: 'Started Tunnel',
+  };
+
   test('start', async () => {
     const {
       req: { url, method, headers, json },
     } = await mirror(
-      await tunnel.start('example-tunnel-id', {
-        payload: {
-          listener_ip_address: '1.1.1.1',
-          listener_port: 8080,
-          label: 'Started Tunnel',
-        },
+      await tunnel.start(TUNNEL_UUID, {
+        payload: START_PAYLOAD,
       }),
     );
     expect({
@@ -97,12 +101,14 @@ describe('tunnel', () => {
     }).toMatchSnapshot();
   });
 
+  const STOP_PAYLOAD = {
+    label: 'Stopped Tunnel',
+  };
+
   test('stop', async () => {
     const {
       req: { url, method, headers, json },
-    } = await mirror(
-      await tunnel.stop('example-tunnel-id', { payload: { label: 'Stopped Tunnel' } }),
-    );
+    } = await mirror(await tunnel.stop(TUNNEL_UUID, { payload: STOP_PAYLOAD }));
     expect({
       url,
       method,
@@ -138,7 +144,7 @@ describe('tunnel', () => {
     test('get', async () => {
       const {
         req: { url, method, headers },
-      } = await mirror(await tunnel.next.get({ id: 'example-tunnel-id' }));
+      } = await mirror(await tunnel.next.get({ id: TUNNEL_UUID }));
       expect({
         url,
         method,
@@ -151,14 +157,27 @@ describe('tunnel', () => {
         req: { url, method, headers, json },
       } = await mirror(
         await tunnel.next.start({
-          id: 'example-tunnel-id',
+          id: TUNNEL_UUID,
           request: {
-            data: {
-              listener_ip_address: '1.1.1.1',
-              listener_port: 8080,
-              label: 'Started Tunnel',
-            },
+            data: START_PAYLOAD,
           },
+        }),
+      );
+      expect({
+        url,
+        method,
+        headers,
+        json,
+      }).toMatchSnapshot();
+    });
+
+    test('stop', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await tunnel.next.stop({
+          id: TUNNEL_UUID,
+          request: { data: STOP_PAYLOAD },
         }),
       );
       expect({
