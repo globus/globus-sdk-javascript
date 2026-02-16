@@ -9,7 +9,7 @@ type RequestOptions = Omit<ServiceMethodOptions, 'payload'> & {
   data?: Record<string, unknown>;
 };
 
-type ServiceMethodPayload = {
+export type ServiceMethodPayload = {
   request?: RequestOptions;
   options?: SDKOptions;
 };

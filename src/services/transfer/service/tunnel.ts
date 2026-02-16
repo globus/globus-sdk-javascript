@@ -210,7 +210,7 @@ export const next = {
     {
       request?: {
         query?: GetAllOperation['parameters']['query'];
-        payload?: GetAllOperation['requestBody'];
+        data?: GetAllOperation['requestBody'];
       };
     },
     JSONFetchResponse<GetAllOperation['responses']['200']['content']['application/json']>
@@ -223,7 +223,7 @@ export const next = {
     {
       request?: {
         query?: GetOperation['parameters']['query'];
-        payload?: GetOperation['requestBody'];
+        data?: GetOperation['requestBody'];
       };
     },
     JSONFetchResponse<GetOperation['responses']['200']['content']['application/json']>
@@ -249,5 +249,67 @@ export const next = {
       };
     },
     JSONFetchResponse<PatchOperation['responses']['200']['content']['application/json']>
+  >(),
+  remove: createServiceMethodFactory({
+    service,
+    resource_server,
+    path: `/v2/tunnels/{id}`,
+    method: HTTP_METHODS.DELETE,
+  }).generate<
+    {
+      request?: {
+        query?: DeleteOperation['parameters']['query'];
+        data?: DeleteOperation['requestBody'];
+      };
+    },
+    JSONFetchResponse<DeleteOperation['responses']['200']['content']['application/json']>
+  >(),
+  create: createServiceMethodFactory({
+    service,
+    resource_server,
+    path: `/v2/tunnels`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request?: {
+        query?: CreateOperation['parameters']['query'];
+        data: CreateOperation['requestBody']['content']['application/json'];
+      };
+    },
+    JSONFetchResponse<CreateOperation['responses']['201']['content']['application/json']>
+  >(),
+  stop: createServiceMethodFactory({
+    service,
+    resource_server,
+    path: `/v2/tunnels/{id}`,
+    method: HTTP_METHODS.PATCH,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { data: { attributes: { ...payload?.request?.data, state: 'STOPPING' } } },
+      },
+    }),
+  }).generate<
+    {
+      request?: {
+        query?: PatchOperation['parameters']['query'];
+        data?: Pick<PatchPayload, 'label'>;
+      };
+    },
+    JSONFetchResponse<PatchOperation['responses']['200']['content']['application/json']>
+  >(),
+  getEventList: createServiceMethodFactory({
+    service,
+    resource_server,
+    path: `/v2/tunnels/{id}/events`,
+  }).generate<
+    {
+      request?: {
+        query?: GetEventsOperation['parameters']['query'];
+        data?: GetEventsOperation['requestBody'];
+      };
+    },
+    JSONFetchResponse<GetEventsOperation['responses']['200']['content']['application/json']>
   >(),
 };
