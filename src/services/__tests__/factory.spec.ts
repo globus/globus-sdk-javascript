@@ -147,6 +147,28 @@ describe('createServiceMethodFactory', () => {
     );
   });
 
+  test('should throw if the path template is missing required parameters', async () => {
+    const factory = createServiceMethodFactory({
+      service: 'FLOWS',
+      path: '/v2/flows/{flow_id}/runs/{run_id}',
+      method: HTTP_METHODS.GET,
+    });
+    const method = factory.generate();
+    let error;
+    try {
+      // @ts-expect-error This test is to ensure runtime error is thrown for missing parameters.
+      await method({
+        flow_id: 'flow123',
+      });
+    } catch (e) {
+      error = e;
+      expect(error).toEqual(
+        new Error('Missing required parameters for path: /v2/flows/{flow_id}/runs/{run_id}'),
+      );
+    }
+    expect(error).toBeDefined();
+  });
+
   describe('Typescript Types', () => {
     /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/naming-convention */
     /**

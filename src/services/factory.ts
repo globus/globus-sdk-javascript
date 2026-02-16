@@ -62,6 +62,8 @@ type DeriveMethodSignatureFromPath<
   ? ServiceMethod<TPayload, TResponse>
   : (payload: ExtractPathParams<TPath> & TPayload & ServiceMethodPayload) => Promise<TResponse>;
 
+const PATH_TEMPLATE_REGEX = /\{(\w+)\}/g;
+
 /**
  * Factory function to create service methods.
  */
@@ -110,9 +112,12 @@ export function createServiceMethodFactory<const TPath extends string>(
         }
         if (processedPayload) {
           path = path.replace(
-            /\{(\w+)\}/g,
+            PATH_TEMPLATE_REGEX,
             (_: string, key: string) => processedPayload[key] ?? `{${key}}`,
           );
+        }
+        if (path.match(PATH_TEMPLATE_REGEX)) {
+          throw new Error(`Missing required parameters for path: ${pathTemplate}`);
         }
         return serviceRequest({ ...rest, path }, processedPayload);
       }) as DeriveMethodSignatureFromPath<TPath, TPayload, TResponse>;
