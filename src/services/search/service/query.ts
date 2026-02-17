@@ -1,5 +1,7 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
+import { RESOURCE_SERVERS } from '../../auth/config.js';
+import { createServiceMethodFactory } from '../../factory.js';
 
 import type { JSONFetchResponse, SDKOptions, ServiceMethodOptions } from '../../types.js';
 import type { OpenAPI } from '../index.js';
@@ -194,4 +196,43 @@ export type GBoost = {
 export type GSort = {
   field_name: string;
   order: 'asc' | 'desc';
+};
+
+/**
+ * @private
+ */
+export const next = {
+  get: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v1/index/{index_id}/search`,
+  }).generate<
+    {
+      request: {
+        query: {
+          q: string;
+          offset?: `${number}` | number;
+          limit?: `${number}` | number;
+          advanced?: 'true' | 'false';
+          bypass_visible_to?: 'true' | 'false';
+          result_format_version?: string;
+          filter_principal_sets?: string;
+        };
+      };
+    },
+    JSONFetchResponse<GSearchResult>
+  >(),
+  post: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v1/index/{index_id}/search`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request: {
+        data: GSearchRequest;
+      };
+    },
+    JSONFetchResponse<GSearchResult>
+  >(),
 };

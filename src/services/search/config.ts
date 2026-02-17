@@ -1,6 +1,7 @@
 import type { Environment } from '../../core/global.js';
 
 export const ID = 'SEARCH' as const;
+
 export const HOSTS: Partial<Record<Environment, string>> = {
   sandbox: 'search.api.sandbox.globuscs.info',
   production: 'search.api.globus.org',

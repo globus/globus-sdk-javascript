@@ -13,3 +13,36 @@ exports[`search – query allows get without Authorization header 1`] = `
   "url": "https://search.api.globus.org/v1/index/524de2f6-d1a6-4b49-9286-d8dccb4196ae/search?q=hello%2Bworld",
 }
 `;
+
+exports[`search – query next get 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "search.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://search.api.globus.org/v1/index/524de2f6-d1a6-4b49-9286-d8dccb4196ae/search?q=test",
+}
+`;
+
+exports[`search – query next post 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "12",
+    "content-type": "application/json",
+    "host": "search.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "q": "test",
+  },
+  "method": "POST",
+  "url": "https://search.api.globus.org/v1/index/524de2f6-d1a6-4b49-9286-d8dccb4196ae/search",
+}
+`;
