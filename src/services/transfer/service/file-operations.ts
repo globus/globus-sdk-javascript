@@ -252,7 +252,7 @@ export const next = {
   ls: createServiceMethodFactory({
     service: ID,
     resource_server: RESOURCE_SERVERS.TRANSFER,
-    path: `/v0.10/operation/endpoint/{endpoint_xid}/ls`,
+    path: `/v0.10/operation/endpoint/{collection_id}/ls`,
   }).generate<
     {
       request?: {
@@ -264,7 +264,7 @@ export const next = {
   mkdir: createServiceMethodFactory({
     service: ID,
     resource_server: RESOURCE_SERVERS.TRANSFER,
-    path: `/v0.10/operation/endpoint/{endpoint_xid}/mkdir`,
+    path: `/v0.10/operation/endpoint/{collection_id}/mkdir`,
     method: HTTP_METHODS.POST,
     transform: (payload) => ({
       ...payload,
@@ -284,7 +284,7 @@ export const next = {
   rename: createServiceMethodFactory({
     service: ID,
     resource_server: RESOURCE_SERVERS.TRANSFER,
-    path: `/v0.10/operation/endpoint/{endpoint_xid}/rename`,
+    path: `/v0.10/operation/endpoint/{collection_id}/rename`,
     method: HTTP_METHODS.POST,
     transform: (payload) => ({
       ...payload,
@@ -307,7 +307,7 @@ export const next = {
   symlink: createServiceMethodFactory({
     service: ID,
     resource_server: RESOURCE_SERVERS.TRANSFER,
-    path: `/v0.10/operation/endpoint/{endpoint_xid}/symlink`,
+    path: `/v0.10/operation/endpoint/{collection_id}/symlink`,
     method: HTTP_METHODS.POST,
     transform: (payload) => ({
       ...payload,
@@ -330,7 +330,7 @@ export const next = {
   stat: createServiceMethodFactory({
     service: ID,
     resource_server: RESOURCE_SERVERS.TRANSFER,
-    path: `/v0.10/operation/endpoint/{endpoint_xid}/stat`,
+    path: `/v0.10/operation/endpoint/{collection_id}/stat`,
   }).generate<
     {
       request: {

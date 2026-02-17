@@ -116,7 +116,7 @@ describe('transfer.file-operations', () => {
         req: { url, method, headers },
       } = await mirror(
         await fileOperations.next.ls({
-          endpoint_xid: ENDPOINT,
+          collection_id: ENDPOINT,
           request: {
             query: {
               path: '/~/',
@@ -136,7 +136,7 @@ describe('transfer.file-operations', () => {
         req: { url, method, headers, json },
       } = await mirror(
         await fileOperations.next.mkdir({
-          endpoint_xid: ENDPOINT,
+          collection_id: ENDPOINT,
           request: {
             data: {
               path: '/~/new-directory',
@@ -157,7 +157,7 @@ describe('transfer.file-operations', () => {
         req: { url, method, headers, json },
       } = await mirror(
         await fileOperations.next.rename({
-          endpoint_xid: ENDPOINT,
+          collection_id: ENDPOINT,
           request: {
             data: {
               old_path: '/~/old-directory',
@@ -179,7 +179,7 @@ describe('transfer.file-operations', () => {
         req: { url, method, headers, json },
       } = await mirror(
         await fileOperations.next.symlink({
-          endpoint_xid: ENDPOINT,
+          collection_id: ENDPOINT,
           request: {
             data: {
               symlink_target: '/~/some/project/myfile.txt',
@@ -201,7 +201,7 @@ describe('transfer.file-operations', () => {
         req: { url, method, headers },
       } = await mirror(
         await fileOperations.next.stat({
-          endpoint_xid: ENDPOINT,
+          collection_id: ENDPOINT,
           request: {
             query: {
               path: '/~/my-file',
