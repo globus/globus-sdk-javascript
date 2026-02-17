@@ -1,5 +1,6 @@
 import { HTTP_METHODS, serviceRequest } from '../../../shared.js';
-import { ID, RESOURCE_SERVER } from '../../config.js';
+import { ID } from '../../config.js';
+import { RESOURCE_SERVERS } from '../../../auth/config.js';
 import { createServiceMethodFactory } from '../../../factory.js';
 
 import type { OpenAPI } from '../../index.js';
@@ -23,7 +24,7 @@ export const getAll = function (
   return serviceRequest(
     {
       service: ID,
-      resource_server: RESOURCE_SERVER,
+      resource_server: RESOURCE_SERVERS.TIMERS,
       path: '/jobs',
       method: HTTP_METHODS.GET,
     },
@@ -50,7 +51,7 @@ export const get = function (
   return serviceRequest(
     {
       service: ID,
-      resource_server: RESOURCE_SERVER,
+      resource_server: RESOURCE_SERVERS.TIMERS,
       path: `/jobs/${job_id}`,
       method: HTTP_METHODS.GET,
     },
@@ -80,7 +81,7 @@ export const patch = function (
   return serviceRequest(
     {
       service: ID,
-      resource_server: RESOURCE_SERVER,
+      resource_server: RESOURCE_SERVERS.TIMERS,
       path: `/jobs/${job_id}`,
       method: HTTP_METHODS.PATCH,
     },
@@ -109,7 +110,7 @@ export const pause = function (
   return serviceRequest(
     {
       service: ID,
-      resource_server: RESOURCE_SERVER,
+      resource_server: RESOURCE_SERVERS.TIMERS,
       path: `/jobs/${job_id}/pause`,
       method: HTTP_METHODS.POST,
     },
@@ -140,7 +141,7 @@ export const resume = function (
   return serviceRequest(
     {
       service: ID,
-      resource_server: RESOURCE_SERVER,
+      resource_server: RESOURCE_SERVERS.TIMERS,
       path: `/jobs/${job_id}/resume`,
       method: HTTP_METHODS.POST,
     },
@@ -171,7 +172,7 @@ export const remove = function (
   return serviceRequest(
     {
       service: ID,
-      resource_server: RESOURCE_SERVER,
+      resource_server: RESOURCE_SERVERS.TIMERS,
       path: `/jobs/${job_id}`,
       method: HTTP_METHODS.DELETE,
     },
@@ -193,7 +194,7 @@ export const remove = function (
 export const next = {
   getAll: createServiceMethodFactory({
     service: ID,
-    resource_server: RESOURCE_SERVER,
+    resource_server: RESOURCE_SERVERS.TIMERS,
     path: `/jobs`,
   }).generate<
     {
@@ -207,7 +208,7 @@ export const next = {
   >(),
   get: createServiceMethodFactory({
     service: ID,
-    resource_server: RESOURCE_SERVER,
+    resource_server: RESOURCE_SERVERS.TIMERS,
     path: `/jobs/{job_id}`,
   }).generate<
     {
@@ -221,12 +222,12 @@ export const next = {
   >(),
   patch: createServiceMethodFactory({
     service: ID,
-    resource_server: RESOURCE_SERVER,
+    resource_server: RESOURCE_SERVERS.TIMERS,
     path: `/jobs/{job_id}`,
     method: HTTP_METHODS.PATCH,
   }).generate<
     {
-      request?: {
+      request: {
         data: OpenAPI.operations['update_job_jobs__job_id__patch']['requestBody']['content']['application/json'];
       };
     },
@@ -236,7 +237,7 @@ export const next = {
   >(),
   pause: createServiceMethodFactory({
     service: ID,
-    resource_server: RESOURCE_SERVER,
+    resource_server: RESOURCE_SERVERS.TIMERS,
     path: `/jobs/{job_id}/pause`,
     method: HTTP_METHODS.POST,
   }).generate<
@@ -252,7 +253,7 @@ export const next = {
   >(),
   resume: createServiceMethodFactory({
     service: ID,
-    resource_server: RESOURCE_SERVER,
+    resource_server: RESOURCE_SERVERS.TIMERS,
     path: `/jobs/{job_id}/resume`,
     method: HTTP_METHODS.POST,
   }).generate<
@@ -268,7 +269,7 @@ export const next = {
   >(),
   remove: createServiceMethodFactory({
     service: ID,
-    resource_server: RESOURCE_SERVER,
+    resource_server: RESOURCE_SERVERS.TIMERS,
     path: `/jobs/{job_id}`,
     method: HTTP_METHODS.DELETE,
   }).generate<

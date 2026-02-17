@@ -1,5 +1,6 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
-import { ID, RESOURCE_SERVER } from '../config.js';
+import { ID } from '../config.js';
+import { RESOURCE_SERVERS } from '../../auth/config.js';
 import { createServiceMethodFactory } from '../../factory.js';
 
 import type { OpenAPI } from '../index.js';
@@ -50,7 +51,7 @@ export const create = function (options, sdkOptions?) {
   return serviceRequest(
     {
       service: ID,
-      resource_server: RESOURCE_SERVER,
+      resource_server: RESOURCE_SERVERS.TIMERS,
       path: '/v2/timer',
       method: HTTP_METHODS.POST,
     },
@@ -67,15 +68,17 @@ export const create = function (options, sdkOptions?) {
 export const next = {
   create: createServiceMethodFactory({
     service: ID,
-    resource_server: RESOURCE_SERVER,
+    resource_server: RESOURCE_SERVERS.TIMERS,
     path: `/v2/timer`,
     method: HTTP_METHODS.POST,
   }).generate<
     {
-      request?: {
+      request: {
         data: TimerCreatePayload;
       };
     },
-    JSONFetchResponse<never>
+    JSONFetchResponse<
+      OpenAPI.operations['create_timer_v2_timer_post']['responses']['201']['content']['application/json']
+    >
   >(),
 };
