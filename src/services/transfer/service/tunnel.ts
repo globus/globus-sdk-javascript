@@ -7,6 +7,8 @@ import type {
   ServiceMethodDynamicSegments,
   JSONFetchResponse,
 } from '../../../services/types.js';
+import { createServiceMethodFactory } from '../../factory.js';
+
 import type { operations } from '../../../open-api/types/transfer.js';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -113,6 +115,7 @@ export const remove = function (
 type PatchOperation = operations['tunnels_patch_tunnels__tunnel_uuid__patch'];
 type PatchPayload =
   PatchOperation['requestBody']['content']['application/json']['data']['attributes'];
+
 /**
  * Start a tunnel that's in the `AWAITING_LISTENER` state.
  */
@@ -194,3 +197,119 @@ export const getEventList = function (
     payload?: GetEventsOperation['requestBody'];
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  getAll: createServiceMethodFactory({
+    service,
+    resource_server,
+    path: `/v2/tunnels`,
+  }).generate<
+    {
+      request?: {
+        query?: GetAllOperation['parameters']['query'];
+        data?: GetAllOperation['requestBody'];
+      };
+    },
+    JSONFetchResponse<GetAllOperation['responses']['200']['content']['application/json']>
+  >(),
+  get: createServiceMethodFactory({
+    service,
+    resource_server,
+    path: `/v2/tunnels/{id}`,
+  }).generate<
+    {
+      request?: {
+        query?: GetOperation['parameters']['query'];
+        data?: GetOperation['requestBody'];
+      };
+    },
+    JSONFetchResponse<GetOperation['responses']['200']['content']['application/json']>
+  >(),
+  start: createServiceMethodFactory({
+    service,
+    resource_server,
+    path: `/v2/tunnels/{id}`,
+    method: HTTP_METHODS.PATCH,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { data: { attributes: payload?.request?.data } },
+      },
+    }),
+  }).generate<
+    {
+      request?: {
+        query?: PatchOperation['parameters']['query'];
+        data: NonNullable<Pick<PatchPayload, 'listener_ip_address' | 'listener_port'>> &
+          Pick<PatchPayload, 'label'>;
+      };
+    },
+    JSONFetchResponse<PatchOperation['responses']['200']['content']['application/json']>
+  >(),
+  remove: createServiceMethodFactory({
+    service,
+    resource_server,
+    path: `/v2/tunnels/{id}`,
+    method: HTTP_METHODS.DELETE,
+  }).generate<
+    {
+      request?: {
+        query?: DeleteOperation['parameters']['query'];
+        data?: DeleteOperation['requestBody'];
+      };
+    },
+    JSONFetchResponse<DeleteOperation['responses']['200']['content']['application/json']>
+  >(),
+  create: createServiceMethodFactory({
+    service,
+    resource_server,
+    path: `/v2/tunnels`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request?: {
+        query?: CreateOperation['parameters']['query'];
+        data: CreateOperation['requestBody']['content']['application/json'];
+      };
+    },
+    JSONFetchResponse<CreateOperation['responses']['201']['content']['application/json']>
+  >(),
+  stop: createServiceMethodFactory({
+    service,
+    resource_server,
+    path: `/v2/tunnels/{id}`,
+    method: HTTP_METHODS.PATCH,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { data: { attributes: { ...payload?.request?.data, state: 'STOPPING' } } },
+      },
+    }),
+  }).generate<
+    {
+      request?: {
+        query?: PatchOperation['parameters']['query'];
+        data?: Pick<PatchPayload, 'label'>;
+      };
+    },
+    JSONFetchResponse<PatchOperation['responses']['200']['content']['application/json']>
+  >(),
+  getEventList: createServiceMethodFactory({
+    service,
+    resource_server,
+    path: `/v2/tunnels/{id}/events`,
+  }).generate<
+    {
+      request?: {
+        query?: GetEventsOperation['parameters']['query'];
+        data?: GetEventsOperation['requestBody'];
+      };
+    },
+    JSONFetchResponse<GetEventsOperation['responses']['200']['content']['application/json']>
+  >(),
+};
