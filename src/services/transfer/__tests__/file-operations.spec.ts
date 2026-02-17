@@ -109,4 +109,111 @@ describe('transfer.file-operations', () => {
       headers,
     }).toMatchSnapshot();
   });
+
+  describe('next', () => {
+    test('ls', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(
+        await fileOperations.next.ls({
+          collection_id: ENDPOINT,
+          request: {
+            query: {
+              path: '/~/',
+            },
+          },
+        }),
+      );
+      expect({
+        url,
+        method,
+        headers,
+      }).toMatchSnapshot();
+    });
+
+    test('mkdir', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await fileOperations.next.mkdir({
+          collection_id: ENDPOINT,
+          request: {
+            data: {
+              path: '/~/new-directory',
+            },
+          },
+        }),
+      );
+      expect({
+        url,
+        method,
+        headers,
+        json,
+      }).toMatchSnapshot();
+    });
+
+    test('rename', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await fileOperations.next.rename({
+          collection_id: ENDPOINT,
+          request: {
+            data: {
+              old_path: '/~/old-directory',
+              new_path: '/new-path',
+            },
+          },
+        }),
+      );
+      expect({
+        url,
+        method,
+        headers,
+        json,
+      }).toMatchSnapshot();
+    });
+
+    test('symlink', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await fileOperations.next.symlink({
+          collection_id: ENDPOINT,
+          request: {
+            data: {
+              symlink_target: '/~/some/project/myfile.txt',
+              path: '/~/quick_link.txt',
+            },
+          },
+        }),
+      );
+      expect({
+        url,
+        method,
+        headers,
+        json,
+      }).toMatchSnapshot();
+    });
+
+    test('stat', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(
+        await fileOperations.next.stat({
+          collection_id: ENDPOINT,
+          request: {
+            query: {
+              path: '/~/my-file',
+            },
+          },
+        }),
+      );
+      expect({
+        url,
+        method,
+        headers,
+      }).toMatchSnapshot();
+    });
+  });
 });

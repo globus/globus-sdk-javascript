@@ -1,6 +1,8 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 import { getHeadersForService } from '../shared.js';
 import { ID, SCOPES } from '../config.js';
+import { RESOURCE_SERVERS } from '../../auth/config.js';
+import { createServiceMethodFactory } from '../../factory.js';
 
 import type { ErrorDocument, QueryParameters } from '../types.js';
 import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../types.js';
@@ -242,3 +244,114 @@ export const stat = function (
     };
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  ls: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/operation/endpoint/{collection_id}/ls`,
+  }).generate<
+    {
+      request?: {
+        query?: DirectoryListingQuery;
+      };
+    },
+    JSONFetchResponse<FileListDocument | DirectoryListingError>
+  >(),
+  mkdir: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/operation/endpoint/{collection_id}/mkdir`,
+    method: HTTP_METHODS.POST,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { DATA_TYPE: 'mkdir', ...payload?.request?.data },
+      },
+    }),
+  }).generate<
+    {
+      request: {
+        data: { path: string };
+      };
+    },
+    JSONFetchResponse<{
+      DATA_TYPE: 'mkdir_result';
+      code: 'DirectoryCreated';
+      message: string;
+      request_id: string;
+      resource: string;
+    }>
+  >(),
+  rename: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/operation/endpoint/{collection_id}/rename`,
+    method: HTTP_METHODS.POST,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { DATA_TYPE: 'rename', ...payload?.request?.data },
+      },
+    }),
+  }).generate<
+    {
+      request: {
+        data: {
+          old_path: string;
+          new_path: string;
+        };
+      };
+    },
+    JSONFetchResponse<{
+      DATA_TYPE: 'result';
+      code: 'FileRenamed';
+      message: string;
+      request_id: string;
+      resource: string;
+    }>
+  >(),
+  symlink: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/operation/endpoint/{collection_id}/symlink`,
+    method: HTTP_METHODS.POST,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { DATA_TYPE: 'symlink', ...payload?.request?.data },
+      },
+    }),
+  }).generate<
+    {
+      request: {
+        data: {
+          path: string;
+          symlink_target: string;
+        };
+      };
+    },
+    Response
+  >(),
+  stat: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/operation/endpoint/{collection_id}/stat`,
+  }).generate<
+    {
+      request: {
+        query: {
+          path: string;
+          local_user?: string;
+        };
+      };
+    },
+    JSONFetchResponse<FileDocument>
+  >(),
+};
