@@ -1,9 +1,10 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 import { ID } from '../config.js';
+import { RESOURCE_SERVERS } from '../../auth/config.js';
+import { createServiceMethodFactory } from '../../factory.js';
 
 import type { OpenAPI } from '../index.js';
-import type { ServiceMethod } from '../../types.js';
-import { RESOURCE_SERVERS } from '../../auth/config.js';
+import type { JSONFetchResponse, ServiceMethod } from '../../types.js';
 
 /**
  * The Timer OpenAPI definitions include default vaules which will present as **required** in
@@ -60,3 +61,24 @@ export const create = function (options, sdkOptions?) {
 } satisfies ServiceMethod<{
   payload: TimerCreatePayload;
 }>;
+
+/**
+ * @private
+ */
+export const next = {
+  create: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TIMERS,
+    path: `/v2/timer`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request: {
+        data: TimerCreatePayload;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['create_timer_v2_timer_post']['responses']['201']['content']['application/json']
+    >
+  >(),
+};
