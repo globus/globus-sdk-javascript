@@ -1,5 +1,7 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
+import { RESOURCE_SERVERS } from '../../auth/config.js';
+import { createServiceMethodFactory } from '../../factory.js';
 
 import type {
   ServiceMethodDynamicSegments,
@@ -425,3 +427,76 @@ export const remove = function (
     payload?: never;
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  get: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint/{endpoint_xid}`,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<EndpointDocument>
+  >(),
+  create: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/shared_endpoint`,
+    method: HTTP_METHODS.POST,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { DATA_TYPE: 'shared_endpoint', ...payload?.request?.data },
+      },
+    }),
+  }).generate<
+    {
+      request?: {
+        data?: CreatePayload;
+      };
+    },
+    JSONFetchResponse<CreateResponse>
+  >(),
+  update: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint/{endpoint_xid}`,
+    method: HTTP_METHODS.PUT,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { DATA_TYPE: 'endpoint', ...payload?.request?.data },
+      },
+    }),
+  }).generate<
+    {
+      request: {
+        data: UpdatePayload;
+      };
+    },
+    JSONFetchResponse<UpdateResponse>
+  >(),
+  remove: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint/{endpoint_xid}`,
+    method: HTTP_METHODS.DELETE,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<RemoveResponse>
+  >(),
+};

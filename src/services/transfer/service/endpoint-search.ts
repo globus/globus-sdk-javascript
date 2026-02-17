@@ -1,5 +1,7 @@
 import { serviceRequest } from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
+import { RESOURCE_SERVERS } from '../../auth/config.js';
+import { createServiceMethodFactory } from '../../factory.js';
 
 import type { JSONFetchResponse, ServiceMethod } from '../../../services/types.js';
 import type { PaginatedResponse, QueryParameters } from '../types.js';
@@ -67,3 +69,21 @@ export const endpointSearch = function (
 >;
 
 export default endpointSearch;
+
+/**
+ * @private
+ */
+export const next = {
+  endpointSearch: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint_search`,
+  }).generate<
+    {
+      request?: {
+        query?: EndpointSearchQuery;
+      };
+    },
+    JSONFetchResponse<EndpointSearchResult>
+  >(),
+};

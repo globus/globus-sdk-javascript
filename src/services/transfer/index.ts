@@ -6,7 +6,7 @@
  */
 import * as TRANSFER from './config.js';
 
-import { endpointSearch } from './service/endpoint-search.js';
+import { endpointSearch, next as nextEndpointSearch } from './service/endpoint-search.js';
 
 /**
  * @private
@@ -16,7 +16,12 @@ export const CONFIG = TRANSFER;
 
 export type * from './types.js';
 
+export const next = {
+  endpointSearch: nextEndpointSearch.endpointSearch,
+};
+
 export { endpointSearch };
+
 export * as fileOperations from './service/file-operations.js';
 export * as taskSubmission from './service/task-submission.js';
 export * as endpoint from './service/endpoint.js';
