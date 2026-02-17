@@ -279,7 +279,13 @@ export const next = {
         data: { path: string };
       };
     },
-    Response
+    JSONFetchResponse<{
+      DATA_TYPE: 'mkdir_result';
+      code: 'DirectoryCreated';
+      message: string;
+      request_id: string;
+      resource: string;
+    }>
   >(),
   rename: createServiceMethodFactory({
     service: ID,
@@ -302,7 +308,13 @@ export const next = {
         };
       };
     },
-    Response
+    JSONFetchResponse<{
+      DATA_TYPE: 'result';
+      code: 'FileRenamed';
+      message: string;
+      request_id: string;
+      resource: string;
+    }>
   >(),
   symlink: createServiceMethodFactory({
     service: ID,
