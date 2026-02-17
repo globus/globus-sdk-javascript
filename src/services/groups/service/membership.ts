@@ -48,7 +48,8 @@ export const next = {
     method: HTTP_METHODS.POST,
   }).generate<
     {
-      request?: {
+      request: {
+        query?: never;
         data: OpenAPI.operations['group_membership_post_actions_v2_groups__group_id__post']['requestBody']['content']['application/json'];
       };
     },

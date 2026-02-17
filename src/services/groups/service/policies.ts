@@ -93,7 +93,7 @@ export const next = {
     method: HTTP_METHODS.PUT,
   }).generate<
     {
-      request?: {
+      request: {
         data: OpenAPI.operations['update_policies_v2_groups__group_id__policies_put']['requestBody']['content']['application/json'];
       };
     },

@@ -221,7 +221,7 @@ export const next = {
     method: HTTP_METHODS.POST,
   }).generate<
     {
-      request?: {
+      request: {
         data: OpenAPI.operations['create_group_v2_groups_post']['requestBody']['content']['application/json'];
       };
     },
@@ -252,7 +252,7 @@ export const next = {
     method: HTTP_METHODS.PUT,
   }).generate<
     {
-      request?: {
+      request: {
         data: OpenAPI.operations['update_group_v2_groups__group_id__put']['requestBody']['content']['application/json'];
       };
     },
