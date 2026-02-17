@@ -111,9 +111,7 @@ describe('collectionBookmarks', () => {
     test('get', async () => {
       const {
         req: { url, method, headers },
-      } = await mirror(
-        await collectionBookmarks.next.get({ bookmark_id: 'my-bookmark-id' }),
-      );
+      } = await mirror(await collectionBookmarks.next.get({ bookmark_id: 'my-bookmark-id' }));
       expect({
         url,
         method,
@@ -145,9 +143,7 @@ describe('collectionBookmarks', () => {
     test('remove', async () => {
       const {
         req: { url, method, headers },
-      } = await mirror(
-        await collectionBookmarks.next.remove({ bookmark_id: 'my-bookmark-id' }),
-      );
+      } = await mirror(await collectionBookmarks.next.remove({ bookmark_id: 'my-bookmark-id' }));
       expect({
         url,
         method,
