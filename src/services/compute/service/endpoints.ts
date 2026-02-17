@@ -1,5 +1,7 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
+import { RESOURCE_SERVERS } from '../../auth/config.js';
+import { createServiceMethodFactory } from '../../factory.js';
 
 import type {
   ServiceMethod,
@@ -154,3 +156,86 @@ export const remove = function (
     payload?: never;
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  getAll: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.COMPUTE,
+    path: `/v2/endpoints`,
+  }).generate<
+    {
+      request?: {
+        query?: OpenAPI.operations['get_endpoints_v2_endpoints_get']['parameters']['query'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['get_endpoints_v2_endpoints_get']['responses']['200']['content']['application/json']
+    >
+  >(),
+  get: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.COMPUTE,
+    path: `/v2/endpoints/{endpoint_uuid}`,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['get_endpoint_v2_endpoints__endpoint_uuid__get']['responses']['200']['content']['application/json']
+    >
+  >(),
+  getStatus: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.COMPUTE,
+    path: `/v2/endpoints/{endpoint_uuid}/status`,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['get_endpoint_status_v2_endpoints__endpoint_uuid__status_get']['responses']['200']['content']['application/json']
+    >
+  >(),
+  update: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.COMPUTE,
+    path: `/v3/endpoints/{endpoint_uuid}`,
+    method: HTTP_METHODS.PUT,
+  }).generate<
+    {
+      request: {
+        data: Partial<
+          OpenAPI.operations['update_endpoint_v3_endpoints__endpoint_uuid__put']['requestBody']['content']['application/json']
+        >;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['update_endpoint_v3_endpoints__endpoint_uuid__put']['responses']['200']['content']['application/json']
+    >
+  >(),
+  remove: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.COMPUTE,
+    path: `/v2/endpoints/{endpoint_uuid}`,
+    method: HTTP_METHODS.DELETE,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['delete_endpoint_v2_endpoints__endpoint_uuid__delete']['responses']['200']['content']['application/json']
+    >
+  >(),
+};

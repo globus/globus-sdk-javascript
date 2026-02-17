@@ -2,9 +2,11 @@ import { query } from '..';
 
 import { mirror } from '../../../__mocks__/handlers';
 
+const INDEX_ID = '524de2f6-d1a6-4b49-9286-d8dccb4196ae';
+
 describe('search – query', () => {
   test('get', async () => {
-    const request = await query.get('524de2f6-d1a6-4b49-9286-d8dccb4196ae', {
+    const request = await query.get(INDEX_ID, {
       query: {
         q: 'test',
       },
@@ -45,7 +47,7 @@ describe('search – query', () => {
     const {
       req: { url, method, headers },
     } = await mirror(
-      await query.get('524de2f6-d1a6-4b49-9286-d8dccb4196ae', {
+      await query.get(INDEX_ID, {
         query: {
           q: 'hello+world',
         },
@@ -59,7 +61,7 @@ describe('search – query', () => {
   });
 
   test('post', async () => {
-    const request = await query.post('524de2f6-d1a6-4b49-9286-d8dccb4196ae', {
+    const request = await query.post(INDEX_ID, {
       payload: { q: 'test' },
     });
     const {
@@ -88,5 +90,46 @@ describe('search – query', () => {
         "url": "https://search.api.globus.org/v1/index/524de2f6-d1a6-4b49-9286-d8dccb4196ae/search",
       }
     `);
+  });
+
+  describe('next', () => {
+    test('get', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(
+        await query.next.get({
+          index_id: INDEX_ID,
+          request: {
+            query: {
+              q: 'test',
+            },
+          },
+        }),
+      );
+      expect({
+        url,
+        method,
+        headers,
+      }).toMatchSnapshot();
+    });
+
+    test('post', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await query.next.post({
+          index_id: INDEX_ID,
+          request: {
+            data: { q: 'test' },
+          },
+        }),
+      );
+      expect({
+        url,
+        method,
+        headers,
+        json,
+      }).toMatchSnapshot();
+    });
   });
 });
