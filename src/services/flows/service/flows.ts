@@ -1,5 +1,7 @@
 import { ID, SCOPES } from '../config.js';
+import { RESOURCE_SERVERS } from '../../auth/config.js';
 import { HTTP_METHODS, serviceRequest } from '../../../services/shared.js';
+import { createServiceMethodFactory } from '../../factory.js';
 
 import type { OpenAPI } from '../index.js';
 
@@ -217,3 +219,114 @@ export const update = function (
     payload: OpenAPI.paths['/flows/{flow_id}']['put']['requestBody']['content']['application/json'];
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  getAll: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.FLOWS,
+    path: `/flows`,
+  }).generate<
+    {
+      request?: {
+        query?: OpenAPI.paths['/flows']['get']['parameters']['query'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.paths['/flows']['get']['responses']['200']['content']['application/json']
+    >
+  >(),
+  get: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.FLOWS,
+    path: `/flows/{flow_id}`,
+  }).generate<
+    {
+      request?: {
+        query?: OpenAPI.paths['/flows/{flow_id}']['get']['parameters']['query'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.paths['/flows/{flow_id}']['get']['responses']['200']['content']['application/json']
+    >
+  >(),
+  remove: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.FLOWS,
+    path: `/flows/{flow_id}`,
+    method: HTTP_METHODS.DELETE,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.paths['/flows/{flow_id}']['delete']['responses']['200']['content']['application/json']
+    >
+  >(),
+  run: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.FLOWS,
+    path: `/flows/{flow_id}/run`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request: {
+        data: OpenAPI.paths['/flows/{flow_id}/run']['post']['requestBody']['content']['application/json'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.paths['/flows/{flow_id}/run']['post']['responses']['201']['content']['application/json']
+    >
+  >(),
+  validate: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.FLOWS,
+    path: `/flows/validate`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request: {
+        data: OpenAPI.paths['/flows/validate']['post']['requestBody']['content']['application/json'];
+      };
+    },
+    JSONFetchResponse<
+      | OpenAPI.paths['/flows/validate']['post']['responses']['200']['content']['application/json']
+      | OpenAPI.paths['/flows/validate']['post']['responses']['422']['content']['application/json']
+    >
+  >(),
+  create: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.FLOWS,
+    path: `/flows`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request: {
+        data: OpenAPI.paths['/flows']['post']['requestBody']['content']['application/json'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.paths['/flows']['post']['responses']['201']['content']['application/json']
+    >
+  >(),
+  update: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.FLOWS,
+    path: `/flows/{flow_id}`,
+    method: HTTP_METHODS.PUT,
+  }).generate<
+    {
+      request: {
+        data: OpenAPI.paths['/flows/{flow_id}']['put']['requestBody']['content']['application/json'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.paths['/flows/{flow_id}']['put']['responses']['200']['content']['application/json']
+    >
+  >(),
+};

@@ -115,3 +115,135 @@ exports[`flows.flow validate 1`] = `
   "url": "https://flows.globus.org/flows/validate",
 }
 `;
+
+exports[`next create 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "47",
+    "content-type": "application/json",
+    "host": "flows.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "definition": {
+      "StartAt": "FooBar",
+      "States": {},
+    },
+  },
+  "method": "POST",
+  "url": "https://flows.globus.org/flows",
+}
+`;
+
+exports[`next get 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "flows.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://flows.globus.org/flows/flow-id",
+}
+`;
+
+exports[`next getAll 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "flows.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://flows.globus.org/flows",
+}
+`;
+
+exports[`next remove 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "flows.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "DELETE",
+  "url": "https://flows.globus.org/flows/flow-id",
+}
+`;
+
+exports[`next run 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "78",
+    "content-type": "application/json",
+    "host": "flows.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "body": {
+      "echo_string": "Hello, world!",
+      "sleep_time": 5,
+    },
+    "tags": [
+      "tag1",
+      "tag2",
+    ],
+  },
+  "method": "POST",
+  "url": "https://flows.globus.org/flows/flow-id/run",
+}
+`;
+
+exports[`next update 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "47",
+    "content-type": "application/json",
+    "host": "flows.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "subtitle": "New subtitle",
+    "title": "New title",
+  },
+  "method": "PUT",
+  "url": "https://flows.globus.org/flows/flow-id",
+}
+`;
+
+exports[`next validate 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "47",
+    "content-type": "application/json",
+    "host": "flows.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "definition": {
+      "StartAt": "FooBar",
+      "States": {},
+    },
+  },
+  "method": "POST",
+  "url": "https://flows.globus.org/flows/validate",
+}
+`;

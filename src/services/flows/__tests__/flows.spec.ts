@@ -1,6 +1,8 @@
 import { mirror } from '../../../__mocks__/handlers';
 import { flows } from '..';
 
+const FLOW_ID = 'flow-id';
+
 describe('flows.flow', () => {
   test('getAll', async () => {
     const {
@@ -138,6 +140,135 @@ describe('flows.flow', () => {
         },
         headers: {
           Authorization: 'Bearer this-is-an-example-token',
+        },
+      }),
+    );
+
+    expect({
+      url,
+      method,
+      headers,
+      json,
+    }).toMatchSnapshot();
+  });
+});
+
+describe('next', () => {
+  test('getAll', async () => {
+    const {
+      req: { url, method, headers },
+    } = await mirror(await flows.next.getAll());
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchSnapshot();
+  });
+
+  test('get', async () => {
+    const {
+      req: { url, method, headers },
+    } = await mirror(await flows.next.get({ flow_id: FLOW_ID }));
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchSnapshot();
+  });
+
+  test('remove', async () => {
+    const {
+      req: { url, method, headers },
+    } = await mirror(await flows.next.remove({ flow_id: FLOW_ID }));
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchSnapshot();
+  });
+
+  test('run', async () => {
+    const {
+      req: { url, method, headers, json },
+    } = await mirror(
+      await flows.next.run({
+        flow_id: FLOW_ID,
+        request: {
+          data: {
+            body: {
+              sleep_time: 5,
+              echo_string: 'Hello, world!',
+            },
+            tags: ['tag1', 'tag2'],
+          },
+        },
+      }),
+    );
+    expect({
+      url,
+      method,
+      headers,
+      json,
+    }).toMatchSnapshot();
+  });
+
+  test('validate', async () => {
+    const {
+      req: { url, method, headers, json },
+    } = await mirror(
+      await flows.next.validate({
+        request: {
+          data: {
+            definition: {
+              States: {},
+              StartAt: 'FooBar',
+            },
+          },
+        },
+      }),
+    );
+    expect({
+      url,
+      method,
+      headers,
+      json,
+    }).toMatchSnapshot();
+  });
+
+  test('create', async () => {
+    const {
+      req: { url, method, headers, json },
+    } = await mirror(
+      await flows.next.create({
+        request: {
+          data: {
+            definition: {
+              States: {},
+              StartAt: 'FooBar',
+            },
+          },
+        },
+      }),
+    );
+    expect({
+      url,
+      method,
+      headers,
+      json,
+    }).toMatchSnapshot();
+  });
+
+  test('update', async () => {
+    const {
+      req: { url, method, headers, json },
+    } = await mirror(
+      await flows.next.update({
+        flow_id: FLOW_ID,
+        request: {
+          data: {
+            title: 'New title',
+            subtitle: 'New subtitle',
+          },
         },
       }),
     );
