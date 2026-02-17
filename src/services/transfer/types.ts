@@ -89,7 +89,8 @@ export type Pagination = {
     Response: {
       limit: number;
       offset: number;
-      has_next_page: `${boolean}` | boolean;
+      has_next_page?: `${boolean}` | boolean;
+      total?: number;
     };
   };
   /**
