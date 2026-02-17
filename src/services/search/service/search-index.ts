@@ -1,5 +1,6 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
-import { ID, SCOPES } from '../config.js';
+import { ID, SCOPES, RESOURCE_SERVER } from '../config.js';
+import { createServiceMethodFactory } from '../../factory.js';
 
 import type {
   JSONFetchResponse,
@@ -233,3 +234,73 @@ export const ingest = function (
     payload: GIngest;
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  get: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVER,
+    path: `/v1/index/{index_id}`,
+  }).generate<{}, JSONFetchResponse<IndexWithPermissions>>(),
+  getAll: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVER,
+    path: `/v1/index_list`,
+  }).generate<{}, JSONFetchResponse<IndexList>>(),
+  create: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVER,
+    path: `/v1/index`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request?: {
+        data: IndexCreate;
+      };
+    },
+    JSONFetchResponse<GSearchIndex>
+  >(),
+  remove: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVER,
+    path: `/v1/index/{index_id}`,
+    method: HTTP_METHODS.DELETE,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<IndexDeleteResponse>
+  >(),
+  reopen: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVER,
+    path: `/v1/index/{index_id}/reopen`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<IndexReopenResponse>
+  >(),
+  ingest: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVER,
+    path: `/v1/index/{index_id}/ingest`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request?: {
+        data: GIngest;
+      };
+    },
+    JSONFetchResponse<IngestResponse>
+  >(),
+};

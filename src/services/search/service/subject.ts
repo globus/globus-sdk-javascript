@@ -1,5 +1,6 @@
 import { serviceRequest } from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
+import { createServiceMethodFactory } from '../../factory.js';
 
 import type { ServiceMethodDynamicSegments } from '../../types.js';
 import type { ResultFormatVersion } from '../types.js';
@@ -33,3 +34,22 @@ export const get = function (index_id, options?, sdkOptions?) {
     };
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  get: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVER,
+    path: `/v1/index/{index_id}/subject`,
+  }).generate<{
+    request?: {
+      query?: {
+        subject: string;
+        result_format_version?: ResultFormatVersion | string;
+        bypass_visible_to?: 'true' | 'false';
+      };
+    };
+  }>(),
+};
