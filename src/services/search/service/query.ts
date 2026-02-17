@@ -1,5 +1,6 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
-import { ID, SCOPES, RESOURCE_SERVER } from '../config.js';
+import { ID, SCOPES } from '../config.js';
+import { RESOURCE_SERVERS } from '../../auth/config.js';
 import { createServiceMethodFactory } from '../../factory.js';
 
 import type { JSONFetchResponse, SDKOptions, ServiceMethodOptions } from '../../types.js';
@@ -203,12 +204,12 @@ export type GSort = {
 export const next = {
   get: createServiceMethodFactory({
     service: ID,
-    resource_server: RESOURCE_SERVER,
+    resource_server: RESOURCE_SERVERS[ID],
     path: `/v1/index/{index_id}/search`,
   }).generate<
     {
-      request?: {
-        query?: {
+      request: {
+        query: {
           q: string;
           offset?: `${number}` | number;
           limit?: `${number}` | number;
@@ -223,12 +224,12 @@ export const next = {
   >(),
   post: createServiceMethodFactory({
     service: ID,
-    resource_server: RESOURCE_SERVER,
+    resource_server: RESOURCE_SERVERS[ID],
     path: `/v1/index/{index_id}/search`,
     method: HTTP_METHODS.POST,
   }).generate<
     {
-      request?: {
+      request: {
         data: GSearchRequest;
       };
     },

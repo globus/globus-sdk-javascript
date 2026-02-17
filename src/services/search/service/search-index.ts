@@ -1,5 +1,6 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
-import { ID, SCOPES, RESOURCE_SERVER } from '../config.js';
+import { ID, SCOPES } from '../config.js';
+import { RESOURCE_SERVERS } from '../../auth/config.js';
 import { createServiceMethodFactory } from '../../factory.js';
 
 import type {
@@ -241,22 +242,22 @@ export const ingest = function (
 export const next = {
   get: createServiceMethodFactory({
     service: ID,
-    resource_server: RESOURCE_SERVER,
+    resource_server: RESOURCE_SERVERS[ID],
     path: `/v1/index/{index_id}`,
   }).generate<{}, JSONFetchResponse<IndexWithPermissions>>(),
   getAll: createServiceMethodFactory({
     service: ID,
-    resource_server: RESOURCE_SERVER,
+    resource_server: RESOURCE_SERVERS[ID],
     path: `/v1/index_list`,
   }).generate<{}, JSONFetchResponse<IndexList>>(),
   create: createServiceMethodFactory({
     service: ID,
-    resource_server: RESOURCE_SERVER,
+    resource_server: RESOURCE_SERVERS[ID],
     path: `/v1/index`,
     method: HTTP_METHODS.POST,
   }).generate<
     {
-      request?: {
+      request: {
         data: IndexCreate;
       };
     },
@@ -264,7 +265,7 @@ export const next = {
   >(),
   remove: createServiceMethodFactory({
     service: ID,
-    resource_server: RESOURCE_SERVER,
+    resource_server: RESOURCE_SERVERS[ID],
     path: `/v1/index/{index_id}`,
     method: HTTP_METHODS.DELETE,
   }).generate<
@@ -278,7 +279,7 @@ export const next = {
   >(),
   reopen: createServiceMethodFactory({
     service: ID,
-    resource_server: RESOURCE_SERVER,
+    resource_server: RESOURCE_SERVERS[ID],
     path: `/v1/index/{index_id}/reopen`,
     method: HTTP_METHODS.POST,
   }).generate<
@@ -292,12 +293,12 @@ export const next = {
   >(),
   ingest: createServiceMethodFactory({
     service: ID,
-    resource_server: RESOURCE_SERVER,
+    resource_server: RESOURCE_SERVERS[ID],
     path: `/v1/index/{index_id}/ingest`,
     method: HTTP_METHODS.POST,
   }).generate<
     {
-      request?: {
+      request: {
         data: GIngest;
       };
     },

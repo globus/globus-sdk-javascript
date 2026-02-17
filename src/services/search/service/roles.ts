@@ -1,5 +1,6 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
-import { ID, SCOPES, RESOURCE_SERVER } from '../config.js';
+import { ID, SCOPES } from '../config.js';
+import { RESOURCE_SERVERS } from '../../auth/config.js';
 import { createServiceMethodFactory } from '../../factory.js';
 
 import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../types.js';
@@ -117,17 +118,17 @@ export const remove = function (
 export const next = {
   getAll: createServiceMethodFactory({
     service: ID,
-    resource_server: RESOURCE_SERVER,
+    resource_server: RESOURCE_SERVERS[ID],
     path: `/v1/index/{index_id}/role_list`,
   }).generate<{}, JSONFetchResponse<IndexRoleListResponse>>(),
   create: createServiceMethodFactory({
     service: ID,
-    resource_server: RESOURCE_SERVER,
+    resource_server: RESOURCE_SERVERS[ID],
     path: `/v1/index/{index_id}/role`,
     method: HTTP_METHODS.POST,
   }).generate<
     {
-      request?: {
+      request: {
         data: SearchIndexRoleCreate;
       };
     },
@@ -135,7 +136,7 @@ export const next = {
   >(),
   remove: createServiceMethodFactory({
     service: ID,
-    resource_server: RESOURCE_SERVER,
+    resource_server: RESOURCE_SERVERS[ID],
     path: `/v1/index/{index_id}/role/{role_id}`,
     method: HTTP_METHODS.DELETE,
   }).generate<

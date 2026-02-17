@@ -1,9 +1,6 @@
 import type { Environment } from '../../core/global.js';
-import { RESOURCE_SERVERS } from '../auth/config.js';
 
 export const ID = 'SEARCH' as const;
-
-export const RESOURCE_SERVER = RESOURCE_SERVERS[ID];
 
 export const HOSTS: Partial<Record<Environment, string>> = {
   sandbox: 'search.api.sandbox.globuscs.info',
