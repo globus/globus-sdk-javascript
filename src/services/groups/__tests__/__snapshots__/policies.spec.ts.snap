@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`get 1`] = `
 {
@@ -10,6 +10,39 @@ exports[`get 1`] = `
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
+  "url": "https://groups.api.globus.org/v2/groups/6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9/policies",
+}
+`;
+
+exports[`next get 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "groups.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://groups.api.globus.org/v2/groups/6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9/policies",
+}
+`;
+
+exports[`next update 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "26",
+    "content-type": "application/json",
+    "host": "groups.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "is_high_assurance": true,
+  },
+  "method": "PUT",
   "url": "https://groups.api.globus.org/v2/groups/6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9/policies",
 }
 `;

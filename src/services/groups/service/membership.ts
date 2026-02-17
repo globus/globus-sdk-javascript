@@ -1,6 +1,7 @@
 import { ID } from '../config.js';
-import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 import { RESOURCE_SERVERS } from '../../auth/config.js';
+import { HTTP_METHODS, serviceRequest } from '../../shared.js';
+import { createServiceMethodFactory } from '../../factory.js';
 
 import type { OpenAPI } from '../index.js';
 import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../types.js';
@@ -35,3 +36,24 @@ export const act = function (
     payload: OpenAPI.operations['group_membership_post_actions_v2_groups__group_id__post']['requestBody']['content']['application/json'];
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  act: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.GROUPS,
+    path: `/v2/groups/{group_id}`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request?: {
+        data: OpenAPI.operations['group_membership_post_actions_v2_groups__group_id__post']['requestBody']['content']['application/json'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['group_membership_post_actions_v2_groups__group_id__post']['responses']['200']['content']['application/json']
+    >
+  >(),
+};

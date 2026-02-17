@@ -1,6 +1,7 @@
 import { ID } from '../config.js';
 import { RESOURCE_SERVERS } from '../../auth/config.js';
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
+import { createServiceMethodFactory } from '../../factory.js';
 
 import type { OpenAPI } from '../index.js';
 
@@ -178,3 +179,100 @@ export const getStatuses = function (
   query?: never;
   payload?: never;
 }>;
+
+/**
+ * @private
+ */
+export const next = {
+  getMyGroups: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.GROUPS,
+    path: `/v2/groups/my_groups`,
+  }).generate<
+    {
+      request?: {
+        query?: {
+          statuses?: OpenAPI.components['schemas']['StatusEnum'][];
+        };
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['get_my_groups_and_memberships_v2_groups_my_groups_get']['responses']['200']['content']['application/json']
+    >
+  >(),
+  get: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.GROUPS,
+    path: `/v2/groups/{group_id}`,
+  }).generate<
+    {
+      request?: {
+        query?: OpenAPI.operations['get_group_v2_groups__group_id__get']['parameters']['query'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['get_group_v2_groups__group_id__get']['responses']['200']['content']['application/json']
+    >
+  >(),
+  create: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.GROUPS,
+    path: `/v2/groups`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request?: {
+        data: OpenAPI.operations['create_group_v2_groups_post']['requestBody']['content']['application/json'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['create_group_v2_groups_post']['responses']['201']['content']['application/json']
+    >
+  >(),
+  remove: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.GROUPS,
+    path: `/v2/groups/{group_id}`,
+    method: HTTP_METHODS.DELETE,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['delete_group_v2_groups__group_id__delete']['responses']['200']['content']['application/json']
+    >
+  >(),
+  update: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.GROUPS,
+    path: `/v2/groups/{group_id}`,
+    method: HTTP_METHODS.PUT,
+  }).generate<
+    {
+      request?: {
+        data: OpenAPI.operations['update_group_v2_groups__group_id__put']['requestBody']['content']['application/json'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['update_group_v2_groups__group_id__put']['responses']['200']['content']['application/json']
+    >
+  >(),
+  getStatuses: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.GROUPS,
+    path: `/v2/groups/statuses`,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['get_statuses_v2_groups_statuses_get']['responses']['200']['content']['application/json']
+    >
+  >(),
+};

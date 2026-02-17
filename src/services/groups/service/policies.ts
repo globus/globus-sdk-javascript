@@ -1,6 +1,7 @@
 import { ID } from '../config.js';
-import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 import { RESOURCE_SERVERS } from '../../auth/config.js';
+import { HTTP_METHODS, serviceRequest } from '../../shared.js';
+import { createServiceMethodFactory } from '../../factory.js';
 
 import type { OpenAPI } from '../index.js';
 import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../types.js';
@@ -65,3 +66,39 @@ export const update = function (
     payload: OpenAPI.operations['update_policies_v2_groups__group_id__policies_put']['requestBody']['content']['application/json'];
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  get: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.GROUPS,
+    path: `/v2/groups/{group_id}/policies`,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['get_policies_v2_groups__group_id__policies_get']['responses']['200']['content']['application/json']
+    >
+  >(),
+  update: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.GROUPS,
+    path: `/v2/groups/{group_id}/policies`,
+    method: HTTP_METHODS.PUT,
+  }).generate<
+    {
+      request?: {
+        data: OpenAPI.operations['update_policies_v2_groups__group_id__policies_put']['requestBody']['content']['application/json'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['update_policies_v2_groups__group_id__policies_put']['responses']['200']['content']['application/json']
+    >
+  >(),
+};
