@@ -435,7 +435,7 @@ export const next = {
   get: createServiceMethodFactory({
     service: ID,
     resource_server: RESOURCE_SERVERS.TRANSFER,
-    path: `/v0.10/endpoint/{endpoint_xid}`,
+    path: `/v0.10/endpoint/{endpoint_or_collection_id}`,
   }).generate<
     {
       request?: {
@@ -459,8 +459,8 @@ export const next = {
     }),
   }).generate<
     {
-      request?: {
-        data?: CreatePayload;
+      request: {
+        data: CreatePayload;
       };
     },
     JSONFetchResponse<CreateResponse>
@@ -468,7 +468,7 @@ export const next = {
   update: createServiceMethodFactory({
     service: ID,
     resource_server: RESOURCE_SERVERS.TRANSFER,
-    path: `/v0.10/endpoint/{endpoint_xid}`,
+    path: `/v0.10/endpoint/{collection_id}`,
     method: HTTP_METHODS.PUT,
     transform: (payload) => ({
       ...payload,
@@ -488,7 +488,7 @@ export const next = {
   remove: createServiceMethodFactory({
     service: ID,
     resource_server: RESOURCE_SERVERS.TRANSFER,
-    path: `/v0.10/endpoint/{endpoint_xid}`,
+    path: `/v0.10/endpoint/{collection_id}`,
     method: HTTP_METHODS.DELETE,
   }).generate<
     {

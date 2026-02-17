@@ -68,7 +68,7 @@ describe('endpoint', () => {
     test('get', async () => {
       const {
         req: { url, method, headers },
-      } = await mirror(await endpoint.next.get({ endpoint_xid: ENDPOINT }));
+      } = await mirror(await endpoint.next.get({ endpoint_or_collection_id: ENDPOINT }));
       expect({
         url,
         method,
@@ -103,7 +103,7 @@ describe('endpoint', () => {
         req: { url, method, headers, json },
       } = await mirror(
         await endpoint.next.update({
-          endpoint_xid: ENDPOINT,
+          collection_id: ENDPOINT,
           request: {
             data: {
               description: 'This is my GCP collection.',
@@ -122,7 +122,7 @@ describe('endpoint', () => {
     test('delete', async () => {
       const {
         req: { url, method, headers },
-      } = await mirror(await endpoint.next.remove({ endpoint_xid: ENDPOINT }));
+      } = await mirror(await endpoint.next.remove({ collection_id: ENDPOINT }));
       expect({
         url,
         method,
