@@ -17,4 +17,26 @@ describe('search – entry', () => {
       headers,
     }).toMatchSnapshot();
   });
+
+  describe('next', () => {
+    test('get', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(
+        await entry.next.get({
+          index_id: '524de2f6-d1a6-4b49-9286-d8dccb4196ae',
+          request: {
+            query: {
+              subject: '123abc',
+            },
+          },
+        }),
+      );
+      expect({
+        url,
+        method,
+        headers,
+      }).toMatchSnapshot();
+    });
+  });
 });

@@ -1,6 +1,6 @@
 import { HTTP_METHODS, serviceRequest } from '../../../shared.js';
-import { ID } from '../../config.js';
-import { RESOURCE_SERVERS } from '../../../auth/config.js';
+import { ID, RESOURCE_SERVER } from '../../config.js';
+import { createServiceMethodFactory } from '../../../factory.js';
 
 import type { OpenAPI } from '../../index.js';
 import type {
@@ -23,7 +23,7 @@ export const getAll = function (
   return serviceRequest(
     {
       service: ID,
-      resource_server: RESOURCE_SERVERS[ID],
+      resource_server: RESOURCE_SERVER,
       path: '/jobs',
       method: HTTP_METHODS.GET,
     },
@@ -50,7 +50,7 @@ export const get = function (
   return serviceRequest(
     {
       service: ID,
-      resource_server: RESOURCE_SERVERS[ID],
+      resource_server: RESOURCE_SERVER,
       path: `/jobs/${job_id}`,
       method: HTTP_METHODS.GET,
     },
@@ -80,7 +80,7 @@ export const patch = function (
   return serviceRequest(
     {
       service: ID,
-      resource_server: RESOURCE_SERVERS[ID],
+      resource_server: RESOURCE_SERVER,
       path: `/jobs/${job_id}`,
       method: HTTP_METHODS.PATCH,
     },
@@ -109,7 +109,7 @@ export const pause = function (
   return serviceRequest(
     {
       service: ID,
-      resource_server: RESOURCE_SERVERS[ID],
+      resource_server: RESOURCE_SERVER,
       path: `/jobs/${job_id}/pause`,
       method: HTTP_METHODS.POST,
     },
@@ -140,7 +140,7 @@ export const resume = function (
   return serviceRequest(
     {
       service: ID,
-      resource_server: RESOURCE_SERVERS[ID],
+      resource_server: RESOURCE_SERVER,
       path: `/jobs/${job_id}/resume`,
       method: HTTP_METHODS.POST,
     },
@@ -171,7 +171,7 @@ export const remove = function (
   return serviceRequest(
     {
       service: ID,
-      resource_server: RESOURCE_SERVERS[ID],
+      resource_server: RESOURCE_SERVER,
       path: `/jobs/${job_id}`,
       method: HTTP_METHODS.DELETE,
     },
@@ -186,3 +186,100 @@ export const remove = function (
     query?: never;
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  getAll: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVER,
+    path: `/jobs`,
+  }).generate<
+    {
+      request?: {
+        query?: OpenAPI.operations['list_jobs_jobs__get']['parameters']['query'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['list_jobs_jobs__get']['responses']['200']['content']['application/json']
+    >
+  >(),
+  get: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVER,
+    path: `/jobs/{job_id}`,
+  }).generate<
+    {
+      request?: {
+        query?: OpenAPI.operations['read_job_jobs__job_id__get']['parameters']['query'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['read_job_jobs__job_id__get']['responses']['200']['content']['application/json']
+    >
+  >(),
+  patch: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVER,
+    path: `/jobs/{job_id}`,
+    method: HTTP_METHODS.PATCH,
+  }).generate<
+    {
+      request?: {
+        data: OpenAPI.operations['update_job_jobs__job_id__patch']['requestBody']['content']['application/json'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['update_job_jobs__job_id__patch']['responses']['200']['content']['application/json']
+    >
+  >(),
+  pause: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVER,
+    path: `/jobs/{job_id}/pause`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['pause_job_jobs__job_id__pause_post']['responses']['200']['content']['application/json']
+    >
+  >(),
+  resume: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVER,
+    path: `/jobs/{job_id}/resume`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request?: {
+        query?: OpenAPI.operations['resume_job_jobs__job_id__resume_post']['parameters']['query'];
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['resume_job_jobs__job_id__resume_post']['responses']['200']['content']['application/json']
+    >
+  >(),
+  remove: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVER,
+    path: `/jobs/{job_id}`,
+    method: HTTP_METHODS.DELETE,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['delete_timer_jobs__timer_id__delete']['responses']['200']['content']['application/json']
+    >
+  >(),
+};
