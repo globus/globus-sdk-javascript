@@ -1,6 +1,8 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 import { getHeadersForService } from '../shared.js';
 import { ID, SCOPES } from '../config.js';
+import { RESOURCE_SERVERS } from '../../auth/config.js';
+import { createServiceMethodFactory } from '../../factory.js';
 
 import type { ErrorDocument, QueryParameters } from '../types.js';
 import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../types.js';
@@ -242,3 +244,102 @@ export const stat = function (
     };
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  ls: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/operation/endpoint/{endpoint_xid}/ls`,
+  }).generate<
+    {
+      request?: {
+        query?: DirectoryListingQuery;
+      };
+    },
+    JSONFetchResponse<FileListDocument | DirectoryListingError>
+  >(),
+  mkdir: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/operation/endpoint/{endpoint_xid}/mkdir`,
+    method: HTTP_METHODS.POST,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { DATA_TYPE: 'mkdir', ...payload?.request?.data },
+      },
+    }),
+  }).generate<
+    {
+      request: {
+        data: { path: string };
+      };
+    },
+    Response
+  >(),
+  rename: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/operation/endpoint/{endpoint_xid}/rename`,
+    method: HTTP_METHODS.POST,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { DATA_TYPE: 'rename', ...payload?.request?.data },
+      },
+    }),
+  }).generate<
+    {
+      request: {
+        data: {
+          old_path: string;
+          new_path: string;
+        };
+      };
+    },
+    Response
+  >(),
+  symlink: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/operation/endpoint/{endpoint_xid}/symlink`,
+    method: HTTP_METHODS.POST,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { DATA_TYPE: 'symlink', ...payload?.request?.data },
+      },
+    }),
+  }).generate<
+    {
+      request: {
+        data: {
+          path: string;
+          symlink_target: string;
+        };
+      };
+    },
+    Response
+  >(),
+  stat: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/operation/endpoint/{endpoint_xid}/stat`,
+  }).generate<
+    {
+      request: {
+        query: {
+          path: string;
+          local_user?: string;
+        };
+      };
+    },
+    JSONFetchResponse<FileDocument>
+  >(),
+};
