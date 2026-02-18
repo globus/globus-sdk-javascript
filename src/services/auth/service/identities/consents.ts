@@ -1,5 +1,6 @@
-import { ID, SCOPES } from '../../config.js';
+import { ID, SCOPES, RESOURCE_SERVERS } from '../../config.js';
 import { serviceRequest } from '../../../../services/shared.js';
+import { createServiceMethodFactory } from '../../../../services/factory.js';
 
 import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../../types.js';
 
@@ -37,3 +38,21 @@ export const getAll = function (
     sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<string, Record<string, any>>;
+
+/**
+ * @private
+ */
+export const next = {
+  getAll: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/identities/{identity_id}/consents`,
+  }).generate<
+    {
+      request?: {
+        data?: never;
+      };
+    },
+    JSONFetchResponse<{ consents: Consent[] }>
+  >(),
+};

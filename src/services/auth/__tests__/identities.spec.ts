@@ -110,3 +110,56 @@ test('consents', async () => {
 }
 `);
 });
+
+describe('next', () => {
+  test('get', async () => {
+    const result = await identities.next.get({
+      identity_id: '6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9',
+    });
+    const {
+      req: { url, method, headers },
+    } = await mirror(result);
+
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchSnapshot();
+  });
+
+  test('getAll', async () => {
+    const result = await identities.next.getAll({
+      request: {
+        query: {
+          ids: '538e096f-0468-4d54-8463-50af72c01f95,1e1cac10-b303-48d8-aa81-3b3a592a2564',
+        },
+      },
+    });
+    const {
+      req: { url, method, headers },
+    } = await mirror(result);
+
+    expect({
+      url,
+      method,
+      headers,
+    }).toMatchSnapshot();
+  });
+
+  describe('consents', () => {
+    test('getAll', async () => {
+      const result = await identities.consents.next.getAll({
+        identity_id: '6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9',
+      });
+      const {
+        req: { url, method, headers },
+      } = await mirror(result);
+
+      expect({
+        url,
+        method,
+        headers,
+      }).toMatchSnapshot();
+    });
+  });
+});
