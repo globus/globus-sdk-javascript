@@ -91,6 +91,14 @@ export const next = {
         data?: never;
       };
     },
-    JSONFetchResponse<Identity>
+    JSONFetchResponse<{
+      included?: {
+        identity_providers?: {
+          id: string;
+          name: string;
+        };
+      };
+      identities: Identity[];
+    }>
   >(),
 };
