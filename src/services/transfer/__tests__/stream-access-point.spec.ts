@@ -27,4 +27,38 @@ describe('streamAccessPoint', () => {
       headers,
     }).toMatchSnapshot();
   });
+
+  describe('next', () => {
+    test('getAll', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(
+        await streamAccessPoint.next.getAll({
+          request: {
+            query: { 'filter[endpoint_admin]': true, 'filter[fulltext]': 'example' },
+          },
+        }),
+      );
+      expect({
+        url,
+        method,
+        headers,
+      }).toMatchSnapshot();
+    });
+
+    test('get', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(
+        await streamAccessPoint.next.get({
+          stream_access_point_uuid: 'example-stream-access-point-id',
+        }),
+      );
+      expect({
+        url,
+        method,
+        headers,
+      }).toMatchSnapshot();
+    });
+  });
 });

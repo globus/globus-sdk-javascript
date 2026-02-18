@@ -1,6 +1,7 @@
 import { serviceRequest } from '../../shared.js';
 import { ID as service } from '../config.js';
 import { RESOURCE_SERVERS } from '../../auth/config.js';
+import { createServiceMethodFactory } from '../../factory.js';
 
 import type {
   ServiceMethodDynamicSegments,
@@ -60,3 +61,35 @@ export const get = function (
     payload?: GetOperation['requestBody'];
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  getAll: createServiceMethodFactory({
+    service,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v2/stream_access_points`,
+  }).generate<
+    {
+      request?: {
+        query?: GetAllOperation['parameters']['query'];
+        data?: GetAllOperation['requestBody'];
+      };
+    },
+    JSONFetchResponse<GetAllOperation['responses']['200']['content']['application/json']>
+  >(),
+  get: createServiceMethodFactory({
+    service,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v2/stream_access_points/{stream_access_point_uuid}`,
+  }).generate<
+    {
+      request?: {
+        query?: GetOperation['parameters']['query'];
+        data?: GetOperation['requestBody'];
+      };
+    },
+    JSONFetchResponse<GetOperation['responses']['200']['content']['application/json']>
+  >(),
+};
