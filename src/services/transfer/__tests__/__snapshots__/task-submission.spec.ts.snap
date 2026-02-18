@@ -1,5 +1,75 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`transfer.task-submission next submissionId 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globus.org/v0.10/submission_id",
+}
+`;
+
+exports[`transfer.task-submission next submitDelete 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "175",
+    "content-type": "application/json",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "DATA": [
+      {
+        "DATA_TYPE": "delete_item",
+        "path": "/",
+      },
+    ],
+    "DATA_TYPE": "delete",
+    "endpoint": "e434fe90-591f-40d9-8d34-3016b6237046",
+    "submission_id": "65d1dc8c-5ebb-487e-8990-e5a25e3cf1d4",
+  },
+  "method": "POST",
+  "url": "https://transfer.api.globus.org/v0.10/delete",
+}
+`;
+
+exports[`transfer.task-submission next submitTransfer 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "256",
+    "content-type": "application/json",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "DATA": [
+      {
+        "DATA_TYPE": "transfer_item",
+        "destination_path": "/destination",
+        "source_path": "/",
+      },
+    ],
+    "DATA_TYPE": "transfer",
+    "destination_endpoint": "e434fe90-591f-40d9-8d34-3016b6237046",
+    "source_endpoint": "e434fe90-591f-40d9-8d34-3016b6237046",
+    "submission_id": "abc",
+  },
+  "method": "POST",
+  "url": "https://transfer.api.globus.org/v0.10/transfer",
+}
+`;
+
 exports[`transfer.task-submission submissionId 1`] = `
 {
   "headers": {
