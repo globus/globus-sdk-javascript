@@ -198,41 +198,52 @@ export type GSort = {
   order: 'asc' | 'desc';
 };
 
+const postMethod = createServiceMethodFactory({
+  service: ID,
+  resource_server: RESOURCE_SERVERS[ID],
+  path: `/v1/index/{index_id}/search`,
+  method: HTTP_METHODS.POST,
+}).generate<
+  {
+    request: {
+      data: GSearchRequest;
+    };
+  },
+  JSONFetchResponse<GSearchResult>
+>();
+
+const getMethod = createServiceMethodFactory({
+  service: ID,
+  resource_server: RESOURCE_SERVERS[ID],
+  path: `/v1/index/{index_id}/search`,
+}).generate<
+  {
+    request: {
+      query: {
+        q: string;
+        offset?: `${number}` | number;
+        limit?: `${number}` | number;
+        advanced?: 'true' | 'false';
+        bypass_visible_to?: 'true' | 'false';
+        result_format_version?: string;
+        filter_principal_sets?: string;
+      };
+    };
+  },
+  JSONFetchResponse<GSearchResult>
+>();
+
 /**
+ * `get` and `post` are generated using `createServiceMethodFactory` to ensure type safety, but we want to export them as more generic functions that allow the caller to specify the expected content type of the results. These wrapper functions achieve that while preserving type safety.
  * @private
  */
 export const next = {
-  get: createServiceMethodFactory({
-    service: ID,
-    resource_server: RESOURCE_SERVERS[ID],
-    path: `/v1/index/{index_id}/search`,
-  }).generate<
-    {
-      request: {
-        query: {
-          q: string;
-          offset?: `${number}` | number;
-          limit?: `${number}` | number;
-          advanced?: 'true' | 'false';
-          bypass_visible_to?: 'true' | 'false';
-          result_format_version?: string;
-          filter_principal_sets?: string;
-        };
-      };
-    },
-    JSONFetchResponse<GSearchResult>
-  >(),
-  post: createServiceMethodFactory({
-    service: ID,
-    resource_server: RESOURCE_SERVERS[ID],
-    path: `/v1/index/{index_id}/search`,
-    method: HTTP_METHODS.POST,
-  }).generate<
-    {
-      request: {
-        data: GSearchRequest;
-      };
-    },
-    JSONFetchResponse<GSearchResult>
-  >(),
+  get: <C extends Content = Content>(
+    payload: Parameters<typeof getMethod>[0],
+  ): Promise<JSONFetchResponse<GSearchResult<C>>> =>
+    getMethod(payload) as Promise<JSONFetchResponse<GSearchResult<C>>>,
+  post: <C extends Content = Content>(
+    payload: Parameters<typeof postMethod>[0],
+  ): Promise<JSONFetchResponse<GSearchResult<C>>> =>
+    postMethod(payload) as Promise<JSONFetchResponse<GSearchResult<C>>>,
 };

@@ -131,5 +131,39 @@ describe('search – query', () => {
         json,
       }).toMatchSnapshot();
     });
+
+    test('TypeScript Types', async () => {
+      type Content = {
+        name: string;
+        foo: number;
+      };
+      const withGenericResponse = await query.next.post<Content>({
+        index_id: INDEX_ID,
+        request: {
+          data: { q: 'test' },
+        },
+      });
+      // Verify the Generic type is working as expected...
+      const withGeneric: query.GSearchResult<Content> = await withGenericResponse.json();
+
+      // @ts-expect-error – if the following line does not error, the types are incorrect
+      expect(withGeneric.gmeta?.[0]?.entries?.[0]?.content?.baz).toBeUndefined();
+
+      // Verify that the expected `content` properties are present (based on the provided Generic type)
+      expect(withGeneric.gmeta?.[0]?.entries?.[0]?.content?.name).toBeUndefined();
+
+      const withoutGenericResponse = await query.next.get({
+        index_id: INDEX_ID,
+        request: {
+          query: {
+            q: 'test',
+          },
+        },
+      });
+
+      const noGeneric: query.GSearchResult = await withoutGenericResponse.json();
+      // Ensure arbitrary properties can be accessed on `content` when no Generic type is provided.
+      expect(noGeneric.gmeta?.[0]?.entries?.[0]?.content?.['name']).toBeUndefined();
+    });
   });
 });
