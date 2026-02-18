@@ -49,6 +49,88 @@ exports[`collectionBookmarks getAll 1`] = `
 }
 `;
 
+exports[`collectionBookmarks next create 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "88",
+    "content-type": "application/json",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "endpoint_id": "fake-endpoint-uuid",
+    "name": "My New Bookmark",
+    "path": "/my/bookmark/path",
+  },
+  "method": "POST",
+  "url": "https://transfer.api.globus.org/v0.10/bookmark",
+}
+`;
+
+exports[`collectionBookmarks next get 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globus.org/v0.10/bookmark/my-bookmark-id",
+}
+`;
+
+exports[`collectionBookmarks next getAll 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globus.org/v0.10/bookmark_list",
+}
+`;
+
+exports[`collectionBookmarks next remove 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "DELETE",
+  "url": "https://transfer.api.globus.org/v0.10/bookmark/my-bookmark-id",
+}
+`;
+
+exports[`collectionBookmarks next update 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "19",
+    "content-type": "application/json",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "name": "New Name",
+  },
+  "method": "PUT",
+  "url": "https://transfer.api.globus.org/v0.10/bookmark/my-bookmark-id",
+}
+`;
+
 exports[`collectionBookmarks remove 1`] = `
 {
   "headers": {

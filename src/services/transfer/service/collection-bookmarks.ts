@@ -1,5 +1,7 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
+import { RESOURCE_SERVERS } from '../../auth/config.js';
+import { createServiceMethodFactory } from '../../factory.js';
 
 import type {
   ServiceMethodDynamicSegments,
@@ -149,3 +151,81 @@ export const remove = function (
     payload?: never;
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  getAll: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/bookmark_list`,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<BookmarkListDocument>
+  >(),
+  create: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/bookmark`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request: {
+        data: Partial<BookmarkDocument>;
+      };
+    },
+    JSONFetchResponse<BookmarkDocument>
+  >(),
+  get: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/bookmark/{bookmark_id}`,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<BookmarkDocument>
+  >(),
+  update: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/bookmark/{bookmark_id}`,
+    method: HTTP_METHODS.PUT,
+  }).generate<
+    {
+      request: {
+        data: Partial<BookmarkDocument> & { name: string };
+      };
+    },
+    JSONFetchResponse<BookmarkDocument>
+  >(),
+  remove: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/bookmark/{bookmark_id}`,
+    method: HTTP_METHODS.DELETE,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<{
+      DATA_TYPE: 'result';
+      code: 'Deleted';
+      message: string;
+      resource: `/bookmark/${string}`;
+      request_id: string;
+    }>
+  >(),
+};
