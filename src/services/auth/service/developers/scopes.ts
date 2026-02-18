@@ -74,8 +74,8 @@ export const getAll = function (
 }>;
 
 export type ScopeCreate = Pick<Scope, 'name' | 'description'> & { scope_suffix: string } & Partial<
-  Omit<Scope, 'id' | 'client' | 'scope_string'>
->;
+    Omit<Scope, 'id' | 'client' | 'scope_string'>
+  >;
 
 export type ScopeUpdate = Partial<Omit<ScopeCreate, 'scope_suffix'>>;
 
