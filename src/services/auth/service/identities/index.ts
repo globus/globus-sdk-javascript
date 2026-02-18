@@ -15,11 +15,27 @@ export * as consents from './consents.js';
  */
 export type Identity = {
   id: string;
+  identity_type: string;
+  identity_provider: string;
   username: string;
   status: 'unused' | 'used' | 'private' | 'closed';
   email: string;
   name: string;
   organization: string;
+};
+
+/**
+ * > The response may not include all fields, depending on the identity’s visibility policy. However, the identity id, category, and name fields are always visible to all clients.
+ * @see https://docs.globus.org/api/auth/reference/#get_identity
+ */
+type IdentityResponse = Partial<Identity> & Pick<Identity, 'id' | 'name' | 'identity_provider'>;
+
+type IdentityProvider = {
+  id: string;
+  name: string;
+  short_name: string;
+  alternate_names: string[];
+  domains: string[];
 };
 
 /**
@@ -72,10 +88,18 @@ export const next = {
   }).generate<
     {
       request?: {
+        query?: {
+          include: string | string[];
+        };
         data?: never;
       };
     },
-    JSONFetchResponse<Identity>
+    JSONFetchResponse<{
+      identity: IdentityResponse;
+      included?: {
+        identity_providers?: IdentityProvider[];
+      };
+    }>
   >(),
   getAll: createServiceMethodFactory({
     service: ID,
@@ -83,22 +107,22 @@ export const next = {
     path: `/v2/api/identities`,
   }).generate<
     {
-      request?: {
-        query?: {
-          ids?: string | string[];
-          usernames?: string | string[];
-        };
+      request: {
+        query:
+          | {
+              ids: string | string[];
+            }
+          | {
+              usernames: string | string[];
+            };
         data?: never;
       };
     },
     JSONFetchResponse<{
       included?: {
-        identity_providers?: {
-          id: string;
-          name: string;
-        };
+        identity_providers?: IdentityProvider[];
       };
-      identities: Identity[];
+      identities: IdentityResponse[];
     }>
   >(),
 };
