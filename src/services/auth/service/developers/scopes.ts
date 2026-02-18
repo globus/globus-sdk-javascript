@@ -1,4 +1,4 @@
-import { ID, SCOPES } from '../../config.js';
+import { ID, SCOPES, RESOURCE_SERVERS } from '../../config.js';
 import { HTTP_METHODS, serviceRequest } from '../../../shared.js';
 
 import type {
@@ -6,6 +6,7 @@ import type {
   ServiceMethod,
   ServiceMethodDynamicSegments,
 } from '../../../types.js';
+import { createServiceMethodFactory } from '../../../factory.js';
 import { ResourceEnvelope } from './index.js';
 
 type DependentScope = {
@@ -131,3 +132,67 @@ export const remove = function (
     payload?: never;
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  get: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/scopes/{scope_id}`,
+  }).generate<
+    {
+      request?: {
+        data?: never;
+      };
+    },
+    JSONFetchResponse<WrappedScope>
+  >(),
+  getAll: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/scopes`,
+  }).generate<
+    {
+      request?: {
+        query?: { ids?: string } | { scope_strings?: string };
+        data?: never;
+      };
+    },
+    JSONFetchResponse<WrappedScopes>
+  >(),
+  update: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/scopes/{scope_id}`,
+    method: HTTP_METHODS.PUT,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { scope: payload?.request?.data },
+      },
+    }),
+  }).generate<
+    {
+      request: {
+        data: ScopeUpdate;
+      };
+    },
+    JSONFetchResponse<WrappedScope>
+  >(),
+  remove: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/scopes/{scope_id}`,
+    method: HTTP_METHODS.DELETE,
+  }).generate<
+    {
+      request?: {
+        data?: never;
+      };
+    },
+    JSONFetchResponse<WrappedScope>
+  >(),
+};

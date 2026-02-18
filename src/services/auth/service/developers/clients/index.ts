@@ -1,4 +1,4 @@
-import { ID, SCOPES } from '../../../config.js';
+import { ID, SCOPES, RESOURCE_SERVERS } from '../../../config.js';
 import { HTTP_METHODS, serviceRequest } from '../../../../shared.js';
 
 import type {
@@ -6,6 +6,7 @@ import type {
   ServiceMethod,
   ServiceMethodDynamicSegments,
 } from '../../../../types.js';
+import { createServiceMethodFactory } from '../../../../factory.js';
 import { ResourceEnvelope } from '../index.js';
 
 export * as credentials from './credentials.js';
@@ -217,3 +218,112 @@ export const remove = function (
     payload?: never;
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  get: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/clients/{client_id}`,
+  }).generate<
+    {
+      request?: {
+        data?: never;
+      };
+    },
+    JSONFetchResponse<WrappedClient>
+  >(),
+  getAll: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/clients`,
+  }).generate<
+    {
+      request?: {
+        query?: {
+          fqdn?: string;
+          project_id?: string;
+        };
+        data?: never;
+      };
+    },
+    JSONFetchResponse<WrappedClients>
+  >(),
+  create: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/clients`,
+    method: HTTP_METHODS.POST,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { client: payload?.request?.data },
+      },
+    }),
+  }).generate<
+    {
+      request: {
+        query?: never;
+        data: ClientCreate;
+      };
+    },
+    JSONFetchResponse<WrappedClient>
+  >(),
+  createNativeApp: createServiceMethodFactory({
+    service: ID,
+    path: `/v2/api/clients`,
+    method: HTTP_METHODS.POST,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { client: payload?.request?.data },
+      },
+    }),
+  }).generate<
+    {
+      request: {
+        query?: never;
+        data: NativeAppCreate;
+      };
+    },
+    JSONFetchResponse<WrappedClient>
+  >(),
+  update: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/clients/{client_id}`,
+    method: HTTP_METHODS.PUT,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { client: payload?.request?.data },
+      },
+    }),
+  }).generate<
+    {
+      request: {
+        query?: never;
+        data: ClientUpdate;
+      };
+    },
+    JSONFetchResponse<WrappedClient>
+  >(),
+  remove: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/clients/{client_id}`,
+    method: HTTP_METHODS.DELETE,
+  }).generate<
+    {
+      request?: {
+        data?: never;
+      };
+    },
+    JSONFetchResponse<WrappedClient>
+  >(),
+};

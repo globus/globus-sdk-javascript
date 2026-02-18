@@ -1,11 +1,11 @@
-import { ID, SCOPES } from '../../config.js';
-import { HTTP_METHODS, serviceRequest } from '../../../shared.js';
-
 import type {
   JSONFetchResponse,
   ServiceMethod,
   ServiceMethodDynamicSegments,
 } from '../../../types.js';
+import { createServiceMethodFactory } from '../../../factory.js';
+import { ID, SCOPES, RESOURCE_SERVERS } from '../../config.js';
+import { HTTP_METHODS, serviceRequest } from '../../../../services/shared.js';
 import { Identity } from '../identities/index.js';
 import { ResourceEnvelope } from './index.js';
 
@@ -162,3 +162,88 @@ export const remove = function (
     payload?: never;
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  get: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/projects/{project_id}`,
+  }).generate<
+    {
+      request?: {
+        data?: never;
+      };
+    },
+    JSONFetchResponse<WrappedProject>
+  >(),
+  getAll: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/projects`,
+  }).generate<
+    {
+      request?: {
+        data?: never;
+      };
+    },
+    JSONFetchResponse<WrappedProjects>
+  >(),
+  create: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/projects`,
+    method: HTTP_METHODS.POST,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { project: payload?.request?.data },
+      },
+    }),
+  }).generate<
+    {
+      request: {
+        query?: never;
+        data: ProjectCreate;
+      };
+    },
+    JSONFetchResponse<WrappedProject>
+  >(),
+  update: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/projects/{project_id}`,
+    method: HTTP_METHODS.PUT,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { project: payload?.request?.data },
+      },
+    }),
+  }).generate<
+    {
+      request: {
+        query?: never;
+        data: Partial<ProjectCreate>;
+      };
+    },
+    JSONFetchResponse<WrappedProject>
+  >(),
+  remove: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/projects/{project_id}`,
+    method: HTTP_METHODS.DELETE,
+  }).generate<
+    {
+      request?: {
+        data?: never;
+      };
+    },
+    JSONFetchResponse<WrappedProject>
+  >(),
+};
