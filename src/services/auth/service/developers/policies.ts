@@ -1,4 +1,4 @@
-import { ID, SCOPES } from '../../config.js';
+import { ID, SCOPES, RESOURCE_SERVERS } from '../../config.js';
 import { HTTP_METHODS, serviceRequest } from '../../../shared.js';
 
 import type {
@@ -6,6 +6,7 @@ import type {
   ServiceMethod,
   ServiceMethodDynamicSegments,
 } from '../../../types.js';
+import { createServiceMethodFactory } from '../../../factory.js';
 import { ResourceEnvelope } from './index.js';
 
 /**
@@ -142,3 +143,88 @@ export const remove = function (
     payload?: never;
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  get: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/policies/{policy_id}`,
+  }).generate<
+    {
+      request?: {
+        data?: never;
+      };
+    },
+    JSONFetchResponse<WrappedPolicy>
+  >(),
+  getAll: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/policies`,
+  }).generate<
+    {
+      request?: {
+        data?: never;
+      };
+    },
+    JSONFetchResponse<WrappedPolicies>
+  >(),
+  create: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/policies`,
+    method: HTTP_METHODS.POST,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { policy: payload?.request?.data },
+      },
+    }),
+  }).generate<
+    {
+      request: {
+        query?: never;
+        data: PolicyCreate;
+      };
+    },
+    JSONFetchResponse<WrappedPolicy>
+  >(),
+  update: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/policies/{policy_id}`,
+    method: HTTP_METHODS.PUT,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { policy: payload?.request?.data },
+      },
+    }),
+  }).generate<
+    {
+      request: {
+        query?: never;
+        data: Partial<PolicyCreate>;
+      };
+    },
+    JSONFetchResponse<WrappedPolicy>
+  >(),
+  remove: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/policies/{policy_id}`,
+    method: HTTP_METHODS.DELETE,
+  }).generate<
+    {
+      request?: {
+        data?: never;
+      };
+    },
+    JSONFetchResponse<WrappedPolicy>
+  >(),
+};

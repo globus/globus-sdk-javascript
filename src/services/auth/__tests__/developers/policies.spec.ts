@@ -81,4 +81,95 @@ describe('policies', () => {
       json,
     }).toMatchSnapshot();
   });
+  describe('next', () => {
+    test('get', async () => {
+      const result = await developers.policies.next.get({
+        policy_id: '6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9',
+      });
+      const {
+        req: { url, method, headers },
+      } = await mirror(result);
+
+      expect({
+        url,
+        method,
+        headers,
+      }).toMatchSnapshot();
+    });
+
+    test('getAll', async () => {
+      const result = await developers.policies.next.getAll();
+      const {
+        req: { url, method, headers },
+      } = await mirror(result);
+
+      expect({
+        url,
+        method,
+        headers,
+      }).toMatchSnapshot();
+    });
+
+    test('create', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await developers.policies.next.create({
+          request: {
+            data: {
+              project_id: 'my-fake-project-uuid',
+              high_assurance: true,
+              authentication_assurance_timeout: 3600,
+              display_name: 'My New Policy',
+              description: 'testing',
+            },
+          },
+        }),
+      );
+      expect({
+        url,
+        method,
+        headers,
+        json,
+      }).toMatchSnapshot();
+    });
+
+    test('update', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await developers.policies.next.update({
+          policy_id: '6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9',
+          request: {
+            data: {
+              display_name: 'Updated Policy Name',
+              description: 'new description',
+            },
+          },
+        }),
+      );
+      expect({
+        url,
+        method,
+        headers,
+        json,
+      }).toMatchSnapshot();
+    });
+
+    test('remove', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await developers.policies.next.remove({
+          policy_id: '6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9',
+        }),
+      );
+      expect({
+        url,
+        method,
+        headers,
+        json,
+      }).toMatchSnapshot();
+    });
+  });
 });

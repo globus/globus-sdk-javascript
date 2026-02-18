@@ -78,6 +78,125 @@ exports[`clients getAll 1`] = `
 }
 `;
 
+exports[`clients next create 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "152",
+    "content-type": "application/json",
+    "host": "auth.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "client": {
+      "links": {},
+      "name": "My Test Client",
+      "project": "test-project-id",
+      "public_client": true,
+      "redirect_uris": [
+        "www.test.com",
+      ],
+      "visibility": "private",
+    },
+  },
+  "method": "POST",
+  "url": "https://auth.globus.org/v2/api/clients",
+}
+`;
+
+exports[`clients next createNativeApp 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "75",
+    "content-type": "application/json",
+    "host": "auth.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "client": {
+      "name": "My Native App",
+      "template_id": "test-native-template-id",
+    },
+  },
+  "method": "POST",
+  "url": "https://auth.globus.org/v2/api/clients",
+}
+`;
+
+exports[`clients next get 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "auth.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://auth.globus.org/v2/api/clients/6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9",
+}
+`;
+
+exports[`clients next getAll 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "auth.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://auth.globus.org/v2/api/clients?fqdn=www.test.com",
+}
+`;
+
+exports[`clients next remove 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "auth.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": undefined,
+  "method": "DELETE",
+  "url": "https://auth.globus.org/v2/api/clients/6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9",
+}
+`;
+
+exports[`clients next update 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "157",
+    "content-type": "application/json",
+    "host": "auth.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "client": {
+      "links": {
+        "privacy_policy": "www.test.com/privacy",
+        "terms_and_conditions": "www.test.com/terms",
+      },
+      "name": "Updated Client Name",
+      "visibility": "public",
+    },
+  },
+  "method": "PUT",
+  "url": "https://auth.globus.org/v2/api/clients/6521a0c3-ffc9-4432-9cb6-41fa8fe2e4e9",
+}
+`;
+
 exports[`clients remove 1`] = `
 {
   "headers": {
