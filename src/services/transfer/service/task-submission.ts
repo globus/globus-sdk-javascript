@@ -2,6 +2,8 @@ import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 
 import { getHeadersForService } from '../shared.js';
 import { ID, SCOPES } from '../config.js';
+import { RESOURCE_SERVERS } from '../../auth/config.js';
+import { createServiceMethodFactory } from '../../factory.js';
 
 import type { JSONFetchResponse, SDKOptions, ServiceMethod } from '../../types.js';
 
@@ -254,3 +256,61 @@ export const submissionId = function (
   query?: never;
   payload?: never;
 }>;
+
+/**
+ * @private
+ */
+export const next = {
+  submissionId: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/submission_id`,
+  }).generate<
+    {
+      request?: never;
+    },
+    JSONFetchResponse<SubmissionId>
+  >(),
+
+  submitDelete: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/delete`,
+    method: HTTP_METHODS.POST,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { DATA_TYPE: 'delete', ...payload?.request?.data },
+      },
+    }),
+  }).generate<
+    {
+      request: {
+        data: Omit<DeleteFields, 'DATA_TYPE'>;
+      };
+    },
+    JSONFetchResponse<DeleteResult | DeleteError>
+  >(),
+
+  submitTransfer: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/transfer`,
+    method: HTTP_METHODS.POST,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { DATA_TYPE: 'transfer', ...payload?.request?.data },
+      },
+    }),
+  }).generate<
+    {
+      request: {
+        data: Omit<TransferFields, 'DATA_TYPE'>;
+      };
+    },
+    JSONFetchResponse<TransferResult | TransferError>
+  >(),
+};

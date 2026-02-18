@@ -104,6 +104,139 @@ exports[`task getSuccessfulTransfers 1`] = `
 }
 `;
 
+exports[`task next cancel 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "0",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "POST",
+  "url": "https://transfer.api.globus.org/v0.10/task/example-task-id/cancel",
+}
+`;
+
+exports[`task next get 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globus.org/v0.10/task/example-task-id",
+}
+`;
+
+exports[`task next getAll 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globus.org/v0.10/task_list",
+}
+`;
+
+exports[`task next getEventList 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globus.org/v0.10/task/example-task-id/event_list?filters=iserror%3A1",
+}
+`;
+
+exports[`task next getPauseInfo 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globus.org/v0.10/task/example-task-id/pause_info",
+}
+`;
+
+exports[`task next getSkippedErrors 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globus.org/v0.10/task/example-task-id/skipped_errors?marker=10",
+}
+`;
+
+exports[`task next getSuccessfulTransfers 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globus.org/v0.10/task/example-task-id/successful_transfers?marker=1",
+}
+`;
+
+exports[`task next remove 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "0",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "POST",
+  "url": "https://transfer.api.globus.org/v0.10/task/example-task-id/remove",
+}
+`;
+
+exports[`task next update 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "24",
+    "content-type": "application/json",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "label": "A new label.",
+  },
+  "method": "PUT",
+  "url": "https://transfer.api.globus.org/v0.10/task/example-task-id",
+}
+`;
+
 exports[`task remove 1`] = `
 {
   "headers": {

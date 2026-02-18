@@ -1,6 +1,8 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 
 import { ID, SCOPES } from '../config.js';
+import { RESOURCE_SERVERS } from '../../auth/config.js';
+import { createServiceMethodFactory } from '../../factory.js';
 
 import type {
   ServiceMethod,
@@ -408,3 +410,130 @@ export const getPauseInfo = function (
     payload?: never;
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  getAll: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/task_list`,
+  }).generate<
+    {
+      request?: {
+        query?: QueryParameters<'Offset'>;
+      };
+    },
+    JSONFetchResponse<PaginatedResponse<'Offset', TaskListDocument>>
+  >(),
+  get: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/task/{task_id}`,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<TaskDocument>
+  >(),
+  update: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/task/{task_id}`,
+    method: HTTP_METHODS.PUT,
+  }).generate<
+    {
+      request: {
+        data: Record<string, string>;
+      };
+    },
+    JSONFetchResponse<{
+      DATA_TYPE: 'result';
+      code: 'Updated';
+      message: string;
+      request_id: string;
+      resource: `/task/${string}/cancel`;
+    }>
+  >(),
+  cancel: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/task/{task_id}/cancel`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<TaskDocument>
+  >(),
+  remove: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/task/{task_id}/remove`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<TaskDocument>
+  >(),
+  getEventList: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/task/{task_id}/event_list`,
+  }).generate<
+    {
+      request?: {
+        query?: QueryParameters<'Offset'>;
+      };
+    },
+    JSONFetchResponse<PaginatedResponse<'Offset', TaskEventListDocument>>
+  >(),
+  getSuccessfulTransfers: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/task/{task_id}/successful_transfers`,
+  }).generate<
+    {
+      request?: {
+        query?: QueryParameters<'Marker'>;
+      };
+    },
+    JSONFetchResponse<SuccessfulTransfersListDocument>
+  >(),
+  getSkippedErrors: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/task/{task_id}/skipped_errors`,
+  }).generate<
+    {
+      request?: {
+        query?: QueryParameters<'Marker'>;
+      };
+    },
+    JSONFetchResponse<PaginatedResponse<'Marker', SkippedErrorsListDocument>>
+  >(),
+  getPauseInfo: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/task/{task_id}/pause_info`,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<PauseInfoLimitedDocument>
+  >(),
+};
