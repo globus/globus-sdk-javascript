@@ -1,7 +1,12 @@
-import { ID, SCOPES } from '../../config.js';
+import { ID, SCOPES, RESOURCE_SERVERS } from '../../config.js';
 import { serviceRequest } from '../../../../services/shared.js';
 
-import type { ServiceMethod, ServiceMethodDynamicSegments } from '../../../types.js';
+import type {
+  ServiceMethod,
+  ServiceMethodDynamicSegments,
+  JSONFetchResponse,
+} from '../../../types.js';
+import { createServiceMethodFactory } from '../../../../services/factory.js';
 
 export * as consents from './consents.js';
 
@@ -10,11 +15,27 @@ export * as consents from './consents.js';
  */
 export type Identity = {
   id: string;
+  identity_type: string;
+  identity_provider: string;
   username: string;
   status: 'unused' | 'used' | 'private' | 'closed';
   email: string;
   name: string;
   organization: string;
+};
+
+/**
+ * > The response may not include all fields, depending on the identity’s visibility policy. However, the identity id, category, and name fields are always visible to all clients.
+ * @see https://docs.globus.org/api/auth/reference/#get_identity
+ */
+type IdentityResponse = Partial<Identity> & Pick<Identity, 'id' | 'name' | 'identity_provider'>;
+
+type IdentityProvider = {
+  id: string;
+  name: string;
+  short_name: string;
+  alternate_names: string[];
+  domains: string[];
 };
 
 /**
@@ -55,3 +76,53 @@ export const getAll = function (options = {}, sdkOptions?) {
   headers?: Record<string, string>;
   payload?: never;
 }>;
+
+/**
+ * @private
+ */
+export const next = {
+  get: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/identities/{identity_id}`,
+  }).generate<
+    {
+      request?: {
+        query?: {
+          include: string | string[];
+        };
+        data?: never;
+      };
+    },
+    JSONFetchResponse<{
+      identity: IdentityResponse;
+      included?: {
+        identity_providers?: IdentityProvider[];
+      };
+    }>
+  >(),
+  getAll: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/identities`,
+  }).generate<
+    {
+      request: {
+        query:
+          | {
+              ids: string | string[];
+            }
+          | {
+              usernames: string | string[];
+            };
+        data?: never;
+      };
+    },
+    JSONFetchResponse<{
+      included?: {
+        identity_providers?: IdentityProvider[];
+      };
+      identities: IdentityResponse[];
+    }>
+  >(),
+};
