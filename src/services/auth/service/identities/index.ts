@@ -30,11 +30,14 @@ export type Identity = {
  */
 type IdentityResponse = Partial<Identity> & Pick<Identity, 'id' | 'name' | 'identity_provider'>;
 
+/**
+ * @see https://docs.globus.org/api/auth/reference/#identity_provider_resource
+ */
 type IdentityProvider = {
   id: string;
   name: string;
   short_name: string;
-  alternate_names: string[];
+  alternative_names: string[];
   domains: string[];
 };
 
