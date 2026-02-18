@@ -157,7 +157,7 @@ export const next = {
     {
       request?: {
         query?: { ids?: string } | { scope_strings?: string };
-        payload?: never;
+        data?: never;
       };
     },
     JSONFetchResponse<WrappedScopes>

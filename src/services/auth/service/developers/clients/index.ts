@@ -246,7 +246,7 @@ export const next = {
           fqdn?: string;
           project_id?: string;
         };
-        payload?: never;
+        data?: never;
       };
     },
     JSONFetchResponse<WrappedClients>
