@@ -4,7 +4,7 @@ import { build } from '../core/url.js';
 import { getSDKOptions, Service } from '../core/global.js';
 import { isAuthorizationRequirementsError } from '../core/errors.js';
 import { RESOURCE_SERVERS } from './auth/config.js';
-import { isRefreshToken } from './auth/index.js';
+import { isRefreshToken } from './auth/tokens.js';
 import type { ServiceMethodOptions, SDKOptions } from './types.js';
 import type {
   GCSConfiguration,
