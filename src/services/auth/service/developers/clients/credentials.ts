@@ -1,5 +1,6 @@
-import { ID, SCOPES } from '../../../config.js';
+import { ID, SCOPES, RESOURCE_SERVERS } from '../../../config.js';
 import { HTTP_METHODS, serviceRequest } from '../../../../shared.js';
+import { createServiceMethodFactory } from '../../../../factory.js';
 
 import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../../../types.js';
 import { ResourceEnvelope } from '../index.js';
@@ -95,3 +96,54 @@ export const remove = function (
     payload?: never;
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  getAll: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/clients/{client_id}/credentials`,
+  }).generate<
+    {
+      request?: never;
+    },
+    JSONFetchResponse<WrappedCredentials>
+  >(),
+
+  create: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/clients/{client_id}/credentials`,
+    method: HTTP_METHODS.POST,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { credential: payload?.request?.data },
+      },
+    }),
+  }).generate<
+    {
+      request: {
+        data: CredentialCreate;
+      };
+    },
+    JSONFetchResponse<WrappedCredential>
+  >(),
+
+  remove: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/clients/{client_id}/credentials/{credential_id}`,
+    method: HTTP_METHODS.DELETE,
+  }).generate<
+    {
+      request?: {
+        data?: never;
+      };
+    },
+    JSONFetchResponse<WrappedCredential>
+  >(),
+};

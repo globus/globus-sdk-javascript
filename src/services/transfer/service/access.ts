@@ -1,6 +1,8 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
 import { ID, SCOPES } from '../config.js';
 import { QueryParameters } from '../types.js';
+import { RESOURCE_SERVERS } from '../../auth/config.js';
+import { createServiceMethodFactory } from '../../factory.js';
 
 import type { ServiceMethodDynamicSegments, JSONFetchResponse } from '../../../services/types.js';
 
@@ -171,3 +173,92 @@ export const remove = function (
     payload?: never;
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  getAll: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint/{collection_id}/access_list`,
+  }).generate<
+    {
+      request?: {
+        query?: QueryParameters<'Offset'>;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<AccessListDocument>
+  >(),
+
+  create: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint/{collection_id}/access`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request: {
+        data: Partial<AccessDocument>;
+      };
+    },
+    JSONFetchResponse<AccessDocument>
+  >(),
+
+  get: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint/{collection_id}/access/{permission_id}`,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<AccessDocument>
+  >(),
+
+  update: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint/{collection_id}/access/{permission_id}`,
+    method: HTTP_METHODS.PUT,
+  }).generate<
+    {
+      request: {
+        query?: never;
+        data: Partial<AccessDocument>;
+      };
+    },
+    JSONFetchResponse<{
+      DATA_TYPE: 'result';
+      code: 'Updated';
+      message: string;
+      request_id: string;
+      resource: `/endpoint/${string}/access/${string}`;
+    }>
+  >(),
+
+  remove: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint/{collection_id}/access/{permission_id}`,
+    method: HTTP_METHODS.DELETE,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<{
+      DATA_TYPE: 'result';
+      code: 'Deleted';
+      message: string;
+      request_id: string;
+      resource: `/endpoint/${string}/access/${string}`;
+    }>
+  >(),
+};

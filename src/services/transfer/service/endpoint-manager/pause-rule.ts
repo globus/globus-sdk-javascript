@@ -1,6 +1,8 @@
 import { HTTP_METHODS, serviceRequest } from '../../../shared.js';
 
 import { ID, SCOPES } from '../../config.js';
+import { RESOURCE_SERVERS } from '../../../auth/config.js';
+import { createServiceMethodFactory } from '../../../factory.js';
 
 import type {
   ServiceMethod,
@@ -164,3 +166,89 @@ export const remove = function (
     payload?: never;
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  getAll: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint_manager/pause_rule_list`,
+  }).generate<
+    {
+      request?: {
+        query?: { filter_endpoint?: string; filter_host_endpoint?: string };
+        data?: never;
+      };
+    },
+    JSONFetchResponse<{
+      DATA_TYPE: 'pause_rule_list';
+      DATA: PauseRuleDocument[];
+    }>
+  >(),
+
+  create: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint_manager/pause_rule`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request: {
+        data: Partial<PauseRuleDocument>;
+      };
+    },
+    JSONFetchResponse<PauseRuleDocument>
+  >(),
+
+  get: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint_manager/pause_rule/{pause_rule_id}`,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<PauseRuleDocument>
+  >(),
+
+  update: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint_manager/pause_rule/{pause_rule_id}`,
+    method: HTTP_METHODS.PUT,
+  }).generate<
+    {
+      request: {
+        query?: never;
+        data: Partial<PauseRuleDocument>;
+      };
+    },
+    JSONFetchResponse<PauseRuleDocument>
+  >(),
+
+  remove: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint_manager/pause_rule/{pause_rule_id}`,
+    method: HTTP_METHODS.DELETE,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<{
+      DATA_TYPE: 'result';
+      code: 'Deleted';
+      message: string;
+      request_id: string;
+      resource: string;
+    }>
+  >(),
+};

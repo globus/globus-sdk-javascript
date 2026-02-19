@@ -1,5 +1,7 @@
 import { serviceRequest } from '../../../shared.js';
 import { ID, SCOPES } from '../../config.js';
+import { RESOURCE_SERVERS } from '../../../auth/config.js';
+import { createServiceMethodFactory } from '../../../factory.js';
 
 import type {
   ServiceMethodDynamicSegments,
@@ -115,3 +117,71 @@ export const getMonitoredEndpoints = function (
   query?: QueryParameters<'Offset'>;
   payload?: never;
 }>;
+
+/**
+ * @private
+ */
+export const next = {
+  get: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint_manager/endpoint/{endpoint_or_collection_id}`,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<EndpointDocument>
+  >(),
+
+  getHostedEndpoints: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint_manager/endpoint/{endpoint_or_collection_id}/hosted_endpoint_list`,
+  }).generate<
+    {
+      request?: {
+        query?: QueryParameters<'Offset'>;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<PaginatedResponse<'Offset', EndpointListDocument>>
+  >(),
+
+  getAccessList: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint_manager/endpoint/{collection_id}/access_list`,
+  }).generate<
+    {
+      request?: {
+        query?: QueryParameters<'Offset'>;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<AccessListDocument>
+  >(),
+
+  getMonitoredEndpoints: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint_manager/monitored_endpoints`,
+  }).generate<
+    {
+      request?: {
+        query?: QueryParameters<'Offset'>;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      PaginatedResponse<
+        'Offset',
+        Omit<EndpointListDocument, 'DATA_TYPE'> & {
+          DATA_TYPE: 'monitored_endpoints';
+        }
+      >
+    >
+  >(),
+};

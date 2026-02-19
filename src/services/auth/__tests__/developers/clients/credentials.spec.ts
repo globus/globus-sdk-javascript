@@ -50,4 +50,39 @@ describe('client credentials', () => {
       json,
     }).toMatchSnapshot();
   });
+
+  describe('next', () => {
+    test('getAll', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(
+        await developers.clients.credentials.next.getAll({ client_id: 'mock-client-id' }),
+      );
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
+
+    test('create', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await developers.clients.credentials.next.create({
+          client_id: 'mock-client-id',
+          request: { data: { name: 'New Credential' } },
+        }),
+      );
+      expect({ url, method, headers, json }).toMatchSnapshot();
+    });
+
+    test('remove', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(
+        await developers.clients.credentials.next.remove({
+          client_id: 'mock-client-id',
+          credential_id: 'mock-credential-id',
+        }),
+      );
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
+  });
 });

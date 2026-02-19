@@ -55,3 +55,59 @@ exports[`endpointManager.endpoint getMonitoredEndpoints 1`] = `
   "url": "https://transfer.api.globus.org/v0.10/endpoint_manager/monitored_endpoints",
 }
 `;
+
+exports[`endpointManager.endpoint next get 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globus.org/v0.10/endpoint_manager/endpoint/c591c905-2674-4227-9d31-1ff9485945a7",
+}
+`;
+
+exports[`endpointManager.endpoint next getAccessList 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globus.org/v0.10/endpoint_manager/endpoint/c591c905-2674-4227-9d31-1ff9485945a7/access_list",
+}
+`;
+
+exports[`endpointManager.endpoint next getHostedEndpoints 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globus.org/v0.10/endpoint_manager/endpoint/c591c905-2674-4227-9d31-1ff9485945a7/hosted_endpoint_list",
+}
+`;
+
+exports[`endpointManager.endpoint next getMonitoredEndpoints 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globus.org/v0.10/endpoint_manager/monitored_endpoints",
+}
+`;
