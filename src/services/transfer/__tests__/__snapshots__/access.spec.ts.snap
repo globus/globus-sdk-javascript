@@ -49,6 +49,88 @@ exports[`access getAll 1`] = `
 }
 `;
 
+exports[`access next create 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "59",
+    "content-type": "application/json",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "path": "/",
+    "permissions": "r",
+    "principal_type": "anonymous",
+  },
+  "method": "POST",
+  "url": "https://transfer.api.globus.org/v0.10/endpoint/example-endpoint-id/access",
+}
+`;
+
+exports[`access next get 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globus.org/v0.10/endpoint/example-endpoint-id/access/example-access-rule-id",
+}
+`;
+
+exports[`access next getAll 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://transfer.api.globus.org/v0.10/endpoint/example-endpoint-id/access_list",
+}
+`;
+
+exports[`access next remove 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "DELETE",
+  "url": "https://transfer.api.globus.org/v0.10/endpoint/example-endpoint-id/access/example-access-rule-id",
+}
+`;
+
+exports[`access next update 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "20",
+    "content-type": "application/json",
+    "host": "transfer.api.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "permissions": "rw",
+  },
+  "method": "PUT",
+  "url": "https://transfer.api.globus.org/v0.10/endpoint/example-endpoint-id/access/example-access-rule-id",
+}
+`;
+
 exports[`access remove 1`] = `
 {
   "headers": {

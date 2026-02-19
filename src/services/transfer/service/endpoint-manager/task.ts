@@ -1,5 +1,7 @@
 import { HTTP_METHODS, serviceRequest } from '../../../shared.js';
 import { ID, SCOPES } from '../../config.js';
+import { RESOURCE_SERVERS } from '../../../auth/config.js';
+import { createServiceMethodFactory } from '../../../factory.js';
 
 import type {
   ServiceMethod,
@@ -349,3 +351,177 @@ export const getPauseInfo = function (
     payload?: never;
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  getAll: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/task_list`,
+  }).generate<
+    {
+      request?: {
+        query?: QueryParameters<
+          {
+            filter_status?: string;
+            filter_task_id?: string;
+            filter_owner_id?: string;
+            filter_endpoint?: string;
+            filter_is_paused?: boolean;
+            filter_completion_time?: string;
+            filter_min_faults?: number;
+            filter_local_user?: string;
+          },
+          'LastKey'
+        >;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      PaginatedResponse<
+        'LastKey',
+        {
+          DATA_TYPE: 'task_list';
+          DATA: EndpointManagerTaskDocument[];
+        }
+      >
+    >
+  >(),
+
+  get: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint_manager/task/{task_id}`,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<EndpointManagerTaskDocument>
+  >(),
+
+  cancel: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint_manager/admin_cancel`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request: {
+        data: {
+          DATA_TYPE: AdminCancelDocument['DATA_TYPE'];
+          task_id_list: AdminCancelDocument['task_id_list'];
+          message: AdminCancelDocument['message'];
+        };
+      };
+    },
+    JSONFetchResponse<{
+      DATA_TYPE: 'admin_cancel';
+      readonly id?: AdminCancelDocument['id'];
+      readonly done?: AdminCancelDocument['done'];
+    }>
+  >(),
+
+  getAdminCancel: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint_manager/admin_cancel/{admin_cancel_id}`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<AdminCancelDocument>
+  >(),
+
+  getEventList: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint_manager/task/{task_id}/event_list`,
+  }).generate<
+    {
+      request?: {
+        query?: QueryParameters<{ filter_is_error?: 1 }, 'Offset'>;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<PaginatedResponse<'Offset', TaskEventListDocument>>
+  >(),
+
+  getSuccessfulTransfers: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint_manager/task/{task_id}/successful_transfers`,
+  }).generate<
+    {
+      request?: {
+        query?: QueryParameters<'Marker'>;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<PaginatedResponse<'Marker', SuccessfulTransferDocument>>
+  >(),
+
+  getSkippedErrors: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint_manager/task/{task_id}/skipped_errors`,
+  }).generate<
+    {
+      request?: {
+        query?: QueryParameters<'Marker'>;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<PaginatedResponse<'Marker', SkippedErrorsListDocument>>
+  >(),
+
+  pause: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint_manager/admin_pause`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request?: {
+        data?: Pick<AdminPauseDocument, 'task_id_list' | 'message' | 'DATA_TYPE'>;
+      };
+    },
+    JSONFetchResponse<AdminPauseDocument>
+  >(),
+
+  resume: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint_manager/admin_resume`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request?: {
+        data?: AdminResumeDocument;
+      };
+    },
+    JSONFetchResponse<AdminResumeDocument>
+  >(),
+
+  getPauseInfo: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS.TRANSFER,
+    path: `/v0.10/endpoint_manager/task/{task_id}/pause_info`,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<PauseRuleDocument>
+  >(),
+};

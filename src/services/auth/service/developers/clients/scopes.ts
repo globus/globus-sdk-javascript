@@ -1,5 +1,6 @@
-import { ID, SCOPES } from '../../../config.js';
+import { ID, SCOPES, RESOURCE_SERVERS } from '../../../config.js';
 import { HTTP_METHODS, serviceRequest } from '../../../../shared.js';
+import { createServiceMethodFactory } from '../../../../factory.js';
 
 import type { JSONFetchResponse, ServiceMethodDynamicSegments } from '../../../../types.js';
 import type { ScopeCreate, WrappedScope } from '../scopes.js';
@@ -50,3 +51,40 @@ export const create = function (
     payload: ScopeCreate;
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  get: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/clients/{client_id}/scopes/{scope_id}`,
+  }).generate<
+    {
+      request?: never;
+    },
+    JSONFetchResponse<WrappedScope>
+  >(),
+
+  create: createServiceMethodFactory({
+    service: ID,
+    resource_server: RESOURCE_SERVERS[ID],
+    path: `/v2/api/clients/{client_id}/scopes`,
+    method: HTTP_METHODS.POST,
+    transform: (payload) => ({
+      ...payload,
+      request: {
+        ...payload?.request,
+        data: { scope: payload?.request?.data },
+      },
+    }),
+  }).generate<
+    {
+      request: {
+        data: ScopeCreate;
+      };
+    },
+    JSONFetchResponse<WrappedScope>
+  >(),
+};

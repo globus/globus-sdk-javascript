@@ -155,4 +155,115 @@ describe('endpointManager.task', () => {
       json,
     }).toMatchSnapshot();
   });
+
+  describe('next', () => {
+    test('getAll', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(await task.next.getAll());
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
+
+    test('get', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(await task.next.get({ task_id: 'example-task-id' }));
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
+
+    test('cancel', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await task.next.cancel({
+          request: {
+            data: {
+              DATA_TYPE: 'admin_cancel',
+              task_id_list: ['example-task-id'],
+              message: 'a test message',
+            },
+          },
+        }),
+      );
+      expect({ url, method, headers, json }).toMatchSnapshot();
+    });
+
+    test('getAdminCancel', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(
+        await task.next.getAdminCancel({ admin_cancel_id: 'example-admin-cancel-id' }),
+      );
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
+
+    test('getEventList', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(
+        await task.next.getEventList({
+          task_id: 'example-task-id',
+          request: { query: { filter_is_error: 1 } },
+        }),
+      );
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
+
+    test('getSuccessfulTransfers', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(
+        await task.next.getSuccessfulTransfers({
+          task_id: 'example-task-id',
+          request: { query: { marker: '1' } },
+        }),
+      );
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
+
+    test('getSkippedErrors', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(
+        await task.next.getSkippedErrors({
+          task_id: 'example-task-id',
+          request: { query: { marker: '10' } },
+        }),
+      );
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
+
+    test('pause', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await task.next.pause({
+          request: {
+            data: {
+              DATA_TYPE: 'admin_pause',
+              message: 'a test message',
+              task_id_list: ['example-task-id'],
+            },
+          },
+        }),
+      );
+      expect({ url, method, headers, json }).toMatchSnapshot();
+    });
+
+    test('resume', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await task.next.resume({ request: { data: { task_id_list: ['example-task-id'] } } }),
+      );
+      expect({ url, method, headers, json }).toMatchSnapshot();
+    });
+
+    test('getPauseInfo', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(await task.next.getPauseInfo({ task_id: 'example-task-id' }));
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
+  });
 });
