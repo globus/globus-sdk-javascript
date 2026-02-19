@@ -28,7 +28,7 @@ export type Identity = {
  * > The response may not include all fields, depending on the identity’s visibility policy. However, the identity id, category, and name fields are always visible to all clients.
  * @see https://docs.globus.org/api/auth/reference/#get_identity
  */
-type IdentityResponse = Partial<Identity> & Pick<Identity, 'id' | 'name' | 'identity_provider'>;
+export type IdentityResponse = Partial<Identity> & Pick<Identity, 'id' | 'name' | 'identity_type'>;
 
 /**
  * @see https://docs.globus.org/api/auth/reference/#identity_provider_resource
