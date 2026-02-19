@@ -54,21 +54,23 @@ describe('endpointManager.endpoint', () => {
     test('get', async () => {
       const {
         req: { url, method, headers },
-      } = await mirror(await endpoint.next.get({ endpoint_xid: ENDPOINT }));
+      } = await mirror(await endpoint.next.get({ endpoint_or_collection_id: ENDPOINT }));
       expect({ url, method, headers }).toMatchSnapshot();
     });
 
     test('getHostedEndpoints', async () => {
       const {
         req: { url, method, headers },
-      } = await mirror(await endpoint.next.getHostedEndpoints({ endpoint_xid: ENDPOINT }));
+      } = await mirror(
+        await endpoint.next.getHostedEndpoints({ endpoint_or_collection_id: ENDPOINT }),
+      );
       expect({ url, method, headers }).toMatchSnapshot();
     });
 
     test('getAccessList', async () => {
       const {
         req: { url, method, headers },
-      } = await mirror(await endpoint.next.getAccessList({ endpoint_xid: ENDPOINT }));
+      } = await mirror(await endpoint.next.getAccessList({ collection_id: ENDPOINT }));
       expect({ url, method, headers }).toMatchSnapshot();
     });
 

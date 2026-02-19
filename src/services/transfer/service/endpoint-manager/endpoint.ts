@@ -125,7 +125,7 @@ export const next = {
   get: createServiceMethodFactory({
     service: ID,
     resource_server: RESOURCE_SERVERS.TRANSFER,
-    path: `/v0.10/endpoint_manager/endpoint/{endpoint_xid}`,
+    path: `/v0.10/endpoint_manager/endpoint/{endpoint_or_collection_id}`,
   }).generate<
     {
       request?: {
@@ -139,7 +139,7 @@ export const next = {
   getHostedEndpoints: createServiceMethodFactory({
     service: ID,
     resource_server: RESOURCE_SERVERS.TRANSFER,
-    path: `/v0.10/endpoint_manager/endpoint/{endpoint_xid}/hosted_endpoint_list`,
+    path: `/v0.10/endpoint_manager/endpoint/{endpoint_or_collection_id}/hosted_endpoint_list`,
   }).generate<
     {
       request?: {
@@ -153,7 +153,7 @@ export const next = {
   getAccessList: createServiceMethodFactory({
     service: ID,
     resource_server: RESOURCE_SERVERS.TRANSFER,
-    path: `/v0.10/endpoint_manager/endpoint/{endpoint_xid}/access_list`,
+    path: `/v0.10/endpoint_manager/endpoint/{collection_id}/access_list`,
   }).generate<
     {
       request?: {

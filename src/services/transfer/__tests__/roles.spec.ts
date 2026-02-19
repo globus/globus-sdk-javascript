@@ -65,7 +65,9 @@ describe('roles', () => {
     test('getAll', async () => {
       const {
         req: { url, method, headers },
-      } = await mirror(await roles.next.getAll({ endpoint_id: 'example-endpoint-id' }));
+      } = await mirror(
+        await roles.next.getAll({ endpoint_or_collection_id: 'example-endpoint-id' }),
+      );
       expect({ url, method, headers }).toMatchSnapshot();
     });
 
@@ -73,7 +75,10 @@ describe('roles', () => {
       const {
         req: { url, method, headers },
       } = await mirror(
-        await roles.next.get({ endpoint_id: 'example-endpoint-id', role_id: 'example-role-id' }),
+        await roles.next.get({
+          endpoint_or_collection_id: 'example-endpoint-id',
+          role_id: 'example-role-id',
+        }),
       );
       expect({ url, method, headers }).toMatchSnapshot();
     });
@@ -85,7 +90,12 @@ describe('roles', () => {
         await roles.next.create({
           collection_id: 'example-collection-id',
           request: {
-            data: { DATA_TYPE: 'role', principal_type: 'identity', principal: 'example-identity-id', role: 'activity_manager' },
+            data: {
+              DATA_TYPE: 'role',
+              principal_type: 'identity',
+              principal: 'example-identity-id',
+              role: 'activity_manager',
+            },
           },
         }),
       );
@@ -96,7 +106,10 @@ describe('roles', () => {
       const {
         req: { url, method, headers },
       } = await mirror(
-        await roles.next.remove({ collection_id: 'example-collection-id', role_id: 'example-role-id' }),
+        await roles.next.remove({
+          collection_id: 'example-collection-id',
+          role_id: 'example-role-id',
+        }),
       );
       expect({ url, method, headers }).toMatchSnapshot();
     });

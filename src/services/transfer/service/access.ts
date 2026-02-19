@@ -181,7 +181,7 @@ export const next = {
   getAll: createServiceMethodFactory({
     service: ID,
     resource_server: RESOURCE_SERVERS.TRANSFER,
-    path: `/v0.10/endpoint/{endpoint_xid}/access_list`,
+    path: `/v0.10/endpoint/{collection_id}/access_list`,
   }).generate<
     {
       request?: {
@@ -195,7 +195,7 @@ export const next = {
   create: createServiceMethodFactory({
     service: ID,
     resource_server: RESOURCE_SERVERS.TRANSFER,
-    path: `/v0.10/endpoint/{endpoint_xid}/access`,
+    path: `/v0.10/endpoint/{collection_id}/access`,
     method: HTTP_METHODS.POST,
   }).generate<
     {
@@ -209,7 +209,7 @@ export const next = {
   get: createServiceMethodFactory({
     service: ID,
     resource_server: RESOURCE_SERVERS.TRANSFER,
-    path: `/v0.10/endpoint/{endpoint_xid}/access/{id}`,
+    path: `/v0.10/endpoint/{collection_id}/access/{permission_id}`,
   }).generate<
     {
       request?: {
@@ -223,7 +223,7 @@ export const next = {
   update: createServiceMethodFactory({
     service: ID,
     resource_server: RESOURCE_SERVERS.TRANSFER,
-    path: `/v0.10/endpoint/{endpoint_xid}/access/{id}`,
+    path: `/v0.10/endpoint/{collection_id}/access/{permission_id}`,
     method: HTTP_METHODS.PUT,
   }).generate<
     {
@@ -244,7 +244,7 @@ export const next = {
   remove: createServiceMethodFactory({
     service: ID,
     resource_server: RESOURCE_SERVERS.TRANSFER,
-    path: `/v0.10/endpoint/{endpoint_xid}/access/{id}`,
+    path: `/v0.10/endpoint/{collection_id}/access/{permission_id}`,
     method: HTTP_METHODS.DELETE,
   }).generate<
     {

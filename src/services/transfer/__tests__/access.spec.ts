@@ -85,9 +85,7 @@ describe('access', () => {
     test('getAll', async () => {
       const {
         req: { url, method, headers },
-      } = await mirror(
-        await access.next.getAll({ endpoint_xid: 'example-endpoint-id' }),
-      );
+      } = await mirror(await access.next.getAll({ collection_id: 'example-endpoint-id' }));
       expect({ url, method, headers }).toMatchSnapshot();
     });
 
@@ -96,7 +94,7 @@ describe('access', () => {
         req: { url, method, headers, json },
       } = await mirror(
         await access.next.create({
-          endpoint_xid: 'example-endpoint-id',
+          collection_id: 'example-endpoint-id',
           request: {
             data: { path: '/', permissions: 'r', principal_type: 'anonymous' },
           },
@@ -109,7 +107,10 @@ describe('access', () => {
       const {
         req: { url, method, headers },
       } = await mirror(
-        await access.next.get({ endpoint_xid: 'example-endpoint-id', id: 'example-access-rule-id' }),
+        await access.next.get({
+          collection_id: 'example-endpoint-id',
+          permission_id: 'example-access-rule-id',
+        }),
       );
       expect({ url, method, headers }).toMatchSnapshot();
     });
@@ -119,8 +120,8 @@ describe('access', () => {
         req: { url, method, headers, json },
       } = await mirror(
         await access.next.update({
-          endpoint_xid: 'example-endpoint-id',
-          id: 'example-access-rule-id',
+          collection_id: 'example-endpoint-id',
+          permission_id: 'example-access-rule-id',
           request: { data: { permissions: 'rw' } },
         }),
       );
@@ -131,7 +132,10 @@ describe('access', () => {
       const {
         req: { url, method, headers },
       } = await mirror(
-        await access.next.remove({ endpoint_xid: 'example-endpoint-id', id: 'example-access-rule-id' }),
+        await access.next.remove({
+          collection_id: 'example-endpoint-id',
+          permission_id: 'example-access-rule-id',
+        }),
       );
       expect({ url, method, headers }).toMatchSnapshot();
     });

@@ -147,7 +147,7 @@ export const next = {
   getAll: createServiceMethodFactory({
     service: ID,
     resource_server: RESOURCE_SERVERS.TRANSFER,
-    path: `/v0.10/endpoint/{endpoint_id}/role_list`,
+    path: `/v0.10/endpoint/{endpoint_or_collection_id}/role_list`,
   }).generate<
     {
       request?: {
@@ -161,7 +161,7 @@ export const next = {
   get: createServiceMethodFactory({
     service: ID,
     resource_server: RESOURCE_SERVERS.TRANSFER,
-    path: `/v0.10/endpoint/{endpoint_id}/role/{role_id}`,
+    path: `/v0.10/endpoint/{endpoint_or_collection_id}/role/{role_id}`,
   }).generate<
     {
       request?: {
@@ -180,7 +180,7 @@ export const next = {
   }).generate<
     {
       request: {
-        data: Partial<RoleDocument>;
+        data: Omit<RoleDocument, 'id'>;
       };
     },
     JSONFetchResponse<RoleDocument>
