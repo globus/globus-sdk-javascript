@@ -1,8 +1,4 @@
-import {
-  HTTP_METHODS,
-  ServiceRequestDSL,
-  serviceRequest as legacyServiceRequest,
-} from './shared.js';
+import { ServiceRequestDSL, serviceRequest as legacyServiceRequest } from './shared.js';
 import { SDKOptions, BaseServiceMethodOptions } from './types.js';
 
 type RequestOptions = Omit<BaseServiceMethodOptions, 'payload'> & {
@@ -66,67 +62,39 @@ type DeriveMethodSignatureFromPath<
   ? ServiceMethod<TPayload, TResponse>
   : (payload: ExtractPathParams<TPath> & TPayload & ServiceMethodPayload) => Promise<TResponse>;
 
-/**
- * Structural type for a GCS configuration object.
- * Defined locally to avoid a circular import with `globus-connect-server/index.ts`,
- * which re-exports all GCS service files that will import from this module.
- */
-type GCSConfiguration = {
-  host: string;
-  endpoint_id: string;
-};
-
-/**
- * Derives the appropriate GCS method signature based on the presence of path parameters.
- * The first argument is always a `GCSConfiguration` object (passed at call time, not factory creation).
- */
-type DeriveGCSMethodSignatureFromPath<
-  TPath extends string,
-  TPayload extends ServiceMethodPayload,
-  TResponse extends Response,
-> = [keyof ExtractPathParams<TPath>] extends [never]
-  ? HasRequiredServiceMethodPayload<TPayload> extends true
-    ? (
-        configuration: GCSConfiguration,
-        params: TPayload & ServiceMethodPayload,
-      ) => Promise<TResponse>
-    : (
-        configuration: GCSConfiguration,
-        params?: TPayload & ServiceMethodPayload,
-      ) => Promise<TResponse>
-  : (
-      configuration: GCSConfiguration,
-      params: ExtractPathParams<TPath> & TPayload & ServiceMethodPayload,
-    ) => Promise<TResponse>;
-
 const PATH_TEMPLATE_REGEX = /\{(\w+)\}/g;
+
+/**
+ * Configuration for the service method.
+ * @todo In next major release, `scope` will no longer be supported (by `serviceRequest`) and we can update this type.
+ */
+type ServiceMethodFactoryConfig<TPath extends string> = Omit<
+  ServiceRequestDSL,
+  'path' | 'scope'
+> & {
+  /**
+   * The path template for the service method.
+   * - This can include path parameters in `{}` braces.
+   * @example '/v2/tunnels/{tunnel_uuid}'
+   * @example '/jobs'
+   * @example '/flows/{flow_id}/runs/{run_id}'
+   */
+  path: TPath;
+  /**
+   * Optional transform function to modify the incoming service method payload.
+   * - This can be used to modify path parameters, query parameters, or the request body before
+   *   the request is made.
+   */
+  transform?: <TPayload extends ServiceMethodPayload>(
+    payload: TPayload,
+  ) => TPayload | ServiceMethodPayload;
+};
 
 /**
  * Factory function to create service methods.
  */
 export function createServiceMethodFactory<const TPath extends string>(
-  /**
-   * Configuration for the service method.
-   * @todo In next major release, `scope` will no longer be supported (by `serviceRequest`) and we can update this type.
-   */
-  config: Omit<ServiceRequestDSL, 'path' | 'scope'> & {
-    /**
-     * The path template for the service method.
-     * - This can include path parameters in `{}` braces.
-     * @example '/v2/tunnels/{tunnel_uuid}'
-     * @example '/jobs'
-     * @example '/flows/{flow_id}/runs/{run_id}'
-     */
-    path: TPath;
-    /**
-     * Optional transform function to modify the incoming service method payload.
-     * - This can be used to modify path parameters, query parameters, or the request body before
-     *   the request is made.
-     */
-    transform?: <TPayload extends ServiceMethodPayload>(
-      payload: TPayload,
-    ) => TPayload | ServiceMethodPayload;
-  },
+  config: ServiceMethodFactoryConfig<TPath>,
 ) {
   return {
     /**
@@ -167,13 +135,9 @@ export function createServiceMethodFactory<const TPath extends string>(
  * Unlike `createServiceMethodFactory`, this factory does not accept `service` or `resource_server`
  * at creation time — those are derived from the `GCSConfiguration` passed at call time.
  */
-export function createGCSServiceMethodFactory<const TPath extends string>(config: {
-  path: TPath;
-  method?: HTTP_METHODS;
-  transform?: <TPayload extends ServiceMethodPayload>(
-    payload: TPayload,
-  ) => TPayload | ServiceMethodPayload;
-}) {
+export function createGCSServiceMethodFactory<const TPath extends string>(
+  config: Omit<ServiceMethodFactoryConfig<TPath>, 'service' | 'resource_server'>,
+) {
   return {
     generate<
       TPayload extends ServiceMethodPayload = ServiceMethodPayload,
@@ -203,3 +167,36 @@ export function createGCSServiceMethodFactory<const TPath extends string>(config
     },
   };
 }
+
+/**
+ * Structural type for a GCS configuration object.
+ * Defined locally to avoid a circular import with `globus-connect-server/index.ts`,
+ * which re-exports all GCS service files that will import from this module.
+ */
+type GCSConfiguration = {
+  host: string;
+  endpoint_id: string;
+};
+
+/**
+ * Derives the appropriate GCS method signature based on the presence of path parameters.
+ * The first argument is always a `GCSConfiguration` object (passed at call time, not factory creation).
+ */
+type DeriveGCSMethodSignatureFromPath<
+  TPath extends string,
+  TPayload extends ServiceMethodPayload,
+  TResponse extends Response,
+> = [keyof ExtractPathParams<TPath>] extends [never]
+  ? HasRequiredServiceMethodPayload<TPayload> extends true
+    ? (
+        configuration: GCSConfiguration,
+        params: TPayload & ServiceMethodPayload,
+      ) => Promise<TResponse>
+    : (
+        configuration: GCSConfiguration,
+        params?: TPayload & ServiceMethodPayload,
+      ) => Promise<TResponse>
+  : (
+      configuration: GCSConfiguration,
+      params: ExtractPathParams<TPath> & TPayload & ServiceMethodPayload,
+    ) => Promise<TResponse>;
