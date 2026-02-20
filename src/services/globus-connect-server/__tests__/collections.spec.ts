@@ -1,5 +1,6 @@
 import { collections } from '..';
 
+import { mirror } from '../../../__mocks__/handlers';
 import type { MirroredRequest } from '../../../__mocks__/handlers';
 
 const GCS_CONFIGURATION = {
@@ -327,5 +328,109 @@ describe('gcs – collection', () => {
         "url": "https://fa5e.bd7c.data.globus.org/api/collections/some-uuid/owner_string",
       }
     `);
+  });
+
+  describe('next', () => {
+    test('getAll', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(await collections.next.getAll(GCS_CONFIGURATION));
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
+
+    test('get', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(await collections.next.get(GCS_CONFIGURATION, { collection_id: 'some-uuid' }));
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
+
+    test('create', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await collections.next.create(GCS_CONFIGURATION, {
+          request: {
+            data: {
+              DATA_TYPE: 'collection#1.8.0',
+              collection_base_path: '/',
+              collection_type: 'guest',
+              display_name: 'some name',
+              mapped_collection_id: '476a00e0-0255-4397-91cb-87d054aa494a',
+              public: true,
+            },
+          },
+        }),
+      );
+      expect({ url, method, headers, json }).toMatchSnapshot();
+    });
+
+    test('update', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await collections.next.update(GCS_CONFIGURATION, {
+          collection_id: 'some-uuid',
+          request: {
+            data: {
+              DATA_TYPE: 'collection#1.8.0',
+              collection_base_path: '/',
+              collection_type: 'guest',
+              display_name: 'some other name',
+              mapped_collection_id: '476a00e0-0255-4397-91cb-87d054aa494a',
+              public: true,
+            },
+          },
+        }),
+      );
+      expect({ url, method, headers, json }).toMatchSnapshot();
+    });
+
+    test('patch', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await collections.next.patch(GCS_CONFIGURATION, {
+          collection_id: 'some-uuid',
+          request: { data: { display_name: 'some patched name' } },
+        }),
+      );
+      expect({ url, method, headers, json }).toMatchSnapshot();
+    });
+
+    test('remove', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(
+        await collections.next.remove(GCS_CONFIGURATION, { collection_id: 'some-uuid' }),
+      );
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
+
+    test('updateOwnerString', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await collections.next.updateOwnerString(GCS_CONFIGURATION, {
+          collection_id: 'some-uuid',
+          request: {
+            data: {
+              DATA_TYPE: 'owner_string#1.0.0',
+              identity_id: 'some-identity-id',
+            },
+          },
+        }),
+      );
+      expect({ url, method, headers, json }).toMatchSnapshot();
+    });
+
+    test('resetOwnerString', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(
+        await collections.next.resetOwnerString(GCS_CONFIGURATION, { collection_id: 'some-uuid' }),
+      );
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
   });
 });

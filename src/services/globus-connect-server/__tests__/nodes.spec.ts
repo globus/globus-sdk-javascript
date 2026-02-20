@@ -210,4 +210,74 @@ describe('gcs – nodes', () => {
       }
     `);
   });
+
+  describe('next', () => {
+    test('getAll', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(await nodes.next.getAll(GCS_CONFIGURATION));
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
+
+    test('get', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(await nodes.next.get(GCS_CONFIGURATION, { node_id: 'some-uuid' }));
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
+
+    test('create', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await nodes.next.create(GCS_CONFIGURATION, {
+          request: {
+            data: {
+              DATA_TYPE: 'node#1.2.0',
+              ip_addresses: ['1.1.1.1'],
+              status: 'inactive',
+            },
+          },
+        }),
+      );
+      expect({ url, method, headers, json }).toMatchSnapshot();
+    });
+
+    test('update', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await nodes.next.update(GCS_CONFIGURATION, {
+          node_id: 'some-uuid',
+          request: {
+            data: {
+              DATA_TYPE: 'node#1.2.0',
+              ip_addresses: ['1.1.1.1'],
+              status: 'active',
+            },
+          },
+        }),
+      );
+      expect({ url, method, headers, json }).toMatchSnapshot();
+    });
+
+    test('patch', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await nodes.next.patch(GCS_CONFIGURATION, {
+          node_id: 'some-uuid',
+          request: { data: { status: 'inactive' } },
+        }),
+      );
+      expect({ url, method, headers, json }).toMatchSnapshot();
+    });
+
+    test('remove', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(await nodes.next.remove(GCS_CONFIGURATION, { node_id: 'some-uuid' }));
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
+  });
 });

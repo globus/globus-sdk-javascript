@@ -1,5 +1,6 @@
 import { storageGateways } from '..';
 
+import { mirror } from '../../../__mocks__/handlers';
 import type { MirroredRequest } from '../../../__mocks__/handlers';
 
 const GCS_HOST = 'https://fa5e.bd7c.data.globus.org';
@@ -228,5 +229,91 @@ describe('gcs – storageGateways', () => {
         "url": "https://fa5e.bd7c.data.globus.org/api/storage_gateways/some-uuid",
       }
     `);
+  });
+
+  describe('next', () => {
+    test('getAll', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(await storageGateways.next.getAll(GCS_CONFIGURATION));
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
+
+    test('get', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(
+        await storageGateways.next.get(GCS_CONFIGURATION, {
+          storage_gateway_id: 'some-uuid',
+        }),
+      );
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
+
+    test('create', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await storageGateways.next.create(GCS_CONFIGURATION, {
+          request: {
+            data: {
+              DATA_TYPE: 'storage_gateway#1.2.0',
+              high_assurance: false,
+              allowed_domains: ['example.com'],
+              display_name: 'some name',
+              connector_id: 'some-connector-id',
+              admin_managed_credentials: false,
+              require_mfa: false,
+            },
+          },
+        }),
+      );
+      expect({ url, method, headers, json }).toMatchSnapshot();
+    });
+
+    test('update', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await storageGateways.next.update(GCS_CONFIGURATION, {
+          storage_gateway_id: 'some-uuid',
+          request: {
+            data: {
+              DATA_TYPE: 'storage_gateway#1.2.0',
+              allowed_domains: ['example.com'],
+              connector_id: 'some-connector-id',
+              display_name: 'some updated name',
+              high_assurance: false,
+              admin_managed_credentials: false,
+              require_mfa: false,
+            },
+          },
+        }),
+      );
+      expect({ url, method, headers, json }).toMatchSnapshot();
+    });
+
+    test('patch', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await storageGateways.next.patch(GCS_CONFIGURATION, {
+          storage_gateway_id: 'some-uuid',
+          request: { data: { display_name: 'some patched name' } },
+        }),
+      );
+      expect({ url, method, headers, json }).toMatchSnapshot();
+    });
+
+    test('remove', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(
+        await storageGateways.next.remove(GCS_CONFIGURATION, {
+          storage_gateway_id: 'some-uuid',
+        }),
+      );
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
   });
 });

@@ -1,4 +1,5 @@
 import { HTTP_METHODS, serviceRequest } from '../../../services/shared.js';
+import { createGCSServiceMethodFactory } from '../../factory.js';
 
 import type { OpenAPI, GCSServiceMethod, GCSServiceMethodDynamicSegments } from '../index.js';
 
@@ -114,3 +115,65 @@ export const create = function (
 } satisfies GCSServiceMethod<{
   payload: OpenAPI.operations['postRoles']['requestBody']['content']['application/json'];
 }>;
+
+/**
+ * @private
+ */
+export const next = {
+  getAll: createGCSServiceMethodFactory({
+    path: `/api/roles`,
+  }).generate<
+    {
+      request?: {
+        query?: OpenAPI.operations['listRoles']['parameters']['query'];
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['listRoles']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  get: createGCSServiceMethodFactory({
+    path: `/api/roles/{role_id}`,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['getRole']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  create: createGCSServiceMethodFactory({
+    path: `/api/roles`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request: {
+        data: OpenAPI.operations['postRoles']['requestBody']['content']['application/json'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['postRoles']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  remove: createGCSServiceMethodFactory({
+    path: `/api/roles/{role_id}`,
+    method: HTTP_METHODS.DELETE,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['deleteRole']['responses']['200']['content']['application/json']
+    >
+  >(),
+};

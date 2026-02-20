@@ -1,8 +1,13 @@
 import { endpoint } from '..';
 
+import { mirror } from '../../../__mocks__/handlers';
 import type { MirroredRequest } from '../../../__mocks__/handlers';
 
 const GCS_HOST = 'https://fa5e.bd7c.data.globus.org';
+const GCS_CONFIGURATION = {
+  host: GCS_HOST,
+  endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
+};
 
 describe('gcs – endpoint', () => {
   test('get', async () => {
@@ -268,5 +273,96 @@ describe('gcs – endpoint', () => {
         "url": "https://fa5e.bd7c.data.globus.org/api/endpoint/owner_string",
       }
     `);
+  });
+
+  describe('next', () => {
+    test('get', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(await endpoint.next.get(GCS_CONFIGURATION));
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
+
+    test('update', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await endpoint.next.update(GCS_CONFIGURATION, {
+          request: {
+            data: {
+              DATA_TYPE: 'endpoint#1.0.0',
+              display_name: 'My First Endpoint',
+            },
+          },
+        }),
+      );
+      expect({ url, method, headers, json }).toMatchSnapshot();
+    });
+
+    test('patch', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await endpoint.next.patch(GCS_CONFIGURATION, {
+          request: { data: { public: true } },
+        }),
+      );
+      expect({ url, method, headers, json }).toMatchSnapshot();
+    });
+
+    test('updateSubscriptionId', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await endpoint.next.updateSubscriptionId(GCS_CONFIGURATION, {
+          request: {
+            data: {
+              DATA_TYPE: 'endpoint_subscription#1.0.0',
+              subscription_id: 'example-subscription-id',
+            },
+          },
+        }),
+      );
+      expect({ url, method, headers, json }).toMatchSnapshot();
+    });
+
+    test('updateOwner', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await endpoint.next.updateOwner(GCS_CONFIGURATION, {
+          request: {
+            data: {
+              DATA_TYPE: 'endpoint_owner#1.0.0',
+              identity_id: 'example-identity-id',
+            },
+          },
+        }),
+      );
+      expect({ url, method, headers, json }).toMatchSnapshot();
+    });
+
+    test('updateOwnerString', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await endpoint.next.updateOwnerString(GCS_CONFIGURATION, {
+          request: {
+            data: {
+              DATA_TYPE: 'owner_string#1.0.0',
+              identity_id: 'example-identity-id',
+            },
+          },
+        }),
+      );
+      expect({ url, method, headers, json }).toMatchSnapshot();
+    });
+
+    test('resetOwnerString', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(await endpoint.next.resetOwnerString(GCS_CONFIGURATION));
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
   });
 });

@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`gcs – collection next create 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "188",
+    "content-type": "application/json",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "DATA_TYPE": "collection#1.8.0",
+    "collection_base_path": "/",
+    "collection_type": "guest",
+    "display_name": "some name",
+    "mapped_collection_id": "476a00e0-0255-4397-91cb-87d054aa494a",
+    "public": true,
+  },
+  "method": "POST",
+  "url": "https://fa5e.bd7c.data.globus.org/api/collections",
+}
+`;
+
+exports[`gcs – collection next get 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://fa5e.bd7c.data.globus.org/api/collections/some-uuid",
+}
+`;
+
+exports[`gcs – collection next getAll 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://fa5e.bd7c.data.globus.org/api/collections",
+}
+`;
+
+exports[`gcs – collection next patch 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "36",
+    "content-type": "application/json",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "display_name": "some patched name",
+  },
+  "method": "PATCH",
+  "url": "https://fa5e.bd7c.data.globus.org/api/collections/some-uuid",
+}
+`;
+
+exports[`gcs – collection next remove 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "DELETE",
+  "url": "https://fa5e.bd7c.data.globus.org/api/collections/some-uuid",
+}
+`;
+
+exports[`gcs – collection next resetOwnerString 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "DELETE",
+  "url": "https://fa5e.bd7c.data.globus.org/api/collections/some-uuid/owner_string",
+}
+`;
+
+exports[`gcs – collection next update 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "194",
+    "content-type": "application/json",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "DATA_TYPE": "collection#1.8.0",
+    "collection_base_path": "/",
+    "collection_type": "guest",
+    "display_name": "some other name",
+    "mapped_collection_id": "476a00e0-0255-4397-91cb-87d054aa494a",
+    "public": true,
+  },
+  "method": "PUT",
+  "url": "https://fa5e.bd7c.data.globus.org/api/collections/some-uuid",
+}
+`;
+
+exports[`gcs – collection next updateOwnerString 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "67",
+    "content-type": "application/json",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "DATA_TYPE": "owner_string#1.0.0",
+    "identity_id": "some-identity-id",
+  },
+  "method": "PUT",
+  "url": "https://fa5e.bd7c.data.globus.org/api/collections/some-uuid/owner_string",
+}
+`;

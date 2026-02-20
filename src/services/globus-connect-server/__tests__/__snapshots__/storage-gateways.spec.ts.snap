@@ -1,0 +1,116 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`gcs – storageGateways next create 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "210",
+    "content-type": "application/json",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "DATA_TYPE": "storage_gateway#1.2.0",
+    "admin_managed_credentials": false,
+    "allowed_domains": [
+      "example.com",
+    ],
+    "connector_id": "some-connector-id",
+    "display_name": "some name",
+    "high_assurance": false,
+    "require_mfa": false,
+  },
+  "method": "POST",
+  "url": "https://fa5e.bd7c.data.globus.org/api/storage_gateways",
+}
+`;
+
+exports[`gcs – storageGateways next get 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://fa5e.bd7c.data.globus.org/api/storage_gateways/some-uuid",
+}
+`;
+
+exports[`gcs – storageGateways next getAll 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://fa5e.bd7c.data.globus.org/api/storage_gateways",
+}
+`;
+
+exports[`gcs – storageGateways next patch 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "36",
+    "content-type": "application/json",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "display_name": "some patched name",
+  },
+  "method": "PATCH",
+  "url": "https://fa5e.bd7c.data.globus.org/api/storage_gateways/some-uuid",
+}
+`;
+
+exports[`gcs – storageGateways next remove 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "DELETE",
+  "url": "https://fa5e.bd7c.data.globus.org/api/storage_gateways/some-uuid",
+}
+`;
+
+exports[`gcs – storageGateways next update 1`] = `
+{
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "218",
+    "content-type": "application/json",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "DATA_TYPE": "storage_gateway#1.2.0",
+    "admin_managed_credentials": false,
+    "allowed_domains": [
+      "example.com",
+    ],
+    "connector_id": "some-connector-id",
+    "display_name": "some updated name",
+    "high_assurance": false,
+    "require_mfa": false,
+  },
+  "method": "PUT",
+  "url": "https://fa5e.bd7c.data.globus.org/api/storage_gateways/some-uuid",
+}
+`;
