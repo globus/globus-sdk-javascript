@@ -70,6 +70,9 @@ export function getClient(configuration: GCSConfiguration) {
     },
     versioning: {
       info: bind(versioning.info, configuration),
+      next: {
+        info: bind(versioning.next.info, configuration),
+      },
     },
     collections: {
       get: bind(collections.get, configuration),
