@@ -62,34 +62,64 @@ type DeriveMethodSignatureFromPath<
   ? ServiceMethod<TPayload, TResponse>
   : (payload: ExtractPathParams<TPath> & TPayload & ServiceMethodPayload) => Promise<TResponse>;
 
+/**
+ * Configuration for the service method.
+ * @todo In next major release, `scope` will no longer be supported (by `serviceRequest`) and we can update this type.
+ */
+type ServiceMethodFactoryConfig<TPath extends string> = Omit<
+  ServiceRequestDSL,
+  'path' | 'scope'
+> & {
+  /**
+   * The path template for the service method.
+   * - This can include path parameters in `{}` braces.
+   * @example '/v2/tunnels/{tunnel_uuid}'
+   * @example '/jobs'
+   * @example '/flows/{flow_id}/runs/{run_id}'
+   */
+  path: TPath;
+  /**
+   * Optional transform function to modify the incoming service method payload.
+   * - This can be used to modify path parameters, query parameters, or the request body before
+   *   the request is made.
+   */
+  transform?: <TPayload extends ServiceMethodPayload>(
+    payload: TPayload,
+  ) => TPayload | ServiceMethodPayload;
+};
+
 const PATH_TEMPLATE_REGEX = /\{(\w+)\}/g;
+
+/**
+ * Applies an optional transform to the payload and resolves path template parameters.
+ * Throws if any required path parameters remain unfilled after resolution.
+ */
+function resolveRequest(
+  pathTemplate: string,
+  payload: ServiceMethodPayload | undefined,
+  transform: ServiceMethodFactoryConfig<string>['transform'],
+): { path: string; processedPayload: ServiceMethodPayload | undefined } {
+  let processedPayload = payload;
+  if (processedPayload && transform) {
+    processedPayload = transform(processedPayload);
+  }
+  const path: string = processedPayload
+    ? pathTemplate.replace(
+        PATH_TEMPLATE_REGEX,
+        (_: string, key: string) => (processedPayload as any)[key] ?? `{${key}}`,
+      )
+    : pathTemplate;
+  if (path.match(PATH_TEMPLATE_REGEX)) {
+    throw new Error(`Missing required parameters for path: ${pathTemplate}`);
+  }
+  return { path, processedPayload };
+}
 
 /**
  * Factory function to create service methods.
  */
 export function createServiceMethodFactory<const TPath extends string>(
-  /**
-   * Configuration for the service method.
-   * @todo In next major release, `scope` will no longer be supported (by `serviceRequest`) and we can update this type.
-   */
-  config: Omit<ServiceRequestDSL, 'path' | 'scope'> & {
-    /**
-     * The path template for the service method.
-     * - This can include path parameters in `{}` braces.
-     * @example '/v2/tunnels/{tunnel_uuid}'
-     * @example '/jobs'
-     * @example '/flows/{flow_id}/runs/{run_id}'
-     */
-    path: TPath;
-    /**
-     * Optional transform function to modify the incoming service method payload.
-     * - This can be used to modify path parameters, query parameters, or the request body before
-     *   the request is made.
-     */
-    transform?: <TPayload extends ServiceMethodPayload>(
-      payload: TPayload,
-    ) => TPayload | ServiceMethodPayload;
-  },
+  config: ServiceMethodFactoryConfig<TPath>,
 ) {
   return {
     /**
@@ -105,22 +135,67 @@ export function createServiceMethodFactory<const TPath extends string>(
        * - `payload` is initially set as `any`, but will be properly typed in the return type (cast).
        */
       return ((payload?: any) => {
-        let path: string = pathTemplate;
-        let processedPayload = payload;
-        if (processedPayload && config.transform) {
-          processedPayload = config.transform(payload);
-        }
-        if (processedPayload) {
-          path = path.replace(
-            PATH_TEMPLATE_REGEX,
-            (_: string, key: string) => processedPayload[key] ?? `{${key}}`,
-          );
-        }
-        if (path.match(PATH_TEMPLATE_REGEX)) {
-          throw new Error(`Missing required parameters for path: ${pathTemplate}`);
-        }
+        const { path, processedPayload } = resolveRequest(pathTemplate, payload, config.transform);
         return serviceRequest({ ...rest, path }, processedPayload);
       }) as DeriveMethodSignatureFromPath<TPath, TPayload, TResponse>;
     },
   };
 }
+
+/**
+ * Factory function to create GCS service methods.
+ * Unlike `createServiceMethodFactory`, this factory does not accept `service` or `resource_server`
+ * at creation time — those are derived from the `GCSConfiguration` passed at call time.
+ */
+export function createGCSServiceMethodFactory<const TPath extends string>(
+  config: Omit<ServiceMethodFactoryConfig<TPath>, 'service' | 'resource_server'>,
+) {
+  return {
+    generate<
+      TPayload extends ServiceMethodPayload = ServiceMethodPayload,
+      TResponse extends Response = Response,
+    >() {
+      const { path: pathTemplate, ...rest } = config;
+      return ((configuration: GCSConfiguration, params?: any) => {
+        const { path, processedPayload } = resolveRequest(pathTemplate, params, config.transform);
+        return serviceRequest(
+          { ...rest, service: configuration, resource_server: configuration.endpoint_id, path },
+          processedPayload,
+        );
+      }) as DeriveGCSMethodSignatureFromPath<TPath, TPayload, TResponse>;
+    },
+  };
+}
+
+/**
+ * Structural type for a GCS configuration object.
+ * Defined locally to avoid a circular import with `globus-connect-server/index.ts`,
+ * which re-exports all GCS service files that will import from this module.
+ */
+type GCSConfiguration = {
+  host: string;
+  endpoint_id: string;
+};
+
+/**
+ * Derives the appropriate GCS method signature based on the presence of path parameters.
+ * The first argument is always a `GCSConfiguration` object (passed at call time, not factory creation).
+ */
+type DeriveGCSMethodSignatureFromPath<
+  TPath extends string,
+  TPayload extends ServiceMethodPayload,
+  TResponse extends Response,
+> = [keyof ExtractPathParams<TPath>] extends [never]
+  ? HasRequiredServiceMethodPayload<TPayload> extends true
+    ? (
+        configuration: GCSConfiguration,
+        params: TPayload & ServiceMethodPayload,
+      ) => Promise<TResponse>
+    : (
+        configuration: GCSConfiguration,
+        params?: TPayload & ServiceMethodPayload,
+      ) => Promise<TResponse>
+  : (
+      configuration: GCSConfiguration,
+      params: ExtractPathParams<TPath> & TPayload & ServiceMethodPayload,
+    ) => Promise<TResponse>;

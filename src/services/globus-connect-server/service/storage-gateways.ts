@@ -1,4 +1,5 @@
 import { HTTP_METHODS, serviceRequest } from '../../../services/shared.js';
+import { createGCSServiceMethodFactory } from '../../factory.js';
 
 import type { OpenAPI, GCSServiceMethod, GCSServiceMethodDynamicSegments } from '../index.js';
 
@@ -175,3 +176,95 @@ export const patch = function (
     >;
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  getAll: createGCSServiceMethodFactory({
+    path: `/api/storage_gateways`,
+  }).generate<
+    {
+      request?: {
+        query?: OpenAPI.operations['listStorageGateways']['parameters']['query'];
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['listStorageGateways']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  get: createGCSServiceMethodFactory({
+    path: `/api/storage_gateways/{storage_gateway_id}`,
+  }).generate<
+    {
+      request?: {
+        query?: OpenAPI.operations['getStorageGateway']['parameters']['query'];
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['getStorageGateway']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  create: createGCSServiceMethodFactory({
+    path: `/api/storage_gateways`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request: {
+        data: OpenAPI.operations['postStorageGateway']['requestBody']['content']['application/json'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['postStorageGateway']['responses']['201']['content']['application/json']
+    >
+  >(),
+
+  update: createGCSServiceMethodFactory({
+    path: `/api/storage_gateways/{storage_gateway_id}`,
+    method: HTTP_METHODS.PUT,
+  }).generate<
+    {
+      request: {
+        data: OpenAPI.operations['putStorageGateway']['requestBody']['content']['application/json'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['putStorageGateway']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  patch: createGCSServiceMethodFactory({
+    path: `/api/storage_gateways/{storage_gateway_id}`,
+    method: HTTP_METHODS.PATCH,
+  }).generate<
+    {
+      request: {
+        data: Partial<
+          OpenAPI.operations['patchStorageGateway']['requestBody']['content']['application/json']
+        >;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['patchStorageGateway']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  remove: createGCSServiceMethodFactory({
+    path: `/api/storage_gateways/{storage_gateway_id}`,
+    method: HTTP_METHODS.DELETE,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['deleteStorageGateway']['responses']['200']['content']['application/json']
+    >
+  >(),
+};

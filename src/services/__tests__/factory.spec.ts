@@ -1,4 +1,4 @@
-import { createServiceMethodFactory } from '../factory';
+import { createServiceMethodFactory, createGCSServiceMethodFactory } from '../factory';
 import { HTTP_METHODS } from '../shared';
 
 /**
@@ -213,6 +213,123 @@ describe('createServiceMethodFactory', () => {
       });
       type JSONResponse = Awaited<Awaited<ReturnType<typeof method>>['json']>;
       type _AssertResponseData = Expect<Equal<JSONResponse, { data: string }>>;
+    });
+    /* eslint-enable @typescript-eslint/no-unused-vars, @typescript-eslint/naming-convention */
+  });
+});
+
+describe('createGCSServiceMethodFactory', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  const gcsConfig = { host: 'https://abc.data.globus.org', endpoint_id: 'ep-uuid-123' };
+
+  it('derives service and resource_server from the GCSConfiguration argument', async () => {
+    const method = createGCSServiceMethodFactory({
+      path: '/api/v1/collections',
+      method: HTTP_METHODS.GET,
+    }).generate();
+
+    await method(gcsConfig);
+
+    expect(serviceRequest).toHaveBeenCalledWith(
+      expect.objectContaining({
+        service: gcsConfig,
+        resource_server: gcsConfig.endpoint_id,
+        path: '/api/v1/collections',
+      }),
+      { payload: undefined },
+      undefined,
+    );
+  });
+
+  it('resolves path segments from params (second argument), not from the configuration', async () => {
+    const method = createGCSServiceMethodFactory({
+      path: '/api/v1/collections/{collection_id}',
+      method: HTTP_METHODS.GET,
+    }).generate();
+
+    await method(gcsConfig, { collection_id: 'col-abc' });
+
+    expect(serviceRequest).toHaveBeenCalledWith(
+      expect.objectContaining({
+        service: gcsConfig,
+        resource_server: 'ep-uuid-123',
+        path: '/api/v1/collections/col-abc',
+      }),
+      { payload: undefined },
+      undefined,
+    );
+  });
+
+  it('calls transform with params, not with the GCSConfiguration', async () => {
+    const transform = jest.fn((payload) => ({
+      ...payload,
+      collection_id: 'transformed',
+    }));
+
+    const method = createGCSServiceMethodFactory({
+      path: '/api/v1/collections/{collection_id}',
+      method: HTTP_METHODS.PATCH,
+      transform,
+    }).generate();
+
+    await method(gcsConfig, { collection_id: 'original' });
+
+    expect(transform).toHaveBeenCalledWith({ collection_id: 'original' });
+    expect(transform).not.toHaveBeenCalledWith(expect.objectContaining({ host: gcsConfig.host }));
+    expect(serviceRequest).toHaveBeenCalledWith(
+      expect.objectContaining({ path: '/api/v1/collections/transformed' }),
+      { payload: undefined },
+      undefined,
+    );
+  });
+
+  it('should throw if the path template is missing required parameters', async () => {
+    const method = createGCSServiceMethodFactory({
+      path: '/api/v1/collections/{collection_id}/items/{item_id}',
+      method: HTTP_METHODS.GET,
+    }).generate();
+
+    let error;
+    try {
+      // @ts-expect-error This test is to ensure runtime error is thrown for missing parameters.
+      await method(gcsConfig, { collection_id: 'col-abc' });
+    } catch (e) {
+      error = e;
+    }
+    expect(error).toEqual(
+      new Error(
+        'Missing required parameters for path: /api/v1/collections/{collection_id}/items/{item_id}',
+      ),
+    );
+  });
+
+  describe('TypeScript Types', () => {
+    /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/naming-convention */
+    type Expect<T extends true> = T;
+    type Equal<A, B> = [A] extends [B] ? ([B] extends [A] ? true : false) : false;
+
+    test('configuration is always required as the first argument', () => {
+      const method = createGCSServiceMethodFactory({
+        path: '/api/v1/collections',
+        method: HTTP_METHODS.GET,
+      }).generate();
+      type FirstArg = Parameters<typeof method>[0];
+      type _AssertHost = Expect<Equal<FirstArg['host'], string>>;
+      type _AssertEndpointId = Expect<Equal<FirstArg['endpoint_id'], string>>;
+      expect(typeof method).toBe('function');
+    });
+
+    test('method with path segments requires params as the second argument', () => {
+      const method = createGCSServiceMethodFactory({
+        path: '/api/v1/collections/{collection_id}',
+        method: HTTP_METHODS.GET,
+      }).generate();
+      type SecondArg = Parameters<typeof method>[1];
+      type _AssertCollectionId = Expect<Equal<SecondArg['collection_id'], string>>;
+      expect(typeof method).toBe('function');
     });
     /* eslint-enable @typescript-eslint/no-unused-vars, @typescript-eslint/naming-convention */
   });

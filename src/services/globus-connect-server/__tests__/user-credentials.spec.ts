@@ -1,5 +1,6 @@
 import { userCredentials } from '..';
 
+import { mirror } from '../../../__mocks__/handlers';
 import type { MirroredRequest } from '../../../__mocks__/handlers';
 
 const GCS_HOST = 'https://fa5e.bd7c.data.globus.org';
@@ -215,5 +216,81 @@ describe('gcs – user-credentials', () => {
         "url": "https://fa5e.bd7c.data.globus.org/api/user_credentials/some-uuid",
       }
     `);
+  });
+
+  describe('next', () => {
+    test('getAll', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(await userCredentials.next.getAll(GCS_CONFIGURATION));
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
+
+    test('get', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(
+        await userCredentials.next.get(GCS_CONFIGURATION, { user_credential_id: 'some-uuid' }),
+      );
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
+
+    test('create', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await userCredentials.next.create(GCS_CONFIGURATION, {
+          request: {
+            data: {
+              DATA_TYPE: 'user_credential#1.0.0',
+              storage_gateway_id: 'some-gateway-uuid',
+              identity_id: 'some-identity-uuid',
+              username: 'some name',
+            },
+          },
+        }),
+      );
+      expect({ url, method, headers, json }).toMatchSnapshot();
+    });
+
+    test('update', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await userCredentials.next.update(GCS_CONFIGURATION, {
+          user_credential_id: 'some-uuid',
+          request: {
+            data: {
+              DATA_TYPE: 'user_credential#1.0.0',
+              identity_id: 'some-identity-uuid',
+              storage_gateway_id: 'some-gateway-uuid',
+              username: 'some other name',
+            },
+          },
+        }),
+      );
+      expect({ url, method, headers, json }).toMatchSnapshot();
+    });
+
+    test('patch', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await userCredentials.next.patch(GCS_CONFIGURATION, {
+          user_credential_id: 'some-uuid',
+          request: { data: { username: 'some patched name' } },
+        }),
+      );
+      expect({ url, method, headers, json }).toMatchSnapshot();
+    });
+
+    test('remove', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(
+        await userCredentials.next.remove(GCS_CONFIGURATION, { user_credential_id: 'some-uuid' }),
+      );
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
   });
 });

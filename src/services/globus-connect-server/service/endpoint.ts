@@ -1,4 +1,5 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
+import { createGCSServiceMethodFactory } from '../../factory.js';
 
 import type { OpenAPI, GCSServiceMethod } from '../index.js';
 import type { JSONFetchResponse } from '../../types.js';
@@ -190,3 +191,111 @@ export const resetOwnerString = function (
     sdkOptions,
   );
 } satisfies GCSServiceMethod<{}>;
+
+/**
+ * @private
+ */
+export const next = {
+  get: createGCSServiceMethodFactory({
+    path: `/api/endpoint`,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['getEndpoint']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  update: createGCSServiceMethodFactory({
+    path: `/api/endpoint`,
+    method: HTTP_METHODS.PUT,
+  }).generate<
+    {
+      request: {
+        data: Partial<
+          OpenAPI.operations['putEndpoint']['requestBody']['content']['application/json']
+        >;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['putEndpoint']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  patch: createGCSServiceMethodFactory({
+    path: `/api/endpoint`,
+    method: HTTP_METHODS.PATCH,
+  }).generate<
+    {
+      request: {
+        data:
+          | OpenAPI.operations['patchEndpoint']['requestBody']['content']['application/json']
+          | Record<string, unknown>;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['patchEndpoint']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  updateSubscriptionId: createGCSServiceMethodFactory({
+    path: `/api/endpoint/subscription_id`,
+    method: HTTP_METHODS.PUT,
+  }).generate<
+    {
+      request: {
+        data: OpenAPI.operations['putEndpointSubscriptionId']['requestBody']['content']['application/json'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['putEndpointSubscriptionId']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  updateOwner: createGCSServiceMethodFactory({
+    path: `/api/endpoint/owner`,
+    method: HTTP_METHODS.PUT,
+  }).generate<
+    {
+      request: {
+        data: OpenAPI.operations['putEndpointOwner']['requestBody']['content']['application/json'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['putEndpointOwner']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  updateOwnerString: createGCSServiceMethodFactory({
+    path: `/api/endpoint/owner_string`,
+    method: HTTP_METHODS.PUT,
+  }).generate<
+    {
+      request: {
+        data: OpenAPI.operations['putEndpointOwnerString']['requestBody']['content']['application/json'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['putEndpointOwnerString']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  resetOwnerString: createGCSServiceMethodFactory({
+    path: `/api/endpoint/owner_string`,
+    method: HTTP_METHODS.DELETE,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['deleteEndpointOwnerString']['responses']['200']['content']['application/json']
+    >
+  >(),
+};

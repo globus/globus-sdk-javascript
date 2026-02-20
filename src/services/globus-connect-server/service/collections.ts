@@ -1,4 +1,5 @@
 import { HTTP_METHODS, serviceRequest } from '../../shared.js';
+import { createGCSServiceMethodFactory } from '../../factory.js';
 
 import type { OpenAPI, GCSServiceMethod, GCSServiceMethodDynamicSegments } from '../index.js';
 
@@ -236,3 +237,126 @@ export const resetOwnerString = function (
   OpenAPI.operations['deleteCollectionOwnerString']['parameters']['path']['collection_id'],
   {}
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  getAll: createGCSServiceMethodFactory({
+    path: `/api/collections`,
+  }).generate<
+    {
+      request?: {
+        query?: OpenAPI.operations['listCollections']['parameters']['query'];
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['listCollections']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  get: createGCSServiceMethodFactory({
+    path: `/api/collections/{collection_id}`,
+  }).generate<
+    {
+      request?: {
+        query?: OpenAPI.operations['getCollection']['parameters']['query'];
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['getCollection']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  create: createGCSServiceMethodFactory({
+    path: `/api/collections`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request: {
+        data: OpenAPI.operations['postCollection']['requestBody']['content']['application/json'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['postCollection']['responses']['201']['content']['application/json']
+    >
+  >(),
+
+  update: createGCSServiceMethodFactory({
+    path: `/api/collections/{collection_id}`,
+    method: HTTP_METHODS.PUT,
+  }).generate<
+    {
+      request: {
+        data: OpenAPI.operations['putCollection']['requestBody']['content']['application/json'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['putCollection']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  patch: createGCSServiceMethodFactory({
+    path: `/api/collections/{collection_id}`,
+    method: HTTP_METHODS.PATCH,
+  }).generate<
+    {
+      request: {
+        data: Partial<
+          OpenAPI.operations['patchCollection']['requestBody']['content']['application/json']
+        >;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['patchCollection']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  remove: createGCSServiceMethodFactory({
+    path: `/api/collections/{collection_id}`,
+    method: HTTP_METHODS.DELETE,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['deleteCollection']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  updateOwnerString: createGCSServiceMethodFactory({
+    path: `/api/collections/{collection_id}/owner_string`,
+    method: HTTP_METHODS.PUT,
+  }).generate<
+    {
+      request: {
+        data: Partial<
+          OpenAPI.operations['putCollectionOwnerString']['requestBody']['content']['application/json']
+        >;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['putCollectionOwnerString']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  resetOwnerString: createGCSServiceMethodFactory({
+    path: `/api/collections/{collection_id}/owner_string`,
+    method: HTTP_METHODS.DELETE,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['deleteCollectionOwnerString']['responses']['200']['content']['application/json']
+    >
+  >(),
+};

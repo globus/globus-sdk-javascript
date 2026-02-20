@@ -1,4 +1,5 @@
 import { HTTP_METHODS, serviceRequest } from '../../../services/shared.js';
+import { createGCSServiceMethodFactory } from '../../factory.js';
 
 import type { OpenAPI, GCSServiceMethod, GCSServiceMethodDynamicSegments } from '../index.js';
 
@@ -175,3 +176,95 @@ export const patch = function (
     payload: Partial<OpenAPI.operations['patchNode']['requestBody']['content']['application/json']>;
   }
 >;
+
+/**
+ * @private
+ */
+export const next = {
+  getAll: createGCSServiceMethodFactory({
+    path: `/api/nodes`,
+  }).generate<
+    {
+      request?: {
+        query?: OpenAPI.operations['listNodes']['parameters']['query'];
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['listNodes']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  get: createGCSServiceMethodFactory({
+    path: `/api/nodes/{node_id}`,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['getNode']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  create: createGCSServiceMethodFactory({
+    path: `/api/nodes`,
+    method: HTTP_METHODS.POST,
+  }).generate<
+    {
+      request: {
+        data: OpenAPI.operations['postNode']['requestBody']['content']['application/json'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['postNode']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  update: createGCSServiceMethodFactory({
+    path: `/api/nodes/{node_id}`,
+    method: HTTP_METHODS.PUT,
+  }).generate<
+    {
+      request: {
+        data: OpenAPI.operations['putNode']['requestBody']['content']['application/json'];
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['putNode']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  patch: createGCSServiceMethodFactory({
+    path: `/api/nodes/{node_id}`,
+    method: HTTP_METHODS.PATCH,
+  }).generate<
+    {
+      request: {
+        data: Partial<
+          OpenAPI.operations['patchNode']['requestBody']['content']['application/json']
+        >;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['patchNode']['responses']['200']['content']['application/json']
+    >
+  >(),
+
+  remove: createGCSServiceMethodFactory({
+    path: `/api/nodes/{node_id}`,
+    method: HTTP_METHODS.DELETE,
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['deleteNode']['responses']['200']['content']['application/json']
+    >
+  >(),
+};

@@ -1,8 +1,13 @@
 import { roles } from '..';
 
+import { mirror } from '../../../__mocks__/handlers';
 import type { MirroredRequest } from '../../../__mocks__/handlers';
 
 const GCS_HOST = 'https://fa5e.bd7c.data.globus.org';
+const GCS_CONFIGURATION = {
+  host: GCS_HOST,
+  endpoint_id: 'ac9cb54b-fc48-4824-b801-1388baf0a909',
+};
 
 describe('gcs – roles', () => {
   test('getAll', async () => {
@@ -179,5 +184,46 @@ describe('gcs – roles', () => {
         "url": "https://fa5e.bd7c.data.globus.org/api/roles",
       }
     `);
+  });
+
+  describe('next', () => {
+    test('getAll', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(await roles.next.getAll(GCS_CONFIGURATION));
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
+
+    test('get', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(await roles.next.get(GCS_CONFIGURATION, { role_id: 'some-uuid' }));
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
+
+    test('create', async () => {
+      const {
+        req: { url, method, headers, json },
+      } = await mirror(
+        await roles.next.create(GCS_CONFIGURATION, {
+          request: {
+            data: {
+              DATA_TYPE: 'role#1.0.0',
+              principal: 'urn:globus:auth:identity:dd7b1118-8fb0-4d92-9e28-7a3bc9cbfdf7',
+              collection: '476a00e0-0255-4397-91cb-87d054aa494a',
+              role: 'activity_manager',
+            },
+          },
+        }),
+      );
+      expect({ url, method, headers, json }).toMatchSnapshot();
+    });
+
+    test('remove', async () => {
+      const {
+        req: { url, method, headers },
+      } = await mirror(await roles.next.remove(GCS_CONFIGURATION, { role_id: 'some-uuid' }));
+      expect({ url, method, headers }).toMatchSnapshot();
+    });
   });
 });
