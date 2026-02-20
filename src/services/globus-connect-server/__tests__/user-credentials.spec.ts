@@ -216,4 +216,27 @@ describe('gcs – user-credentials', () => {
       }
     `);
   });
+
+  describe('next', () => {
+    test('getAll', async () => {
+      const result = await userCredentials.next.getAll({
+        host: GCS_HOST,
+        endpoint_id: 'some-endpoint-uuid',
+        request: {
+          query: {
+            include: ['all'],
+            storage_gateway: 'some-gateway-uuid',
+          },
+        },
+      });
+      const {
+        req: { url, method, headers },
+      } = (await result.json()) as unknown as MirroredRequest;
+      expect({
+        url,
+        method,
+        headers,
+      }).toMatchSnapshot();
+    });
+  });
 });

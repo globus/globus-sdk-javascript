@@ -1,5 +1,5 @@
 import { serviceRequest } from '../../../services/shared.js';
-
+import { createServiceMethodFactory } from '../../../services/factory.js';
 import type { OpenAPI, GCSServiceMethod } from '../index.js';
 import type { JSONFetchResponse } from '../../types.js';
 
@@ -32,3 +32,19 @@ export const info = function (
   Response,
   true
 >;
+
+export const next = {
+  info: createServiceMethodFactory({
+    path: '{host}/api/info',
+  }).generate<
+    {
+      request?: {
+        query?: never;
+        data?: never;
+      };
+    },
+    JSONFetchResponse<
+      OpenAPI.operations['getInfo']['responses']['200']['content']['application/json']
+    >
+  >(),
+};

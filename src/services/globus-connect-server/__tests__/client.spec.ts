@@ -187,4 +187,18 @@ describe('gcs client', () => {
       }
     `);
   });
+
+  describe('next', () => {
+    test('versioning.info', async () => {
+      const client = getClient(GCS_CONFIGURATION);
+      const {
+        req: { url, method, headers },
+      } = await mirror(await client.versioning.next.info());
+      expect({
+        url,
+        method,
+        headers,
+      }).toMatchSnapshot();
+    });
+  });
 });

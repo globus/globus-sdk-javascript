@@ -33,7 +33,7 @@ function serviceRequest(
   return legacyServiceRequest.call(this, config, methodOptions, sdkOptions);
 }
 
-type HasRequiredServiceMethodPayload<TPayload extends ServiceMethodPayload> =
+export type HasRequiredServiceMethodPayload<TPayload extends ServiceMethodPayload> =
   Partial<TPayload> extends TPayload ? false : true;
 
 export type ServiceMethod<TPayload extends ServiceMethodPayload, R extends Response = Response> =
@@ -42,40 +42,62 @@ export type ServiceMethod<TPayload extends ServiceMethodPayload, R extends Respo
     : (payload?: TPayload & ServiceMethodPayload) => Promise<R>;
 
 /**
- * Extracts path parameter names from a path template string.
+ * Extracts parameter names from a parameterized template string.
  * @example
- * ExtractPathParams<'/v2/tunnels/{tunnel_uuid}'> // { tunnel_uuid: string }
- * ExtractPathParams<'/v2/tunnels'> // {}
+ * ExtractTemplateParams<'{host}'> // { host: string }
+ * ExtractTemplateParams<'/v2/tunnels/{tunnel_uuid}'> // { tunnel_uuid: string }
+ * ExtractTemplateParams<'/v2/tunnels'> // {}
  */
-type ExtractPathParams<T extends string> = T extends `${string}{${infer Param}}${infer Rest}`
-  ? { [K in Param]: string } & ExtractPathParams<Rest>
+type ExtractTemplateParams<T extends string> = T extends `${string}{${infer Param}}${infer Rest}`
+  ? { [K in Param]: string } & ExtractTemplateParams<Rest>
   : {};
 
 /**
- * Derives the appropriate method signature based on the presence of path parameters.
+ * Derives the appropriate method signature based on the presence of template parameters.
  */
 type DeriveMethodSignatureFromPath<
+  TResourceServer extends string,
   TPath extends string,
   TPayload extends ServiceMethodPayload,
   TResponse extends Response,
-> = [keyof ExtractPathParams<TPath>] extends [never]
+> = [keyof ExtractTemplateParams<TResourceServer>, keyof ExtractTemplateParams<TPath>] extends [
+  never,
+  never,
+]
   ? ServiceMethod<TPayload, TResponse>
-  : (payload: ExtractPathParams<TPath> & TPayload & ServiceMethodPayload) => Promise<TResponse>;
+  : (
+      payload: ExtractTemplateParams<TResourceServer> &
+        ExtractTemplateParams<TPath> &
+        TPayload &
+        ServiceMethodPayload,
+    ) => Promise<TResponse>;
 
-const PATH_TEMPLATE_REGEX = /\{(\w+)\}/g;
+const TEMPLATE_REGEX = /\{(\w+)\}/g;
 
 /**
  * Factory function to create service methods.
  */
-export function createServiceMethodFactory<const TPath extends string>(
+export function createServiceMethodFactory<
+  const TResourceServer extends string,
+  const TPath extends string,
+>(
   /**
    * Configuration for the service method.
    * @todo In next major release, `scope` will no longer be supported (by `serviceRequest`) and we can update this type.
    */
   config: Omit<ServiceRequestDSL, 'path' | 'scope'> & {
     /**
+     * The resource_server for the service method.
+     * - This can include path parameters using `{}` braces to create a template string.
+     * @example '{endpoint_id}'
+     * @example 'flows.globus.org'
+     * @example 'fa5e.bd7c.data.globus.org'
+     * @example '524230d7-ea86-4a52-8312-86065a9e0417'
+     */
+    resource_server?: TResourceServer;
+    /**
      * The path template for the service method.
-     * - This can include path parameters in `{}` braces.
+     * - This can include path parameters using `{}` braces to create a template string.
      * @example '/v2/tunnels/{tunnel_uuid}'
      * @example '/jobs'
      * @example '/flows/{flow_id}/runs/{run_id}'
@@ -99,28 +121,42 @@ export function createServiceMethodFactory<const TPath extends string>(
       TPayload extends ServiceMethodPayload = ServiceMethodPayload,
       TResponse extends Response = Response,
     >() {
-      const { path: pathTemplate, ...rest } = config;
+      const { path: originalPath, resource_server: originalResourceServer, ...rest } = config;
       /**
        * The actual service method function.
        * - `payload` is initially set as `any`, but will be properly typed in the return type (cast).
        */
       return ((payload?: any) => {
-        let path: string = pathTemplate;
+        let resourceServer: string | undefined = originalResourceServer;
+        let path: string = originalPath;
         let processedPayload = payload;
         if (processedPayload && config.transform) {
           processedPayload = config.transform(payload);
         }
         if (processedPayload) {
+          if (originalResourceServer) {
+            resourceServer = originalResourceServer.replace(
+              TEMPLATE_REGEX,
+              (_: string, key: string) => processedPayload[key] ?? `{${key}}`,
+            );
+          }
           path = path.replace(
-            PATH_TEMPLATE_REGEX,
+            TEMPLATE_REGEX,
             (_: string, key: string) => processedPayload[key] ?? `{${key}}`,
           );
         }
-        if (path.match(PATH_TEMPLATE_REGEX)) {
-          throw new Error(`Missing required parameters for path: ${pathTemplate}`);
+
+        if ((originalResourceServer && !resourceServer) || resourceServer?.match(TEMPLATE_REGEX)) {
+          throw new Error(
+            `Missing required parameters for method (resource_server): ${originalResourceServer}`,
+          );
         }
-        return serviceRequest({ ...rest, path }, processedPayload);
-      }) as DeriveMethodSignatureFromPath<TPath, TPayload, TResponse>;
+
+        if (path.match(TEMPLATE_REGEX)) {
+          throw new Error(`Missing required parameters for method (path): ${originalPath}`);
+        }
+        return serviceRequest({ ...rest, path, resource_server: resourceServer }, processedPayload);
+      }) as DeriveMethodSignatureFromPath<TResourceServer, TPath, TPayload, TResponse>;
     },
   };
 }

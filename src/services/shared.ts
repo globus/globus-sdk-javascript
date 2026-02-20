@@ -28,7 +28,7 @@ export type ServiceRequestDSL = {
   /**
    * The service that the request will be made to.
    */
-  service: Service | GCSConfiguration | UnauthenticatedGCSConfiguration;
+  service?: Service | GCSConfiguration | UnauthenticatedGCSConfiguration;
   /**
    * A specific scope that is required for the request. If a scope is provided,
    * the `serviceRequest` function will attempt to get a token for the request
@@ -129,6 +129,7 @@ export async function serviceRequest(
   if (
     config.scope &&
     manager &&
+    config.service &&
     /**
      * Only attempt to get a token if the `service` property is a string or has an `endpoint_id` property (GCSConfiguration).
      */
@@ -161,14 +162,16 @@ export async function serviceRequest(
     headers['Content-Type'] = 'application/json';
   }
 
-  const url = build(
-    config.service,
-    config.path,
-    {
-      search: options?.query,
-    },
-    sdkOptions,
-  );
+  const url = config.service
+    ? build(
+        config.service,
+        config.path,
+        {
+          search: options?.query,
+        },
+        sdkOptions,
+      )
+    : config.path;
 
   const init = {
     method: config.method,

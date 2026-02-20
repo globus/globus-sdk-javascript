@@ -147,7 +147,7 @@ describe('createServiceMethodFactory', () => {
     );
   });
 
-  test('should throw if the path template is missing required parameters', async () => {
+  test('path - supports template strings', async () => {
     const factory = createServiceMethodFactory({
       service: 'FLOWS',
       path: '/v2/flows/{flow_id}/runs/{run_id}',
@@ -163,7 +163,29 @@ describe('createServiceMethodFactory', () => {
     } catch (e) {
       error = e;
       expect(error).toEqual(
-        new Error('Missing required parameters for path: /v2/flows/{flow_id}/runs/{run_id}'),
+        new Error(
+          'Missing required parameters for method (path): /v2/flows/{flow_id}/runs/{run_id}',
+        ),
+      );
+    }
+    expect(error).toBeDefined();
+  });
+
+  test('resource_server - supports template strings', async () => {
+    const factory = createServiceMethodFactory({
+      resource_server: '{endpoint_id}',
+      path: '{host}/api/info',
+      method: HTTP_METHODS.GET,
+    });
+    const method = factory.generate();
+    let error;
+    try {
+      // @ts-expect-error This test is to ensure runtime error is thrown for missing parameters.
+      await method();
+    } catch (e) {
+      error = e;
+      expect(error).toEqual(
+        new Error('Missing required parameters for method (resource_server): {endpoint_id}'),
       );
     }
     expect(error).toBeDefined();
@@ -177,7 +199,7 @@ describe('createServiceMethodFactory', () => {
      */
     type Expect<T extends true> = T;
     type Equal<A, B> = [A] extends [B] ? ([B] extends [A] ? true : false) : false;
-    test('method with segments requires all segments', async () => {
+    test('method with path template requires all segments', async () => {
       const method = createServiceMethodFactory({
         service: 'FLOWS',
         path: '/v2/flows/{flow_id}/runs/{run_id}',
@@ -185,6 +207,19 @@ describe('createServiceMethodFactory', () => {
       type MethodPayload = Parameters<typeof method>[0];
       type _AssertFlowId = Expect<Equal<MethodPayload['flow_id'], string>>;
       type _AssertRunId = Expect<Equal<MethodPayload['run_id'], string>>;
+      expect(typeof method).toBe('function');
+    });
+
+    test('method with resource_server and path template requires all segments', async () => {
+      const method = createServiceMethodFactory({
+        service: 'FLOWS',
+        resource_server: '{endpoint_id}',
+        path: '{host}/api/storage_gateways/{storage_gateway_id}',
+      }).generate();
+      type MethodPayload = Parameters<typeof method>[0];
+      type _AssertEndpointId = Expect<Equal<MethodPayload['endpoint_id'], string>>;
+      type _AssertHost = Expect<Equal<MethodPayload['host'], string>>;
+      type _AssertStorageGatewayId = Expect<Equal<MethodPayload['storage_gateway_id'], string>>;
       expect(typeof method).toBe('function');
     });
 

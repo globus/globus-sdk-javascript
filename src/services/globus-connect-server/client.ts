@@ -14,6 +14,7 @@
  *
  * const result = await client.endpoint.get();
  */
+import { ServiceMethod } from '../factory.js';
 import { type GCSConfiguration } from './index.js';
 
 import * as collections from './service/collections.js';
@@ -43,6 +44,19 @@ function bind<M extends (...args: any[]) => ReturnType<M>, Args extends any[]>(
   };
 }
 
+function withConfiguration<TMethod extends ServiceMethod<any>>(
+  configuration: GCSConfiguration,
+  method: TMethod,
+) {
+  type Payload = Omit<Parameters<TMethod>[0], keyof GCSConfiguration>;
+  return function (payload: Payload) {
+    return method({
+      ...payload,
+      ...configuration,
+    });
+  } as ServiceMethod<Payload, Awaited<ReturnType<TMethod>>>;
+}
+
 /**
  * Create a Globus Connect Server Manager client. This client is used to
  * create a SDK context that is bound to a specific Globus Connect Server.
@@ -61,6 +75,9 @@ export function getClient(configuration: GCSConfiguration) {
     },
     versioning: {
       info: bind(versioning.info, configuration),
+      next: {
+        info: withConfiguration(configuration, versioning.next.info),
+      },
     },
     collections: {
       get: bind(collections.get, configuration),
@@ -87,6 +104,14 @@ export function getClient(configuration: GCSConfiguration) {
       remove: bind(userCredentials.remove, configuration),
       update: bind(userCredentials.update, configuration),
       patch: bind(userCredentials.patch, configuration),
+      next: {
+        getAll: withConfiguration(configuration, userCredentials.next.getAll),
+        get: withConfiguration(configuration, userCredentials.next.get),
+        create: withConfiguration(configuration, userCredentials.next.create),
+        remove: withConfiguration(configuration, userCredentials.next.remove),
+        update: withConfiguration(configuration, userCredentials.next.update),
+        patch: withConfiguration(configuration, userCredentials.next.patch),
+      },
     },
     storageGateways: {
       get: bind(storageGateways.get, configuration),
