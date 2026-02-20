@@ -62,8 +62,6 @@ type DeriveMethodSignatureFromPath<
   ? ServiceMethod<TPayload, TResponse>
   : (payload: ExtractPathParams<TPath> & TPayload & ServiceMethodPayload) => Promise<TResponse>;
 
-const PATH_TEMPLATE_REGEX = /\{(\w+)\}/g;
-
 /**
  * Configuration for the service method.
  * @todo In next major release, `scope` will no longer be supported (by `serviceRequest`) and we can update this type.
@@ -90,6 +88,33 @@ type ServiceMethodFactoryConfig<TPath extends string> = Omit<
   ) => TPayload | ServiceMethodPayload;
 };
 
+const PATH_TEMPLATE_REGEX = /\{(\w+)\}/g;
+
+/**
+ * Applies an optional transform to the payload and resolves path template parameters.
+ * Throws if any required path parameters remain unfilled after resolution.
+ */
+function resolveRequest(
+  pathTemplate: string,
+  payload: ServiceMethodPayload | undefined,
+  transform: ServiceMethodFactoryConfig<string>['transform'],
+): { path: string; processedPayload: ServiceMethodPayload | undefined } {
+  let processedPayload = payload;
+  if (processedPayload && transform) {
+    processedPayload = transform(processedPayload);
+  }
+  const path: string = processedPayload
+    ? pathTemplate.replace(
+        PATH_TEMPLATE_REGEX,
+        (_: string, key: string) => (processedPayload as any)[key] ?? `{${key}}`,
+      )
+    : pathTemplate;
+  if (path.match(PATH_TEMPLATE_REGEX)) {
+    throw new Error(`Missing required parameters for path: ${pathTemplate}`);
+  }
+  return { path, processedPayload };
+}
+
 /**
  * Factory function to create service methods.
  */
@@ -110,20 +135,7 @@ export function createServiceMethodFactory<const TPath extends string>(
        * - `payload` is initially set as `any`, but will be properly typed in the return type (cast).
        */
       return ((payload?: any) => {
-        let path: string = pathTemplate;
-        let processedPayload = payload;
-        if (processedPayload && config.transform) {
-          processedPayload = config.transform(payload);
-        }
-        if (processedPayload) {
-          path = path.replace(
-            PATH_TEMPLATE_REGEX,
-            (_: string, key: string) => processedPayload[key] ?? `{${key}}`,
-          );
-        }
-        if (path.match(PATH_TEMPLATE_REGEX)) {
-          throw new Error(`Missing required parameters for path: ${pathTemplate}`);
-        }
+        const { path, processedPayload } = resolveRequest(pathTemplate, payload, config.transform);
         return serviceRequest({ ...rest, path }, processedPayload);
       }) as DeriveMethodSignatureFromPath<TPath, TPayload, TResponse>;
     },
@@ -145,20 +157,7 @@ export function createGCSServiceMethodFactory<const TPath extends string>(
     >() {
       const { path: pathTemplate, ...rest } = config;
       return ((configuration: GCSConfiguration, params?: any) => {
-        let path: string = pathTemplate;
-        let processedPayload = params;
-        if (processedPayload && config.transform) {
-          processedPayload = config.transform(params);
-        }
-        if (processedPayload) {
-          path = path.replace(
-            PATH_TEMPLATE_REGEX,
-            (_: string, key: string) => processedPayload[key] ?? `{${key}}`,
-          );
-        }
-        if (path.match(PATH_TEMPLATE_REGEX)) {
-          throw new Error(`Missing required parameters for path: ${pathTemplate}`);
-        }
+        const { path, processedPayload } = resolveRequest(pathTemplate, params, config.transform);
         return serviceRequest(
           { ...rest, service: configuration, resource_server: configuration.endpoint_id, path },
           processedPayload,
