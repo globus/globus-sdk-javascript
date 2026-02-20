@@ -341,7 +341,9 @@ describe('gcs – collection', () => {
     test('get', async () => {
       const {
         req: { url, method, headers },
-      } = await mirror(await collections.next.get(GCS_CONFIGURATION, { collection_id: 'some-uuid' }));
+      } = await mirror(
+        await collections.next.get(GCS_CONFIGURATION, { collection_id: 'some-uuid' }),
+      );
       expect({ url, method, headers }).toMatchSnapshot();
     });
 

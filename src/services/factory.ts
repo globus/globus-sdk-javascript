@@ -1,4 +1,8 @@
-import { HTTP_METHODS, ServiceRequestDSL, serviceRequest as legacyServiceRequest } from './shared.js';
+import {
+  HTTP_METHODS,
+  ServiceRequestDSL,
+  serviceRequest as legacyServiceRequest,
+} from './shared.js';
 import { SDKOptions, BaseServiceMethodOptions } from './types.js';
 
 type RequestOptions = Omit<BaseServiceMethodOptions, 'payload'> & {
@@ -82,58 +86,20 @@ type DeriveGCSMethodSignatureFromPath<
   TResponse extends Response,
 > = [keyof ExtractPathParams<TPath>] extends [never]
   ? HasRequiredServiceMethodPayload<TPayload> extends true
-    ? (configuration: GCSConfiguration, params: TPayload & ServiceMethodPayload) => Promise<TResponse>
-    : (configuration: GCSConfiguration, params?: TPayload & ServiceMethodPayload) => Promise<TResponse>
+    ? (
+        configuration: GCSConfiguration,
+        params: TPayload & ServiceMethodPayload,
+      ) => Promise<TResponse>
+    : (
+        configuration: GCSConfiguration,
+        params?: TPayload & ServiceMethodPayload,
+      ) => Promise<TResponse>
   : (
       configuration: GCSConfiguration,
       params: ExtractPathParams<TPath> & TPayload & ServiceMethodPayload,
     ) => Promise<TResponse>;
 
 const PATH_TEMPLATE_REGEX = /\{(\w+)\}/g;
-
-/**
- * Factory function to create GCS service methods.
- * Unlike `createServiceMethodFactory`, this factory does not accept `service` or `resource_server`
- * at creation time — those are derived from the `GCSConfiguration` passed at call time.
- */
-export function createGCSServiceMethodFactory<const TPath extends string>(
-  config: {
-    path: TPath;
-    method?: HTTP_METHODS;
-    transform?: <TPayload extends ServiceMethodPayload>(
-      payload: TPayload,
-    ) => TPayload | ServiceMethodPayload;
-  },
-) {
-  return {
-    generate<
-      TPayload extends ServiceMethodPayload = ServiceMethodPayload,
-      TResponse extends Response = Response,
-    >() {
-      const { path: pathTemplate, ...rest } = config;
-      return ((configuration: GCSConfiguration, params?: any) => {
-        let path: string = pathTemplate;
-        let processedPayload = params;
-        if (processedPayload && config.transform) {
-          processedPayload = config.transform(params);
-        }
-        if (processedPayload) {
-          path = path.replace(
-            PATH_TEMPLATE_REGEX,
-            (_: string, key: string) => processedPayload[key] ?? `{${key}}`,
-          );
-        }
-        if (path.match(PATH_TEMPLATE_REGEX)) {
-          throw new Error(`Missing required parameters for path: ${pathTemplate}`);
-        }
-        return serviceRequest(
-          { ...rest, service: configuration, resource_server: configuration.endpoint_id, path },
-          processedPayload,
-        );
-      }) as DeriveGCSMethodSignatureFromPath<TPath, TPayload, TResponse>;
-    },
-  };
-}
 
 /**
  * Factory function to create service methods.
@@ -192,6 +158,48 @@ export function createServiceMethodFactory<const TPath extends string>(
         }
         return serviceRequest({ ...rest, path }, processedPayload);
       }) as DeriveMethodSignatureFromPath<TPath, TPayload, TResponse>;
+    },
+  };
+}
+
+/**
+ * Factory function to create GCS service methods.
+ * Unlike `createServiceMethodFactory`, this factory does not accept `service` or `resource_server`
+ * at creation time — those are derived from the `GCSConfiguration` passed at call time.
+ */
+export function createGCSServiceMethodFactory<const TPath extends string>(config: {
+  path: TPath;
+  method?: HTTP_METHODS;
+  transform?: <TPayload extends ServiceMethodPayload>(
+    payload: TPayload,
+  ) => TPayload | ServiceMethodPayload;
+}) {
+  return {
+    generate<
+      TPayload extends ServiceMethodPayload = ServiceMethodPayload,
+      TResponse extends Response = Response,
+    >() {
+      const { path: pathTemplate, ...rest } = config;
+      return ((configuration: GCSConfiguration, params?: any) => {
+        let path: string = pathTemplate;
+        let processedPayload = params;
+        if (processedPayload && config.transform) {
+          processedPayload = config.transform(params);
+        }
+        if (processedPayload) {
+          path = path.replace(
+            PATH_TEMPLATE_REGEX,
+            (_: string, key: string) => processedPayload[key] ?? `{${key}}`,
+          );
+        }
+        if (path.match(PATH_TEMPLATE_REGEX)) {
+          throw new Error(`Missing required parameters for path: ${pathTemplate}`);
+        }
+        return serviceRequest(
+          { ...rest, service: configuration, resource_server: configuration.endpoint_id, path },
+          processedPayload,
+        );
+      }) as DeriveGCSMethodSignatureFromPath<TPath, TPayload, TResponse>;
     },
   };
 }
