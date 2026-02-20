@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.3.0](https://github.com/globus/globus-sdk-javascript/compare/v6.2.0...v6.3.0) (2026-02-20)
+
+
+### Features
+
+* Adds 'next' exports for auth.identities ([#767](https://github.com/globus/globus-sdk-javascript/issues/767)) ([92c02f8](https://github.com/globus/globus-sdk-javascript/commit/92c02f83a89ba67a8fdd523aed39aec218320790))
+* Adds remaining `next` export for `transfer` and `auth.developers` ([#770](https://github.com/globus/globus-sdk-javascript/issues/770)) ([1f05298](https://github.com/globus/globus-sdk-javascript/commit/1f05298400f40597a63b75e2aa2d9b6762e6caf9))
+* **Auth:** adds 'next' exports to Developers resources ([#769](https://github.com/globus/globus-sdk-javascript/issues/769)) ([8376d22](https://github.com/globus/globus-sdk-javascript/commit/8376d22353df8c72cf18c6df5b6958aa12509b65))
+* **Compute:** Adds `next` exports to Compute resources ([#760](https://github.com/globus/globus-sdk-javascript/issues/760)) ([ab6b2ab](https://github.com/globus/globus-sdk-javascript/commit/ab6b2abf8fadde982500e360948bdc9af4588845))
+* **Developers:** Add support for Globus Auth Developer Resource API (https://docs.globus.org/api/auth/reference/#clients_and_scopes_api) ([#698](https://github.com/globus/globus-sdk-javascript/issues/698)) ([9181bc2](https://github.com/globus/globus-sdk-javascript/commit/9181bc252b9060ac79d75720a2d5a28b7ac040dd))
+* **Flows:** Adds `next` exports to Flows resources ([#759](https://github.com/globus/globus-sdk-javascript/issues/759)) ([6686ec1](https://github.com/globus/globus-sdk-javascript/commit/6686ec19c6ed38cff1645c791c1c915b03ce1394))
+* **Groups:** Adds `next` exports to Groups resources ([#757](https://github.com/globus/globus-sdk-javascript/issues/757)) ([89c16c3](https://github.com/globus/globus-sdk-javascript/commit/89c16c3322295de4fd382d74bcc989f407c40c9c))
+* provides implementation for allowing `next` signatures with GCS ([#772](https://github.com/globus/globus-sdk-javascript/issues/772)) ([52863ec](https://github.com/globus/globus-sdk-javascript/commit/52863ec6666150f8f5885f58e7c6de5adc59f611))
+* **Search:** Adds `next` exports to Search resources ([#756](https://github.com/globus/globus-sdk-javascript/issues/756)) ([ae9d4a2](https://github.com/globus/globus-sdk-javascript/commit/ae9d4a2aa9321fcd52262fe517cd9f09f80ddc2b))
+* **Timers:** Adds `next` exports to Timers resources ([#758](https://github.com/globus/globus-sdk-javascript/issues/758)) ([d4a7773](https://github.com/globus/globus-sdk-javascript/commit/d4a7773a3950c909c056a11f2290f037f5262ad5))
+* **Transfer:** adds 'next' export for Stream Access Points ([#764](https://github.com/globus/globus-sdk-javascript/issues/764)) ([8a8429d](https://github.com/globus/globus-sdk-javascript/commit/8a8429da971cbf44b6a917023e822c18d2f4eed1))
+* **Transfer:** adds 'next' export for Task and Task Submission ([#765](https://github.com/globus/globus-sdk-javascript/issues/765)) ([1444707](https://github.com/globus/globus-sdk-javascript/commit/1444707c28f3da03c8824852f1d140cd8afae5b7))
+* **Transfer:** Adds 'next' export to transfer.fileOperations ([#762](https://github.com/globus/globus-sdk-javascript/issues/762)) ([848eb37](https://github.com/globus/globus-sdk-javascript/commit/848eb37b9b7d138b1acc534cf5f3fe0fe613d0f9))
+* **Transfer:** Adds 'next' exports to collection bookmarks, endpoints, and endpoint search ([#763](https://github.com/globus/globus-sdk-javascript/issues/763)) ([366d354](https://github.com/globus/globus-sdk-javascript/commit/366d3546bd982c122653b5ac326488eb95825c6a))
+
+
+### Bug Fixes
+
+* **Auth, Identities:** Update the 'next' return type key name for ([78c6781](https://github.com/globus/globus-sdk-javascript/commit/78c67817b255332a6cc15491f2a7257a35c0ab90))
+* Move token-related methods in auth to an separate file to avoid circular references in `src/services/shared.ts` ([#768](https://github.com/globus/globus-sdk-javascript/issues/768)) ([78c6781](https://github.com/globus/globus-sdk-javascript/commit/78c67817b255332a6cc15491f2a7257a35c0ab90))
+* **Search:** Updates `query.next` methods to Generics ([#766](https://github.com/globus/globus-sdk-javascript/issues/766)) ([e0e7959](https://github.com/globus/globus-sdk-javascript/commit/e0e79597231dfc24181ab2c0c20476f651f8f194))
+* **Streams:** Ensures `payload` wrapper is not included in Tunnel RPC methods payload processing.  ([#721](https://github.com/globus/globus-sdk-javascript/issues/721)) ([8eef7eb](https://github.com/globus/globus-sdk-javascript/commit/8eef7eb533ed169a37a343d3f4c005dc46671c8e))
+* **Transfer, Typescript:** Mark `fileOperations.stat` `query` parameter as required. ([#737](https://github.com/globus/globus-sdk-javascript/issues/737)) ([c051957](https://github.com/globus/globus-sdk-javascript/commit/c05195797f155fc28f738dcd6dc203ab6c486dac))
+* **Transfer:** Updates Transfer API host to transfer.api.globus.org ([#732](https://github.com/globus/globus-sdk-javascript/issues/732)) ([2afde47](https://github.com/globus/globus-sdk-javascript/commit/2afde472d99808fde7d88e2e84342fdb25d913c5))
+* **Typescript:** fix and export IdentityResponse type ([5fa1dee](https://github.com/globus/globus-sdk-javascript/commit/5fa1dee20496710c61007b56a960689ee83ff79b))
+* **Typescript:** use BaseServiceMethodOptions in ServiceMethodDynamicSegments ([#713](https://github.com/globus/globus-sdk-javascript/issues/713)) ([0fb2315](https://github.com/globus/globus-sdk-javascript/commit/0fb231578ed33d57f046e7eb6509cfb6c9e2139d))
+
 ## [6.2.0](https://github.com/globus/globus-sdk-javascript/compare/v6.1.0...v6.2.0) (2025-11-18)
 
 
