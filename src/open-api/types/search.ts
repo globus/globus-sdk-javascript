@@ -1101,55 +1101,63 @@ export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         ResultEntry: {
+            entry_id: string | null;
+            matched_principal_sets: string[];
             content?: {
                 [key: string]: unknown;
             };
-            entry_id?: string;
-            matched_principal_sets?: string[];
+            /**
+             * @example [
+             *       "public"
+             *     ]
+             * @example [
+             *       "all_authenticated_users"
+             *     ]
+             */
             visible_to?: string[];
             principal_sets?: string[];
         };
         GMetaResult: {
-            /** @default 2019-08-27 */
+            /** @default 2017-09-01 */
             readonly "@version": unknown;
-            subject?: string;
-            entries?: components["schemas"]["ResultEntry"][];
+            subject: string;
+            entries: components["schemas"]["ResultEntry"][];
         };
         ApproximateMetricFacetResult: {
             /** @default 2017-09-01 */
             readonly "@version": unknown;
-            readonly name?: string;
-            approximate_value?: number;
+            readonly name: string;
+            approximate_value: number;
         };
         MetricFacetResult: {
             /** @default 2017-09-01 */
             readonly "@version": unknown;
-            readonly name?: string;
-            value?: number;
+            readonly name: string;
+            value: number;
         };
         GBucket: {
             /** @default 2017-09-01 */
             readonly "@version": unknown;
-            value?: unknown;
-            count?: number;
+            value: unknown;
+            count: number;
         };
         BucketFacetResult: {
             /** @default 2017-09-01 */
             readonly "@version": unknown;
-            readonly name?: string;
-            buckets?: components["schemas"]["GBucket"][];
+            readonly name: string;
+            buckets: components["schemas"]["GBucket"][];
         };
         GFacetResult: components["schemas"]["ApproximateMetricFacetResult"] | components["schemas"]["MetricFacetResult"] | components["schemas"]["BucketFacetResult"];
         GSearchResult: {
-            total?: number;
+            total: number;
             /** @description The length of the 'gmeta' array. */
-            count?: number;
-            gmeta?: components["schemas"]["GMetaResult"][];
+            count: number;
+            gmeta: components["schemas"]["GMetaResult"][];
             /** @description True if another page of results is available with pagination. */
-            has_next_page?: boolean;
+            has_next_page: boolean;
             /** @default 2017-09-01 */
             readonly "@version": unknown;
-            offset?: number;
+            offset: number;
             facet_results?: components["schemas"]["GFacetResult"][];
         };
         TermsFacet: {
@@ -2082,13 +2090,13 @@ export interface components {
         };
         GScrollRequest: components["schemas"]["GScrollRequest2017"] | components["schemas"]["GScrollRequestV1"];
         GScrollResponse: {
-            total?: number;
+            total: number;
             /** @description The length of the 'gmeta' array. */
-            count?: number;
-            gmeta?: components["schemas"]["GMetaResult"][];
+            count: number;
+            gmeta: components["schemas"]["GMetaResult"][];
             /** @description True if another page of results is available with pagination. */
-            has_next_page?: boolean;
-            marker?: unknown;
+            has_next_page: boolean;
+            marker: unknown;
         };
         GMetaEntry: {
             /** @default 2017-09-01 */
@@ -2162,58 +2170,58 @@ export interface components {
         GIngest: components["schemas"]["GIngestEntry"] | components["schemas"]["GIngestList"];
         TaskSubmitResponse: {
             /** @description Always true for successful task submission. */
-            acknowledged?: boolean;
+            acknowledged: boolean;
             /**
              * Format: uuid
              * @description The ID of the task which was just created.
              */
-            task_id?: string;
+            task_id: string;
         };
         Task: {
             /** Format: uuid */
-            task_id?: string;
+            task_id: string;
             /** @enum {string} */
-            state?: "PENDING" | "PROGRESS" | "SUCCESS" | "FAILED" | "CREATING";
-            state_description?: string;
-            task_type?: string;
+            state: "PENDING" | "PROGRESS" | "SUCCESS" | "FAILED" | "CREATING";
+            state_description: string;
+            task_type: string;
             /** Format: uuid */
-            index_id?: string;
+            index_id: string;
             /** Format: date */
-            creation_date?: string;
-            message?: string;
+            creation_date: string;
+            message: string;
             additional_details?: unknown;
             /** Format: date */
-            completion_date?: string | null;
+            completion_date: string | null;
         };
         TaskList: {
             /** Format: uuid */
-            index_id?: string;
-            tasks?: components["schemas"]["Task"][];
+            index_id: string;
+            tasks: components["schemas"]["Task"][];
         };
         IndexWithPermissions: {
             /** @default 2017-09-01 */
             readonly "@version": unknown;
-            display_name?: string;
-            description?: string;
+            display_name: string;
+            description: string;
             /** Format: uuid */
-            id?: string;
-            max_size_in_mb?: number;
-            size_in_mb?: number;
-            num_subjects?: number;
-            num_entries?: number;
+            id: string;
+            max_size_in_mb: number;
+            size_in_mb: number;
+            num_subjects: number;
+            num_entries: number;
             /** Format: date */
-            creation_date?: string;
+            creation_date: string;
             /** Format: date */
-            content_last_modified_date?: string | null;
+            content_last_modified_date: string | null;
             entry_schema?: {
                 [key: string]: unknown;
             };
             /** Format: uuid */
-            subscription_id?: string;
-            is_trial?: boolean;
-            status?: string;
+            subscription_id: string;
+            is_trial: boolean;
+            status: string;
             /** @description The 'available' field indicates whether or not an index is available to serve queries and process tasks. It is `true` for active indices, but `false` when an index is being deleted or Globus Search is unable to access the index data. */
-            available?: boolean;
+            available: boolean;
             permissions?: ("owner" | "admin" | "writer")[];
         };
         IndexUpdate: {
@@ -2231,36 +2239,36 @@ export interface components {
         IndexInfo: {
             /** @default 2017-09-01 */
             readonly "@version": unknown;
-            display_name?: string;
-            description?: string;
+            display_name: string;
+            description: string;
             /** Format: uuid */
-            id?: string;
-            max_size_in_mb?: number;
-            size_in_mb?: number;
-            num_subjects?: number;
-            num_entries?: number;
+            id: string;
+            max_size_in_mb: number;
+            size_in_mb: number;
+            num_subjects: number;
+            num_entries: number;
             /** Format: date */
-            creation_date?: string;
+            creation_date: string;
             /** Format: date */
-            content_last_modified_date?: string | null;
+            content_last_modified_date: string | null;
             entry_schema?: {
                 [key: string]: unknown;
             };
             /** Format: uuid */
-            subscription_id?: string;
-            is_trial?: boolean;
-            status?: string;
+            subscription_id: string;
+            is_trial: boolean;
+            status: string;
             /** @description The 'available' field indicates whether or not an index is available to serve queries and process tasks. It is `true` for active indices, but `false` when an index is being deleted or Globus Search is unable to access the index data. */
-            available?: boolean;
+            available: boolean;
         };
         IndexDeleteResponse: {
             /** @description Always true for successful index deletion. */
-            acknowledged?: boolean;
+            acknowledged: boolean;
             /**
              * Format: uuid
              * @description The ID of the index which was marked for deletion.
              */
-            index_id?: string;
+            index_id: string;
         };
         IndexListWPermissions: {
             index_list?: components["schemas"]["IndexWithPermissions"][];
@@ -2273,35 +2281,35 @@ export interface components {
         };
         IndexReopenResponse: {
             /** @description Always true for successful index reopen. */
-            acknowledged?: boolean;
+            acknowledged: boolean;
             /**
              * Format: uuid
              * @description The ID of the index which was reopened.
              */
-            index_id?: string;
+            index_id: string;
         };
         Role: {
             /** @description The ID of the role. */
-            id?: string;
+            id: string;
             /**
              * @description The name of the role. This implies some set of permissions.
              * @enum {string}
              */
-            role_name?: "owner" | "admin" | "writer";
+            role_name: "owner" | "admin" | "writer";
             /** Format: uuid */
-            index_id?: string;
+            index_id: string;
             /** @description The principal URN for the entity which has this role. */
-            principal?: string;
+            principal: string;
             /**
              * @description The type of principal encoded by the URN.
              * @enum {string}
              */
-            principal_type?: "identity" | "group";
+            principal_type: "identity" | "group";
             /** Format: date */
-            creation_date?: string;
+            creation_date: string;
         };
         RoleList: {
-            role_list?: components["schemas"]["Role"][];
+            role_list: components["schemas"]["Role"][];
         };
         RoleCreate: {
             /**
@@ -2313,8 +2321,8 @@ export interface components {
             principal?: string;
         };
         DeletedRole: {
-            deleted?: components["schemas"]["Role"];
-            success?: boolean;
+            deleted: components["schemas"]["Role"];
+            success: boolean;
         };
         DeleteBySubjectRequest: {
             subjects: string[];
@@ -2341,17 +2349,17 @@ export interface components {
              *       "bar.baz": "text"
              *     }
              */
-            mappings?: {
+            mappings: {
                 [key: string]: unknown;
             };
         };
         FieldBudget: {
             /** @description The size of the budget for the index. */
-            budget?: number;
+            budget: number;
             /** @description The amount of the budget which has been used (i.e., budget - remaining). */
-            used?: number;
+            used: number;
             /** @description The amount of the budget remaining (i.e., budget - used). */
-            remaining?: number;
+            remaining: number;
         };
     };
     responses: never;
