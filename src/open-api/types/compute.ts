@@ -245,7 +245,11 @@ export interface paths {
         post?: never;
         /**
          * Delete Endpoint
+         * @deprecated
          * @description Delete the endpoint.
+         *
+         *     DEPRECATED.  Use the HTTP DELETE verb against `/v3/endpoints/{endpoint_uuid}`
+         *     instead.
          */
         delete: operations["delete_endpoint_v2_endpoints__endpoint_uuid__delete"];
         options?: never;
@@ -381,26 +385,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v3/endpoints": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Register Endpoint
-         * @description Register a new endpoint
-         */
-        post: operations["register_endpoint_v3_endpoints_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/v3/endpoints/{endpoint_uuid}": {
         parameters: {
             query?: never;
@@ -415,6 +399,37 @@ export interface paths {
          */
         put: operations["update_endpoint_v3_endpoints__endpoint_uuid__put"];
         post?: never;
+        /**
+         * Delete Endpoint
+         * @description Delete the endpoint.
+         *
+         *     Delete the requested endpoint.  To succeed, the request must be from the identity
+         *     that owns the endpoint.  When this call returns, the endpoint, if online, will be
+         *     disconnected (all credentials revoked) and will not be able to be utilized again.
+         *
+         *     N.B. As this operation cannot be undone, the only recourse for a mistaken DELETE
+         *          request is to create a new endpoint in its stead.
+         */
+        delete: operations["delete_endpoint_v3_endpoints__endpoint_uuid__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v3/endpoints": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Register Endpoint
+         * @description Register a new endpoint
+         */
+        post: operations["register_endpoint_v3_endpoints_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -3405,88 +3420,6 @@ export interface operations {
             };
         };
     };
-    register_endpoint_v3_endpoints_post: {
-        parameters: {
-            query?: never;
-            header: {
-                "user-agent": string;
-                "x-forwarded-for"?: string;
-                "remote-addr"?: string;
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["compute_web_service__schemas__v3__endpoints__EndpointRegisterRequest"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["EndpointRegisterResponse"] | components["schemas"]["MultiUserEndpointRegisterResponse"];
-                };
-            };
-            /** @description Bad Request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Unprocessable Entity */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ValidationErrorResponse"];
-                };
-            };
-            /** @description Locked */
-            423: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
     update_endpoint_v3_endpoints__endpoint_uuid__put: {
         parameters: {
             query?: never;
@@ -3553,6 +3486,120 @@ export interface operations {
             };
             /** @description Conflict */
             409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+            /** @description Locked */
+            423: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    delete_endpoint_v3_endpoints__endpoint_uuid__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Endpoint UUID */
+                endpoint_uuid: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    register_endpoint_v3_endpoints_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "user-agent": string;
+                "x-forwarded-for"?: string;
+                "remote-addr"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["compute_web_service__schemas__v3__endpoints__EndpointRegisterRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EndpointRegisterResponse"] | components["schemas"]["MultiUserEndpointRegisterResponse"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
