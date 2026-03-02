@@ -132,38 +132,60 @@ describe('search – query', () => {
       }).toMatchSnapshot();
     });
 
-    test('TypeScript Types', async () => {
-      type Content = {
-        name: string;
-        foo: number;
-      };
-      const withGenericResponse = await query.next.post<Content>({
-        index_id: INDEX_ID,
-        request: {
-          data: { q: 'test' },
-        },
+    describe('Typescript Types', () => {
+      test('GSearchRequest', async () => {
+        const request: query.GSearchRequest = { q: 'test' };
+        expect(request).toBeDefined();
+        const requestWithFilters: query.GSearchRequest = {
+          filters: [
+            {
+              type: 'match_any',
+              field_name: 'field1',
+              values: ['value1', 'value2'],
+            },
+          ],
+        };
+        expect(requestWithFilters).toBeDefined();
+        // @ts-expect-error `filters` should require at least one element
+        const requireOneFilter: query.GSearchRequest = {
+          filters: [],
+        };
+        expect(requireOneFilter).toBeDefined();
       });
-      // Verify the Generic type is working as expected...
-      const withGeneric: query.GSearchResult<Content> = await withGenericResponse.json();
 
-      // @ts-expect-error – if the following line does not error, the types are incorrect
-      expect(withGeneric.gmeta?.[0]?.entries?.[0]?.content?.baz).toBeUndefined();
-
-      // Verify that the expected `content` properties are present (based on the provided Generic type)
-      expect(withGeneric.gmeta?.[0]?.entries?.[0]?.content?.name).toBeUndefined();
-
-      const withoutGenericResponse = await query.next.get({
-        index_id: INDEX_ID,
-        request: {
-          query: {
-            q: 'test',
+      test('Content Generic', async () => {
+        type Content = {
+          name: string;
+          foo: number;
+        };
+        const withGenericResponse = await query.next.post<Content>({
+          index_id: INDEX_ID,
+          request: {
+            data: { q: 'test' },
           },
-        },
-      });
+        });
+        // Verify the Generic type is working as expected...
+        const withGeneric: query.GSearchResult<Content> = await withGenericResponse.json();
 
-      const noGeneric: query.GSearchResult = await withoutGenericResponse.json();
-      // Ensure arbitrary properties can be accessed on `content` when no Generic type is provided.
-      expect(noGeneric.gmeta?.[0]?.entries?.[0]?.content?.['name']).toBeUndefined();
+        // @ts-expect-error – if the following line does not error, the types are incorrect
+        expect(withGeneric.gmeta?.[0]?.entries?.[0]?.content?.baz).toBeUndefined();
+
+        // Verify that the expected `content` properties are present (based on the provided Generic type)
+        expect(withGeneric.gmeta?.[0]?.entries?.[0]?.content?.name).toBeUndefined();
+
+        const withoutGenericResponse = await query.next.get({
+          index_id: INDEX_ID,
+          request: {
+            query: {
+              q: 'test',
+            },
+          },
+        });
+
+        const noGeneric: query.GSearchResult = await withoutGenericResponse.json();
+        // Ensure arbitrary properties can be accessed on `content` when no Generic type is provided.
+        expect(noGeneric.gmeta?.[0]?.entries?.[0]?.content?.['name']).toBeUndefined();
+      });
     });
   });
 });

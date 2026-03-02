@@ -84,10 +84,11 @@ export const get = function <C extends Content = Content>(
 };
 
 /**
- * @see https://docs.globus.org/api/search/reference/post_query/#gsearchrequest
+ * The internal type we use to represent all of the available fields in a `GSearchRequest`.
+ * The actual returned type (`GSearchRequest`) uses this type to define a type that matches the service expectations.
  */
-export type GSearchRequest = {
-  q: string;
+type InternalGSearchRequest = {
+  q?: string;
   offset?: number;
   limit?: number;
   advanced?: boolean;
@@ -99,6 +100,18 @@ export type GSearchRequest = {
   boosts?: GBoost[];
   sort?: GSort[];
 };
+
+/**
+ * You must provide either `q` or `filters`.
+ * @see https://docs.globus.org/api/search/reference/post_query/#gsearchrequest
+ */
+export type GSearchRequest =
+  | (Omit<InternalGSearchRequest, 'q'> & {
+      q: InternalGSearchRequest['q'];
+    })
+  | (Omit<InternalGSearchRequest, 'filters'> & {
+      filters: [GFilter, ...GFilter[]];
+    });
 
 /**
  * @param index_id The UUID of the index to query.
