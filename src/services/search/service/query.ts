@@ -7,17 +7,15 @@ import type { JSONFetchResponse, SDKOptions, ServiceMethodOptions } from '../../
 import type { OpenAPI } from '../index.js';
 import type { ResultFormatVersion } from '../types.js';
 
-type Content = NonNullable<OpenAPI.components['schemas']['ResultEntry']['content']>;
-export type MatchedPrincipalSets =
-  OpenAPI.components['schemas']['ResultEntry']['matched_principal_sets'];
+type Schemas = OpenAPI.components['schemas'];
+
+type Content = NonNullable<Schemas['ResultEntry']['content']>;
+export type MatchedPrincipalSets = Schemas['ResultEntry']['matched_principal_sets'];
 /**
  * @see https://docs.globus.org/api/search/reference/post_query/#gmetaresult
  */
-export type GMetaResult<C extends Content = Content> = Omit<
-  OpenAPI.components['schemas']['GMetaResult'],
-  'entries'
-> & {
-  entries: (Omit<OpenAPI.components['schemas']['ResultEntry'], 'content'> & { content: C })[];
+export type GMetaResult<C extends Content = Content> = Omit<Schemas['GMetaResult'], 'entries'> & {
+  entries: (Omit<Schemas['ResultEntry'], 'content'> & { content: C })[];
 };
 
 /**
@@ -33,7 +31,13 @@ export type GFacetResult = {
  * @see https://docs.globus.org/api/search/reference/post_query/#gbucket
  */
 export type GBucket = {
-  value: string | GFilter;
+  value:
+    | string
+    | number
+    | {
+        to: string;
+        from: string;
+      };
   count: number;
 };
 
@@ -137,32 +141,22 @@ export const post = function <C extends Content = Content>(
   );
 };
 
+type OptionalKeys<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
+/**
+ * Utility type to make specific keys in a union of objects optional.
+ * This is used to account for `defaultNonNullable: true` when generating types.
+ */
+type OptionalKeysInUnion<T, K extends string> = T extends object ? OptionalKeys<T, K & keyof T> : T;
+
 /**
  * @see https://docs.globus.org/api/search/reference/post_query/#gfilter
+ *
+ * @privateRemarks
+ * The `GFilter` type includes `@version` based on our use of `defaultNonNullable: true` when generating types.
+ * When that flag is set to `false`, the `@version` property is expected to be optional.
  */
-export type GFilter = GFilterMatch | GFilterRange | GFilterExists | GFilterNot;
-
-type GFilterTypeMatch = 'match_any' | 'match_all';
-type GFilterTypeRange = 'range';
-
-type GFilterMatch = {
-  type: GFilterTypeMatch;
-  field_name: string;
-  values: Array<string>;
-};
-type GFilterRange = {
-  type: GFilterTypeRange;
-  field_name: string;
-  values: Array<{ from: string; to: string }>;
-};
-type GFilterExists = {
-  type: 'exists';
-  field_name: string;
-};
-type GFilterNot = {
-  type: 'not';
-  filter: GFilter;
-};
+export type GFilter = OptionalKeysInUnion<Schemas['GFilter'], '@version' | 'post_filter'>;
 
 type HistogramRange = { low: number | string; high: number | string };
 
