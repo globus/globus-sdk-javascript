@@ -22,25 +22,15 @@ export interface paths {
                      *     once an initial marker has been received.
                      */
                     marker?: string;
-                    /**
-                     * @description The number of results to return in a single paged response.
-                     * @example 50
-                     */
+                    /** @description The number of results to return in a single paged response. */
                     per_page?: number;
-                    /**
-                     * @description The page of results to return.
-                     * @example 2
-                     */
+                    /** @description The page of results to return. */
                     page?: number;
                     /**
                      * @description Return Flows for which the user has the supplied role. The role the
                      *     user has on the Flow dictates the operations they can perform. If
                      *     multiple roles are specified, the user will have at least one of the
                      *     specified roles on each Flow returned.
-                     * @example [
-                     *       "flow_owner",
-                     *       "flow_viewers"
-                     *     ]
                      */
                     filter_roles?: ("flow_owner" | "flow_viewers" | "flow_starters" | "flow_administrators" | "run_managers" | "run_monitors")[];
                     /**
@@ -53,7 +43,6 @@ export interface paths {
                      *     include all Flows for which the user has "flow_viewer" role as
                      *     well. If not provided, only Flows for which the caller has
                      *     "flow_owner" role will be returned.
-                     * @example flow_starter
                      */
                     filter_role?: "flow_viewer" | "flow_starter" | "flow_administrator" | "flow_owner" | "run_manager" | "run_monitor";
                     /**
@@ -61,20 +50,12 @@ export interface paths {
                      *     scope string fields. If multiple values are specified, each Flow
                      *     returned is guaranteed to contain at least one of the strings in its
                      *     scope strings.
-                     * @example [
-                     *       "0abc",
-                     *       "100"
-                     *     ]
                      */
                     filter_scope_string?: string[];
                     /**
                      * @description Performs a case insensitive substring based search on the Flows' title
                      *     field. If multiple values are specified, each Flow returned
                      *     is guaranteed to contain at least one of the strings in its title.
-                     * @example [
-                     *       "hello",
-                     *       "science"
-                     *     ]
                      */
                     filter_title?: string[];
                     /**
@@ -82,10 +63,6 @@ export interface paths {
                      *     subtitle field. If multiple values are specified, each Flow returned
                      *     is guaranteed to contain at least one of the strings in its
                      *     subtitle.
-                     * @example [
-                     *       "hello",
-                     *       "science"
-                     *     ]
                      */
                     filter_subtitle?: string[];
                     /**
@@ -93,10 +70,6 @@ export interface paths {
                      *     description field. If multiple values are specified, each Flow returned
                      *     is guaranteed to contain at least one of the strings in its
                      *     description.
-                     * @example [
-                     *       "hello",
-                     *       "science"
-                     *     ]
                      */
                     filter_description?: string[];
                     /**
@@ -104,10 +77,6 @@ export interface paths {
                      *     keywords field. If multiple values are specified, each Flow returned
                      *     is guaranteed to contain at least one of the substrings as a
                      *     keyword.
-                     * @example [
-                     *       "hello",
-                     *       "science"
-                     *     ]
                      */
                     filter_keywords?: string[];
                     /**
@@ -122,9 +91,6 @@ export interface paths {
                      *       - description
                      *       - id
                      *       - flow_administrators
-                     * @example [
-                     *       "globus"
-                     *     ]
                      */
                     filter_fulltext?: string[];
                     /**
@@ -164,10 +130,6 @@ export interface paths {
                      *
                      *     - `ASC`
                      *     - `DESC`
-                     * @example [
-                     *       "title ASC",
-                     *       "id DESC"
-                     *     ]
                      */
                     orderby?: components["parameters"]["list_flows_orderby"];
                 };
@@ -1025,7 +987,88 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/runs/{run_id}/resume": paths["/flows/{flow_id}/{run_id}/resume"];
+    "/runs/{run_id}/resume": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The run ID */
+                run_id: components["parameters"]["run_id"];
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Resume a Run
+         * @description Attempt to resume a Run, particularly when it has reached a
+         *     status of INACTIVE. A Flow Run may reach an INACTIVE status
+         *     when an Action type state within the Flow returns its status
+         *     as INACTIVE. The resume operation on the Flow Run provides a
+         *     hint that the cause of the Action becoming INACTIVE may have
+         *     been cleared, and thus the resume operation on the Action
+         *     Provider should be invoked to allow the Action state to resume
+         *     and thus resume the Flow Run.
+         *
+         *     In the particular case that an Action state is INACTIVE with a
+         *     code value of "ConsentRequired" it is further assumed that the
+         *     Bearer token provided in the Authorization header on the
+         *     resume operation now carries sufficient consents to continue
+         *     the INACTIVE Action. Thus, the Flow service will use the
+         *     Bearer token to generate new dependent tokens for running the
+         *     Action and use these tokens to request that the Action be
+         *     resumed at the Action Provider.
+         *
+         *     Note again that in reasons other than "ConsentRequired" for a
+         *     Flow or Action to go INACTIVE, the resume operation is just a
+         *     hint. For example, when the code is "ActivationRequired,"
+         *     indicating that a Globus collection or endpoint needs to be
+         *     Activated by the user, performing that Activation out-of-band
+         *     from the Flow will allow the Flow to proceed even without the
+         *     resume operation as the Action is periodically polled for
+         *     progress. Performing the resume operation may simply cause a
+         *     poll to happen more quickly and thus allow the Action to
+         *     resume more quickly.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The run ID */
+                    run_id: components["parameters"]["run_id"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The request was successful. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["FlowRun"];
+                    };
+                };
+                /**
+                 * @description The requested Run or Flow was not found.
+                 *     Or, the requestor did not have access to manage the Run.
+                 */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/runs/{run_id}/cancel": {
         parameters: {
             query?: never;
@@ -1182,7 +1225,93 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/runs/{run_id}/log": paths["/flows/{flow_id}/runs/{run_id}/log"];
+    "/runs/{run_id}/log": {
+        parameters: {
+            query?: {
+                /** @description An integer limit on the number of log records returned. */
+                limit?: number;
+                /** @description A flag to indicate if log records should be returned in reverse order. */
+                reverse_order?: boolean;
+                /** @description A token used to iterate through pages of returned log records. */
+                pagination_token?: string;
+            };
+            header?: never;
+            path: {
+                /** @description The run ID */
+                run_id: components["parameters"]["run_id"];
+            };
+            cookie?: never;
+        };
+        /**
+         * Get execution details on a Run
+         * @description Retrieve detailed execution information for a particular Flow Run
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description An integer limit on the number of log records returned. */
+                    limit?: number;
+                    /** @description A flag to indicate if log records should be returned in reverse order. */
+                    reverse_order?: boolean;
+                    /** @description A token used to iterate through pages of returned log records. */
+                    pagination_token?: string;
+                };
+                header?: never;
+                path: {
+                    /** @description The run ID */
+                    run_id: components["parameters"]["run_id"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The request was successfully received. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @description The number of log states returned. */
+                            limit: number;
+                            /**
+                             * @description An opaque pagination token for iterating through returned
+                             *     records. If there are no more entries, this field will not
+                             *     exist.
+                             */
+                            marker?: string;
+                            has_next_page: boolean;
+                            entries: Record<string, unknown>[];
+                        };
+                    };
+                };
+                /** @description There was an issue parsing the query parameters. */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /**
+                 * @description The requested Run or Flow was not found.
+                 *     Or, the requestor did not have access to view the Run.
+                 */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/flows/{flow_id}/runs": {
         parameters: {
             query?: never;
@@ -1221,24 +1350,15 @@ export interface paths {
                      *     received.
                      */
                     pagination_token?: string;
-                    /**
-                     * @description The number of results to return in a single paged response.
-                     * @example 50
-                     */
+                    /** @description The number of results to return in a single paged response. */
                     per_page?: number;
-                    /**
-                     * @description The page of results to return.
-                     * @example 2
-                     */
+                    /** @description The page of results to return. */
                     page?: number;
                     /**
                      * @description Return Actions for which the user has the supplied role. The role the
                      *     user has on the Action dictates the operations they can perform.
                      *     If multiple roles are specified, the user will have at least one of
                      *     the specified roles on each Action returned.
-                     * @example [
-                     *       "run_manager"
-                     *     ]
                      */
                     filter_roles?: ("run_owner" | "run_manager" | "run_monitor" | "flow_run_manager" | "flow_run_monitor")[];
                     /**
@@ -1251,9 +1371,6 @@ export interface paths {
                      *     manager will also include all Actions for which the user
                      *     has "run_monitor" role as well. If not provided, only Actions
                      *     for which the caller has "run_owner" role will be returned.
-                     * @example [
-                     *       "run_manager"
-                     *     ]
                      */
                     filter_role?: "run_monitor" | "run_manager" | "run_owner" | "flow_run_manager" | "flow_run_monitor";
                     /**
@@ -1262,20 +1379,12 @@ export interface paths {
                      *     multiple statuses are specified, each Action returned will be in one
                      *     of the specified states. By default, Actions in any state will be
                      *     returned.
-                     * @example [
-                     *       "FAILED",
-                     *       "INACTIVE"
-                     *     ]
                      */
                     filter_status?: ("SUCCEEDED" | "FAILED" | "ENDED" | "ACTIVE" | "INACTIVE")[];
                     /**
                      * @description Performs a case insensitive string based search on the Actions'
                      *     label fields. If multiple values are specified, each Action returned
                      *     is guaranteed to contain at least one of the strings in its label.
-                     * @example [
-                     *       "science",
-                     *       "tests"
-                     *     ]
                      */
                     filter_label?: string[];
                     /**
@@ -1295,7 +1404,6 @@ export interface paths {
                      *
                      *     Note that runs which are still executing will not have a completion time
                      *     and will be automatically excluded if this filter is applied.
-                     * @example 2021-03-09T21:52:14,2021-03-09T21:53
                      */
                     filter_completion_time?: components["parameters"]["filter_completion_time"];
                     /**
@@ -1312,7 +1420,6 @@ export interface paths {
                      *
                      *     Results will contain runs which began between the first datetime
                      *     onwards, up to (but not including) the second datetime.
-                     * @example 2021-03-09T21:52:14,2021-03-09T21:53
                      */
                     filter_start_time?: components["parameters"]["filter_start_time"];
                     /**
@@ -1350,10 +1457,6 @@ export interface paths {
                      *
                      *     - `ASC`
                      *     - `DESC`
-                     * @example [
-                     *       "start_time ASC",
-                     *       "id DESC"
-                     *     ]
                      */
                     orderby?: components["parameters"]["list_runs_orderby"];
                 };
@@ -1446,25 +1549,15 @@ export interface paths {
                      *     received.
                      */
                     pagination_token?: string;
-                    /**
-                     * @description The number of results to return in a single paged response.
-                     * @example 50
-                     */
+                    /** @description The number of results to return in a single paged response. */
                     per_page?: number;
-                    /**
-                     * @description The page of results to return.
-                     * @example 2
-                     */
+                    /** @description The page of results to return. */
                     page?: number;
                     /**
                      * @description Return Runs for which the user has the supplied role. The role the
                      *     user has on the Action dictates the operations they can perform.
                      *     If multiple roles are specified, the user will have at least one of
                      *     the specified roles on each Action returned.
-                     * @example [
-                     *       "run_owner",
-                     *       "run_managers"
-                     *     ]
                      */
                     filter_roles?: ("run_owner" | "run_managers" | "run_monitors" | "flow_run_managers" | "flow_run_monitors")[];
                     /**
@@ -1477,7 +1570,6 @@ export interface paths {
                      *     manager will also include all Runs for which the user
                      *     has "run_monitor" role as well. If not provided, only Runs
                      *     for which the caller has "run_owner" role will be returned.
-                     * @example run_manager
                      */
                     filter_role?: "run_monitor" | "run_manager" | "run_owner";
                     /**
@@ -1486,20 +1578,12 @@ export interface paths {
                      *     multiple statuses are specified, each Action returned will be in one
                      *     of the specified states. By default, Actions in any state will be
                      *     returned.
-                     * @example [
-                     *       "FAILED",
-                     *       "INACTIVE"
-                     *     ]
                      */
                     filter_status?: ("SUCCEEDED" | "FAILED" | "ENDED" | "ACTIVE" | "INACTIVE")[];
                     /**
                      * @description Performs a case insensitive string based search on the Actions'
                      *     label fields. If multiple values are specified, each Action returned
                      *     is guaranteed to contain at least one of the strings in its label.
-                     * @example [
-                     *       "science",
-                     *       "tests"
-                     *     ]
                      */
                     filter_label?: string[];
                     /**
@@ -1507,10 +1591,6 @@ export interface paths {
                      *     Actions which have parent Flow's with a matching title(s). If
                      *     multiple values are specified, each Action returned will have a
                      *     parent Flow with a title matching at least one of the strings.
-                     * @example [
-                     *       "globus",
-                     *       "tests"
-                     *     ]
                      */
                     filter_flow_title?: string[];
                     /**
@@ -1518,10 +1598,6 @@ export interface paths {
                      *     initiated from the specified Flow ID(s). If multiple values are
                      *     specified, each Run returned will have been initiated from at least
                      *     one of the specified Flow IDs.
-                     * @example [
-                     *       "00000000-19d9-4f5b-9329-22ed12d4d3dd",
-                     *       "11111111-19a5-4d19-998e-0709c40321e9"
-                     *     ]
                      */
                     filter_flow_id?: string[];
                     /**
@@ -1541,7 +1617,6 @@ export interface paths {
                      *
                      *     Note that runs which are still executing will not have a completion time
                      *     and will be automatically excluded if this filter is applied.
-                     * @example 2021-03-09T21:52:14,2021-03-09T21:53
                      */
                     filter_completion_time?: components["parameters"]["filter_completion_time"];
                     /**
@@ -1558,7 +1633,6 @@ export interface paths {
                      *
                      *     Results will contain runs which began between the first datetime
                      *     onwards, up to (but not including) the second datetime.
-                     * @example 2021-03-09T21:52:14,2021-03-09T21:53
                      */
                     filter_start_time?: components["parameters"]["filter_start_time"];
                     /**
@@ -1596,10 +1670,6 @@ export interface paths {
                      *
                      *     - `ASC`
                      *     - `DESC`
-                     * @example [
-                     *       "start_time ASC",
-                     *       "id DESC"
-                     *     ]
                      */
                     orderby?: components["parameters"]["list_runs_orderby"];
                 };
@@ -1675,7 +1745,6 @@ export interface paths {
                     /**
                      * @description If present and set to a true value,
                      *     metadata about the associated flow will be included.
-                     * @example true
                      */
                     include_flow_description?: true | true | false | false;
                 };
@@ -1928,10 +1997,7 @@ export interface paths {
                      *     once an initial marker has been received.
                      */
                     marker?: string;
-                    /**
-                     * @description The number of results to return in a single paged response.
-                     * @example 50
-                     */
+                    /** @description The number of results to return in a single paged response. */
                     per_page?: number;
                     /**
                      * @description Return Registered APIs for which the user has one of the supplied roles.
@@ -1940,10 +2006,6 @@ export interface paths {
                      *     will have at least one of the specified roles on each Registered API returned.
                      *     If not provided, only Registered APIs for which the caller has "owner"
                      *     role will be returned.
-                     * @example [
-                     *       "owner",
-                     *       "administrator"
-                     *     ]
                      */
                     filter_roles?: ("owner" | "administrator" | "viewer")[];
                     /**
@@ -1980,10 +2042,6 @@ export interface paths {
                      *
                      *     - `ASC`
                      *     - `DESC`
-                     * @example [
-                     *       "name ASC",
-                     *       "id DESC"
-                     *     ]
                      */
                     orderby?: components["parameters"]["list_registered_apis_orderby"];
                 };
@@ -2638,7 +2696,6 @@ export interface components {
          *
          *     Note that runs which are still executing will not have a completion time
          *     and will be automatically excluded if this filter is applied.
-         * @example 2021-03-09T21:52:14,2021-03-09T21:53
          */
         filter_completion_time: string;
         /**
@@ -2655,7 +2712,6 @@ export interface components {
          *
          *     Results will contain runs which began between the first datetime
          *     onwards, up to (but not including) the second datetime.
-         * @example 2021-03-09T21:52:14,2021-03-09T21:53
          */
         filter_start_time: string;
         /**
@@ -2695,10 +2751,6 @@ export interface components {
          *
          *     - `ASC`
          *     - `DESC`
-         * @example [
-         *       "title ASC",
-         *       "id DESC"
-         *     ]
          */
         list_flows_orderby: string[];
         /**
@@ -2736,10 +2788,6 @@ export interface components {
          *
          *     - `ASC`
          *     - `DESC`
-         * @example [
-         *       "start_time ASC",
-         *       "id DESC"
-         *     ]
          */
         list_runs_orderby: string[];
         /**
@@ -2776,10 +2824,6 @@ export interface components {
          *
          *     - `ASC`
          *     - `DESC`
-         * @example [
-         *       "name ASC",
-         *       "id DESC"
-         *     ]
          */
         list_registered_apis_orderby: string[];
     };
