@@ -146,6 +146,7 @@ type OptionalKeys<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 /**
  * Utility type to make specific keys in a union of objects optional.
  * This is used to account for `defaultNonNullable: true` when generating types.
+ * @see file://./../../../../scripts/open-api/generate-types.mjs#L54-L55
  */
 type OptionalKeysInUnion<T, K extends string> = T extends object ? OptionalKeys<T, K & keyof T> : T;
 
@@ -153,8 +154,7 @@ type OptionalKeysInUnion<T, K extends string> = T extends object ? OptionalKeys<
  * @see https://docs.globus.org/api/search/reference/post_query/#gfilter
  *
  * @privateRemarks
- * The `GFilter` type includes `@version` based on our use of `defaultNonNullable: true` when generating types.
- * When that flag is set to `false`, the `@version` property is expected to be optional.
+ * The `GFilter` type includes `@version` and `post_filter` with `"default"` values.
  */
 export type GFilter = OptionalKeysInUnion<Schemas['GFilter'], '@version' | 'post_filter'>;
 
