@@ -3,8 +3,8 @@ import { setLogger, log, setLogLevel } from '../logger';
 describe('logger', () => {
   it('logs to a configured logger', () => {
     const mockLogger = {
-      log: jest.fn(),
-      warn: jest.fn(),
+      log: vi.fn(),
+      warn: vi.fn(),
     };
     setLogger(mockLogger);
     setLogLevel('warn');
@@ -14,11 +14,11 @@ describe('logger', () => {
 
   it('(default) log level ("error") is respected', () => {
     const mockLogger = {
-      log: jest.fn(),
-      error: jest.fn(),
-      warn: jest.fn(),
-      info: jest.fn(),
-      debug: jest.fn(),
+      log: vi.fn(),
+      error: vi.fn(),
+      warn: vi.fn(),
+      info: vi.fn(),
+      debug: vi.fn(),
     };
     setLogger(mockLogger);
     log('info', 'never');
@@ -29,7 +29,7 @@ describe('logger', () => {
 
   it('falls back to "log" method', () => {
     const mockLogger = {
-      log: jest.fn(),
+      log: vi.fn(),
     };
     setLogger(mockLogger);
     log('error', 'example');

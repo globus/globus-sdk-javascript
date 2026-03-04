@@ -3,8 +3,8 @@ import { Event } from '../../authorization/Event';
 describe('Event', () => {
   it('should dispatch an event to all listeners', async () => {
     const event = new Event('test');
-    const listener1 = jest.fn();
-    const listener2 = jest.fn();
+    const listener1 = vi.fn();
+    const listener2 = vi.fn();
     event.addListener(listener1);
     event.addListener(listener2);
 
@@ -16,7 +16,7 @@ describe('Event', () => {
 
   it('dispatch with payload', async () => {
     const event = new Event('payload');
-    const cb = jest.fn();
+    const cb = vi.fn();
     event.addListener(cb);
     await event.dispatch({ foo: 'bar' });
     expect(cb).toHaveBeenCalled();
@@ -25,7 +25,7 @@ describe('Event', () => {
 
   it('dispatch without payload (event name only)', async () => {
     const event = new Event('name-only');
-    const cb = jest.fn();
+    const cb = vi.fn();
     event.addListener(cb);
     await event.dispatch();
     expect(cb).toHaveBeenCalledWith(undefined);
@@ -33,8 +33,8 @@ describe('Event', () => {
 
   it('removing listeners', async () => {
     const event = new Event('test');
-    const listener1 = jest.fn();
-    const listener2 = jest.fn();
+    const listener1 = vi.fn();
+    const listener2 = vi.fn();
     event.addListener(listener1);
 
     /**
@@ -57,8 +57,8 @@ describe('Event', () => {
 
   it('clears all listeners', async () => {
     const event = new Event('test');
-    const listener1 = jest.fn();
-    const listener2 = jest.fn();
+    const listener1 = vi.fn();
+    const listener2 = vi.fn();
     event.addListener(listener1);
     event.addListener(listener2);
 

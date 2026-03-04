@@ -15,7 +15,7 @@ describe.only('serviceRequest', () => {
 
   afterEach(() => {
     delete process.env['GLOBUS_SDK_OPTIONS'];
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('generates a service request', async () => {
@@ -168,7 +168,7 @@ describe.only('serviceRequest', () => {
   });
 
   it('supports fetch.options.__callable', async () => {
-    const fetch = jest.fn().mockResolvedValue({});
+    const fetch = vi.fn().mockResolvedValue({});
 
     const request = await serviceRequest(
       {
@@ -235,7 +235,7 @@ describe.only('serviceRequest', () => {
       client: 'client_id',
       redirect: 'https://redirect_uri',
     });
-    jest.spyOn(sdkOptionsManager.tokens, 'getByResourceServer').mockReturnValue(null);
+    vi.spyOn(sdkOptionsManager.tokens, 'getByResourceServer').mockReturnValue(null);
 
     const request = await serviceRequest(
       {
@@ -488,7 +488,7 @@ describe.only('serviceRequest', () => {
     });
 
     it('does not retry when an `AuthorizationRequirementsError` is encountered', async () => {
-      const spy = jest.spyOn(manager, 'refreshToken');
+      const spy = vi.spyOn(manager, 'refreshToken');
       server.use(
         http.get('https://transfer.api.globus.org/fake-resource', () =>
           HttpResponse.json(
@@ -513,7 +513,7 @@ describe.only('serviceRequest', () => {
     });
 
     it('does not retry a request that is configured to prevent retries', async () => {
-      const spy = jest.spyOn(manager, 'refreshToken');
+      const spy = vi.spyOn(manager, 'refreshToken');
       server.use(
         http.get('https://transfer.api.globus.org/fake-resource', () =>
           HttpResponse.json({}, { status: 401 }),
@@ -534,7 +534,7 @@ describe.only('serviceRequest', () => {
     });
 
     it('does not retry a request that is "ok"', async () => {
-      const spy = jest.spyOn(manager, 'refreshToken');
+      const spy = vi.spyOn(manager, 'refreshToken');
       const response = await serviceRequest(
         {
           service: 'TRANSFER',
@@ -549,7 +549,7 @@ describe.only('serviceRequest', () => {
     });
 
     it('does not retry a request that is not "ok", but not a 401', async () => {
-      const spy = jest.spyOn(manager, 'refreshToken');
+      const spy = vi.spyOn(manager, 'refreshToken');
       server.use(
         http.get('https://transfer.api.globus.org/fake-resource', () =>
           HttpResponse.json({}, { status: 500 }),
