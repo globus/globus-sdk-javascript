@@ -7,17 +7,17 @@ export class MockStorage implements Storage {
     [key: string]: string;
   } = {};
 
-  getItem = jest.fn().mockImplementation((k) => this.store[k]);
+  getItem = vi.fn().mockImplementation((k) => this.store[k]);
 
-  setItem = jest.fn().mockImplementation((key, value) => {
+  setItem = vi.fn().mockImplementation((key, value) => {
     this.store[key] = `${value}`;
   });
 
-  removeItem = jest.fn().mockImplementation((key) => {
+  removeItem = vi.fn().mockImplementation((key) => {
     delete this.store[key];
   });
 
-  clear = jest.fn().mockImplementation(() => {
+  clear = vi.fn().mockImplementation(() => {
     this.store = {};
   });
 

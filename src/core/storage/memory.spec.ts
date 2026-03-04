@@ -2,7 +2,7 @@ import { MemoryStorage } from './memory';
 
 describe('MemoryStorage', () => {
   beforeEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('should setItem and get a string value', () => {

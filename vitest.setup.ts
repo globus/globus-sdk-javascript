@@ -1,9 +1,7 @@
 import server from './src/__mocks__/server';
-
 import { disable } from './src/core/info/private';
 
 beforeAll(() => {
-  // Establish API mocking before all tests.
   server.listen();
   /**
    * We disable the X-Globus-Client-Info header from being injected in the test suite

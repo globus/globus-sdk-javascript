@@ -77,10 +77,11 @@
     "dist"
   ],
   "scripts": {
-    "test": "jest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "eslint .",
-    "build": "tsc --project tsconfig.package.json && node scripts/build.js",
-    "watch": "tsc --watch tsconfig.package.json",
+    "build": "vite build && vite build --config vite.umd.config.ts",
+    "watch": "vite build --watch",
     "generate:docs": "npx typedoc --tsconfig tsconfig.package.json",
     "generate:types": "node ./scripts/open-api/generate-types.mjs"
   },
@@ -96,25 +97,24 @@
   "devDependencies": {
     "@playwright/test": "^1.46.1",
     "@tsconfig/recommended": "^1.0.7",
-    "@types/jest": "30.0.0",
     "@types/node": "^22.5.2",
+    "@vitest/coverage-v8": "^4.0.18",
     "dotenv": "^17.1.0",
-    "esbuild": "0.27.3",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.1",
-    "jest": "30.0.5",
     "msw": "^2.4.1",
     "openapi-typescript": "^7.6.1",
     "prettier": "^3.3.3",
     "serve": "^14.2.3",
-    "ts-jest": "^29.2.5",
-    "ts-node": "^10.9.2",
     "tslib": "^2.7.0",
     "typedoc": "^0.28.0",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "vite": "^7.3.1",
+    "vite-plugin-dts": "^4.5.4",
+    "vitest": "^4.0.18"
   },
   "engines": {
     "node": ">=20"
