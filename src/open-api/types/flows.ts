@@ -1141,7 +1141,13 @@ export interface paths {
                 limit?: number;
                 /** @description A flag to indicate if log records should be returned in reverse order. */
                 reverse_order?: boolean;
-                /** @description A token used to iterate through pages of returned log records. */
+                /** @description An opaque token used to iterate through pages of returned log records. */
+                marker?: string;
+                /**
+                 * @deprecated
+                 * @description A token used to iterate through pages of returned log records.
+                 *     ("marker" is now the preferred name for this parameter.)
+                 */
                 pagination_token?: string;
             };
             header?: never;
@@ -1164,7 +1170,13 @@ export interface paths {
                     limit?: number;
                     /** @description A flag to indicate if log records should be returned in reverse order. */
                     reverse_order?: boolean;
-                    /** @description A token used to iterate through pages of returned log records. */
+                    /** @description An opaque token used to iterate through pages of returned log records. */
+                    marker?: string;
+                    /**
+                     * @deprecated
+                     * @description A token used to iterate through pages of returned log records.
+                     *     ("marker" is now the preferred name for this parameter.)
+                     */
                     pagination_token?: string;
                 };
                 header?: never;
