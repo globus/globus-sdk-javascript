@@ -158,8 +158,6 @@ type OptionalKeysInUnion<T, K extends string> = T extends object ? OptionalKeys<
  */
 export type GFilter = OptionalKeysInUnion<Schemas['GFilter'], '@version' | 'post_filter'>;
 
-type HistogramRange = { low: number | string; high: number | string };
-
 /**
  * @see https://docs.globus.org/api/search/reference/post_query/#gfacet
  */
@@ -176,18 +174,31 @@ export type GFacet = {
       missing?: number;
     }
   | {
+      /**
+       * `date_histogram` faceting requires that the field was detected as a date type.
+       * @see https://docs.globus.org/api/search/mapped_data_types/#date-formats
+       */
       type: 'date_histogram';
-      date_interval: DateInterval;
-      histogram_range?: HistogramRange;
+      date_interval: Schemas['DateHistogramFacet']['date_interval'];
+      /**
+       * `histogram_range` is optional for `date_histogram`, but when provided,
+       * the `low` and `high` values must be one of the supported date formats.
+       * @see https://docs.globus.org/api/search/mapped_data_types/#date-formats
+       */
+      histogram_range?: {
+        low: string;
+        high: string;
+      };
     }
   | {
       type: 'numeric_histogram';
-      size: string;
-      histogram_range: HistogramRange;
+      size: number;
+      histogram_range: {
+        low: number;
+        high: number;
+      };
     }
 );
-
-type DateInterval = 'year' | 'quarter' | 'month' | 'week' | 'day' | 'hour' | 'minute' | 'second';
 
 /**
  * @see https://docs.globus.org/api/search/reference/post_query/#gboost
