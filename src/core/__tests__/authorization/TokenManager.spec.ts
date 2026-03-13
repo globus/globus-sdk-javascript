@@ -22,7 +22,7 @@ describe('TokenManager', () => {
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('should return empty values for all defined services', () => {

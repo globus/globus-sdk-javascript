@@ -23,12 +23,12 @@ const MOCK_TOKEN = {
 
 describe('RedirectTransport', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockSessionStorage();
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   if (version.startsWith('v18')) {
@@ -112,7 +112,7 @@ describe('RedirectTransport', () => {
       });
 
       it('removes code and state from location after processing (by default)', async () => {
-        jest
+        vi
           .spyOn(oauth2.token, 'exchange')
           .mockReturnValue(Promise.resolve(Response.json(MOCK_TOKEN)));
 
@@ -133,7 +133,7 @@ describe('RedirectTransport', () => {
       });
 
       it('it does not alter the URL if shouldReplace: true is passed', async () => {
-        jest
+        vi
           .spyOn(oauth2.token, 'exchange')
           .mockReturnValue(Promise.resolve(Response.json(MOCK_TOKEN)));
 

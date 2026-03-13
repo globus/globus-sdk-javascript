@@ -8,7 +8,7 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": false,
     "importHelpers": false,
-    "types": ["jest", "node"],
+    "types": ["vitest/globals", "node"],
     "resolveJsonModule": true
   }
 }

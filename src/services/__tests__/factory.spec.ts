@@ -1,19 +1,20 @@
 import { createServiceMethodFactory, createGCSServiceMethodFactory } from '../factory';
-import { HTTP_METHODS } from '../shared';
+import { HTTP_METHODS, serviceRequest } from '../shared';
 
 /**
  * Mock `serviceRequest` to test the factory-generated methods.
  */
-jest.mock('../shared', () => ({
-  ...jest.requireActual('../shared'),
-  serviceRequest: jest.fn(() => Promise.resolve(new Response('ok'))),
-}));
-
-const { serviceRequest } = jest.requireMock('../shared');
+vi.mock('../shared', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../shared')>();
+  return {
+    ...actual,
+    serviceRequest: vi.fn(() => Promise.resolve(new Response('ok'))),
+  };
+});
 
 describe('createServiceMethodFactory', () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should generate a service method without segments', async () => {
@@ -75,7 +76,7 @@ describe('createServiceMethodFactory', () => {
   });
 
   it('should call transform if provided', async () => {
-    const transform = jest.fn((payload) => ({
+    const transform = vi.fn((payload) => ({
       ...payload,
       flow_id: 'transformed',
     }));
@@ -220,7 +221,7 @@ describe('createServiceMethodFactory', () => {
 
 describe('createGCSServiceMethodFactory', () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   const gcsConfig = { host: 'https://abc.data.globus.org', endpoint_id: 'ep-uuid-123' };
@@ -264,7 +265,7 @@ describe('createGCSServiceMethodFactory', () => {
   });
 
   it('calls transform with params, not with the GCSConfiguration', async () => {
-    const transform = jest.fn((payload) => ({
+    const transform = vi.fn((payload) => ({
       ...payload,
       collection_id: 'transformed',
     }));

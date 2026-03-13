@@ -21,8 +21,8 @@ describe('AuthorizationManager', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
-    jest.restoreAllMocks();
+    vi.clearAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('should be defined', () => {
@@ -223,7 +223,7 @@ describe('AuthorizationManager', () => {
           scopes: '',
         };
 
-        jest
+        vi
           .spyOn(oauth2.token, 'exchange')
           .mockReturnValue(Promise.resolve(Response.json(MOCK_TOKEN)));
 
@@ -235,7 +235,7 @@ describe('AuthorizationManager', () => {
         store.set('code_verifier', 'CODE_VERIFIER');
 
         const instance = new AuthorizationManager(CONFIG);
-        const spy = jest.spyOn(instance.events.authenticated, 'dispatch');
+        const spy = vi.spyOn(instance.events.authenticated, 'dispatch');
 
         window.location.href = `https://redirect_uri?code=CODE&state=${state}`;
         await instance.handleCodeRedirect();
@@ -284,8 +284,8 @@ describe('AuthorizationManager', () => {
     setInitialLocalStorageState({
       'client_id:auth.globus.org': JSON.stringify(TOKEN),
     });
-    const authenticatedHandler = jest.fn();
-    const revokeHandler = jest.fn();
+    const authenticatedHandler = vi.fn();
+    const revokeHandler = vi.fn();
     const instance = new AuthorizationManager({
       client: 'client_id',
       redirect: 'https://redirect_uri',
@@ -415,7 +415,7 @@ describe('AuthorizationManager', () => {
       'client_id:foobar': JSON.stringify({ resource_server: 'foobar' }),
       'client_id:baz': JSON.stringify({ resource_server: 'baz' }),
     });
-    const spy = jest.spyOn(Event.prototype, 'dispatch');
+    const spy = vi.spyOn(Event.prototype, 'dispatch');
     const instance = new AuthorizationManager({
       client: 'client_id',
       redirect: 'https://redirect_uri',
@@ -476,7 +476,7 @@ describe('AuthorizationManager', () => {
         'client_id:baz': JSON.stringify({ resource_server: 'baz' }),
       });
 
-      const spy = jest.spyOn(Event.prototype, 'dispatch');
+      const spy = vi.spyOn(Event.prototype, 'dispatch');
 
       const instance = new AuthorizationManager({
         client: 'client_id',
@@ -557,7 +557,7 @@ describe('AuthorizationManager', () => {
         'urn:globus:auth:scope:transfer.api.globus.org:all urn:globus:auth:scope:groups.api.globus.org:all',
       storage: localStorage,
     });
-    const spy = jest.spyOn(instance.events.revoke, 'dispatch');
+    const spy = vi.spyOn(instance.events.revoke, 'dispatch');
     expect(instance.authenticated).toBe(true);
     expect(instance.tokens.auth).not.toBe(null);
     expect(instance.tokens.transfer).not.toBe(null);
@@ -612,7 +612,7 @@ if (RedirectTransport.supported) {
     let instance: AuthorizationManager;
 
     beforeEach(() => {
-      jest.restoreAllMocks();
+      vi.restoreAllMocks();
       instance = new AuthorizationManager({
         client: 'CLIENT_ID',
         redirect: 'https://globus.github.io/example-data-portal/authenticate',
@@ -648,7 +648,7 @@ if (RedirectTransport.supported) {
         );
       });
       it('should handle AuthenticationFailed errors', async () => {
-        const spy = jest.spyOn(instance, 'revoke');
+        const spy = vi.spyOn(instance, 'revoke');
         await instance.handleErrorResponse({
           code: 'AuthenticationFailed',
           message: '...',

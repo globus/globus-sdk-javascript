@@ -1,4 +1,4 @@
-const webapp = require('../web');
+import * as webapp from '../web';
 
 describe('web', () => {
   it('should export HOSTS', () => {
