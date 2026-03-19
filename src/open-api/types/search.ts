@@ -1206,8 +1206,8 @@ export interface components {
             missing?: number;
         };
         DateHistogramRange: {
-            low?: unknown;
-            high?: unknown;
+            low: unknown;
+            high: unknown;
         };
         DateHistogramFacet: {
             /** @default 2017-09-01 */
@@ -1917,8 +1917,8 @@ export interface components {
             additional_filters?: components["schemas"]["GFilterV1"][];
         };
         DateHistogramRangeV1: {
-            low?: unknown;
-            high?: unknown;
+            low: unknown;
+            high: unknown;
         };
         DateHistogramFacetV1: {
             /**
