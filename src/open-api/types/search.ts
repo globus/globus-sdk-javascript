@@ -289,6 +289,47 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/beta/lighthouse/{filesystem_id}/ingest": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** [BETA] Lighthouse Ingest */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    filesystem_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["LighthouseIngest"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["LighthouseIngestResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/index/{index_id}/entry": {
         parameters: {
             query?: never;
@@ -2197,6 +2238,71 @@ export interface components {
             /** Format: uuid */
             index_id: string;
             tasks: components["schemas"]["Task"][];
+        };
+        LighthouseScanStartEvent: {
+            scan_id: string;
+            /** @enum {string} */
+            scan_type: "full" | "discovery";
+            scope: string;
+            client_id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            event_type: "scan_start";
+            /** Format: date-time */
+            start_timestamp: string;
+        };
+        LighthouseScanStopEvent: {
+            scan_id: string;
+            /** @enum {string} */
+            scan_type: "full" | "discovery";
+            scope: string;
+            client_id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            event_type: "scan_stop";
+            /** Format: date-time */
+            stop_timestamp: string;
+            /** @enum {string} */
+            status: "success" | "failure";
+        };
+        Attributes: {
+            /** @enum {string} */
+            object_type: "file" | "dir";
+            path: string;
+            inode: number;
+            size_bytes: number;
+            uid: number;
+            gid: number;
+            mode_str: string;
+            /** Format: date-time */
+            atime: string;
+            /** Format: date-time */
+            ctime: string;
+            /** Format: date-time */
+            mtime: string;
+        };
+        LighthouseFileScanEvent: {
+            scan_id: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            event_type: "file_scan";
+            /** Format: date-time */
+            scan_observed_timestamp: string;
+            attributes: components["schemas"]["Attributes"];
+        };
+        LighthouseEvent: components["schemas"]["LighthouseScanStartEvent"] | components["schemas"]["LighthouseScanStopEvent"] | components["schemas"]["LighthouseFileScanEvent"];
+        LighthouseIngest: {
+            events: components["schemas"]["LighthouseEvent"][];
+        };
+        LighthouseIngestResponse: {
+            /** @description Always true for successful ingest submission. */
+            acknowledged: boolean;
         };
         IndexWithPermissions: {
             /** @default 2017-09-01 */
