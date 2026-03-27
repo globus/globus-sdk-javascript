@@ -11175,6 +11175,7 @@ export interface operations {
             };
             cookie?: never;
         };
+        /** @description New collection owner */
         requestBody: {
             content: {
                 "application/json": components["schemas"]["CollectionOwner"];
