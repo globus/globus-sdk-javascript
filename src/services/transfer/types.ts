@@ -101,6 +101,7 @@ export type Pagination = {
       marker?: `${number}` | number;
     };
     Response: {
+      marker: number | null;
       next_marker: number | null;
     };
   };
