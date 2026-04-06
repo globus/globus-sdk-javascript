@@ -289,7 +289,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/beta/lighthouse/{filesystem_id}/ingest": {
+    "/beta/lighthouse/{collection_configuration_id}/ingest": {
         parameters: {
             query?: never;
             header?: never;
@@ -304,7 +304,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    filesystem_id: string;
+                    collection_configuration_id: string;
                 };
                 cookie?: never;
             };
