@@ -289,47 +289,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/beta/lighthouse/{collection_configuration_id}/ingest": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** [BETA] Lighthouse Ingest */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    collection_configuration_id: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: {
-                content: {
-                    "application/json": components["schemas"]["LighthouseIngest"];
-                };
-            };
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["LighthouseIngestResponse"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/v1/index/{index_id}/entry": {
         parameters: {
             query?: never;
@@ -706,6 +665,288 @@ export interface paths {
                 };
             };
         };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/beta/insights/{collection_configuration_id}/ingest": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** [BETA] Insights Ingest */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    collection_configuration_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["LighthouseIngest"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["LighthouseIngestResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/beta/insights/collection_configuration/{collection_configuration_id}/scan_start": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** [BETA] Insights Ingest Scan Start */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    collection_configuration_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["LighthouseScanStartEvent"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["LighthouseScanStartResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/beta/insights/collection_configuration/{collection_configuration_id}/scan/{scan_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** [BETA] Insights Ingest Scan Stop */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    collection_configuration_id: string;
+                    scan_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["LighthouseScanStopEvent"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["LighthouseScanStopResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/beta/lighthouse/{collection_configuration_id}/ingest": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    collection_configuration_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["LighthouseIngest"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["LighthouseIngestResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/beta/lighthouse/collection_configuration/{collection_configuration_id}/scan_start": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    collection_configuration_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["LighthouseScanStartEvent"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["LighthouseScanStartResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/beta/lighthouse/collection_configuration/{collection_configuration_id}/scan/{scan_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    collection_configuration_id: string;
+                    scan_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["LighthouseScanStopEvent"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["LighthouseScanStopResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/beta/insights/catalog/{catalog_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** [BETA] Lookup an Insights Catalog */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    catalog_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["InsightsCatalog"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1176,12 +1417,35 @@ export interface components {
             readonly name: string;
             value: number;
         };
-        GBucket: {
+        GBucketStr: {
             /** @default 2017-09-01 */
             readonly "@version": unknown;
-            value: unknown;
             count: number;
+            value: string;
         };
+        GBucketInt: {
+            /** @default 2017-09-01 */
+            readonly "@version": unknown;
+            count: number;
+            value: number;
+        };
+        GBucketFloat: {
+            /** @default 2017-09-01 */
+            readonly "@version": unknown;
+            count: number;
+            value: number;
+        };
+        RangeBounds: {
+            from: unknown;
+            to: unknown;
+        };
+        GBucketRange: {
+            /** @default 2017-09-01 */
+            readonly "@version": unknown;
+            count: number;
+            value: components["schemas"]["RangeBounds"];
+        };
+        GBucket: components["schemas"]["GBucketStr"] | components["schemas"]["GBucketInt"] | components["schemas"]["GBucketFloat"] | components["schemas"]["GBucketRange"];
         BucketFacetResult: {
             /** @default 2017-09-01 */
             readonly "@version": unknown;
@@ -2239,71 +2503,6 @@ export interface components {
             index_id: string;
             tasks: components["schemas"]["Task"][];
         };
-        LighthouseScanStartEvent: {
-            scan_id: string;
-            /** @enum {string} */
-            scan_type: "full" | "discovery";
-            scope: string;
-            client_id: string;
-            /**
-             * @description discriminator enum property added by openapi-typescript
-             * @enum {string}
-             */
-            event_type: "scan_start";
-            /** Format: date-time */
-            start_timestamp: string;
-        };
-        LighthouseScanStopEvent: {
-            scan_id: string;
-            /** @enum {string} */
-            scan_type: "full" | "discovery";
-            scope: string;
-            client_id: string;
-            /**
-             * @description discriminator enum property added by openapi-typescript
-             * @enum {string}
-             */
-            event_type: "scan_stop";
-            /** Format: date-time */
-            stop_timestamp: string;
-            /** @enum {string} */
-            status: "success" | "failure";
-        };
-        Attributes: {
-            /** @enum {string} */
-            object_type: "file" | "dir";
-            path: string;
-            inode: number;
-            size_bytes: number;
-            uid: number;
-            gid: number;
-            mode_str: string;
-            /** Format: date-time */
-            atime: string;
-            /** Format: date-time */
-            ctime: string;
-            /** Format: date-time */
-            mtime: string;
-        };
-        LighthouseFileScanEvent: {
-            scan_id: string;
-            /**
-             * @description discriminator enum property added by openapi-typescript
-             * @enum {string}
-             */
-            event_type: "file_scan";
-            /** Format: date-time */
-            scan_observed_timestamp: string;
-            attributes: components["schemas"]["Attributes"];
-        };
-        LighthouseEvent: components["schemas"]["LighthouseScanStartEvent"] | components["schemas"]["LighthouseScanStopEvent"] | components["schemas"]["LighthouseFileScanEvent"];
-        LighthouseIngest: {
-            events: components["schemas"]["LighthouseEvent"][];
-        };
-        LighthouseIngestResponse: {
-            /** @description Always true for successful ingest submission. */
-            acknowledged: boolean;
-        };
         IndexWithPermissions: {
             /** @default 2017-09-01 */
             readonly "@version": unknown;
@@ -2393,6 +2592,62 @@ export interface components {
              * @description The ID of the index which was reopened.
              */
             index_id: string;
+        };
+        Attributes: {
+            /** @enum {string} */
+            object_type: "file" | "dir";
+            path: string;
+            inode: number;
+            size_bytes: number;
+            uid: number;
+            gid: number;
+            mode_str: string;
+            /** Format: date-time */
+            atime: string;
+            /** Format: date-time */
+            ctime: string;
+            /** Format: date-time */
+            mtime: string;
+        };
+        LighthouseFileScanEvent: {
+            /** Format: date-time */
+            scan_observed_timestamp: string;
+            attributes: components["schemas"]["Attributes"];
+        };
+        LighthouseIngest: {
+            events?: components["schemas"]["LighthouseFileScanEvent"][];
+        };
+        LighthouseIngestResponse: {
+            /** @description Always true for successful ingest submission. */
+            acknowledged: boolean;
+        };
+        LighthouseScanStartEvent: {
+            /** @enum {string} */
+            scan_type: "full" | "discovery";
+            scope: string;
+        };
+        LighthouseScanStartResponse: {
+            scan_id: string;
+        };
+        LighthouseScanStopEvent: {
+            /** @enum {string} */
+            status: "succeeded" | "failed" | "terminated";
+        };
+        LighthouseScanStopResponse: {
+            /** @description Always true for successful scan stop requests. */
+            acknowledged: boolean;
+        };
+        InsightsCatalog: {
+            id: string;
+            display_name: string;
+            collection_id: string;
+            subscription_id: string;
+            file_datamart_id: string | null;
+            aggregation_datamart_id: string | null;
+            visible_to_group_id: string | null;
+            status: string;
+            /** Format: date */
+            created_timestamp: string;
         };
         Role: {
             /** @description The ID of the role. */
