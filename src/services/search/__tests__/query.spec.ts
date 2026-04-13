@@ -151,6 +151,32 @@ describe('search – query', () => {
           filters: [],
         };
         expect(requireOneFilter).toBeDefined();
+
+        const requestWithQSettings: query.GSearchRequest = {
+          q: 'test',
+          q_settings: {
+            mode: 'query_string',
+            default_operator: 'and',
+          },
+        };
+        expect(requestWithQSettings).toBeDefined();
+
+        const requestWithAdvanced: query.GSearchRequest = {
+          q: 'test',
+          advanced: true,
+        };
+        expect(requestWithAdvanced).toBeDefined();
+
+        // @ts-expect-error `q_settings` and `advanced` are mutually exclusive
+        const requestWithQSettingsAndAdvanced: query.GSearchRequest = {
+          q: 'test',
+          q_settings: {
+            mode: 'query_string',
+            default_operator: 'and',
+          },
+          advanced: true,
+        };
+        expect(requestWithQSettingsAndAdvanced).toBeDefined();
       });
 
       test('Content Generic', async () => {

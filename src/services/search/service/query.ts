@@ -95,7 +95,6 @@ type InternalGSearchRequest = {
   q?: string;
   offset?: number;
   limit?: number;
-  advanced?: boolean;
   bypass_visible_to?: boolean;
   result_format_version?: ResultFormatVersion;
   filter_principal_sets?: string[];
@@ -113,9 +112,19 @@ export type GSearchRequest =
   | (Omit<InternalGSearchRequest, 'q'> & {
       q: InternalGSearchRequest['q'];
     })
-  | (Omit<InternalGSearchRequest, 'filters'> & {
+  | ((Omit<InternalGSearchRequest, 'filters'> & {
       filters: [GFilter, ...GFilter[]];
-    });
+    }) &
+      (
+        | {
+            q_settings?: OpenAPI.components['schemas']['GSearchRequestBodyV1']['q_settings'];
+            advanced?: never;
+          }
+        | {
+            advanced?: OpenAPI.components['schemas']['GSearchRequestBodyV1']['advanced'];
+            q_settings?: never;
+          }
+      ));
 
 /**
  * @param index_id The UUID of the index to query.
