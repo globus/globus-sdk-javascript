@@ -12,7 +12,7 @@ import type {
 import type { PaginatedResponse, QueryParameters } from '../../types.js';
 import type {
   SkippedErrorsListDocument,
-  SuccessfulTransferDocument,
+  SuccessfulTransfersListDocument,
   TaskDocument,
   TaskEventListDocument,
 } from '../task.js';
@@ -224,7 +224,7 @@ export const getSuccessfulTransfers = function (
   task_id,
   options?,
   sdkOptions?,
-): Promise<JSONFetchResponse<PaginatedResponse<'Marker', SuccessfulTransferDocument>>> {
+): Promise<JSONFetchResponse<PaginatedResponse<'Marker', SuccessfulTransfersListDocument>>> {
   return serviceRequest(
     {
       service: ID,
@@ -466,7 +466,7 @@ export const next = {
         data?: never;
       };
     },
-    JSONFetchResponse<PaginatedResponse<'Marker', SuccessfulTransferDocument>>
+    JSONFetchResponse<PaginatedResponse<'Marker', SuccessfulTransfersListDocument>>
   >(),
 
   getSkippedErrors: createServiceMethodFactory({
