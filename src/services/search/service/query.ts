@@ -95,7 +95,6 @@ type InternalGSearchRequest = {
   q?: string;
   offset?: number;
   limit?: number;
-  advanced?: boolean;
   bypass_visible_to?: boolean;
   result_format_version?: ResultFormatVersion;
   filter_principal_sets?: string[];
@@ -103,19 +102,37 @@ type InternalGSearchRequest = {
   facets?: GFacet[];
   boosts?: GBoost[];
   sort?: GSort[];
+  q_settings?: OpenAPI.components['schemas']['GSearchRequestBodyV1']['q_settings'];
+  advanced?: OpenAPI.components['schemas']['GSearchRequestBodyV1']['advanced'];
 };
+
+/**
+ * `q_settings` and `advanced` are mutually exclusive.
+ * @see https://docs.globus.org/api/search/reference/post_query/#gsearchrequest
+ */
+type QSettingsOrAdvanced =
+  | {
+      q_settings?: InternalGSearchRequest['q_settings'];
+      advanced?: never;
+    }
+  | {
+      advanced?: InternalGSearchRequest['advanced'];
+      q_settings?: never;
+    };
 
 /**
  * You must provide either `q` or `filters`.
  * @see https://docs.globus.org/api/search/reference/post_query/#gsearchrequest
  */
-export type GSearchRequest =
+export type GSearchRequest = (
   | (Omit<InternalGSearchRequest, 'q'> & {
       q: InternalGSearchRequest['q'];
     })
   | (Omit<InternalGSearchRequest, 'filters'> & {
       filters: [GFilter, ...GFilter[]];
-    });
+    })
+) &
+  QSettingsOrAdvanced;
 
 /**
  * @param index_id The UUID of the index to query.
