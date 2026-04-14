@@ -16,7 +16,7 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           cache: npm
-          node-version: lts/iron
+          node-version: lts/jod
       - run: npm ci
       - run: npm run lint
       - run: npm run test -- --coverage
@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: ['lts/iron', 'lts/jod', '24.x']
+        node-version: ['lts/iron', 'lts/jod', 'lts/krypton']
     steps:
       - uses: actions/checkout@v6
       - name: Use Node.js ${{ matrix.node-version }}
