@@ -20,7 +20,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v6
         with:
-          node-version: lts/jod
+          node-version: lts/krypton
           registry-url: 'https://registry.npmjs.org'
           scope: '@globus'
       - run: npm ci
@@ -68,7 +68,7 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
-          node-version: lts/jod
+          node-version: lts/krypton
           registry-url: 'https://registry.npmjs.org'
           scope: '@globus'
       - run: npm ci
