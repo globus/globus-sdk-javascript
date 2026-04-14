@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: ['lts/iron', 'lts/jod', 'lts/krypton']
+        node-version: ['lts/iron', 'lts/jod', 'lts/krypton', 26]
     steps:
       - uses: actions/checkout@v6
       - name: Use Node.js ${{ matrix.node-version }}
