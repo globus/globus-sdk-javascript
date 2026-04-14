@@ -171,7 +171,7 @@ describe('search – query', () => {
         const requestWithQSettingsAndAdvanced: query.GSearchRequest = {
           q: 'test',
           q_settings: {
-            mode: 'query_string',
+            mode: 'query_string' as const,
             default_operator: 'and',
           },
           advanced: true,
