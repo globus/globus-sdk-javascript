@@ -46,7 +46,7 @@ jobs:
           jq '.version = "${{ steps.version.outputs.version }}"' package.json > package.json.tmp && mv package.json.tmp package.json
       - run: npm run build
       # Publish to NPM with 'canary' tag
-      - run: npm publish --access public --tag canary
+      - run: npm publish --provenance --access public --tag canary
   # Check for a new release using release-please
   release-please:
     runs-on: ubuntu-latest
@@ -73,7 +73,7 @@ jobs:
           scope: '@globus'
       - run: npm ci
       - run: npm run build
-      - run: npm publish --access public
+      - run: npm publish --provenance --access public
       # - name: Notify Slack
       #   id: slack
       #   uses: slackapi/slack-github-action@v1.26.0
