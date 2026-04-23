@@ -178,7 +178,6 @@ export class AuthorizationManager {
      * @event AuthorizationManager.events#authenticated
      * @type {object}
      * @property {boolean} isAuthenticated - Whether the `AuthorizationManager` is authenticated.
-     * @property {TokenResponse} [token] - The token response if the `AuthorizationManager` is authenticated.
      */
     authenticated: new Event<
       'authenticated',
@@ -188,7 +187,6 @@ export class AuthorizationManager {
          * @see {@link AuthorizationManager.authenticated}
          */
         isAuthenticated: boolean;
-        token?: TokenResponse;
       }
     >('authenticated'),
     /**
@@ -258,8 +256,12 @@ export class AuthorizationManager {
    * @see {@link https://docs.globus.org/api/auth/reference/#oidc_userinfo_endpoint}
    */
   get user() {
-    const token = this.getGlobusAuthToken();
-    return token && token.id_token ? jwtDecode<JwtUserInfo>(token.id_token) : null;
+    const token = this.tokens
+      .getAll()
+      .find((t) => t.resource_server === RESOURCE_SERVERS.AUTH && t.scope.includes('openid'));
+    return token && 'id_token' in token && token.id_token
+      ? jwtDecode<JwtUserInfo>(token.id_token)
+      : null;
   }
 
   /**
@@ -308,32 +310,28 @@ export class AuthorizationManager {
 
   /**
    * Whether or not the instance has a reference to a Globus Auth token.
+   * @deprecated Use `AuthorizationManager.tokens.auth` instead.
    */
   hasGlobusAuthToken() {
-    return this.getGlobusAuthToken() !== null;
+    return Boolean(this.tokens.auth);
   }
 
   /**
    * Retrieve the Globus Auth token managed by the instance.
+   * @deprecated Use `AuthorizationManager.tokens.auth` instead.
    */
   getGlobusAuthToken() {
-    const entry = this.storage.getItem(`${this.storageKeyPrefix}${RESOURCE_SERVERS.AUTH}`);
-    return entry ? JSON.parse(entry) : null;
+    return this.tokens.auth;
   }
 
   #checkAuthorizationState() {
     log('debug', 'AuthorizationManager.#checkAuthorizationState');
-    if (this.hasGlobusAuthToken()) {
-      this.authenticated = true;
-    }
+    this.authenticated = Boolean(this.tokens.auth);
   }
 
   async #emitAuthenticatedState() {
-    const isAuthenticated = this.authenticated;
-    const token = this.getGlobusAuthToken() ?? undefined;
     await this.events.authenticated.dispatch({
-      isAuthenticated,
-      token,
+      isAuthenticated: this.authenticated,
     });
   }
 
