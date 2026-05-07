@@ -16,6 +16,8 @@ export const CONFIG = TRANSFER;
 
 export type * from './types.js';
 
+export * as v2 from './service/v2/index.js';
+
 export const next = {
   endpointSearch: nextEndpointSearch.endpointSearch,
 };
