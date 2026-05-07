@@ -2677,9 +2677,9 @@ export interface components {
              * @description The name of the role. This implies some set of permissions.
              * @enum {string}
              */
-            role_name?: "owner" | "admin" | "writer";
+            role_name: "owner" | "admin" | "writer";
             /** @description The principal URN for the entity which has this role. */
-            principal?: string;
+            principal: string;
         };
         DeletedRole: {
             deleted: components["schemas"]["Role"];

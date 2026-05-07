@@ -35,7 +35,7 @@ export interface paths {
         };
         /**
          * Get the status counts of memberships for each group you are an admin or manager of.
-         * @description This endpoint retreives all the membership counts for groups where the caller is
+         * @description This endpoint retrieves all the membership counts for groups where the caller is
          *     either an admin or manager.
          */
         get: operations["get_statuses_v2_groups_statuses_get"];
@@ -207,7 +207,7 @@ export interface paths {
          *     * Allow subgroups to be created only by admins
          *     * Allow the group to be visible only to members
          *     * Allow member names to be visible only to managers and admins
-         *     * Allow invititations to be sent by managers and admins
+         *     * Allow invitations to be sent by managers and admins
          *     * Disallow requests to join
          *
          *     Groups can only be created by users with 1000 or fewer active memberships.
@@ -1235,6 +1235,10 @@ export interface components {
             msg: string;
             /** Error Type */
             type: string;
+            /** Input */
+            input?: unknown;
+            /** Context */
+            ctx?: Record<string, unknown>;
         };
     };
     responses: never;
