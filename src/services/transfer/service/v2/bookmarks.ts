@@ -29,7 +29,7 @@ type GetResponse = GetOperation['responses']['200']['content']['application/json
 export const get = createServiceMethodFactory({
   service: ID,
   resource_server: RESOURCE_SERVERS.TRANSFER,
-  path: `/v2/bookmark/{bookmark_id}`,
+  path: `/v2/bookmarks/{bookmark_id}`,
 }).generate<
   {
     request?: {
@@ -46,7 +46,7 @@ type CreateResponse = CreateOperation['responses']['201']['content']['applicatio
 export const create = createServiceMethodFactory({
   service: ID,
   resource_server: RESOURCE_SERVERS.TRANSFER,
-  path: `/v2/bookmark`,
+  path: `/v2/bookmarks`,
   method: HTTP_METHODS.POST,
 }).generate<
   {
@@ -63,7 +63,7 @@ type UpdateResponse = UpdateOperation['responses']['200']['content']['applicatio
 export const update = createServiceMethodFactory({
   service: ID,
   resource_server: RESOURCE_SERVERS.TRANSFER,
-  path: `/v2/bookmark/{bookmark_id}`,
+  path: `/v2/bookmarks/{bookmark_id}`,
   method: HTTP_METHODS.PATCH,
 }).generate<
   {
@@ -80,7 +80,7 @@ type RemoveResponse = RemoveOperation['responses']['200'];
 export const remove = createServiceMethodFactory({
   service: ID,
   resource_server: RESOURCE_SERVERS.TRANSFER,
-  path: `/v2/bookmark/{bookmark_id}`,
+  path: `/v2/bookmarks/{bookmark_id}`,
   method: HTTP_METHODS.DELETE,
 }).generate<
   {

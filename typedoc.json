@@ -8,6 +8,7 @@
     "./src/core/info/index.ts",
     "./src/core/authorization/index.ts"
   ],
+  "projectDocuments": ["documents/*.md"],
   "entryPointStrategy": "expand",
   "out": "docs"
 }
