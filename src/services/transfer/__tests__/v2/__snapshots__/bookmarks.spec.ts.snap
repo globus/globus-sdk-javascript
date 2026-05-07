@@ -30,7 +30,7 @@ exports[`bookmarks create 1`] = `
     },
   },
   "method": "POST",
-  "url": "https://transfer.api.globus.org/v2/bookmark",
+  "url": "https://transfer.api.globus.org/v2/bookmarks",
 }
 `;
 
@@ -44,7 +44,7 @@ exports[`bookmarks get 1`] = `
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "GET",
-  "url": "https://transfer.api.globus.org/v2/bookmark/my-bookmark-id",
+  "url": "https://transfer.api.globus.org/v2/bookmarks/my-bookmark-id",
 }
 `;
 
@@ -72,7 +72,7 @@ exports[`bookmarks remove 1`] = `
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "DELETE",
-  "url": "https://transfer.api.globus.org/v2/bookmark/my-bookmark-id",
+  "url": "https://transfer.api.globus.org/v2/bookmarks/my-bookmark-id",
 }
 `;
 
@@ -98,6 +98,6 @@ exports[`bookmarks update 1`] = `
     },
   },
   "method": "PATCH",
-  "url": "https://transfer.api.globus.org/v2/bookmark/my-bookmark-id",
+  "url": "https://transfer.api.globus.org/v2/bookmarks/my-bookmark-id",
 }
 `;
