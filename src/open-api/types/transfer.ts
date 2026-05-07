@@ -271,7 +271,7 @@ export interface components {
              * Format: uuid
              * @description Unique identifier of the bookmark
              */
-            id?: string;
+            id: string;
             /** @description Attributes belonging to a bookmark */
             attributes: components["schemas"]["BookmarkListResponseAttributes"];
             /** @description Entities related to a bookmark */
@@ -313,12 +313,6 @@ export interface components {
              * @constant
              */
             type: "Bookmark";
-            /**
-             * Id
-             * Format: uuid
-             * @description Unique identifier of the bookmark
-             */
-            id?: string;
             /** @description Attributes settable on a stream access point update */
             attributes: components["schemas"]["BookmarkPatchAttributes"];
         };
@@ -368,7 +362,7 @@ export interface components {
              * Format: uuid
              * @description Unique identifier of the bookmark
              */
-            id?: string;
+            id: string;
             /** @description Attributes belonging to a bookmark */
             attributes: components["schemas"]["BookmarkResponseAttributes"];
             /** @description Entities related to a bookmark */
