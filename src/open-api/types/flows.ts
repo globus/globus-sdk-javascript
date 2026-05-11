@@ -2117,11 +2117,324 @@ export interface paths {
             };
         };
         put?: never;
-        post?: never;
+        /**
+         * Create a Registered API
+         * @description Create a new Registered API.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /**
+                         * @description A non-unique, human-friendly name used for displaying the
+                         *     Registered API to end users.
+                         */
+                        name: string;
+                        /** @description A detailed description of the Registered API for end user display. */
+                        description?: string;
+                        /** @description The OpenAPI specification and configuration for the registered API. */
+                        target: {
+                            /** @enum {string} */
+                            type: "openapi";
+                            openapi_version: string;
+                            destination: {
+                                /** @enum {string} */
+                                method: "get" | "head" | "post" | "put" | "delete" | "connect" | "options" | "trace" | "patch";
+                                /** Format: uri */
+                                url: string;
+                            };
+                            specification: {
+                                [key: string]: unknown;
+                            };
+                            components?: {
+                                [key: string]: unknown;
+                            };
+                        };
+                        /** @description Access control roles for the Registered API. */
+                        roles?: {
+                            /**
+                             * @description The set of Principal URN values of users and/or groups who own
+                             *     the Registered API.
+                             */
+                            owners?: components["schemas"]["PrincipalURN"][];
+                            /**
+                             * @description The set of Principal URN values of users and/or groups who may
+                             *     perform administrative operations on the Registered API.
+                             */
+                            administrators?: components["schemas"]["PrincipalURN"][];
+                            /**
+                             * @description The set of Principal URN values of users and/or groups who may
+                             *     view the Registered API.
+                             */
+                            viewers?: components["schemas"]["PrincipalURN"][];
+                        };
+                        /**
+                         * Format: uuid
+                         * @description A subscription to associate with this Registered API.
+                         */
+                        subscription_id: string;
+                    };
+                };
+            };
+            responses: {
+                /** @description The Registered API was successfully created. */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["RegisteredApi"];
+                    };
+                };
+                /** @description The requestor attempted to create a malformed Registered API. */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description The requestor is not authorized to create a Registered API. */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/registered_apis/{registered_api_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description The unique identifier for the Registered API. */
+                registered_api_id: string;
+            };
+            cookie?: never;
+        };
+        /**
+         * Get Registered API
+         * @description Retrieve details of a specific Registered API by its ID.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The unique identifier for the Registered API. */
+                    registered_api_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Successfully retrieved the Registered API details. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["RegisteredApi"];
+                    };
+                };
+                /**
+                 * @description The requestor presented a token with insufficient scopes or lacks
+                 *     permission to view this Registered API.
+                 */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description No Registered API exists with the specified ID. */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /**
+         * Remove a Registered API
+         * @description Remove a Registered API from the Flows service.
+         */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The unique identifier for the Registered API. */
+                    registered_api_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /**
+                 * @description The requestor has successfully removed the Registered API from the
+                 *     Flows service.
+                 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["RegisteredApi"];
+                    };
+                };
+                /**
+                 * @description The requestor attempted to delete a Registered API for which they
+                 *     did not have access.
+                 */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /**
+                 * @description The requestor attempted to delete a non-existent Registered API,
+                 *     or the requestor did not have permissions to delete it.
+                 */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /**
+         * Update a Registered API
+         * @description Modify a previously created Registered API. Only specified fields will be updated.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The unique identifier for the Registered API. */
+                    registered_api_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /**
+                         * @description A non-unique, human-friendly name used for displaying the
+                         *     Registered API to end users.
+                         */
+                        name?: string;
+                        /** @description A detailed description of the Registered API for end user display. */
+                        description?: string;
+                        /** @description The OpenAPI specification and configuration for the registered API. */
+                        target?: {
+                            /** @enum {string} */
+                            type?: "openapi";
+                            openapi_version?: string;
+                            destination?: {
+                                /** @enum {string} */
+                                method?: "get" | "head" | "post" | "put" | "delete" | "connect" | "options" | "trace" | "patch";
+                                /** Format: uri */
+                                url?: string;
+                            };
+                            specification?: {
+                                [key: string]: unknown;
+                            };
+                            components?: {
+                                [key: string]: unknown;
+                            };
+                        };
+                        /** @description Access control roles for the Registered API. */
+                        roles?: {
+                            /**
+                             * @description The set of Principal URN values of users and/or groups who own
+                             *     the Registered API.
+                             */
+                            owners?: components["schemas"]["PrincipalURN"][];
+                            /**
+                             * @description The set of Principal URN values of users and/or groups who may
+                             *     perform administrative operations on the Registered API.
+                             */
+                            administrators?: components["schemas"]["PrincipalURN"][];
+                            /**
+                             * @description The set of Principal URN values of users and/or groups who may
+                             *     view the Registered API.
+                             */
+                            viewers?: components["schemas"]["PrincipalURN"][];
+                        };
+                        /**
+                         * Format: uuid
+                         * @description A subscription to associate with this Registered API.
+                         */
+                        subscription_id?: string;
+                    };
+                };
+            };
+            responses: {
+                /**
+                 * @description The requestor has successfully authenticated and updated the target
+                 *     Registered API.
+                 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["RegisteredApi"];
+                    };
+                };
+                /**
+                 * @description The Registered API update failed due to an attempt to perform a
+                 *     malformed update.
+                 */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /**
+                 * @description The requestor attempted to update a Registered API for which they
+                 *     did not have access.
+                 */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /**
+                 * @description The requestor attempted to update a non-existent Registered API,
+                 *     or the requestor did not have permissions to update it.
+                 */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         trace?: never;
     };
 }
@@ -2625,6 +2938,97 @@ export interface components {
              *     which the Registered API was last updated.
              */
             updated_timestamp: string;
+        };
+        RegisteredApi: components["schemas"]["RegisteredApiSummary"] & {
+            /**
+             * @description Access control roles for the Registered API, mapping role names to
+             *     lists of principal URNs.
+             */
+            roles: {
+                /** @description Principals with owner permissions on this Registered API. */
+                owners?: components["schemas"]["PrincipalURN"][];
+                /** @description Principals with administrator permissions on this Registered API. */
+                administrators?: components["schemas"]["PrincipalURN"][];
+                /** @description Principals with viewer permissions on this Registered API. */
+                viewers?: components["schemas"]["PrincipalURN"][];
+            };
+            /** @description The OpenAPI specification and configuration for the registered API. */
+            target: {
+                /**
+                 * @description The type of API specification.
+                 * @enum {string}
+                 */
+                type: "openapi";
+                /** @description The OpenAPI specification version (e.g., "3.1"). */
+                openapi_version: string;
+                /** @description The target endpoint for API calls. */
+                destination: {
+                    /**
+                     * @description The HTTP method for the API call.
+                     * @enum {string}
+                     */
+                    method: "get" | "post" | "put" | "patch" | "delete";
+                    /**
+                     * Format: uri
+                     * @description The URL template for the API endpoint.
+                     */
+                    url: string;
+                };
+                /** @description The OpenAPI operation specification. */
+                specification: {
+                    [key: string]: unknown;
+                };
+                /** @description OpenAPI components (schemas, etc.) referenced by the specification. */
+                components?: {
+                    [key: string]: unknown;
+                };
+            };
+            /**
+             * @description Service-generated templates that map and transform the OpenAPI specification
+             *     (target) to simplified parameter structures for use in flow definitions.
+             */
+            data_templates: {
+                /**
+                 * @description Template defining how to map simplified flow parameters to the
+                 *     OpenAPI request structure.
+                 */
+                request: {
+                    [key: string]: unknown;
+                };
+                /** @description Template defining how to map the API response back to flow state. */
+                response: {
+                    [key: string]: unknown;
+                };
+            };
+            /**
+             * @description Service-generated JSON Schema defining the input state required for this
+             *     Registered API when used in a flow.
+             */
+            state_input_schema: {
+                [key: string]: unknown;
+            };
+            /**
+             * @description The current status of the Registered API.
+             * @enum {string}
+             */
+            status: "ACTIVE" | "INACTIVE";
+            /**
+             * Format: uuid
+             * @description The subscription ID associated with this Registered API.
+             */
+            subscription_id: string | null;
+            /**
+             * Format: date-time
+             * @description A timezone-aware ISO8601 format string that represents the time at
+             *     which the Registered API was last edited.
+             */
+            edited_timestamp?: string | null;
+            /**
+             * Format: date-time
+             * @description A timezone-aware ISO8601 format string that represents the time at
+             *     which the Registered API is scheduled for deletion.
+             */
+            scheduled_deletion_timestamp?: string | null;
         };
         BatchRunUpdateOperation: {
             tags?: string[];
