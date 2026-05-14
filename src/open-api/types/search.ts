@@ -692,7 +692,7 @@ export interface paths {
             };
             requestBody?: {
                 content: {
-                    "application/json": components["schemas"]["LighthouseIngest"];
+                    "application/json": components["schemas"]["InsightsIngest"];
                 };
             };
             responses: {
@@ -701,7 +701,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["LighthouseIngestResponse"];
+                        "application/json": components["schemas"]["InsightsIngestResponse"];
                     };
                 };
             };
@@ -733,7 +733,7 @@ export interface paths {
             };
             requestBody?: {
                 content: {
-                    "application/json": components["schemas"]["LighthouseScanStartEvent"];
+                    "application/json": components["schemas"]["InsightsScanStartEvent"];
                 };
             };
             responses: {
@@ -742,7 +742,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["LighthouseScanStartResponse"];
+                        "application/json": components["schemas"]["InsightsScanStartResponse"];
                     };
                 };
             };
@@ -775,7 +775,7 @@ export interface paths {
             };
             requestBody?: {
                 content: {
-                    "application/json": components["schemas"]["LighthouseScanStopEvent"];
+                    "application/json": components["schemas"]["InsightsScanStopEvent"];
                 };
             };
             responses: {
@@ -784,128 +784,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["LighthouseScanStopResponse"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/beta/lighthouse/{collection_configuration_id}/ingest": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    collection_configuration_id: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: {
-                content: {
-                    "application/json": components["schemas"]["LighthouseIngest"];
-                };
-            };
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["LighthouseIngestResponse"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/beta/lighthouse/collection_configuration/{collection_configuration_id}/scan_start": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    collection_configuration_id: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: {
-                content: {
-                    "application/json": components["schemas"]["LighthouseScanStartEvent"];
-                };
-            };
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["LighthouseScanStartResponse"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/beta/lighthouse/collection_configuration/{collection_configuration_id}/scan/{scan_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    collection_configuration_id: string;
-                    scan_id: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: {
-                content: {
-                    "application/json": components["schemas"]["LighthouseScanStopEvent"];
-                };
-            };
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["LighthouseScanStopResponse"];
+                        "application/json": components["schemas"]["InsightsScanStopResponse"];
                     };
                 };
             };
@@ -941,6 +820,43 @@ export interface paths {
                     };
                     content: {
                         "application/json": components["schemas"]["InsightsCatalog"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/beta/insights/catalog": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** [BETA] List Insights Catalogs */
+        get: {
+            parameters: {
+                query?: {
+                    filter_collection_ids?: string[];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["InsightsCatalogList"];
                     };
                 };
             };
@@ -1400,38 +1316,56 @@ export interface components {
             principal_sets?: string[];
         };
         GMetaResult: {
-            /** @default 2017-09-01 */
-            readonly "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            readonly "@version": "2017-09-01";
             subject: string;
             entries: components["schemas"]["ResultEntry"][];
         };
         ApproximateMetricFacetResult: {
-            /** @default 2017-09-01 */
-            readonly "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            readonly "@version": "2017-09-01";
             readonly name: string;
             approximate_value: number;
         };
         MetricFacetResult: {
-            /** @default 2017-09-01 */
-            readonly "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            readonly "@version": "2017-09-01";
             readonly name: string;
             value: number;
         };
         GBucketStr: {
-            /** @default 2017-09-01 */
-            readonly "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            readonly "@version": "2017-09-01";
             count: number;
             value: string;
         };
         GBucketInt: {
-            /** @default 2017-09-01 */
-            readonly "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            readonly "@version": "2017-09-01";
             count: number;
             value: number;
         };
         GBucketFloat: {
-            /** @default 2017-09-01 */
-            readonly "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            readonly "@version": "2017-09-01";
             count: number;
             value: number;
         };
@@ -1440,15 +1374,21 @@ export interface components {
             to: unknown;
         };
         GBucketRange: {
-            /** @default 2017-09-01 */
-            readonly "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            readonly "@version": "2017-09-01";
             count: number;
             value: components["schemas"]["RangeBounds"];
         };
         GBucket: components["schemas"]["GBucketStr"] | components["schemas"]["GBucketInt"] | components["schemas"]["GBucketFloat"] | components["schemas"]["GBucketRange"];
         BucketFacetResult: {
-            /** @default 2017-09-01 */
-            readonly "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            readonly "@version": "2017-09-01";
             readonly name: string;
             buckets: components["schemas"]["GBucket"][];
         };
@@ -1460,14 +1400,20 @@ export interface components {
             gmeta: components["schemas"]["GMetaResult"][];
             /** @description True if another page of results is available with pagination. */
             has_next_page: boolean;
-            /** @default 2017-09-01 */
-            readonly "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            readonly "@version": "2017-09-01";
             offset: number;
             facet_results?: components["schemas"]["GFacetResult"][];
         };
         TermsFacet: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description The field to which the facet refers.
              *     Any dots (`.`) must be escaped with a preceding backslash (`\`) character.
@@ -1489,8 +1435,11 @@ export interface components {
             size: number;
         };
         MetricFacet: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description The field to which the facet refers.
              *     Any dots (`.`) must be escaped with a preceding backslash (`\`) character.
@@ -1515,8 +1464,11 @@ export interface components {
             high: unknown;
         };
         DateHistogramFacet: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description The field to which the facet refers.
              *     Any dots (`.`) must be escaped with a preceding backslash (`\`) character.
@@ -1543,8 +1495,11 @@ export interface components {
             high: number;
         };
         NumericHistogramFacet: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description The field to which the facet refers.
              *     Any dots (`.`) must be escaped with a preceding backslash (`\`) character.
@@ -1567,8 +1522,11 @@ export interface components {
         };
         GFacet: components["schemas"]["TermsFacet"] | components["schemas"]["MetricFacet"] | components["schemas"]["MetricFacet"] | components["schemas"]["DateHistogramFacet"] | components["schemas"]["NumericHistogramFacet"];
         GFilterMatchAll: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1588,8 +1546,11 @@ export interface components {
             values: unknown[];
         };
         GFilterMatchAny: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1617,8 +1578,11 @@ export interface components {
             lt?: unknown;
         };
         GFilterRange: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1642,8 +1606,11 @@ export interface components {
             lon: number;
         };
         GFilterBoundingBox: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1693,8 +1660,11 @@ export interface components {
         };
         GeoShape: components["schemas"]["GeoPolygon"];
         GFilterGeoShape: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1723,8 +1693,11 @@ export interface components {
             relation: "intersects" | "within";
         };
         GFilterExists: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1743,8 +1716,11 @@ export interface components {
             field_name: string;
         };
         GFilterLike: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1768,8 +1744,11 @@ export interface components {
             value: string;
         };
         GFilterMatchAllNested: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1780,8 +1759,11 @@ export interface components {
             values: unknown[];
         };
         GFilterMatchAnyNested: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1792,8 +1774,11 @@ export interface components {
             values: unknown[];
         };
         GFilterRangeNested: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1804,8 +1789,11 @@ export interface components {
             values: components["schemas"]["RangeFilterValue"][];
         };
         GFilterBoundingBoxNested: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1837,8 +1825,11 @@ export interface components {
             bottom_right: components["schemas"]["Coordinate"];
         };
         GFilterGeoShapeNested: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1858,8 +1849,11 @@ export interface components {
             relation: "intersects" | "within";
         };
         GFilterExistsNested: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1869,8 +1863,11 @@ export interface components {
             field_name: string;
         };
         GFilterLikeNested: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1885,8 +1882,11 @@ export interface components {
             value: string;
         };
         GFilterNotNested: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1895,8 +1895,11 @@ export interface components {
             filter: components["schemas"]["GFilterNested"];
         };
         GFilterOrNested: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1905,8 +1908,11 @@ export interface components {
             filters: components["schemas"]["GFilterNested"][];
         };
         GFilterAndNested: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1916,8 +1922,11 @@ export interface components {
         };
         GFilterNested: components["schemas"]["GFilterMatchAllNested"] | components["schemas"]["GFilterMatchAnyNested"] | components["schemas"]["GFilterRangeNested"] | components["schemas"]["GFilterBoundingBoxNested"] | components["schemas"]["GFilterGeoShapeNested"] | components["schemas"]["GFilterExistsNested"] | components["schemas"]["GFilterLikeNested"] | components["schemas"]["GFilterNotNested"] | components["schemas"]["GFilterOrNested"] | components["schemas"]["GFilterAndNested"];
         GFilterNot: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1935,8 +1944,11 @@ export interface components {
             filter: components["schemas"]["GFilterNested"];
         };
         GFilterOr: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1954,8 +1966,11 @@ export interface components {
             filters: components["schemas"]["GFilterNested"][];
         };
         GFilterAnd: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -1974,15 +1989,21 @@ export interface components {
         };
         GFilter: components["schemas"]["GFilterMatchAll"] | components["schemas"]["GFilterMatchAny"] | components["schemas"]["GFilterRange"] | components["schemas"]["GFilterBoundingBox"] | components["schemas"]["GFilterGeoShape"] | components["schemas"]["GFilterExists"] | components["schemas"]["GFilterLike"] | components["schemas"]["GFilterNot"] | components["schemas"]["GFilterOr"] | components["schemas"]["GFilterAnd"];
         GBoost: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /** @example my_field_name */
             field_name: string;
             factor: number;
         };
         GSort: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /** @example my_field_name */
             field_name: string;
             /**
@@ -2404,8 +2425,11 @@ export interface components {
             marker: unknown;
         };
         GMetaEntry: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             subject: string;
             /** @default null */
             id: string | null;
@@ -2418,8 +2442,11 @@ export interface components {
             };
         };
         GIngestEntry: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -2443,13 +2470,19 @@ export interface components {
             ingest_data: components["schemas"]["GMetaEntry"];
         };
         GMetaList: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             gmeta: components["schemas"]["GMetaEntry"][];
         };
         GIngestList: {
-            /** @default 2017-09-01 */
-            "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            "@version": "2017-09-01";
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -2504,8 +2537,11 @@ export interface components {
             tasks: components["schemas"]["Task"][];
         };
         IndexWithPermissions: {
-            /** @default 2017-09-01 */
-            readonly "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            readonly "@version": "2017-09-01";
             display_name: string;
             description: string;
             /** Format: uuid */
@@ -2542,8 +2578,11 @@ export interface components {
             description: string | null;
         };
         IndexInfo: {
-            /** @default 2017-09-01 */
-            readonly "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            readonly "@version": "2017-09-01";
             display_name: string;
             description: string;
             /** Format: uuid */
@@ -2609,31 +2648,31 @@ export interface components {
             /** Format: date-time */
             mtime: string;
         };
-        LighthouseFileScanEvent: {
+        InsightsFileScanEvent: {
             /** Format: date-time */
             scan_observed_timestamp: string;
             attributes: components["schemas"]["Attributes"];
         };
-        LighthouseIngest: {
-            events?: components["schemas"]["LighthouseFileScanEvent"][];
+        InsightsIngest: {
+            events?: components["schemas"]["InsightsFileScanEvent"][];
         };
-        LighthouseIngestResponse: {
+        InsightsIngestResponse: {
             /** @description Always true for successful ingest submission. */
             acknowledged: boolean;
         };
-        LighthouseScanStartEvent: {
+        InsightsScanStartEvent: {
             /** @enum {string} */
             scan_type: "full" | "discovery";
             scope: string;
         };
-        LighthouseScanStartResponse: {
+        InsightsScanStartResponse: {
             scan_id: string;
         };
-        LighthouseScanStopEvent: {
+        InsightsScanStopEvent: {
             /** @enum {string} */
             status: "succeeded" | "failed" | "terminated";
         };
-        LighthouseScanStopResponse: {
+        InsightsScanStopResponse: {
             /** @description Always true for successful scan stop requests. */
             acknowledged: boolean;
         };
@@ -2648,6 +2687,9 @@ export interface components {
             status: string;
             /** Format: date */
             created_timestamp: string;
+        };
+        InsightsCatalogList: {
+            catalogs?: components["schemas"]["InsightsCatalog"][];
         };
         Role: {
             /** @description The ID of the role. */
@@ -2701,8 +2743,11 @@ export interface components {
         };
         DeleteByQuery: components["schemas"]["GSearchRequestBody2017"] | components["schemas"]["DeleteByQueryV1"];
         UGFieldMappings: {
-            /** @default 2017-09-01 */
-            readonly "@version": unknown;
+            /**
+             * @default 2017-09-01
+             * @constant
+             */
+            readonly "@version": "2017-09-01";
             /**
              * @description A mapping from full field names to their types.
              * @example {
