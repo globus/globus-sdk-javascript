@@ -38,9 +38,9 @@
       "default": "./dist/esm/services/compute/index.js"
     },
     "./services/flows": {
-      "types": "./dist/esm/services/compute/index.d.ts",
-      "import": "./dist/esm/services/compute/index.js",
-      "default": "./dist/esm/services/compute/index.js"
+      "types": "./dist/esm/services/flows/index.d.ts",
+      "import": "./dist/esm/services/flows/index.js",
+      "default": "./dist/esm/services/flows/index.js"
     },
     "./services/globus-connect-server": {
       "types": "./dist/esm/services/globus-connect-server/index.d.ts",
