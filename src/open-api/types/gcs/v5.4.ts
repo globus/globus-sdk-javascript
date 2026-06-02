@@ -8329,6 +8329,103 @@ export interface components {
             users_deny?: string[] | null;
         };
         /**
+         * StreamGateway_1_1_0
+         * @description A stream gateway provides the access policies for the endpoint's
+         *     local and wide-area networks to create stream connections between
+         *     applications running on this endpoint's local network and another
+         *     endpoint's local network.
+         *
+         *
+         *     Version 1.1.0 adds support for executing the stream operations
+         *     as a mapped local user account.
+         */
+        StreamGateway_1_1_0: {
+            /**
+             * @description Type of this document
+             * @default stream_gateway#1.1.0
+             * @enum {string}
+             */
+            DATA_TYPE: "stream_gateway#1.1.0";
+            /**
+             * @description List of allowed domains. Users creating lan_secrets or accessing
+             *     tunnels on this gateway must have an identity in one of these
+             *     domains.
+             */
+            allowed_domains?: string[];
+            /**
+             * @description Timeout (in minutes) during which a user is required to have
+             *     authenticated to create a tunnel on this gateway.
+             */
+            authentication_timeout_mins?: number | null;
+            /** @description Email address of the support contact for the stream access point */
+            contact_email?: string;
+            /**
+             * @description Other non-email contact information for the stream access point,
+             *     e.g. phone and mailing address
+             */
+            contact_info?: string;
+            /** @description Flag indicating that this gateway has been deleted */
+            deleted?: boolean;
+            /** @description Department which operates the stream access point */
+            department?: string;
+            /** @description Description of the stream access point */
+            description?: string;
+            /** @description Name of the stream access point */
+            display_name?: string;
+            /** @description Read-only DNS domain. */
+            domain_name?: string;
+            /**
+             * Format: uuid
+             * @description Unique id for this stream gateway
+             */
+            id?: string;
+            /**
+             * @description List of identity mappings to apply to user identities to determine
+             *     what connector-specific accounts are available for access.
+             */
+            identity_mappings?: components["schemas"]["IdentityMapping"][] | null;
+            /**
+             * @description Link to a web page with more information about the stream
+             *     access point
+             */
+            info_link?: string;
+            /**
+             * @description List of search keywords for the endpoint. Optional. Unicode string,
+             *     max 1024 characters total across all strings.
+             */
+            keywords?: string[];
+            /**
+             * @description If set, the name of the lan to use when connecting to this
+             *     streaming gateway. This corresponds to the *network_name*
+             *     property associated with lan addresses in nodes associated with
+             *     this endpoint.
+             */
+            lan_name?: string | null;
+            /**
+             * @description If true, users of this stream gateway must create and use a
+             *     lan secret to connect to a stream. Otherwise, that step
+             *     is optional.
+             */
+            lan_secret_required?: boolean;
+            /**
+             * @description Organization that operates the stream access point.
+             *     Optional unicode string, max 1000 characters, no new lines.
+             */
+            organization?: string;
+            /**
+             * @description If true, the identity mapping must result in a valid local account name.
+             *     The gridftp server will execute as that user. If false (the default), the
+             *     gridftp server runs as the gcsweb user.
+             */
+            run_as_local_user?: boolean;
+            /** @description URL for the TLSFTP server used for tunnel control. */
+            readonly tlsftp_url?: string;
+            /** @description List of mapped usernames allowed to access this gateway. */
+            users_allow?: string[] | null;
+            /** @description List of mapped usernames denied access to this gateway. */
+            users_deny?: string[] | null;
+        };
+        /**
          * SubscriptionRequired_1_0_0
          * @description Error details when the caller has attempted to access a feature
          *     not supported by the endpoint's subscription.
@@ -10197,8 +10294,12 @@ export interface components {
          *     local and wide-area networks to create stream connections between
          *     applications running on this endpoint's local network and another
          *     endpoint's local network.
+         *
+         *
+         *     Version 1.1.0 adds support for executing the stream operations
+         *     as a mapped local user account.
          */
-        StreamGateway: components["schemas"]["StreamGateway_1_0_0"];
+        StreamGateway: components["schemas"]["StreamGateway_1_0_0"] | components["schemas"]["StreamGateway_1_1_0"];
         /**
          * SubscriptionRequired
          * @description Error details when the caller has attempted to access a feature
