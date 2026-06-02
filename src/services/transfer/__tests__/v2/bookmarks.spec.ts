@@ -25,7 +25,6 @@ describe('bookmarks', () => {
               attributes: {
                 name: "35-KS&aIO(Fcdm%Y:2-c\\fp>(>[]i+R3*G'%imO1VoV;y-@QogK`.;xr:3<`B\\?kNH*$]_Lup",
                 path: 'XQE%qoM~mcP)TI f]RJ*#r-GDy~c\\N/',
-                pinned: false,
               },
               relationships: {
                 collection: {
@@ -72,7 +71,6 @@ describe('bookmarks', () => {
               attributes: {
                 name: 'New Name',
                 path: 'new/path',
-                pinned: true,
               },
             },
           },

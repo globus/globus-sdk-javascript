@@ -155,56 +155,12 @@ export interface paths {
         patch: operations["bookmarks_patch_bookmarks__bookmark_id__patch"];
         trace?: never;
     };
-    "/private/gcs/stream_access_points": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Stream Access Points Post
-         * @description Create a stream access point
-         */
-        post: operations["stream_access_points_post_private_gcs_stream_access_points_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/private/gcs/stream_access_points/{stream_access_point_uuid}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * Stream Access Points Delete
-         * @description Delete a stream access point by UUID
-         */
-        delete: operations["stream_access_points_delete_private_gcs_stream_access_points__stream_access_point_uuid__delete"];
-        options?: never;
-        head?: never;
-        /**
-         * Stream Access Points Patch
-         * @description Update a stream access point by UUID
-         */
-        patch: operations["stream_access_points_patch_private_gcs_stream_access_points__stream_access_point_uuid__patch"];
-        trace?: never;
-    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        /** BookmarkCreateAttributes */
-        BookmarkCreateAttributes: {
+        /** BookmarkAttributes */
+        BookmarkAttributes: {
             /**
              * Name
              * @description Name of the bookmark. Unique per user.
@@ -215,12 +171,6 @@ export interface components {
              * @description Path to a directory on the collection.
              */
             path: string;
-            /**
-             * Pinned
-             * @description Flag for if the bookmark is pinned as a favorite.
-             * @default false
-             */
-            pinned: boolean;
         };
         /** BookmarkCreateResource */
         BookmarkCreateResource: {
@@ -231,9 +181,9 @@ export interface components {
              */
             type: "Bookmark";
             /** @description Attributes belonging to a bookmark */
-            attributes: components["schemas"]["BookmarkCreateAttributes"];
+            attributes: components["schemas"]["BookmarkAttributes"];
             /** @description Entities related to a bookmark */
-            relationships: components["schemas"]["BookmarkRelationships-Input"];
+            relationships: components["schemas"]["BookmarkRelationships"];
         };
         /** BookmarkCreateTopLevel */
         BookmarkCreateTopLevel: {
@@ -251,12 +201,6 @@ export interface components {
              * @description Path to a directory on the collection.
              */
             path: string | null;
-            /**
-             * Pinned
-             * @description Flag for if the bookmark is pinned as a favorite.
-             * @default false
-             */
-            pinned: boolean;
         };
         /** BookmarkListResponseResource */
         BookmarkListResponseResource: {
@@ -275,7 +219,7 @@ export interface components {
             /** @description Attributes belonging to a bookmark */
             attributes: components["schemas"]["BookmarkListResponseAttributes"];
             /** @description Entities related to a bookmark */
-            relationships: components["schemas"]["BookmarkRelationships-Output"];
+            relationships: components["schemas"]["BookmarkRelationships"];
         };
         /** BookmarkListResponseTopLevel */
         BookmarkListResponseTopLevel: {
@@ -298,12 +242,6 @@ export interface components {
              * @description Path to a directory on the collection.
              */
             path: string;
-            /**
-             * Pinned
-             * @description Flag for if the bookmark is pinned as a favorite.
-             * @default false
-             */
-            pinned: boolean | null;
         };
         /** BookmarkPatchResource */
         BookmarkPatchResource: {
@@ -321,33 +259,9 @@ export interface components {
             data: components["schemas"]["BookmarkPatchResource"];
         };
         /** BookmarkRelationships */
-        "BookmarkRelationships-Input": {
+        BookmarkRelationships: {
             /** @description Collection the bookmark is on */
             collection: components["schemas"]["CollectionDataRelationship"];
-        };
-        /** BookmarkRelationships */
-        "BookmarkRelationships-Output": {
-            /** @description Collection the bookmark is on */
-            collection: components["schemas"]["CollectionDataRelationship"];
-        };
-        /** BookmarkResponseAttributes */
-        BookmarkResponseAttributes: {
-            /**
-             * Name
-             * @description Name of the bookmark. Unique per user.
-             */
-            name: string;
-            /**
-             * Path
-             * @description Path to a directory on the collection.
-             */
-            path: string;
-            /**
-             * Pinned
-             * @description Flag for if the bookmark is pinned as a favorite.
-             * @default false
-             */
-            pinned: boolean;
         };
         /** BookmarkResponseResource */
         BookmarkResponseResource: {
@@ -364,9 +278,9 @@ export interface components {
              */
             id: string;
             /** @description Attributes belonging to a bookmark */
-            attributes: components["schemas"]["BookmarkResponseAttributes"];
+            attributes: components["schemas"]["BookmarkAttributes"];
             /** @description Entities related to a bookmark */
-            relationships: components["schemas"]["BookmarkRelationships-Output"];
+            relationships: components["schemas"]["BookmarkRelationships"];
         };
         /** BookmarkResponseTopLevel */
         BookmarkResponseTopLevel: {
@@ -399,7 +313,7 @@ export interface components {
              * Format: uuid
              * @description Unique identifier of the collection
              */
-            id?: string;
+            id: string;
         };
         /** CollectionResponseResource */
         CollectionResponseResource: {
@@ -414,7 +328,7 @@ export interface components {
              * Format: uuid
              * @description Unique identifier of the collection
              */
-            id?: string;
+            id: string;
             /** @description Attributes belonging to a collection */
             attributes: components["schemas"]["CollectionAttributes"];
         };
@@ -536,95 +450,6 @@ export interface components {
             data: components["schemas"]["StreamAccessPointResponseResource"][];
             links?: components["schemas"]["JsonAPIPaginationLinks"];
             meta: components["schemas"]["JsonApiTopLevelMetaInformation"];
-        };
-        /** StreamAccessPointPatchAttributes */
-        StreamAccessPointPatchAttributes: {
-            /**
-             * Display Name
-             * @description Friendly name to show in stream access point listings
-             */
-            display_name?: string | null;
-            /**
-             * Tlsftp Server
-             * @description URL for the tlsftp server used for tunnel access; must begin with tlsftp and end with a port number
-             */
-            tlsftp_server?: string | null;
-            /**
-             * Advertised Owner
-             * @description Globus Auth username for the advertised owner identity
-             */
-            advertised_owner?: string | null;
-            /**
-             * Contact Email
-             * @description Stream access point support contact email address
-             */
-            contact_email?: string | null;
-            /**
-             * Contact Info
-             * @description Other non-email contact information for the stream access point, e.g. phone and mailing address
-             */
-            contact_info?: string | null;
-            /**
-             * Department
-             * @description Department which operates the stream access point
-             */
-            department?: string | null;
-            /**
-             * Description
-             * @description Description of the stream access point
-             */
-            description?: string | null;
-            /**
-             * Info Link
-             * @description Link to a web page about the stream access point
-             */
-            info_link?: string | null;
-            /**
-             * Keywords
-             * @description Comma-separated list of keywords for searching
-             */
-            keywords?: string | null;
-            /**
-             * Organization
-             * @description Organization which operates the stream access point
-             */
-            organization?: string | null;
-        };
-        /** StreamAccessPointPatchResource */
-        StreamAccessPointPatchResource: {
-            /**
-             * Type
-             * @default StreamAccessPoint
-             * @constant
-             */
-            type: "StreamAccessPoint";
-            /** @description Attributes settable on a stream access point update */
-            attributes: components["schemas"]["StreamAccessPointPatchAttributes"];
-        };
-        /** StreamAccessPointPatchTopLevel */
-        StreamAccessPointPatchTopLevel: {
-            data: components["schemas"]["StreamAccessPointPatchResource"];
-        };
-        /** StreamAccessPointRequestResource */
-        StreamAccessPointRequestResource: {
-            /**
-             * Type
-             * @default StreamAccessPoint
-             * @constant
-             */
-            type: "StreamAccessPoint";
-            /**
-             * Id
-             * Format: uuid
-             * @description Unique identifier of the stream access point
-             */
-            id: string;
-            /** @description Attributes belonging to a stream access point */
-            attributes: components["schemas"]["StreamAccessPointAttributes"];
-        };
-        /** StreamAccessPointRequestTopLevel */
-        StreamAccessPointRequestTopLevel: {
-            data: components["schemas"]["StreamAccessPointRequestResource"];
         };
         /** StreamAccessPointResourceIdentifier */
         StreamAccessPointResourceIdentifier: {
@@ -1355,105 +1180,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["BookmarkResponseTopLevel"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    stream_access_points_post_private_gcs_stream_access_points_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["StreamAccessPointRequestTopLevel"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StreamAccessPointResponseTopLevel"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    stream_access_points_delete_private_gcs_stream_access_points__stream_access_point_uuid__delete: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                stream_access_point_uuid: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JsonApiAbstractResponseTopLevel"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    stream_access_points_patch_private_gcs_stream_access_points__stream_access_point_uuid__patch: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                stream_access_point_uuid: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["StreamAccessPointPatchTopLevel"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StreamAccessPointResponseTopLevel"];
                 };
             };
             /** @description Validation Error */

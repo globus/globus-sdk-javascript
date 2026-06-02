@@ -6,7 +6,7 @@ exports[`bookmarks create 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "content-length": "291",
+    "content-length": "276",
     "content-type": "application/json",
     "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
@@ -16,7 +16,6 @@ exports[`bookmarks create 1`] = `
       "attributes": {
         "name": "35-KS&aIO(Fcdm%Y:2-c\\fp>(>[]i+R3*G'%imO1VoV;y-@QogK\`.;xr:3<\`B\\?kNH*$]_Lup",
         "path": "XQE%qoM~mcP)TI f]RJ*#r-GDy~c\\N/",
-        "pinned": false,
       },
       "relationships": {
         "collection": {
@@ -82,7 +81,7 @@ exports[`bookmarks update 1`] = `
     "accept": "*/*",
     "accept-encoding": "gzip,deflate",
     "connection": "close",
-    "content-length": "93",
+    "content-length": "79",
     "content-type": "application/json",
     "host": "transfer.api.globus.org",
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
@@ -92,7 +91,6 @@ exports[`bookmarks update 1`] = `
       "attributes": {
         "name": "New Name",
         "path": "new/path",
-        "pinned": true,
       },
       "type": "Bookmark",
     },
