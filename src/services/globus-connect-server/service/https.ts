@@ -12,7 +12,7 @@ export const get = function (configuration, path, options?, sdkOptions?): Promis
       resource_server: configuration.endpoint_id,
       path,
     },
-    options,
+    { ...options, disableClientInfo: true },
     sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
@@ -38,7 +38,7 @@ export const remove = function (configuration, path, options?, sdkOptions?): Pro
       path,
       method: HTTP_METHODS.DELETE,
     },
-    options,
+    { ...options, disableClientInfo: true },
     sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<
@@ -60,7 +60,7 @@ export const update = function (configuration, path, options, sdkOptions?): Prom
       path,
       method: HTTP_METHODS.PUT,
     },
-    options,
+    { ...options, disableClientInfo: true },
     sdkOptions,
   );
 } satisfies GCSServiceMethodDynamicSegments<

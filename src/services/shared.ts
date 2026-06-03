@@ -93,7 +93,7 @@ export async function serviceRequest(
   const injectedFetchOptions = sdkOptions?.fetch?.options || {};
 
   const headers: Record<string, string> = {
-    ...getClientInfoRequestHeaders(),
+    ...(options?.disableClientInfo ? {} : getClientInfoRequestHeaders()),
     ...options?.headers,
     /**
      * Key/value pairs found in the `fetch` options override those found in the
