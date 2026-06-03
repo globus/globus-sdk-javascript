@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.3.1](https://github.com/globus/globus-sdk-javascript/compare/v6.3.0...v6.3.1) (2026-06-03)
+
+
+### Bug Fixes
+
+* **GCS:** stop sending client info header on https requests ([#852](https://github.com/globus/globus-sdk-javascript/issues/852)) ([34be3d1](https://github.com/globus/globus-sdk-javascript/commit/34be3d179cae1da16fa2f5ed87f8af30113a9536))
+
 ## [6.3.0](https://github.com/globus/globus-sdk-javascript/compare/v6.2.0...v6.3.0) (2026-06-02)
 
 
