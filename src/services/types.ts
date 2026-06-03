@@ -78,6 +78,7 @@ export type BaseServiceMethodOptions = {
    * `AuthorizationManager` instance to use for this request.
    */
   manager?: AuthorizationManager;
+  disableClientInfo?: boolean;
 };
 
 /**
