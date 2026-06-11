@@ -88,7 +88,7 @@ export interface paths {
         /**
          * Get Tunnel Events By Tunnel Uuid
          * @description Return events associated with a particular tunnel.
-         *     Filter events with the code or is_error query params.
+         *     Filter events with code_name or is_error query params.
          */
         get: operations["get_tunnel_events_by_tunnel_uuid_tunnels__tunnel_uuid__events_get"];
         put?: never;
@@ -776,11 +776,7 @@ export interface operations {
                 "page[limit]"?: number;
                 /** @description Limit results to stream access points on Globus Connect Server endpoints where the user has an `administrator` role */
                 "filter[endpoint_admin]"?: boolean;
-                /**
-                 * @description [
-                 *       "Limit results to stream access points that match on an attribute; each attribute is weighted equally"
-                 *     ]
-                 */
+                /** @description Limit results to stream access points that match on an attribute; each attribute is weighted equally */
                 "filter[fulltext]"?: string | null;
             };
             header?: never;
@@ -993,7 +989,13 @@ export interface operations {
     get_tunnel_events_by_tunnel_uuid_tunnels__tunnel_uuid__events_get: {
         parameters: {
             query?: {
+                /** @description Pagination marker. */
+                "page[marker]"?: string | null;
+                /** @description Limit to page size. */
+                "page[limit]"?: number;
+                /** @description Filter events by a specific event code. Cannot be used with `is_error` */
                 code_name?: string | null;
+                /** @description Filter events to errors only. Cannot be used with `code_name` */
                 is_error?: boolean | null;
             };
             header?: never;

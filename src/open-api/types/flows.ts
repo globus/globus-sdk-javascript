@@ -2481,14 +2481,6 @@ export interface components {
              *     which this Run reached a completed status.
              */
             completion_time: string;
-            /**
-             * Format: date-time
-             * @description A timezone-aware ISO8601 format string that represents the time at
-             *     which an INACTIVE Run will automatically expire and transition to FAILED
-             *     status. This field is present when a Run status is 'INACTIVE'
-             *     and is not present when the Run has any other status.
-             */
-            expiration_timestamp?: string;
             label: components["schemas"]["Label"];
             /**
              * @description The current state of the Run.
