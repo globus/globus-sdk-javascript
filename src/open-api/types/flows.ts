@@ -2437,6 +2437,220 @@ export interface paths {
         };
         trace?: never;
     };
+    "/web_inputs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Web Inputs
+         * @description Retrieve a listing of Web Inputs available to a user based on their viewer or respondent role on each Web Input.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description An opaque token used to iterate through pages of returned Web Inputs. If provided, all other query arguments will be ignored. The marker encodes all state in a given query, therefore it's unnecessary to provide query arguments once an initial marker has been received. */
+                    marker?: string;
+                    /** @description The number of results to return in a single paged response. */
+                    per_page?: number;
+                    /** @description Return Web Inputs for which the user has one of the supplied roles. If multiple roles are specified (comma-separated), the user will have at least one of the specified roles on each Web Input returned. If not provided, Web Inputs for which the caller has either "viewer" or "respondent" role will be returned. */
+                    filter_roles?: ("viewer" | "respondent")[];
+                    /** @description Return Web Inputs that are in one of the supplied states. If multiple states are specified (comma-separated), Web Inputs in any of those states will be returned. If not provided, only "open" Web Inputs will be returned. */
+                    filter_states?: ("open" | "closed")[];
+                    /** @description Return only Web Inputs associated with the specified Flow IDs. Multiple IDs can be specified (comma-separated), up to a maximum of 10. */
+                    filter_flow_ids?: string[];
+                    /** @description Return only Web Inputs associated with the specified Run IDs. Multiple IDs can be specified (comma-separated), up to a maximum of 10. */
+                    filter_run_ids?: string[];
+                    /**
+                     * @description Ordering criteria to apply to the list of Web Inputs.
+                     *
+                     *     This field is a comma-separated list of sort criteria,
+                     *     and follows this syntax:
+                     *
+                     *     ```
+                     *     CRITERION1[,CRITERION2[,...]]
+                     *     ```
+                     *
+                     *     and each individual `CRITERION` follows this syntax:
+                     *
+                     *     ```
+                     *     FIELD ORDERING
+                     *     ```
+                     *
+                     *     The first value, `FIELD`, indicates the field to sort by;
+                     *     the second value, `ORDERING`, indicates the sorting order.
+                     *
+                     *     When additional comma-separated criteria are added,
+                     *     the first criterion will be used to sort the data;
+                     *     subsequent criteria will be applied for ties.
+                     *
+                     *     Supported fields are:
+                     *
+                     *     - `created_timestamp`
+                     *     - `edited_timestamp`
+                     *     - `closed_timestamp`
+                     *
+                     *     Supported orderings are:
+                     *
+                     *     - `ASC`
+                     *     - `DESC`
+                     */
+                    orderby?: components["parameters"]["list_web_inputs_orderby"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The requestor has successfully authenticated and queried the Flows service for the Web Inputs available for them. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            web_input_summaries: components["schemas"]["WebInputSummary"][];
+                            /** @description An opaque pagination token for iterating through returned Web Inputs. Null if there are no more pages. */
+                            marker?: string | null;
+                        };
+                    };
+                };
+                /** @description There was an issue parsing the query parameters. */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description The requestor presented a token with insufficient scopes. */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description The request's query parameters did not pass validation. */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/web_inputs/{web_input_id}/response": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Respond to a Web Input
+         * @description Submit a response to a Web Input. The caller must have the respondent role on the Web Input and satisfy any authentication policy on the associated flow.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The unique identifier of the Web Input to respond to. */
+                    web_input_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        response: {
+                            /** @description The response value submitted by the user. */
+                            value: unknown;
+                        };
+                    };
+                };
+            };
+            responses: {
+                /** @description The response was successfully submitted. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @enum {string} */
+                            status?: "ok";
+                        };
+                    };
+                };
+                /**
+                 * @description The requestor does not have the respondent role on the Web Input,
+                 *     or the requestor does not satisfy the flow's authentication policy.
+                 *     When the user has the respondent role but fails the authentication
+                 *     policy, the response includes a web_input_summary alongside a GARE.
+                 */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            error: {
+                                code: string;
+                                detail: string;
+                            };
+                        } | {
+                            web_input_summary?: components["schemas"]["WebInputSummary"];
+                            code?: string;
+                            authorization_parameters?: Record<string, unknown>;
+                            error?: {
+                                code?: string;
+                                detail?: string;
+                            };
+                        };
+                    };
+                };
+                /** @description The Web Input does not exist. */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description The Web Input is already closed. */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description The request body did not pass validation. */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -2939,6 +3153,57 @@ export interface components {
              */
             updated_timestamp: string;
         };
+        WebInputSummary: {
+            /**
+             * Format: uuid
+             * @description The unique identifier for the Web Input.
+             */
+            id: string;
+            /**
+             * @description The current status of the Web Input. "open" indicates the Web Input is awaiting a response; "closed" indicates it has been completed.
+             * @enum {string}
+             */
+            status: "open" | "closed";
+            /** @description The roles the current user has on this Web Input. */
+            user_roles: ("viewer" | "respondent")[];
+            /** @description The type of Web Input (e.g., "selection", "form"). */
+            input_type: string;
+            /** @description A human-readable title for the Web Input. */
+            title: string;
+            flow: {
+                /**
+                 * Format: uuid
+                 * @description The unique identifier for the associated Flow.
+                 */
+                id: string;
+                /** @description The title of the associated Flow. */
+                title: string;
+            };
+            run: {
+                /**
+                 * Format: uuid
+                 * @description The unique identifier for the associated Run.
+                 */
+                id: string;
+                /** @description An optional label for the associated Run. */
+                label: string | null;
+            };
+            /**
+             * Format: date-time
+             * @description A timezone-aware ISO8601 format string that represents the time at which the Web Input was created.
+             */
+            created_timestamp: string;
+            /**
+             * Format: date-time
+             * @description A timezone-aware ISO8601 format string that represents the time at which the Web Input was last edited.
+             */
+            edited_timestamp: string;
+            /**
+             * Format: date-time
+             * @description A timezone-aware ISO8601 format string that represents the time at which the Web Input was closed. Null if the Web Input is still open.
+             */
+            closed_timestamp: string | null;
+        };
         RegisteredApi: components["schemas"]["RegisteredApiSummary"] & {
             /**
              * @description Access control roles for the Registered API, mapping role names to
@@ -3242,6 +3507,41 @@ export interface components {
          *     - `DESC`
          */
         list_registered_apis_orderby: string[];
+        /**
+         * @description Ordering criteria to apply to the list of Web Inputs.
+         *
+         *     This field is a comma-separated list of sort criteria,
+         *     and follows this syntax:
+         *
+         *     ```
+         *     CRITERION1[,CRITERION2[,...]]
+         *     ```
+         *
+         *     and each individual `CRITERION` follows this syntax:
+         *
+         *     ```
+         *     FIELD ORDERING
+         *     ```
+         *
+         *     The first value, `FIELD`, indicates the field to sort by;
+         *     the second value, `ORDERING`, indicates the sorting order.
+         *
+         *     When additional comma-separated criteria are added,
+         *     the first criterion will be used to sort the data;
+         *     subsequent criteria will be applied for ties.
+         *
+         *     Supported fields are:
+         *
+         *     - `created_timestamp`
+         *     - `edited_timestamp`
+         *     - `closed_timestamp`
+         *
+         *     Supported orderings are:
+         *
+         *     - `ASC`
+         *     - `DESC`
+         */
+        list_web_inputs_orderby: string[];
     };
     requestBodies: never;
     headers: never;
