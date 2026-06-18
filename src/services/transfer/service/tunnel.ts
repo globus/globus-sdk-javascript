@@ -131,7 +131,7 @@ export const start = function (
       path: `/v2/tunnels/${tunnel_uuid}`,
       method: HTTP_METHODS.PATCH,
     },
-    { payload: { data: { attributes: { ...options.payload } } } },
+    { payload: { data: { type: 'Tunnel', id: tunnel_uuid, attributes: { ...options.payload } } } },
     sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
@@ -158,7 +158,15 @@ export const stop = function (
       path: `/v2/tunnels/${tunnel_uuid}`,
       method: HTTP_METHODS.PATCH,
     },
-    { payload: { data: { attributes: { ...options.payload, state: 'STOPPING' } } } },
+    {
+      payload: {
+        data: {
+          type: 'Tunnel',
+          id: tunnel_uuid,
+          attributes: { ...options.payload, state: 'STOPPING' },
+        },
+      },
+    },
     sdkOptions,
   );
 } satisfies ServiceMethodDynamicSegments<
@@ -237,7 +245,13 @@ export const next = {
       ...payload,
       request: {
         ...payload?.request,
-        data: { data: { attributes: payload?.request?.data } },
+        data: {
+          data: {
+            type: 'Tunnel',
+            id: payload.request?.data?.['id'],
+            attributes: payload?.request?.data,
+          },
+        },
       },
     }),
   }).generate<
@@ -287,7 +301,13 @@ export const next = {
       ...payload,
       request: {
         ...payload?.request,
-        data: { data: { attributes: { ...payload?.request?.data, state: 'STOPPING' } } },
+        data: {
+          data: {
+            type: 'Tunnel',
+            id: payload.request?.data?.['id'],
+            attributes: { ...payload?.request?.data, state: 'STOPPING' },
+          },
+        },
       },
     }),
   }).generate<
