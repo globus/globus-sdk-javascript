@@ -2024,8 +2024,8 @@ export interface components {
             bypass_visible_to: boolean;
             filter_principal_sets?: string[];
             /**
-             * @description discriminator enum property added by openapi-typescript
-             * @enum {string}
+             * @default 2017-09-01
+             * @constant
              */
             "@version": "2017-09-01";
             offset?: number;
@@ -2350,8 +2350,8 @@ export interface components {
             bypass_visible_to: boolean;
             filter_principal_sets?: string[];
             /**
-             * @description discriminator enum property added by openapi-typescript
-             * @enum {string}
+             * @default query#1.0.0
+             * @constant
              */
             "@version": "query#1.0.0";
             /**
@@ -2382,8 +2382,8 @@ export interface components {
             bypass_visible_to: boolean;
             filter_principal_sets?: string[];
             /**
-             * @description discriminator enum property added by openapi-typescript
-             * @enum {string}
+             * @default 2017-09-01
+             * @constant
              */
             "@version": "2017-09-01";
             filters?: components["schemas"]["GFilter"][];
@@ -2401,8 +2401,8 @@ export interface components {
             bypass_visible_to: boolean;
             filter_principal_sets?: string[];
             /**
-             * @description discriminator enum property added by openapi-typescript
-             * @enum {string}
+             * @default scroll#1.0.0
+             * @constant
              */
             "@version": "scroll#1.0.0";
             filters?: components["schemas"]["GFilterV1"][];
@@ -2732,8 +2732,8 @@ export interface components {
         };
         DeleteByQueryV1: {
             /**
-             * @description discriminator enum property added by openapi-typescript
-             * @enum {string}
+             * @default delete_by_query#1.0.0
+             * @constant
              */
             "@version": "delete_by_query#1.0.0";
             q?: string;
