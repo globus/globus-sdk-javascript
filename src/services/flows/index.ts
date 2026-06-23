@@ -16,3 +16,4 @@ export const CONFIG = FLOWS;
 
 export * as flows from './service/flows.js';
 export * as runs from './service/runs.js';
+export * as webInputs from './service/web-inputs.js';

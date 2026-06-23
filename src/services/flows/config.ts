@@ -19,4 +19,8 @@ export const SCOPES = {
   RUN: 'https://auth.globus.org/scopes/eec9b274-0c81-4334-bdc2-54e90e689b9a/run',
   RUN_STATUS: 'https://auth.globus.org/scopes/eec9b274-0c81-4334-bdc2-54e90e689b9a/run_status',
   RUN_MANAGE: 'https://auth.globus.org/scopes/eec9b274-0c81-4334-bdc2-54e90e689b9a/run_manage',
+  WEB_INPUT_VIEW:
+    'https://auth.globus.org/scopes/eec9b274-0c81-4334-bdc2-54e90e689b9a/web_input_view',
+  WEB_INPUT_RESPOND:
+    'https://auth.globus.org/scopes/eec9b274-0c81-4334-bdc2-54e90e689b9a/web_input_respond',
 };
