@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.3.2](https://github.com/globus/globus-sdk-javascript/compare/v6.3.1...v6.3.2) (2026-06-24)
+
+
+### Bug Fixes
+
+* **Transfer,Tunnels:** id,type required fields ([#868](https://github.com/globus/globus-sdk-javascript/issues/868)) ([301e193](https://github.com/globus/globus-sdk-javascript/commit/301e193d66d8a0a51b38b5b4c6e89ba940d78506))
+
 ## [6.3.1](https://github.com/globus/globus-sdk-javascript/compare/v6.3.0...v6.3.1) (2026-06-03)
 
 
