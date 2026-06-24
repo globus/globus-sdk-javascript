@@ -2549,6 +2549,44 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/web_inputs/{web_input_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get a Web Input by ID */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    web_input_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Information about the Web Input */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WebInputResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/web_inputs/{web_input_id}/response": {
         parameters: {
             query?: never;
@@ -2719,6 +2757,8 @@ export interface components {
             /** @description The list of all roles the requesting user has on the Run. */
             user_roles?: ("run_monitor" | "run_manager" | "run_owner" | "flow_run_monitor" | "flow_run_manager")[];
             tags: components["schemas"]["Tags"];
+            /** @description The ID of the Web Input from which the Run is currently awaiting input. This field is present, but null, if the Run is not awaiting input. */
+            blocking_web_input_id: string | null;
         };
         ValidateRun: {
             /**
@@ -3153,56 +3193,127 @@ export interface components {
              */
             updated_timestamp: string;
         };
-        WebInputSummary: {
+        /**
+         * Format: date-time
+         * @description A timezone-aware ISO8601 format string that represents the time at which the Web Input was closed. Null if the Web Input is still open.
+         */
+        _WebInputClosedTimestamp: string | null;
+        /**
+         * @description Information that helps respondents understand what they're responding to.
+         *     For example, "What file transfer am I approving or denying?"
+         */
+        _WebInputContext: {
+            /**
+             * @description A title for the Web Input.
+             *     This may be displayed as an human-readable label for the Web Input itself, or it may be used as a bold header on a webpage displaying the Web Input as a form.
+             */
+            title?: string;
+            /** @description The suggested way by which the rows should be rendered for display. */
+            presentation_style?: string;
+            rows?: {
+                field: string;
+                value: string;
+            }[];
+        };
+        /** @description The Globus Auth identity that created the Web Input. Creators are not implicitly granted "view" access to the Web Input. */
+        _WebInputCreatorUrn: string;
+        /**
+         * Format: date-time
+         * @description A timezone-aware ISO8601 format string that represents the time at which the Web Input was created.
+         */
+        _WebInputCreatedTimestamp: string;
+        /**
+         * Format: date-time
+         * @description A timezone-aware ISO8601 format string that represents the time at which the Web Input was last edited.
+         */
+        _WebInputEditedTimestamp: string;
+        /** @description Info about the Flow associated with the Web Input. */
+        _WebInputFlowInfo: {
             /**
              * Format: uuid
-             * @description The unique identifier for the Web Input.
+             * @description The unique identifier for the associated Flow.
              */
             id: string;
-            /**
-             * @description The current status of the Web Input. "open" indicates the Web Input is awaiting a response; "closed" indicates it has been completed.
-             * @enum {string}
-             */
-            status: "open" | "closed";
-            /** @description The roles the current user has on this Web Input. */
-            user_roles: ("viewer" | "respondent")[];
-            /** @description The type of Web Input (e.g., "selection", "form"). */
-            input_type: string;
-            /** @description A human-readable title for the Web Input. */
+            /** @description The title of the associated Flow. */
             title: string;
-            flow: {
-                /**
-                 * Format: uuid
-                 * @description The unique identifier for the associated Flow.
-                 */
-                id: string;
-                /** @description The title of the associated Flow. */
-                title: string;
-            };
-            run: {
-                /**
-                 * Format: uuid
-                 * @description The unique identifier for the associated Run.
-                 */
-                id: string;
-                /** @description An optional label for the associated Run. */
-                label: string | null;
-            };
+        };
+        /**
+         * Format: uuid
+         * @description The unique identifier for the Web Input.
+         */
+        _WebInputId: string;
+        /** @description The input schema used to validate all responses to the Web Input. */
+        _WebInputInputSchema: Record<string, unknown>;
+        /**
+         * @description The type of Web Input.
+         * @enum {string}
+         */
+        _WebInputInputType: "selection";
+        /** @description The individual options associated with Web Input. This field is only present when the input type is "selection". */
+        _WebInputOptions: {
             /**
-             * Format: date-time
-             * @description A timezone-aware ISO8601 format string that represents the time at which the Web Input was created.
+             * Format: uuid
+             * @description A UUID that identifies the option. If a respondent selects this option (like "Approve" or "Deny"), this is the value that should be submitted back to the Flows service.
              */
-            created_timestamp: string;
+            option_id: string;
+            /** @description Text that is associated with the option. For example, this may be the word "Approve" or "Deny", and is probably displayed prominently on a button or other UI element that respondents can click on. */
+            label: string;
+            /** @description Additional context to clarify the option for respondents. For example, this may be text "Allow file egress from the protected collection." */
+            description: string;
+        }[];
+        /** @description The Globus Auth identities and groups that have been assigned roles/permissions to the Web Input. */
+        _WebInputRoles: {
+            /** @description Identities and groups that are allowed to view all of the Web Input's information. */
+            viewer_urns: string[];
+            /** @description Identities and groups that are allowed to submit responses to the Web Input. Respondents are also allowed to view information about the Web Input. */
+            respondent_urns: string[];
+        };
+        /** @description Info about the Run associated with the Web Input. */
+        _WebInputRunInfo: {
             /**
-             * Format: date-time
-             * @description A timezone-aware ISO8601 format string that represents the time at which the Web Input was last edited.
+             * Format: uuid
+             * @description The unique identifier for the associated Run.
              */
-            edited_timestamp: string;
-            /**
-             * Format: date-time
-             * @description A timezone-aware ISO8601 format string that represents the time at which the Web Input was closed. Null if the Web Input is still open.
-             */
-            closed_timestamp: string | null;
+            id: string;
+            /** @description An optional label for the associated Run. */
+            label: string | null;
+        };
+        /**
+         * @description The current status of the Web Input. "open" indicates the Web Input is awaiting a response; "closed" indicates it has been completed.
+         * @enum {string}
+         */
+        _WebInputStatus: "open" | "closed";
+        /** @description A human-readable title for the Web Input. */
+        _WebInputTitle: string;
+        /** @description The roles the current user has on this Web Input. */
+        _WebInputUserRoles: ("viewer" | "respondent")[];
+        WebInputResponse: {
+            id: components["schemas"]["_WebInputId"];
+            status: components["schemas"]["_WebInputStatus"];
+            user_roles: components["schemas"]["_WebInputUserRoles"];
+            input_type: components["schemas"]["_WebInputInputType"];
+            input_schema: components["schemas"]["_WebInputInputSchema"];
+            context: components["schemas"]["_WebInputContext"];
+            flow: components["schemas"]["_WebInputFlowInfo"];
+            run: components["schemas"]["_WebInputRunInfo"];
+            roles: components["schemas"]["_WebInputRoles"];
+            creator_urn: components["schemas"]["_WebInputCreatorUrn"];
+            created_timestamp: components["schemas"]["_WebInputCreatedTimestamp"];
+            edited_timestamp: components["schemas"]["_WebInputEditedTimestamp"];
+            closed_timestamp: components["schemas"]["_WebInputClosedTimestamp"];
+            options?: components["schemas"]["_WebInputOptions"];
+        };
+        WebInputSummary: {
+            id: components["schemas"]["_WebInputId"];
+            status: components["schemas"]["_WebInputStatus"];
+            user_roles: components["schemas"]["_WebInputUserRoles"];
+            input_type: components["schemas"]["_WebInputInputType"];
+            title: components["schemas"]["_WebInputTitle"];
+            flow: components["schemas"]["_WebInputFlowInfo"];
+            run: components["schemas"]["_WebInputRunInfo"];
+            created_timestamp: components["schemas"]["_WebInputCreatedTimestamp"];
+            edited_timestamp: components["schemas"]["_WebInputEditedTimestamp"];
+            closed_timestamp: components["schemas"]["_WebInputClosedTimestamp"];
         };
         RegisteredApi: components["schemas"]["RegisteredApiSummary"] & {
             /**
