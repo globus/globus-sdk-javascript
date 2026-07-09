@@ -130,6 +130,7 @@ export const next = {
     service: ID,
     resource_server: RESOURCE_SERVERS.FLOWS,
     path: `/web_inputs/{web_input_id}/response`,
+    method: HTTP_METHODS.POST,
   }).generate<
     {
       request?: {
