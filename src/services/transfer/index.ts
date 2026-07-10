@@ -15,6 +15,7 @@ import { endpointSearch, next as nextEndpointSearch } from './service/endpoint-s
 export const CONFIG = TRANSFER;
 
 export type * from './types.js';
+export type * as OpenAPI from '../../open-api/types/transfer.js';
 
 export * as v2 from './service/v2/index.js';
 
