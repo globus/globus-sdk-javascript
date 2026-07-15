@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.4.0](https://github.com/globus/globus-sdk-javascript/compare/v6.3.1...v6.4.0) (2026-07-15)
+
+
+### Features
+
+* **Flows:** add `flows.webInputs` methods ([#871](https://github.com/globus/globus-sdk-javascript/issues/871)) ([8ed7bf5](https://github.com/globus/globus-sdk-javascript/commit/8ed7bf53f6f3d6e463a7874ea7af8d32b5fb4fca))
+
+
+### Bug Fixes
+
+* **Flows:** Update `flows.webInputs.next.respond` method to use POST (incorrectly using GET) ([#881](https://github.com/globus/globus-sdk-javascript/issues/881)) ([d761f21](https://github.com/globus/globus-sdk-javascript/commit/d761f21bd1b07d16f1506bd7cdef558e724d0f5b))
+* **Transfer,Tunnels:** id,type required fields ([#868](https://github.com/globus/globus-sdk-javascript/issues/868)) ([301e193](https://github.com/globus/globus-sdk-javascript/commit/301e193d66d8a0a51b38b5b4c6e89ba940d78506))
+
 ## [6.3.1](https://github.com/globus/globus-sdk-javascript/compare/v6.3.0...v6.3.1) (2026-06-03)
 
 
