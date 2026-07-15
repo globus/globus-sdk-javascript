@@ -40,6 +40,6 @@ exports[`flows.webInputs respond 1`] = `
     "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
   },
   "method": "POST",
-  "url": "https://flows.globus.org/web_inputs/web-input-id/response",
+  "url": "https://flows.globus.org/web_inputs/web-input-id/respond",
 }
 `;

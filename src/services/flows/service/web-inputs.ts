@@ -78,7 +78,7 @@ export const respond = function (
     {
       service: ID,
       scope: SCOPES.WEB_INPUT_RESPOND,
-      path: `/web_inputs/${web_input_id}/response`,
+      path: `/web_inputs/${web_input_id}/respond`,
       method: HTTP_METHODS.POST,
     },
     options,
@@ -129,7 +129,7 @@ export const next = {
   respond: createServiceMethodFactory({
     service: ID,
     resource_server: RESOURCE_SERVERS.FLOWS,
-    path: `/web_inputs/{web_input_id}/response`,
+    path: `/web_inputs/{web_input_id}/respond`,
     method: HTTP_METHODS.POST,
   }).generate<
     {
