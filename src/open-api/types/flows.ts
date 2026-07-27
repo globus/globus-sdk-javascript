@@ -2587,7 +2587,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/web_inputs/{web_input_id}/response": {
+    "/web_inputs/{web_input_id}/respond": {
         parameters: {
             query?: never;
             header?: never;
@@ -3198,22 +3198,43 @@ export interface components {
          * @description A timezone-aware ISO8601 format string that represents the time at which the Web Input was closed. Null if the Web Input is still open.
          */
         _WebInputClosedTimestamp: string | null;
+        _WebInputContext: components["schemas"]["_WebInputTableContext"] | components["schemas"]["_WebInputTextContext"];
         /**
          * @description Information that helps respondents understand what they're responding to.
          *     For example, "What file transfer am I approving or denying?"
          */
-        _WebInputContext: {
+        _WebInputTableContext: {
             /**
              * @description A title for the Web Input.
              *     This may be displayed as an human-readable label for the Web Input itself, or it may be used as a bold header on a webpage displaying the Web Input as a form.
              */
-            title?: string;
-            /** @description The suggested way by which the rows should be rendered for display. */
-            presentation_style?: string;
-            rows?: {
+            title: string;
+            /**
+             * @description The value "table" indicating that clients should present data as a table. (enum property replaced by openapi-typescript)
+             * @enum {string}
+             */
+            presentation_style: "table";
+            rows: {
                 field: string;
                 value: string;
             }[];
+        };
+        /**
+         * @description Information that helps respondents understand what they're responding to.
+         *     For example, "What file transfer am I approving or denying?"
+         */
+        _WebInputTextContext: {
+            /**
+             * @description A title for the Web Input.
+             *     This may be displayed as an human-readable label for the Web Input itself, or it may be used as a bold header on a webpage displaying the Web Input as a form.
+             */
+            title: string;
+            /**
+             * @description The value "text" indicating that clients should present data as a block of text. (enum property replaced by openapi-typescript)
+             * @enum {string}
+             */
+            presentation_style: "text";
+            text: string;
         };
         /** @description The Globus Auth identity that created the Web Input. Creators are not implicitly granted "view" access to the Web Input. */
         _WebInputCreatorUrn: string;
