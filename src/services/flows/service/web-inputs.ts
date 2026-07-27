@@ -71,7 +71,7 @@ export const respond = function (
   sdkOptions?,
 ): Promise<
   JSONFetchResponse<
-    OpenAPI.paths['/web_inputs/{web_input_id}/response']['post']['responses']['200']['content']['application/json']
+    OpenAPI.paths['/web_inputs/{web_input_id}/respond']['post']['responses']['200']['content']['application/json']
   >
 > {
   return serviceRequest(
@@ -87,10 +87,10 @@ export const respond = function (
 } satisfies ServiceMethodDynamicSegments<
   string,
   {
-    body: OpenAPI.paths['/web_inputs/{web_input_id}/response']['post']['requestBody']['content']['application/json'];
+    body: OpenAPI.paths['/web_inputs/{web_input_id}/respond']['post']['requestBody']['content']['application/json'];
   },
   JSONFetchResponse<
-    OpenAPI.paths['/web_inputs/{web_input_id}/response']['post']['responses']['200']['content']['application/json']
+    OpenAPI.paths['/web_inputs/{web_input_id}/respond']['post']['responses']['200']['content']['application/json']
   >
 >;
 
@@ -134,12 +134,12 @@ export const next = {
   }).generate<
     {
       request?: {
-        query?: OpenAPI.paths['/web_inputs/{web_input_id}/response']['post']['parameters']['query'];
-        data?: OpenAPI.paths['/web_inputs/{web_input_id}/response']['post']['requestBody']['content']['application/json'];
+        query?: OpenAPI.paths['/web_inputs/{web_input_id}/respond']['post']['parameters']['query'];
+        data?: OpenAPI.paths['/web_inputs/{web_input_id}/respond']['post']['requestBody']['content']['application/json'];
       };
     },
     JSONFetchResponse<
-      OpenAPI.paths['/web_inputs/{web_input_id}/response']['post']['responses']['200']['content']['application/json']
+      OpenAPI.paths['/web_inputs/{web_input_id}/respond']['post']['responses']['200']['content']['application/json']
     >
   >(),
 };
