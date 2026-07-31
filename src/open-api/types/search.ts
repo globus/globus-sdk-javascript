@@ -2654,6 +2654,7 @@ export interface components {
             attributes: components["schemas"]["Attributes"];
         };
         InsightsIngest: {
+            scan_id: string;
             events?: components["schemas"]["InsightsFileScanEvent"][];
         };
         InsightsIngestResponse: {
