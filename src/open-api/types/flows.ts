@@ -7,7 +7,7 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Retrieve all Flows
+         * List Flows
          * @description Query the Flows service for a listing of Flows available to a user
          *     according to the permissions (role) they have on the Flow.
          */
@@ -179,8 +179,8 @@ export interface paths {
         };
         put?: never;
         /**
-         * Deploy a Flow
-         * @description Deploy a Flow and its schema.
+         * Create a Flow
+         * @description Create a Flow and its schema.
          */
         post: {
             parameters: {
@@ -256,10 +256,7 @@ export interface paths {
                 };
             };
             responses: {
-                /**
-                 * @description The Flow definition was successfully deployed onto the Flows
-                 *     service.
-                 */
+                /** @description The Flow was successfully created. */
                 201: {
                     headers: {
                         [name: string]: unknown;
@@ -268,14 +265,14 @@ export interface paths {
                         "application/json": components["schemas"]["FlowResponse"];
                     };
                 };
-                /** @description The requestor attempted to deploy a malformed Flow. */
+                /** @description The requestor attempted to create a malformed Flow. */
                 400: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description The requestor is not authorized to deploy a Flow. */
+                /** @description The requestor is not authorized to create a Flow. */
                 403: {
                     headers: {
                         [name: string]: unknown;
@@ -300,7 +297,7 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * Validate a flow
+         * Validate a Flow
          * @description Validate a flow definition and its schema.
          */
         post: {
@@ -378,8 +375,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Retrieve a Flow
-         * @description Get a previously deployed Flow.
+         * Get a Flow by ID
+         * @description Get an existing Flow.
          */
         get: {
             parameters: {
@@ -429,7 +426,7 @@ export interface paths {
         };
         /**
          * Update a Flow
-         * @description Update a previously deployed Flow.
+         * @description Update an existing Flow.
          */
         put: {
             parameters: {
@@ -505,10 +502,7 @@ export interface paths {
                 };
             };
             responses: {
-                /**
-                 * @description The requestor has successfully authenticated and updated the target
-                 *     Flow definition.
-                 */
+                /** @description The Flow was successfully updated. */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -517,31 +511,22 @@ export interface paths {
                         "application/json": components["schemas"]["FlowResponse"];
                     };
                 };
-                /**
-                 * @description The Flow definition update failed due to an attempt to perform a
-                 *     malformed update.
-                 */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /**
-                 * @description The requestor attempted to update a Flow for which they did not have
-                 *     access.
-                 */
+                /** @description The requestor does not have access to update the Flow. */
                 403: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /**
-                 * @description The requestor attempted to update a non-existent Flow, or the
-                 *     requestor did not have permissions to update a Flow.
-                 */
+                /** @description The specified Flow does not exist. */
                 404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description The Flow update failed due to a malformed request. */
+                422: {
                     headers: {
                         [name: string]: unknown;
                     };
@@ -551,8 +536,8 @@ export interface paths {
         };
         post?: never;
         /**
-         * Remove a Flow
-         * @description Remove a Flow from the Flow service.
+         * Delete a Flow
+         * @description Delete an existing Flow.
          */
         delete: {
             parameters: {
@@ -566,10 +551,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /**
-                 * @description The requestor has successfully removed the Flow from the Flows
-                 *     service.
-                 */
+                /** @description The Flow was successfully deleted. */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -578,10 +560,7 @@ export interface paths {
                         "application/json": components["schemas"]["FlowResponse"];
                     };
                 };
-                /**
-                 * @description The requestor attempted to modify a Flow for which they did not have
-                 *     access.
-                 */
+                /** @description The requestor does not have access to delete the Flow. */
                 403: {
                     headers: {
                         [name: string]: unknown;
@@ -589,8 +568,8 @@ export interface paths {
                     content?: never;
                 };
                 /**
-                 * @description The requestor attempted to remove a non-existent Flow, or the
-                 *     requestor did not have permissions to remove the Flow.
+                 * @description The specified Flow does not exist,
+                 *     or the requestor does not have permissions to delete the Flow.
                  */
                 404: {
                     headers: {
@@ -644,7 +623,7 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description The Run was successfully started. */
+                /** @description The Flow was successfully started. */
                 201: {
                     headers: {
                         [name: string]: unknown;
@@ -726,7 +705,7 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * Validate a run
+         * Validate a Run
          * @description Validate that a run input body will pass the target flow's input schema validation (if any),
          *     that run metadata will meet the Flows service's metadata constraints,
          *     and that known scope requirements are met by the user's or client's Globus Auth token.
@@ -1335,7 +1314,7 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get a Flow's Runs
+         * List a Flow's Runs
          * @description Retrieve a listing of Runs launched from a particular Flow. If hitting
          *     the *\/actions endpoint, the response will list the Runs under a
          *     "actions" key. If hitting the *\/runs endpoint, the response will list
@@ -1534,7 +1513,7 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * List all Runs
+         * List Runs
          * @description Retrieve a listing of Actions/Runs launched across all Flows. If hitting
          *     the *\/actions endpoint, the response will list the Runs under a
          *     "actions" key. If hitting the *\/runs endpoint, the response will list
@@ -1798,7 +1777,7 @@ export interface paths {
             };
         };
         /**
-         * Update a Run's metadata
+         * Update a Run
          * @description Modify a Run's metadata.
          *
          *     By default only the Run initiator is able to modify a Run's metadata.
@@ -1954,7 +1933,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Update metadata for multiple Runs. */
+        /** Update metadata for multiple Runs */
         post: {
             parameters: {
                 query?: never;
