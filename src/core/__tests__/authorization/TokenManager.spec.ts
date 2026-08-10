@@ -1,6 +1,6 @@
 import { mockLocalStorage, setInitialLocalStorageState } from '../../../__mocks__/localStorage';
 import { AuthorizationManager } from '../../authorization/AuthorizationManager';
-import { TokenManager } from '../../authorization/TokenManager';
+import { TokenManager, TOKEN_STORAGE_VERSION } from '../../authorization/TokenManager';
 
 import { RESOURCE_SERVERS } from '../../../services/auth/config';
 
@@ -38,7 +38,14 @@ describe('TokenManager', () => {
   it('should return tokens for services when in storage', () => {
     const TOKEN = { resource_server: RESOURCE_SERVERS.AUTH, access_token: 'AUTH' };
     setInitialLocalStorageState({
-      'CLIENT_ID:auth.globus.org': JSON.stringify(TOKEN),
+      'CLIENT_ID:TokenManager': JSON.stringify({
+        version: TOKEN_STORAGE_VERSION,
+        state: {
+          tokens: {
+            [TOKEN.access_token]: TOKEN,
+          },
+        },
+      }),
     });
 
     expect(tokens.auth).not.toBeNull();
@@ -69,13 +76,14 @@ describe('TokenManager', () => {
     it('handles stored tokens', () => {
       const TOKEN: Token = {
         resource_server: RESOURCE_SERVERS.AUTH,
-        access_token: 'AUTH',
+        access_token: 'AUTH_ACCESS_TOKEN',
         token_type: 'Bearer',
         scope: 'openid',
         expires_in: 1000,
       };
       const EXPIRED_TOKEN = {
         ...TOKEN,
+        access_token: 'FLOWS_ACCESS_TOKEN',
         resource_server: RESOURCE_SERVERS.FLOWS,
         expires_in: 0,
       };
@@ -100,7 +108,7 @@ describe('TokenManager', () => {
         expires_in: 1000,
       };
       tokens.add(TOKEN);
-      tokens.add({ ...TOKEN, resource_server: RESOURCE_SERVERS.FLOWS });
+      tokens.add({ ...TOKEN, access_token: 'FLOWS', resource_server: RESOURCE_SERVERS.FLOWS });
       expect(tokens.auth).not.toBeNull();
       expect(tokens.flows).not.toBeNull();
       tokens.remove(TOKEN);
@@ -131,8 +139,15 @@ describe('TokenManager', () => {
         { resource_server: RESOURCE_SERVERS.COMPUTE, access_token: 'TOKEN-2' },
       ];
       setInitialLocalStorageState({
-        [`CLIENT_ID:${RESOURCE_SERVERS.AUTH}`]: JSON.stringify(TOKENS[0]),
-        [`CLIENT_ID:${RESOURCE_SERVERS.COMPUTE}`]: JSON.stringify(TOKENS[1]),
+        'CLIENT_ID:TokenManager': JSON.stringify({
+          version: TOKEN_STORAGE_VERSION,
+          state: {
+            tokens: {
+              [TOKENS[0].access_token]: TOKENS[0],
+              [TOKENS[1].access_token]: TOKENS[1],
+            },
+          },
+        }),
       });
       expect(tokens.getAll()).toEqual([TOKENS[0], TOKENS[1]]);
     });
@@ -146,11 +161,18 @@ describe('TokenManager', () => {
         { resource_server: 'arbitrary', access_token: 'arbitrary' },
       ];
       setInitialLocalStorageState({
-        [`CLIENT_ID:${RESOURCE_SERVERS.AUTH}`]: JSON.stringify(TOKENS[0]),
-        [`CLIENT_ID:${RESOURCE_SERVERS.COMPUTE}`]: JSON.stringify(TOKENS[1]),
-        [`CLIENT_ID:${GCS_ENDPOINT_UUID}`]: JSON.stringify(TOKENS[2]),
+        'CLIENT_ID:TokenManager': JSON.stringify({
+          version: TOKEN_STORAGE_VERSION,
+          state: {
+            tokens: {
+              [TOKENS[0].access_token]: TOKENS[0],
+              [TOKENS[1].access_token]: TOKENS[1],
+              [TOKENS[2].access_token]: TOKENS[2],
+              [TOKENS[3].access_token]: TOKENS[3],
+            },
+          },
+        }),
         'some-storage-key': 'NOT-A-TOKEN',
-        [`CLIENT_ID:arbitrary`]: JSON.stringify(TOKENS[3]),
       });
       expect(tokens.getAll()).toEqual([TOKENS[0], TOKENS[1], TOKENS[2], TOKENS[3]]);
       expect(tokens.getAll()).not.toContain('NOT-A-TOKEN');
@@ -182,9 +204,16 @@ describe('TokenManager', () => {
       },
     ];
     setInitialLocalStorageState({
-      [`CLIENT_ID:${GCS_ENDPOINT_UUID}`]: JSON.stringify(TOKENS[0]),
-      [`CLIENT_ID:${FLOW_UUID}`]: JSON.stringify(TOKENS[1]),
-      [`CLIENT_ID:${RESOURCE_SERVERS.AUTH}`]: JSON.stringify(TOKENS[2]),
+      'CLIENT_ID:TokenManager': JSON.stringify({
+        version: TOKEN_STORAGE_VERSION,
+        state: {
+          tokens: {
+            [TOKENS[0].access_token]: TOKENS[0],
+            [TOKENS[1].access_token]: TOKENS[1],
+            [TOKENS[2].access_token]: TOKENS[2],
+          },
+        },
+      }),
     });
 
     expect(tokens.getByResourceServer(GCS_ENDPOINT_UUID)).toEqual(TOKENS[0]);
@@ -206,9 +235,37 @@ describe('TokenManager', () => {
       },
     ];
     setInitialLocalStorageState({
-      [`CLIENT_ID:${GCS_ENDPOINT_UUID}`]: JSON.stringify(TOKENS[0]),
+      'CLIENT_ID:TokenManager': JSON.stringify({
+        version: TOKEN_STORAGE_VERSION,
+        state: {
+          tokens: {
+            [TOKENS[0].access_token]: TOKENS[0],
+          },
+        },
+      }),
     });
 
     expect(tokens.gcs(GCS_ENDPOINT_UUID)).toEqual(TOKENS[0]);
+  });
+
+  it('supports .clear()', () => {
+    const TOKENS = [
+      { resource_server: RESOURCE_SERVERS.AUTH, access_token: 'TOKEN-1' },
+      { resource_server: RESOURCE_SERVERS.COMPUTE, access_token: 'TOKEN-2' },
+    ];
+    setInitialLocalStorageState({
+      'CLIENT_ID:TokenManager': JSON.stringify({
+        version: TOKEN_STORAGE_VERSION,
+        state: {
+          tokens: {
+            [TOKENS[0].access_token]: TOKENS[0],
+            [TOKENS[1].access_token]: TOKENS[1],
+          },
+        },
+      }),
+    });
+    expect(tokens.getAll().length).toBe(2);
+    tokens.clear();
+    expect(tokens.getAll().length).toBe(0);
   });
 });
