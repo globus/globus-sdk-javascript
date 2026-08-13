@@ -2740,6 +2740,11 @@ export interface components {
             q?: string;
             advanced?: boolean;
             q_settings?: components["schemas"]["QSettings"];
+            /**
+             * @description Set to true to allow this operation to return data with visibility which does not include the current user. Only allowed for index admins and owners.
+             * @default false
+             */
+            bypass_visible_to: boolean;
             filters?: components["schemas"]["GFilterV1"][];
         };
         DeleteByQuery: components["schemas"]["GSearchRequestBody2017"] | components["schemas"]["DeleteByQueryV1"];
