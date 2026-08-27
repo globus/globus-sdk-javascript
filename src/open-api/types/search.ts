@@ -795,6 +795,128 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/beta/insights/catalog/{catalog_id}/role": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** [BETA] List Insights Roles for a given catalog id */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    catalog_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["InsightsListRoles"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** [BETA] Insights Create Role */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    catalog_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["InsightsCreateCatalogRole"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["InsightsViewRole"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/beta/insights/catalog/{catalog_id}/role/{role_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** [BETA] Lookup Insights Catalog Role by Id */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    catalog_id: string;
+                    role_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["InsightsViewRole"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** [BETA] Delete Insights Catalog Role */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    catalog_id: string;
+                    role_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["InsightsMinimalResponse"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/beta/insights/catalog/{catalog_id}": {
         parameters: {
             query?: never;
@@ -2675,6 +2797,25 @@ export interface components {
         };
         InsightsScanStopResponse: {
             /** @description Always true for successful scan stop requests. */
+            acknowledged: boolean;
+        };
+        InsightsViewRole: {
+            catalog_id: string;
+            catalog_name: string;
+            role_id: string;
+            role_name: string;
+            principal: string;
+        };
+        InsightsListRoles: {
+            roles?: components["schemas"]["InsightsViewRole"][];
+        };
+        InsightsCreateCatalogRole: {
+            /** @enum {string} */
+            role_name: "owner" | "reader" | "agent";
+            principal: string;
+        };
+        InsightsMinimalResponse: {
+            /** @description Always true for successful Insights API request. */
             acknowledged: boolean;
         };
         InsightsCatalog: {

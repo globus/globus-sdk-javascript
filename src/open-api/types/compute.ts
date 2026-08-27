@@ -590,12 +590,12 @@ export interface components {
          * AllowedFunctionsResponse
          * @example {
          *       "endpoint_id": "7348422a-1074-427b-a08a-0771068afccc",
-         *       "restricted": true,
          *       "functions": [
          *         "063a3a9d-f40e-4b46-950a-fb24f75a345c",
          *         "e4b534c3-d9d0-47b0-8334-f52932ad3d9a",
          *         "ebe03b69-c966-42fb-ae3f-4a8c9e5b909e"
-         *       ]
+         *       ],
+         *       "restricted": true
          *     }
          */
         AllowedFunctionsResponse: {
@@ -614,7 +614,7 @@ export interface components {
              * Functions
              * @description The functions this endpoint is allowed to execute
              */
-            functions?: string[];
+            functions?: string[] | null;
         };
         /**
          * BatchStatusRequest
@@ -637,16 +637,16 @@ export interface components {
          * @example {
          *       "response": "batch",
          *       "results": {
-         *         "7dac44aa-c480-4460-b453-a47b03b031f4": {
-         *           "task_id": "7dac44aa-c480-4460-b453-a47b03b031f4",
-         *           "status": "success",
-         *           "result": "10000",
-         *           "completion_t": "1677183605.212898"
-         *         },
          *         "4b35645f-0c5b-465d-aaec-fee87f74ff5b": {
-         *           "task_id": "4b35645f-0c5b-465d-aaec-fee87f74ff5b",
+         *           "reason": "Task failed",
          *           "status": "failed",
-         *           "reason": "Task failed"
+         *           "task_id": "4b35645f-0c5b-465d-aaec-fee87f74ff5b"
+         *         },
+         *         "7dac44aa-c480-4460-b453-a47b03b031f4": {
+         *           "completion_t": "1677183605.212898",
+         *           "result": "10000",
+         *           "status": "success",
+         *           "task_id": "7dac44aa-c480-4460-b453-a47b03b031f4"
          *         }
          *       }
          *     }
@@ -677,27 +677,27 @@ export interface components {
              * Status
              * @description Task status
              */
-            status?: unknown;
+            status: unknown;
             /**
              * Result
              * @description Task result
              */
-            result?: string;
+            result?: string | null;
             /**
              * Completion T
              * @description Task completion Unix time
              */
-            completion_t?: string;
+            completion_t?: string | null;
             /**
              * Exception
              * @description Exception
              */
-            exception?: string;
+            exception?: string | null;
             /**
              * Reason
              * @description Reason for exception
              */
-            reason?: string;
+            reason?: string | null;
         };
         /** BatchSubmitResponseTask */
         BatchSubmitResponseTask: {
@@ -721,11 +721,10 @@ export interface components {
              * Reason
              * @description Reason for exception
              */
-            reason?: string;
+            reason?: string | null;
         };
         /**
          * BuildStatus
-         * @description An enumeration.
          * @enum {string}
          */
         BuildStatus: "provided" | "submitted" | "initialized" | "queued" | "building" | "ready" | "failed";
@@ -733,10 +732,10 @@ export interface components {
          * ComputeVersionResponse
          * @example {
          *       "api": "1.0.9",
-         *       "min_sdk_version": "1.0.10",
-         *       "min_ep_version": "1.0.10",
+         *       "container_service": "0.0.1",
          *       "git_sha": "3ae0ff6bc42b6d5f9d92f3c426fe9e535a841hb6",
-         *       "container_service": "0.0.1"
+         *       "min_ep_version": "1.0.10",
+         *       "min_sdk_version": "1.0.10"
          *     }
          */
         ComputeVersionResponse: {
@@ -749,22 +748,22 @@ export interface components {
              * Min Sdk Version
              * @description Minimum SDK version
              */
-            min_sdk_version?: string;
+            min_sdk_version?: string | null;
             /**
              * Min Ep Version
              * @description Minimum endpoint version
              */
-            min_ep_version?: string;
+            min_ep_version?: string | null;
             /**
              * Git Sha
              * @description Git SHA of the latest commit
              */
-            git_sha?: string;
+            git_sha?: string | null;
             /**
              * Container Service
              * @description Container service version
              */
-            container_service?: string;
+            container_service?: string | null;
         };
         /** ConsoleNodeInfo */
         ConsoleNodeInfo: {
@@ -772,64 +771,64 @@ export interface components {
              * Total Worker Count
              * @description Total number of provisioned workers on the node
              */
-            total_worker_count?: number;
+            total_worker_count?: number | null;
             /**
              * Idle Duration Seconds
              * @description Idle duration in seconds
              */
-            idle_duration_seconds?: number;
+            idle_duration_seconds?: number | null;
             /**
              * Python Version
              * @description Node Python version
              */
-            python_version?: string;
+            python_version?: string | null;
             /**
              * Endpoint Version
              * @description Version of `globus-compute-endpoint` running on the node
              */
-            endpoint_version?: string;
+            endpoint_version?: string | null;
             /**
              * Sdk Version
              * @description Version of `globus-compute-sdk` running on the node
              */
-            sdk_version?: string;
+            sdk_version?: string | null;
         };
         /**
          * ConsoleResponse
          * @example {
          *       "user_endpoints": [
          *         {
-         *           "user_endpoint_id": "7348422a-1074-427b-a08a-0771068afccc",
+         *           "account": "my-slurm-account",
          *           "active": true,
-         *           "python_version": "3.12.7",
+         *           "config": "engine:\n  type: GlobusComputeEngine\n  max_workers_per_node: 2\n  provider:\n    type: SlurmProvider\n    account: my-slurm-account\n    partition: caslake\n    worker_init: 'module load Anaconda; source activate compute-env'\n    nodes_per_block: 1\n    max_blocks: 1\n  address:\n    type: address_by_interface\n    ifname: bond0\n",
          *           "endpoint_version": "3.1.1",
-         *           "posix_pid": 12345,
-         *           "posix_username": "test_user",
-         *           "start_time_iso": "2025-01-02T21:20:19.123456-05:00",
-         *           "start_time_unix": 1735870819.123456,
-         *           "last_heartbeat_unix": 1735884207.498273,
-         *           "running_task_count": 3,
-         *           "queued_task_count": 0,
+         *           "engine_type": "GlobusComputeEngine",
          *           "executed_task_count": 15,
-         *           "total_worker_count": 2,
          *           "idle_worker_count": 0,
-         *           "total_node_count": 1,
+         *           "last_heartbeat_unix": 1735884207.498273,
          *           "node_info": {
          *             "some_job_id": [
          *               {
-         *                 "total_worker_count": 2,
+         *                 "endpoint_version": "3.1.1",
          *                 "idle_duration_seconds": 0,
          *                 "python_version": "3.12.7",
-         *                 "endpoint_version": "3.1.1",
-         *                 "sdk_version": "3.1.1"
+         *                 "sdk_version": "3.1.1",
+         *                 "total_worker_count": 2
          *               }
          *             ]
          *           },
-         *           "engine_type": "GlobusComputeEngine",
+         *           "posix_pid": 12345,
+         *           "posix_username": "test_user",
          *           "provider_type": "SlurmProvider",
-         *           "account": "my-slurm-account",
+         *           "python_version": "3.12.7",
          *           "queue": "caslake",
-         *           "config": "engine:\n  type: GlobusComputeEngine\n  max_workers_per_node: 2\n  provider:\n    type: SlurmProvider\n    account: my-slurm-account\n    partition: caslake\n    worker_init: 'module load Anaconda; source activate compute-env'\n    nodes_per_block: 1\n    max_blocks: 1\n  address:\n    type: address_by_interface\n    ifname: bond0\n"
+         *           "queued_task_count": 0,
+         *           "running_task_count": 3,
+         *           "start_time_iso": "2025-01-02T21:20:19.123456-05:00",
+         *           "start_time_unix": 1735870819.123456,
+         *           "total_node_count": 1,
+         *           "total_worker_count": 2,
+         *           "user_endpoint_id": "7348422a-1074-427b-a08a-0771068afccc"
          *         }
          *       ]
          *     }
@@ -859,12 +858,12 @@ export interface components {
              * Python Version
              * @description User endpoint Python version
              */
-            python_version?: string;
+            python_version?: string | null;
             /**
              * Endpoint Version
              * @description User endpoint version
              */
-            endpoint_version?: string;
+            endpoint_version?: string | null;
             /**
              * Client Sdk Versions
              * @description SDK versions used to submit tasks to the user endpoint
@@ -874,106 +873,105 @@ export interface components {
              * Posix Pid
              * @description User endpoint process ID
              */
-            posix_pid?: number;
+            posix_pid?: number | null;
             /**
              * Posix Username
              * @description Local POSIX user running the user endpoint
              */
-            posix_username?: string;
+            posix_username?: string | null;
             /**
              * Start Time Iso
-             * Format: date-time
              * @description User endpoint start time in ISO format including timezone offset
              */
-            start_time_iso?: string;
+            start_time_iso?: string | null;
             /**
              * Start Time Unix
              * @description UNIX timestamp indicating when the user endpoint was started
              */
-            start_time_unix?: number;
+            start_time_unix?: number | null;
             /**
              * Last Heartbeat Unix
              * @description UNIX timestamp indicating when the services last processed a heartbeat for the user endpoint
              */
-            last_heartbeat_unix?: number;
+            last_heartbeat_unix?: number | null;
             /**
              * Total Worker Count
              * @description Total number of provisioned workers
              */
-            total_worker_count?: number;
+            total_worker_count?: number | null;
             /**
              * Idle Worker Count
              * @description Number of idle workers
              */
-            idle_worker_count?: number;
+            idle_worker_count?: number | null;
             /**
              * Total Node Count
              * @description Total number of provisioned nodes
              */
-            total_node_count?: number;
+            total_node_count?: number | null;
             /**
              * Node Info
              * @description Details for each provisioned node, indexed by job ID
              */
             node_info?: {
                 [key: string]: components["schemas"]["ConsoleNodeInfo"][];
-            };
+            } | null;
             /**
              * Running Task Count
              * @description Number of running tasks
              */
-            running_task_count?: number;
+            running_task_count?: number | null;
             /**
              * Queued Task Count
              * @description Number of queued tasks
              */
-            queued_task_count?: number;
+            queued_task_count?: number | null;
             /**
              * Executed Task Count
              * @description Number of executed tasks
              */
-            executed_task_count?: number;
+            executed_task_count?: number | null;
             /**
              * Engine Type
              * @description User endpoint engine type. See our documentation for more information: https://globus-compute.readthedocs.io/en/latest/endpoints/config_reference.html#user-endpoint-configuration
              */
-            engine_type?: string;
+            engine_type?: string | null;
             /**
              * Provider Type
              * @description User endpoint provider type. See our documentation for more information: https://globus-compute.readthedocs.io/en/latest/endpoints/config_reference.html#user-endpoint-configuration
              */
-            provider_type?: string;
+            provider_type?: string | null;
             /**
              * Account
              * @description The account against which the scheduler charges resources that are consumed by the user endpoint
              */
-            account?: string;
+            account?: string | null;
             /**
              * Queue
              * @description The scheduler queue to which the user endpoint will submit jobs
              */
-            queue?: string;
+            queue?: string | null;
             /**
              * Config
              * @description User endpoint configuration YAML content. We do not include this field by default because it may be quite large. Users must explicitly request it using the `include_fields` query parameter.
              */
-            config?: string;
+            config?: string | null;
         };
         /**
          * ContainerBuildRequest
          * @example {
-         *       "name": "My Container",
-         *       "description": "Container with vim and git installed using apt and numpy and pandas installed using pip.",
          *       "apt": [
          *         "vim",
          *         "git"
          *       ],
+         *       "conda": [],
+         *       "description": "Container with vim and git installed using apt and numpy and pandas installed using pip.",
+         *       "name": "My Container",
+         *       "payload_url": "https://github.com/my-container",
          *       "pip": [
          *         "numpy",
          *         "pandas"
-         *       ],
-         *       "conda": [],
-         *       "payload_url": "https://github.com/my-container"
+         *       ]
          *     }
          */
         ContainerBuildRequest: {
@@ -986,7 +984,7 @@ export interface components {
              * Description
              * @description Long container description
              */
-            description?: string;
+            description?: string | null;
             /**
              * Apt
              * @description Optional list of package names to be installed via apt-get
@@ -1004,10 +1002,9 @@ export interface components {
             conda: string[];
             /**
              * Payload Url
-             * Format: uri
              * @description URL to GitHub repo or publicly readable zip file
              */
-            payload_url?: string;
+            payload_url?: string | null;
         };
         /**
          * ContainerBuildResponse
@@ -1036,10 +1033,10 @@ export interface components {
         /**
          * ContainerRegisterRequest
          * @example {
-         *       "name": "My Container",
          *       "description": "My container description",
-         *       "type": "docker",
-         *       "location": "docker://my-container:latest"
+         *       "location": "docker://my-container:latest",
+         *       "name": "My Container",
+         *       "type": "docker"
          *     }
          */
         ContainerRegisterRequest: {
@@ -1052,7 +1049,7 @@ export interface components {
              * Description
              * @description Long container description
              */
-            description?: string;
+            description?: string | null;
             type: components["schemas"]["ContainerRuntime"];
             /**
              * Location
@@ -1095,32 +1092,32 @@ export interface components {
             name: string;
             /** @description Container build status */
             build_status: components["schemas"]["BuildStatus"];
-            type?: components["schemas"]["ContainerRuntime"];
+            type?: components["schemas"]["ContainerRuntime"] | null;
             /**
              * Location
              * @description Container location
              */
-            location?: string;
+            location?: string | null;
             /**
              * Build Stderr
              * @description Container build stderr
              */
-            build_stderr?: string;
+            build_stderr?: string | null;
             /**
              * Err Message
              * @description Container error message
              */
-            err_message?: string;
+            err_message?: string | null;
         };
         /**
          * ContainerStatusResponse
          * @example {
          *       "container": {
-         *         "container_uuid": "b7a42fa2-e97f-4061-9e64-2ede22ae7f5e",
-         *         "name": "My Container",
          *         "build_status": "ready",
-         *         "type": "docker",
-         *         "location": "docker://my-container:latest"
+         *         "container_uuid": "b7a42fa2-e97f-4061-9e64-2ede22ae7f5e",
+         *         "location": "docker://my-container:latest",
+         *         "name": "My Container",
+         *         "type": "docker"
          *       }
          *     }
          */
@@ -1143,24 +1140,24 @@ export interface components {
         /**
          * Endpoint
          * @example {
-         *       "uuid": "7348422a-1074-427b-a08a-0771068afccc",
-         *       "name": "My Endpoint",
-         *       "display_name": "My Endpoint's display name",
-         *       "multi_user": false,
-         *       "high_assurance": false,
-         *       "public": false,
-         *       "endpoint_config": "",
-         *       "user_config_template": {},
-         *       "user_config_schema": {},
          *       "description": "My endpoint description",
-         *       "hostname": "my-endpoint",
-         *       "local_user": "user",
-         *       "ip_address": "140.221.112.13",
+         *       "display_name": "My Endpoint's display name",
+         *       "endpoint_config": "",
          *       "endpoint_version": "1.0.10",
-         *       "sdk_version": "1.0.10",
+         *       "high_assurance": false,
+         *       "hostname": "my-endpoint",
+         *       "ip_address": "140.221.112.13",
+         *       "local_user": "user",
+         *       "multi_user": false,
+         *       "name": "My Endpoint",
+         *       "public": false,
          *       "python_version": "3.12.7",
+         *       "sdk_version": "1.0.10",
+         *       "subscription_admin_verified": false,
          *       "subscription_uuid": "b0b7b089-707a-4d90-a036-05b7964d6b60",
-         *       "subscription_admin_verified": false
+         *       "user_config_schema": {},
+         *       "user_config_template": {},
+         *       "uuid": "7348422a-1074-427b-a08a-0771068afccc"
          *     }
          */
         Endpoint: {
@@ -1200,64 +1197,66 @@ export interface components {
              * @deprecated
              * @description This field is deprecated. Please use endpoint_config instead.
              */
-            config?: Record<string, unknown>;
+            config?: {
+                [key: string]: unknown;
+            } | null;
             /**
              * Endpoint Config
              * @description The contents of the endpoint's configuration file (config.yaml).
              */
-            endpoint_config?: string;
+            endpoint_config?: string | null;
             /**
              * User Config Template
              * @description Multi-user endpoints will render this Jinja template with user-provided variables to generate a user-specific endpoint configuration.
              */
-            user_config_template?: string;
+            user_config_template?: string | null;
             /**
              * User Config Schema
              * @description User endpoint configuration schema
              */
-            user_config_schema?: Record<string, unknown>;
+            user_config_schema?: {
+                [key: string]: unknown;
+            } | null;
             /**
              * Description
              * @description Endpoint description
              */
-            description?: string;
+            description?: string | null;
             /**
              * Hostname
              * @description Endpoint hostname
              */
-            hostname?: string;
+            hostname?: string | null;
             /**
              * Local User
              * @description Endpoint local user
              */
-            local_user?: string;
+            local_user?: string | null;
             /**
              * Ip Address
-             * Format: ipvanyaddress
              * @description Endpoint IP address
              */
-            ip_address?: string;
+            ip_address?: string | null;
             /**
              * Endpoint Version
              * @description Endpoint version
              */
-            endpoint_version?: string;
+            endpoint_version?: string | null;
             /**
              * Sdk Version
              * @description Endpoint SDK version
              */
-            sdk_version?: string;
+            sdk_version?: string | null;
             /**
              * Python Version
              * @description Endpoint Python version
              */
-            python_version?: string;
+            python_version?: string | null;
             /**
              * Subscription Uuid
-             * Format: uuid
              * @description Globus subscription UUID
              */
-            subscription_uuid?: string;
+            subscription_uuid?: string | null;
             /**
              * Subscription Admin Verified
              * @description Indicates that the endpoint has been verified as a valid organizational resource by a Globus subscription administrator.
@@ -1269,23 +1268,23 @@ export interface components {
          * EndpointConfig
          * @example {
          *       "endpoint_id": "7348422a-1074-427b-a08a-0771068afccc",
-         *       "task_queue_info": {
-         *         "connection_url": "amqps://user:password@mq.fqdn",
-         *         "exchange": "some_exchange",
-         *         "queue": "some_queue"
-         *       },
          *       "result_queue_info": {
          *         "connection_url": "amqps://user:password@mq.fqdn",
          *         "exchange": "some_exchange",
          *         "queue": "some_queue",
          *         "queue_publish_kwargs": {
          *           "exchange": "some_exchange",
-         *           "routing_key": "some_key",
          *           "mandatory": true,
          *           "properties": {
          *             "delivery_mode": 2
-         *           }
+         *           },
+         *           "routing_key": "some_key"
          *         }
+         *       },
+         *       "task_queue_info": {
+         *         "connection_url": "amqps://user:password@mq.fqdn",
+         *         "exchange": "some_exchange",
+         *         "queue": "some_queue"
          *       },
          *       "warnings": []
          *     }
@@ -1303,7 +1302,7 @@ export interface components {
              * Warnings
              * @description Warnings
              */
-            warnings?: string[];
+            warnings?: string[] | null;
         };
         /** EndpointConfigQueueInfo */
         EndpointConfigQueueInfo: {
@@ -1385,10 +1384,10 @@ export interface components {
         /**
          * EndpointListResponseEntry
          * @example {
-         *       "uuid": "7348422a-1074-427b-a08a-0771068afccc",
-         *       "name": "My Endpoint",
          *       "display_name": "My Endpoint's display name",
-         *       "owner": "0b3390f4-ca5f-496d-a7b9-9e4faed46bff"
+         *       "name": "My Endpoint",
+         *       "owner": "0b3390f4-ca5f-496d-a7b9-9e4faed46bff",
+         *       "uuid": "7348422a-1074-427b-a08a-0771068afccc"
          *     }
          */
         EndpointListResponseEntry: {
@@ -1422,58 +1421,61 @@ export interface components {
              * @deprecated
              * @description This field is deprecated. Please use endpoint_config instead.
              */
-            config?: Record<string, unknown>;
+            config?: {
+                [key: string]: unknown;
+            } | null;
             /**
              * Endpoint Config
              * @description The contents of the endpoint's configuration file (config.yaml).
              */
-            endpoint_config?: string;
+            endpoint_config?: string | null;
             /**
              * User Config Template
              * @description Multi-user endpoints will render this Jinja template with user-provided variables to generate a user-specific endpoint configuration.
              */
-            user_config_template?: string;
+            user_config_template?: string | null;
             /**
              * User Config Schema
              * @description User endpoint configuration schema
              */
-            user_config_schema?: Record<string, unknown>;
+            user_config_schema?: {
+                [key: string]: unknown;
+            } | null;
             /**
              * Description
              * @description Endpoint description
              */
-            description?: string;
+            description?: string | null;
             /**
              * Ip Address
-             * Format: ipvanyaddress
              * @description Endpoint IP address
              */
-            ip_address?: string;
+            ip_address?: string | null;
             /**
              * Hostname
              * @description Endpoint hostname
              */
-            hostname?: string;
+            hostname?: string | null;
             /**
              * Local User
              * @description Endpoint local user
              */
-            local_user?: string;
+            local_user?: string | null;
             /**
              * Sdk Version
              * @description Endpoint SDK version
              */
-            sdk_version?: string;
+            sdk_version?: string | null;
             /**
              * Endpoint Version
              * @description Endpoint version
              */
-            endpoint_version?: string;
+            endpoint_version?: string | null;
             /**
              * Python Version
              * @description Endpoint Python version
              */
-            python_version?: string;
+            python_version?: string | null;
         };
         /** EndpointRegisterMetadata */
         EndpointRegisterMetadata: {
@@ -1482,66 +1484,78 @@ export interface components {
              * @deprecated
              * @description This field is deprecated. Please use endpoint_config instead.
              */
-            config?: Record<string, unknown>;
+            config?: {
+                [key: string]: unknown;
+            } | null;
             /**
              * Endpoint Config
              * @description The contents of the endpoint's configuration file (config.yaml).
              */
-            endpoint_config?: string;
+            endpoint_config?: string | null;
             /**
              * User Config Template
              * @description Multi-user endpoints will render this Jinja template with user-provided variables to generate a user-specific endpoint configuration.
              */
-            user_config_template?: string;
+            user_config_template?: string | null;
             /**
              * User Config Schema
              * @description User endpoint configuration schema
              */
-            user_config_schema?: Record<string, unknown>;
+            user_config_schema?: {
+                [key: string]: unknown;
+            } | null;
             /**
              * Description
              * @description Endpoint description
              */
-            description?: string;
+            description?: string | null;
             /**
              * Ip Address
              * @description Endpoint IP address
              */
-            ip_address?: string;
+            ip_address?: string | null;
             /**
              * Hostname
              * @description Endpoint hostname
              */
-            hostname?: string;
+            hostname?: string | null;
             /**
              * Local User
              * @description Endpoint local user
              */
-            local_user?: string;
+            local_user?: string | null;
             /**
              * Sdk Version
              * @description Endpoint SDK version
              */
-            sdk_version?: string;
+            sdk_version?: string | null;
             /**
              * Endpoint Version
              * @description Endpoint version
              */
-            endpoint_version?: string;
+            endpoint_version?: string | null;
             /**
              * Python Version
              * @description Endpoint Python version
              */
-            python_version?: string;
+            python_version?: string | null;
         };
         /**
          * EndpointRegisterResponse
          * @example {
          *       "endpoint_id": "7348422a-1074-427b-a08a-0771068afccc",
-         *       "task_queue_info": {
+         *       "heartbeat_queue_info": {
          *         "connection_url": "amqps://user:password@mq.fqdn",
          *         "exchange": "some_exchange",
-         *         "queue": "some_queue"
+         *         "queue": "some_queue",
+         *         "queue_publish_kwargs": {
+         *           "exchange": "some_exchange",
+         *           "mandatory": true,
+         *           "properties": {
+         *             "delivery_mode": 2
+         *           },
+         *           "routing_key": "some_key"
+         *         }
          *       },
          *       "result_queue_info": {
          *         "connection_url": "amqps://user:password@mq.fqdn",
@@ -1549,25 +1563,17 @@ export interface components {
          *         "queue": "some_queue",
          *         "queue_publish_kwargs": {
          *           "exchange": "some_exchange",
-         *           "routing_key": "some_key",
          *           "mandatory": true,
          *           "properties": {
          *             "delivery_mode": 2
-         *           }
+         *           },
+         *           "routing_key": "some_key"
          *         }
          *       },
-         *       "heartbeat_queue_info": {
+         *       "task_queue_info": {
          *         "connection_url": "amqps://user:password@mq.fqdn",
          *         "exchange": "some_exchange",
-         *         "queue": "some_queue",
-         *         "queue_publish_kwargs": {
-         *           "exchange": "some_exchange",
-         *           "routing_key": "some_key",
-         *           "mandatory": true,
-         *           "properties": {
-         *             "delivery_mode": 2
-         *           }
-         *         }
+         *         "queue": "some_queue"
          *       }
          *     }
          */
@@ -1585,7 +1591,7 @@ export interface components {
              * Warnings
              * @description Warnings
              */
-            warnings?: string[];
+            warnings?: string[] | null;
         };
         /** EndpointStatusDetails */
         EndpointStatusDetails: {
@@ -1593,43 +1599,45 @@ export interface components {
              * Total Workers
              * @description Total number of workers
              */
-            total_workers: number;
+            total_workers: number | ("NaN" | "Infinity" | "-Infinity");
             /**
              * Idle Workers
              * @description Number of idle workers
              */
-            idle_workers: number;
+            idle_workers: number | ("NaN" | "Infinity" | "-Infinity");
             /**
              * Pending Tasks
              * @description Number of pending tasks
              */
-            pending_tasks: number;
+            pending_tasks: number | ("NaN" | "Infinity" | "-Infinity");
             /**
              * Outstanding Tasks
              * @description Number of outstanding tasks
              */
-            outstanding_tasks: number;
+            outstanding_tasks: number | ("NaN" | "Infinity" | "-Infinity");
             /**
              * Managers
              * @description Number of managers
              */
-            managers?: number;
+            managers?: number | ("NaN" | "Infinity" | "-Infinity") | null;
+        } & {
+            [key: string]: unknown;
         };
         /**
          * EndpointStatusResponse
          * @example {
          *       "details": {
-         *         "total_workers": 1,
          *         "idle_workers": 0,
-         *         "pending_tasks": 0,
+         *         "managers": 1,
          *         "outstanding_tasks": 0,
-         *         "managers": 1
+         *         "pending_tasks": 0,
+         *         "total_workers": 1
          *       },
          *       "status": "online"
          *     }
          */
         EndpointStatusResponse: {
-            details?: components["schemas"]["EndpointStatusDetails"];
+            details?: components["schemas"]["EndpointStatusDetails"] | null;
             /**
              * Status
              * @description Endpoint status
@@ -1658,10 +1666,10 @@ export interface components {
         /**
          * Function
          * @example {
-         *       "function_uuid": "11291b86-4f9c-47cb-848e-d3c06285951c",
-         *       "function_name": "My Function",
-         *       "function_code": "wuX2RpbGyUjBBfY3JlYXRlX2Z1bmN0 ...",
          *       "description": "My first function",
+         *       "function_code": "wuX2RpbGyUjBBfY3JlYXRlX2Z1bmN0 ...",
+         *       "function_name": "My Function",
+         *       "function_uuid": "11291b86-4f9c-47cb-848e-d3c06285951c",
          *       "metadata": {
          *         "python_version": "3.11.3",
          *         "sdk_version": "2.3.3"
@@ -1679,21 +1687,18 @@ export interface components {
              * Function Name
              * @description Function name
              */
-            function_name?: string;
+            function_name?: string | null;
             /**
              * Description
              * @description Function description
              */
-            description?: string;
+            description?: string | null;
             /**
              * Function Code
              * @description Serialized function source code
              */
             function_code: string;
-            /**
-             * Metadata
-             * @description Function metadata
-             */
+            /** @description Function metadata */
             metadata: components["schemas"]["FunctionMetadata"];
         };
         /** FunctionMetadata */
@@ -1702,12 +1707,12 @@ export interface components {
              * Python Version
              * @description Python version used to serialize function.
              */
-            python_version?: string;
+            python_version?: string | null;
             /**
              * Sdk Version
              * @description SDK version used to serialize function.
              */
-            sdk_version?: string;
+            sdk_version?: string | null;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -1727,16 +1732,29 @@ export interface components {
              * Warnings
              * @description Warnings
              */
-            warnings?: string[];
+            warnings?: string[] | null;
         };
         /**
          * MultiUserEndpointRegisterResponse
          * @example {
-         *       "endpoint_id": "7348422a-1074-427b-a08a-0771068afccc",
          *       "command_queue_info": {
          *         "connection_url": "amqps://user:password@mq.fqdn",
          *         "exchange": "some_exchange",
          *         "queue": "some_queue"
+         *       },
+         *       "endpoint_id": "7348422a-1074-427b-a08a-0771068afccc",
+         *       "heartbeat_queue_info": {
+         *         "connection_url": "amqps://user:password@mq.fqdn",
+         *         "exchange": "some_exchange",
+         *         "queue": "some_queue",
+         *         "queue_publish_kwargs": {
+         *           "exchange": "some_exchange",
+         *           "mandatory": true,
+         *           "properties": {
+         *             "delivery_mode": 2
+         *           },
+         *           "routing_key": "some_key"
+         *         }
          *       },
          *       "result_queue_info": {
          *         "connection_url": "amqps://user:password@mq.fqdn",
@@ -1744,24 +1762,11 @@ export interface components {
          *         "queue": "some_queue",
          *         "queue_publish_kwargs": {
          *           "exchange": "some_exchange",
-         *           "routing_key": "some_key",
          *           "mandatory": true,
          *           "properties": {
          *             "delivery_mode": 2
-         *           }
-         *         }
-         *       },
-         *       "heartbeat_queue_info": {
-         *         "connection_url": "amqps://user:password@mq.fqdn",
-         *         "exchange": "some_exchange",
-         *         "queue": "some_queue",
-         *         "queue_publish_kwargs": {
-         *           "exchange": "some_exchange",
-         *           "routing_key": "some_key",
-         *           "mandatory": true,
-         *           "properties": {
-         *             "delivery_mode": 2
-         *           }
+         *           },
+         *           "routing_key": "some_key"
          *         }
          *       }
          *     }
@@ -1780,7 +1785,7 @@ export interface components {
              * Warnings
              * @description Warnings
              */
-            warnings?: string[];
+            warnings?: string[] | null;
         };
         /** PlatformInfo */
         PlatformInfo: {
@@ -1791,32 +1796,32 @@ export interface components {
             architecture?: [
                 string,
                 string
-            ];
+            ] | null;
             /**
              * Machine
              * @description Submit [host machine type](https://docs.python.org/3/library/platform.html#platform.machine) (e.g., `x86_64`)
              */
-            machine?: string;
+            machine?: string | null;
             /**
              * Node
              * @description Submit [host node name](https://docs.python.org/3/library/platform.html#platform.node) (e.g., `login03`)
              */
-            node?: string;
+            node?: string | null;
             /**
              * Platform
              * @description Submit [host platform](https://docs.python.org/3/library/platform.html#platform.platform) (e.g., `Linux-6.14.0-29-generic-x86_64-with-glibc2.39`)
              */
-            platform?: string;
+            platform?: string | null;
             /**
              * Processor
              * @description Submit [host processor name](https://docs.python.org/3/library/platform.html#platform.processor) (e.g., `x86_64`)
              */
-            processor?: string;
+            processor?: string | null;
             /**
              * Release
              * @description Submit [host os release](https://docs.python.org/3/library/platform.html#platform.release) (e.g., `6.16.5-2-generic`)
              */
-            release?: string;
+            release?: string | null;
         };
         /** PythonInfo */
         PythonInfo: {
@@ -1824,7 +1829,7 @@ export interface components {
              * Version
              * @description Python [version as a dotted triple](https://docs.python.org/3/library/platform.html#platform.python_version) (e.g., `3.13.7`)
              */
-            version?: string;
+            version?: string | null;
             /**
              * Version Tuple
              * @description Python version as a tuple (major, minor, micro)
@@ -1833,7 +1838,7 @@ export interface components {
                 number,
                 number,
                 number
-            ];
+            ] | null;
             /**
              * Version Info
              * @description Python [version info](https://docs.python.org/3/library/sys.html#sys.version_info) from `list(sys.version_info)` (e.g., `[3, 13, 7, 'final', 0]`)
@@ -1844,22 +1849,22 @@ export interface components {
                 number,
                 string,
                 number
-            ];
+            ] | null;
             /**
              * Version Description
              * @description Python [version string](https://docs.python.org/3/library/sys.html#sys.version) from `sys.version` (e.g., `3.13.7 (main, Aug 21 2025, 13:50:03) [GCC 13.3.0]`)
              */
-            version_description?: string;
+            version_description?: string | null;
             /**
              * Implementation
              * @description Python [implementation](https://docs.python.org/3/library/platform.html#platform.python_implementation) (e.g., `CPython`)
              */
-            implementation?: string;
+            implementation?: string | null;
             /**
              * Compiler
              * @description String [identifying the compiler](https://docs.python.org/3/library/platform.html#platform.python_compiler) used for compiling Python
              */
-            compiler?: string;
+            compiler?: string | null;
         };
         /** ReadQueueInfo */
         ReadQueueInfo: {
@@ -1890,23 +1895,23 @@ export interface components {
              * Ranks Per Node
              * @description Number of MPI ranks to launch per node.
              */
-            ranks_per_node?: number;
+            ranks_per_node?: number | null;
             /**
              * Num Ranks
              * @description Total number of MPI ranks to launch across all nodes.
              */
-            num_ranks?: number;
+            num_ranks?: number | null;
             /**
              * Launcher Options
              * @description Options passed through to the MPI launcher command line prefix.
              */
-            launcher_options?: string;
+            launcher_options?: string | null;
         };
         /**
          * ResultAmqpUrlResponse
          * @example {
-         *       "queue_prefix": "some_prefix",
-         *       "connection_url": "amqps://user:password@amq.fqdn"
+         *       "connection_url": "amqps://user:password@amq.fqdn",
+         *       "queue_prefix": "some_prefix"
          *     }
          */
         ResultAmqpUrlResponse: {
@@ -1938,12 +1943,12 @@ export interface components {
         /**
          * TaskGroupResponse
          * @example {
-         *       "taskgroup_id": "4defbef8-0a1a-4c7b-9c83-b59174fca395",
          *       "create_websockets_queue": true,
+         *       "taskgroup_id": "4defbef8-0a1a-4c7b-9c83-b59174fca395",
          *       "tasks": [
          *         {
-         *           "id": "9e38ed49-7d05-45c4-9ad0-bfa3bc92d6a1",
-         *           "created_at": "2021-05-05T15:00:00.000000"
+         *           "created_at": "2021-05-05T15:00:00.000000",
+         *           "id": "9e38ed49-7d05-45c4-9ad0-bfa3bc92d6a1"
          *         }
          *       ]
          *     }
@@ -1959,7 +1964,7 @@ export interface components {
              * Create Websockets Queue
              * @description Create websockets queue
              */
-            create_websockets_queue?: boolean;
+            create_websockets_queue?: boolean | null;
             /** Tasks */
             tasks: components["schemas"]["TaskGroupResponseTask"][];
         };
@@ -1981,20 +1986,20 @@ export interface components {
         /**
          * TaskStatusResponse
          * @example {
-         *       "task_id": "7dac44aa-c480-4460-b453-a47b03b031f4",
-         *       "status": "success",
-         *       "result": "10000",
          *       "completion_t": "1677183605.212898",
          *       "details": {
-         *         "os": "Linux-5.19.0-1025-aws-x86_64-with-glibc2.35",
-         *         "python_version": "3.10.4",
          *         "dill_version": "0.3.5.1",
          *         "globus_compute_sdk_version": "2.3.2",
+         *         "os": "Linux-5.19.0-1025-aws-x86_64-with-glibc2.35",
+         *         "python_version": "3.10.4",
          *         "task_transitions": {
-         *           "execution-start": 1692742841.843334,
-         *           "execution-end": 1692742846.123456
+         *           "execution-end": 1692742846.123456,
+         *           "execution-start": 1692742841.843334
          *         }
-         *       }
+         *       },
+         *       "result": "10000",
+         *       "status": "success",
+         *       "task_id": "7dac44aa-c480-4460-b453-a47b03b031f4"
          *     }
          */
         TaskStatusResponse: {
@@ -2008,27 +2013,29 @@ export interface components {
              * Status
              * @description Task status
              */
-            status?: unknown;
+            status: unknown;
             /**
              * Result
              * @description Task result
              */
-            result?: string;
+            result?: string | null;
             /**
              * Completion T
              * @description Task completion Unix time
              */
-            completion_t?: string;
+            completion_t?: string | null;
             /**
              * Exception
              * @description Exception
              */
-            exception?: string;
+            exception?: string | null;
             /**
              * Details
              * @description Task execution details
              */
-            details?: Record<string, unknown>;
+            details?: {
+                [key: string]: unknown;
+            } | null;
         };
         /** UserRuntime */
         UserRuntime: {
@@ -2036,28 +2043,22 @@ export interface components {
              * Globus Compute Sdk Version
              * @description Globus Compute SDK version (e.g., `4.1.0`)
              */
-            globus_compute_sdk_version?: string;
+            globus_compute_sdk_version?: string | null;
             /**
              * Globus Sdk Version
              * @description Globus SDK version (e.g., `3.63.0`)
              */
-            globus_sdk_version?: string;
+            globus_sdk_version?: string | null;
             /**
              * Python Version
              * @deprecated
              * @description [use `python` instead] Python version string from `sys.version`
              */
-            python_version?: string;
-            /**
-             * Python
-             * @description Information about the submitting user's Python runtime
-             */
-            python?: components["schemas"]["PythonInfo"];
-            /**
-             * Platform
-             * @description General platform information from the user's installation
-             */
-            platform?: components["schemas"]["PlatformInfo"];
+            python_version?: string | null;
+            /** @description Information about the submitting user's Python runtime */
+            python?: components["schemas"]["PythonInfo"] | null;
+            /** @description General platform information from the user's installation */
+            platform?: components["schemas"]["PlatformInfo"] | null;
         };
         /** ValidationError */
         ValidationError: {
@@ -2067,6 +2068,10 @@ export interface components {
             msg: string;
             /** Error Type */
             type: string;
+            /** Input */
+            input?: unknown;
+            /** Context */
+            ctx?: Record<string, unknown>;
         };
         /** ValidationErrorResponse */
         ValidationErrorResponse: {
@@ -2089,7 +2094,6 @@ export interface components {
         };
         /**
          * VersionService
-         * @description An enumeration.
          * @enum {string}
          */
         VersionService: "api" | "all";
@@ -2163,27 +2167,27 @@ export interface components {
         /**
          * EndpointRegisterRequest
          * @example {
-         *       "endpoint_name": "My Endpoint",
-         *       "display_name": "My Endpoint's display name",
-         *       "endpoint_uuid": "7348422a-1074-427b-a08a-0771068afccc",
-         *       "version": "1.0.10",
-         *       "multi_user": false,
          *       "allowed_functions": [
          *         "11291b86-4f9c-47cb-848e-d3c06285951c"
          *       ],
          *       "authentication_policy": "67b4e120-2638-4771-86bb-6ac2a0f69e0b",
+         *       "display_name": "My Endpoint's display name",
+         *       "endpoint_name": "My Endpoint",
+         *       "endpoint_uuid": "7348422a-1074-427b-a08a-0771068afccc",
          *       "metadata": {
-         *         "endpoint_config": "",
-         *         "user_config_template": {},
-         *         "user_config_schema": {},
          *         "description": "My endpoint description",
-         *         "ip_address": "140.221.112.13",
-         *         "hostname": "my-endpoint",
-         *         "local_user": "user",
-         *         "sdk_version": "1.0.10",
+         *         "endpoint_config": "",
          *         "endpoint_version": "1.0.10",
-         *         "python_version": "3.12.7"
-         *       }
+         *         "hostname": "my-endpoint",
+         *         "ip_address": "140.221.112.13",
+         *         "local_user": "user",
+         *         "python_version": "3.12.7",
+         *         "sdk_version": "1.0.10",
+         *         "user_config_schema": {},
+         *         "user_config_template": {}
+         *       },
+         *       "multi_user": false,
+         *       "version": "1.0.10"
          *     }
          */
         compute_web_service__schemas__v2__endpoint__EndpointRegisterRequest: {
@@ -2196,7 +2200,7 @@ export interface components {
              * Display Name
              * @description Endpoint display name
              */
-            display_name?: string;
+            display_name?: string | null;
             /**
              * Endpoint Uuid
              * Format: uuid
@@ -2207,7 +2211,7 @@ export interface components {
              * Version
              * @description Endpoint version
              */
-            version?: string;
+            version?: string | null;
             /**
              * Multi User
              * @description Endpoint multi-user mode
@@ -2218,14 +2222,13 @@ export interface components {
              * Allowed Functions
              * @description Functions that are allowed to be run on the endpoint
              */
-            allowed_functions?: string[];
+            allowed_functions?: string[] | null;
             /**
              * Authentication Policy
-             * Format: uuid
              * @description Endpoint users are evaluated against this Globus authentication policy. For more information on Globus authentication policies, visit https://docs.globus.org/api/auth/developer-guide/#authentication-policies.
              */
-            authentication_policy?: string;
-            metadata?: components["schemas"]["EndpointRegisterMetadata"];
+            authentication_policy?: string | null;
+            metadata?: components["schemas"]["EndpointRegisterMetadata"] | null;
         };
         /** RegisterFunctionMetadata */
         compute_web_service__schemas__v2__function__RegisterFunctionMetadata: {
@@ -2233,25 +2236,25 @@ export interface components {
              * Python Version
              * @description Python version used to serialize function.
              */
-            python_version?: string;
+            python_version?: string | null;
             /**
              * Sdk Version
              * @description SDK version used to serialize function.
              */
-            sdk_version?: string;
+            sdk_version?: string | null;
         };
         /**
          * RegisterFunctionRequest
          * @example {
-         *       "function_name": "My Function",
-         *       "function_code": "wuX2RpbGyUjBBfY3JlYXRlX2Z1bmN0 ...",
+         *       "container_uuid": "b7a42fa2-e97f-4061-9e64-2ede22ae7f5e",
          *       "description": "My first function",
+         *       "function_code": "wuX2RpbGyUjBBfY3JlYXRlX2Z1bmN0 ...",
+         *       "function_name": "My Function",
+         *       "group": "a2d6feb6-5386-4a06-8a22-99ea5ad7e651",
          *       "metadata": {
          *         "python_version": "3.11.3",
          *         "sdk_version": "2.3.3"
          *       },
-         *       "container_uuid": "b7a42fa2-e97f-4061-9e64-2ede22ae7f5e",
-         *       "group": "a2d6feb6-5386-4a06-8a22-99ea5ad7e651",
          *       "public": false
          *     }
          */
@@ -2265,7 +2268,7 @@ export interface components {
              * Entry Point
              * @description (DEPRECATED) Entry point
              */
-            entry_point?: string;
+            entry_point?: string | null;
             /**
              * Function Code
              * @description Serialized function source code
@@ -2275,20 +2278,18 @@ export interface components {
              * Description
              * @description Function description
              */
-            description?: string;
-            metadata?: components["schemas"]["compute_web_service__schemas__v2__function__RegisterFunctionMetadata"];
+            description?: string | null;
+            metadata?: components["schemas"]["compute_web_service__schemas__v2__function__RegisterFunctionMetadata"] | null;
             /**
              * Container Uuid
-             * Format: uuid
              * @description Container UUID
              */
-            container_uuid?: string;
+            container_uuid?: string | null;
             /**
              * Group
-             * Format: uuid
              * @description Globus group UUID
              */
-            group?: string;
+            group?: string | null;
             /**
              * Public
              * @description Public function
@@ -2313,8 +2314,8 @@ export interface components {
         /**
          * BatchSubmitRequest
          * @example {
-         *       "task_group_id": "97241626-8ff4-4550-9938-5909bd221869",
          *       "create_websocket_queue": false,
+         *       "task_group_id": "97241626-8ff4-4550-9938-5909bd221869",
          *       "tasks": [
          *         [
          *           "116f1b48-0aab-4228-92f0-021c2ab14b5e",
@@ -2332,10 +2333,9 @@ export interface components {
         compute_web_service__schemas__v2__task__BatchSubmitRequest: {
             /**
              * Task Group Id
-             * Format: uuid
              * @description Task group UUID
              */
-            task_group_id?: string;
+            task_group_id?: string | null;
             /**
              * Create Websocket Queue
              * @description Create websocket queue
@@ -2356,19 +2356,19 @@ export interface components {
          * BatchSubmitResponse
          * @example {
          *       "response": "success",
-         *       "task_group_id": "97241626-8ff4-4550-9938-5909bd221869",
          *       "results": [
          *         {
+         *           "http_status_code": 200,
          *           "status": "success",
-         *           "task_uuid": "7dac44aa-c480-4460-b453-a47b03b031f4",
-         *           "http_status_code": 200
+         *           "task_uuid": "7dac44aa-c480-4460-b453-a47b03b031f4"
          *         },
          *         {
+         *           "http_status_code": 200,
          *           "status": "success",
-         *           "task_uuid": "4b35645f-0c5b-465d-aaec-fee87f74ff5b",
-         *           "http_status_code": 200
+         *           "task_uuid": "4b35645f-0c5b-465d-aaec-fee87f74ff5b"
          *         }
-         *       ]
+         *       ],
+         *       "task_group_id": "97241626-8ff4-4550-9938-5909bd221869"
          *     }
          */
         compute_web_service__schemas__v2__task__BatchSubmitResponse: {
@@ -2379,10 +2379,9 @@ export interface components {
             response: string;
             /**
              * Task Group Id
-             * Format: uuid
              * @description Task group UUID
              */
-            task_group_id?: string;
+            task_group_id?: string | null;
             /**
              * Results
              * @description Task results
@@ -2412,29 +2411,29 @@ export interface components {
         /**
          * EndpointRegisterRequest
          * @example {
-         *       "endpoint_name": "my_endpoint",
-         *       "display_name": "My Endpoint's Display Name",
-         *       "version": "2.2.0",
-         *       "multi_user": false,
-         *       "public": false,
-         *       "high_assurance": false,
          *       "allowed_functions": [
          *         "11291b86-4f9c-47cb-848e-d3c06285951c"
          *       ],
          *       "authentication_policy": "67b4e120-2638-4771-86bb-6ac2a0f69e0b",
-         *       "subscription_uuid": "59b63c41-a765-4971-ac9a-41742059ade3",
+         *       "display_name": "My Endpoint's Display Name",
+         *       "endpoint_name": "my_endpoint",
+         *       "high_assurance": false,
          *       "metadata": {
-         *         "endpoint_config": "",
-         *         "user_config_template": {},
-         *         "user_config_schema": {},
          *         "description": "My endpoint description",
-         *         "ip_address": "140.221.112.13",
-         *         "hostname": "my-endpoint",
-         *         "local_user": "user",
-         *         "sdk_version": "2.2.0",
+         *         "endpoint_config": "",
          *         "endpoint_version": "2.2.0",
-         *         "python_version": "3.12.7"
-         *       }
+         *         "hostname": "my-endpoint",
+         *         "ip_address": "140.221.112.13",
+         *         "local_user": "user",
+         *         "python_version": "3.12.7",
+         *         "sdk_version": "2.2.0",
+         *         "user_config_schema": {},
+         *         "user_config_template": {}
+         *       },
+         *       "multi_user": false,
+         *       "public": false,
+         *       "subscription_uuid": "59b63c41-a765-4971-ac9a-41742059ade3",
+         *       "version": "2.2.0"
          *     }
          */
         compute_web_service__schemas__v3__endpoints__EndpointRegisterRequest: {
@@ -2447,12 +2446,12 @@ export interface components {
              * Display Name
              * @description Endpoint display name
              */
-            display_name?: string;
+            display_name?: string | null;
             /**
              * Version
              * @description Endpoint version
              */
-            version?: string;
+            version?: string | null;
             /**
              * Multi User
              * @description Endpoint multi-user mode
@@ -2469,34 +2468,29 @@ export interface components {
              * Allowed Functions
              * @description Functions that are allowed to be run on the endpoint
              */
-            allowed_functions?: string[];
+            allowed_functions?: string[] | null;
             /**
              * Authentication Policy
-             * Format: uuid
              * @description Endpoint users are evaluated against this Globus authentication policy. For more information on Globus authentication policies, visit https://docs.globus.org/api/auth/developer-guide/#authentication-policies.
              */
-            authentication_policy?: string;
+            authentication_policy?: string | null;
             /**
              * Subscription Uuid
-             * Format: uuid
              * @description Associates an endpoint with a subscription.
              */
-            subscription_uuid?: string;
+            subscription_uuid?: string | null;
             /**
              * Admins
              * @description A set of Globus Auth identity IDs that, in addition to the owner, have administrative access to the endpoint. This field requires an active Globus subscription (i.e., `subscription_uuid` field).
              */
-            admins?: string[];
+            admins?: string[] | null;
             /**
              * Public
              * @description Indicates if all users can discover the multi-user endpoint. Please note that this field does not control access to the endpoint, so it should not be used as a security feature.
              * @default false
              */
             public: boolean;
-            /**
-             * Metadata
-             * @description Endpoint metadata
-             */
+            /** @description Endpoint metadata */
             metadata: components["schemas"]["EndpointMetadata"];
         };
         /** RegisterFunctionMetadata */
@@ -2520,9 +2514,9 @@ export interface components {
         /**
          * RegisterFunctionRequest
          * @example {
-         *       "function_name": "dot_product",
-         *       "function_code": "850\n01\ngASVZwIAAAAAAACMCmRpbGwuX2RpbGyUjBB...",
          *       "description": "Dot product of two vectors (unchecked length)",
+         *       "function_code": "850\n01\ngASVZwIAAAAAAACMCmRpbGwuX2RpbGyUjBB...",
+         *       "function_name": "dot_product",
          *       "meta": {
          *         "python_version": "3.13.3",
          *         "sdk_version": "3.1.1",
@@ -2546,18 +2540,14 @@ export interface components {
              * Description
              * @description Function description
              */
-            description?: string;
-            /**
-             * Meta
-             * @description Function metadata
-             */
+            description?: string | null;
+            /** @description Function metadata */
             meta: components["schemas"]["compute_web_service__schemas__v3__function__RegisterFunctionMetadata"];
             /**
              * Group
-             * Format: uuid
              * @description If specified, this function will be accessible to members of the [Globus Group](https://docs.globus.org/api/groups/) specified by this identifier
              */
-            group?: string;
+            group?: string | null;
             /**
              * Public
              * @description If true, this function will be accessible to any registered user
@@ -2566,10 +2556,9 @@ export interface components {
             public: boolean;
             /**
              * Ha Endpoint Id
-             * Format: uuid
              * @description Users will only be able to run this function on the specified HA endpoint. Since HA functions cannot be shared, this field is mutually exclusive with the `group` and `public` fields.
              */
-            ha_endpoint_id?: string;
+            ha_endpoint_id?: string | null;
         };
         /**
          * RegisterFunctionResponse
@@ -2588,44 +2577,42 @@ export interface components {
              * Ha Warning
              * @description Populated when a function is registered to an HA endpoint.  If present, the SDK will emit the text to the user as a warning.
              */
-            ha_warning?: string;
+            ha_warning?: string | null;
         };
         /**
          * BatchSubmitRequest
          * @example {
-         *       "task_group_id": "97241626-8ff4-4550-9938-5909bd221869",
-         *       "user_endpoint_config": {
-         *         "min_blocks": 0,
-         *         "max_blocks": 1,
-         *         "scheduler_options": "#SBATCH --constraint=knl,quad,cache"
-         *       },
+         *       "create_queue": true,
          *       "resource_specification": {
+         *         "launcher_options": "--cpu-bind quiet --mem 3072",
          *         "num_nodes": 2,
-         *         "ranks_per_node": 2,
          *         "num_ranks": 4,
-         *         "launcher_options": "--cpu-bind quiet --mem 3072"
+         *         "ranks_per_node": 2
+         *       },
+         *       "result_serializers": [
+         *         "globus_compute_sdk.serialize.JSONData",
+         *         "globus_compute_sdk.serialize.DillDataBase64"
+         *       ],
+         *       "task_group_id": "97241626-8ff4-4550-9938-5909bd221869",
+         *       "tasks": {
+         *         "0a98fd06-edbd-11ed-abcd-0d705ebb4c49": [
+         *           "... <serialized_arguments> ...",
+         *           "..."
+         *         ],
+         *         "ff960aba-fa23-43d5-9cbe-3f4f91a066e1": [
+         *           "... <serialized_arguments> ...",
+         *           "... <serialized_arguments> ...",
+         *           "..."
+         *         ]
+         *       },
+         *       "user_endpoint_config": {
+         *         "max_blocks": 1,
+         *         "min_blocks": 0,
+         *         "scheduler_options": "#SBATCH --constraint=knl,quad,cache"
          *       },
          *       "user_runtime": {
          *         "globus_compute_sdk_version": "3.14.0",
          *         "globus_sdk_version": "3.60.0",
-         *         "python": {
-         *           "version": "3.13.5",
-         *           "version_tuple": [
-         *             3,
-         *             13,
-         *             5
-         *           ],
-         *           "version_info": [
-         *             3,
-         *             13,
-         *             5,
-         *             "final",
-         *             0
-         *           ],
-         *           "version_description": "3.13.7 (main, Aug 21 2025, 13:50:03) [GCC 13.3.0]",
-         *           "implementation": "CPython",
-         *           "compiler": "Clang 14.0.6"
-         *         },
          *         "platform": {
          *           "architecture": [
          *             "64bit",
@@ -2636,43 +2623,43 @@ export interface components {
          *           "platform": "Linux-6.16.5-2-generic-x86_64-with-glibc2.39",
          *           "processor": "x86_64",
          *           "release": "6.16.5-2-generic"
+         *         },
+         *         "python": {
+         *           "compiler": "Clang 14.0.6",
+         *           "implementation": "CPython",
+         *           "version": "3.13.5",
+         *           "version_description": "3.13.7 (main, Aug 21 2025, 13:50:03) [GCC 13.3.0]",
+         *           "version_info": [
+         *             3,
+         *             13,
+         *             5,
+         *             "final",
+         *             0
+         *           ],
+         *           "version_tuple": [
+         *             3,
+         *             13,
+         *             5
+         *           ]
          *         }
-         *       },
-         *       "result_serializers": [
-         *         "globus_compute_sdk.serialize.JSONData",
-         *         "globus_compute_sdk.serialize.DillDataBase64"
-         *       ],
-         *       "create_queue": true,
-         *       "tasks": {
-         *         "ff960aba-fa23-43d5-9cbe-3f4f91a066e1": [
-         *           "... <serialized_arguments> ...",
-         *           "... <serialized_arguments> ...",
-         *           "..."
-         *         ],
-         *         "0a98fd06-edbd-11ed-abcd-0d705ebb4c49": [
-         *           "... <serialized_arguments> ...",
-         *           "..."
-         *         ]
          *       }
          *     }
          */
         compute_web_service__schemas__v3__tasks__BatchSubmitRequest: {
             /**
              * Task Group Id
-             * Format: uuid
              * @description Associate the request tasks with specified Task Group identifier; if not specified or invalid, a new identifier will be generated and returned in the response
              */
-            task_group_id?: string;
+            task_group_id?: string | null;
             /**
              * User Endpoint Config
              * @description Specify user endpoint configuration values as described and allowed by endpoint administrators.
              */
-            user_endpoint_config?: Record<string, unknown>;
-            /**
-             * Resource Specification
-             * @description Specify resource requirements for individual task execution.
-             */
-            resource_specification?: components["schemas"]["ResourceSpecification"];
+            user_endpoint_config?: {
+                [key: string]: unknown;
+            } | null;
+            /** @description Specify resource requirements for individual task execution. */
+            resource_specification?: components["schemas"]["ResourceSpecification"] | null;
             /**
              * Create Queue
              * @description If `true`, create a Task Group specific AMQP queue for the results.  In addition to the usual longer-term storage, results will also be copied to this AMQP queue, enabling consumers to get event-driven (instant) results.  (See the [Globus Compute SDK Executor](https://globus-compute.readthedocs.io/en/stable/executor.html) for an implementation that uses this feature.)
@@ -2686,32 +2673,29 @@ export interface components {
             tasks: {
                 [key: string]: string[];
             };
-            /**
-             * User Runtime
-             * @description Information about the runtime that submitted this batch, such as Python and Globus Compute SDK versions.
-             */
-            user_runtime?: components["schemas"]["UserRuntime"];
+            /** @description Information about the runtime that submitted this batch, such as Python and Globus Compute SDK versions. */
+            user_runtime?: components["schemas"]["UserRuntime"] | null;
             /**
              * Result Serializers
              * @description A list of import paths to [SerializationStrategy](https://globus-compute.readthedocs.io/en/stable/reference/serialization_strategies.html#globus_compute_sdk.serialize.SerializationStrategy) subclasses that the endpoint is allowed to use when serializing results.
              */
-            result_serializers?: string[];
+            result_serializers?: string[] | null;
         };
         /**
          * BatchSubmitResponse
          * @example {
+         *       "endpoint_id": "116f1b48-0aab-4228-92f0-021c2ab14b5e",
          *       "request_id": "5158de19-10b5-4deb-9d87-a86c1dec3460",
          *       "task_group_id": "97241626-8ff4-4550-9938-5909bd221869",
-         *       "endpoint_id": "116f1b48-0aab-4228-92f0-021c2ab14b5e",
          *       "tasks": {
+         *         "0a98fd06-edbd-11ed-abcd-0d705ebb4c49": [
+         *           "022151bf-7b2d-4240-b4d0-9ac5b7077314",
+         *           "1f6f5f1e-15b0-4916-85ff-471511bd35d6"
+         *         ],
          *         "ff960aba-fa23-43d5-9cbe-3f4f91a066e1": [
          *           "89bde6c3-85e9-4834-b0e8-5cb51955eaf5",
          *           "1e900b37-7a80-424b-aeac-56dd2860f59a",
          *           "9f12a732-3aa6-4878-9d58-b290837ab096"
-         *         ],
-         *         "0a98fd06-edbd-11ed-abcd-0d705ebb4c49": [
-         *           "022151bf-7b2d-4240-b4d0-9ac5b7077314",
-         *           "1f6f5f1e-15b0-4916-85ff-471511bd35d6"
          *         ]
          *       }
          *     }
@@ -2745,7 +2729,7 @@ export interface components {
              * Ha Warning
              * @description Populated when a task is submitted to an HA endpoint.  If present, the SDK will emit the text to the user as a warning.
              */
-            ha_warning?: string;
+            ha_warning?: string | null;
         };
     };
     responses: never;
@@ -2760,7 +2744,7 @@ export interface operations {
         parameters: {
             query?: {
                 /** @description Service to get version for */
-                service?: components["schemas"]["VersionService"];
+                service?: components["schemas"]["VersionService"] | null;
             };
             header?: never;
             path?: never;
@@ -2792,7 +2776,7 @@ export interface operations {
         parameters: {
             query?: {
                 /** @description Service to get version for */
-                service?: components["schemas"]["VersionService"];
+                service?: components["schemas"]["VersionService"] | null;
             };
             header?: never;
             path?: never;
@@ -3097,8 +3081,8 @@ export interface operations {
             query?: never;
             header: {
                 "user-agent": string;
-                "x-forwarded-for"?: string;
-                "remote-addr"?: string;
+                "x-forwarded-for"?: string | null;
+                "remote-addr"?: string | null;
             };
             path?: never;
             cookie?: never;
@@ -3425,8 +3409,8 @@ export interface operations {
             query?: never;
             header: {
                 "user-agent": string;
-                "x-forwarded-for"?: string;
-                "remote-addr"?: string;
+                "x-forwarded-for"?: string | null;
+                "remote-addr"?: string | null;
             };
             path: {
                 endpoint_uuid: string;
@@ -3559,8 +3543,8 @@ export interface operations {
             query?: never;
             header: {
                 "user-agent": string;
-                "x-forwarded-for"?: string;
-                "remote-addr"?: string;
+                "x-forwarded-for"?: string | null;
+                "remote-addr"?: string | null;
             };
             path?: never;
             cookie?: never;
@@ -3823,16 +3807,10 @@ export interface operations {
     get_endpoint_console_info_v3_endpoints__endpoint_uuid__console_get: {
         parameters: {
             query?: {
-                /**
-                 * @description Provide the UUID of a specific user endpoint to return.
-                 * @example 99418dfd-2bcd-473c-a0b5-3aaedd855d82
-                 */
-                user_endpoint_id?: string;
-                /**
-                 * @description Comma separated list of user endpoint fields to include in the response. If left blank, all fields except 'config' are included. Invalid field names will result in a 400 error.
-                 * @example user_endpoint_id,node_info,config
-                 */
-                include_fields?: string;
+                /** @description Provide the UUID of a specific user endpoint to return. */
+                user_endpoint_id?: string | null;
+                /** @description Comma separated list of user endpoint fields to include in the response. If left blank, all fields except 'config' are included. Invalid field names will result in a 400 error. */
+                include_fields?: string | null;
             };
             header?: never;
             path: {
