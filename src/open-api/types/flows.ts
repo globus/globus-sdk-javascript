@@ -204,8 +204,7 @@ export interface paths {
                         description?: string;
                         /**
                          * @description A set of terms used to categorize the provider which may be used in
-                         *     query and discovery operations. Maximum total length of all
-                         *     keywords is 1024 characters.
+                         *     query and discovery operations.
                          */
                         keywords?: string[];
                         /**
@@ -1371,7 +1370,7 @@ export interface paths {
                      *     of the specified states. By default, Actions in any state will be
                      *     returned.
                      */
-                    filter_status?: ("SUCCEEDED" | "FAILED" | "ENDED" | "ACTIVE" | "INACTIVE")[];
+                    filter_status?: ("ACTIVE" | "AWAITING_INPUT" | "ENDED" | "FAILED" | "INACTIVE" | "SUCCEEDED")[];
                     /**
                      * @description Performs a case insensitive string based search on the Actions'
                      *     label fields. If multiple values are specified, each Action returned
@@ -1570,7 +1569,7 @@ export interface paths {
                      *     of the specified states. By default, Actions in any state will be
                      *     returned.
                      */
-                    filter_status?: ("SUCCEEDED" | "FAILED" | "ENDED" | "ACTIVE" | "INACTIVE")[];
+                    filter_status?: ("ACTIVE" | "AWAITING_INPUT" | "ENDED" | "FAILED" | "INACTIVE" | "SUCCEEDED")[];
                     /**
                      * @description Performs a case insensitive string based search on the Actions'
                      *     label fields. If multiple values are specified, each Action returned
@@ -2717,7 +2716,7 @@ export interface components {
              * @description The current state of the Run.
              * @enum {string}
              */
-            status: "SUCCEEDED" | "FAILED" | "ENDED" | "ACTIVE" | "INACTIVE";
+            status: "ACTIVE" | "AWAITING_INPUT" | "ENDED" | "FAILED" | "INACTIVE" | "SUCCEEDED";
             display_status?: string;
             /**
              * @description Details about the run execution. This is null for runs of High Assurance
