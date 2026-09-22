@@ -159,8 +159,60 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        /** BookmarkAttributes */
-        BookmarkAttributes: {
+        /** AbstractResourceIdentifier[Literal['Collection']] */
+        AbstractResourceIdentifier_Literal__Collection___: {
+            /**
+             * Type
+             * @constant
+             */
+            type: "Collection";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+        };
+        /** AbstractResourceIdentifier[Literal['Endpoint']] */
+        AbstractResourceIdentifier_Literal__Endpoint___: {
+            /**
+             * Type
+             * @constant
+             */
+            type: "Endpoint";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+        };
+        /** AbstractResourceIdentifier[Literal['Identity']] */
+        AbstractResourceIdentifier_Literal__Identity___: {
+            /**
+             * Type
+             * @constant
+             */
+            type: "Identity";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+        };
+        /** AbstractResourceIdentifier[Literal['StreamAccessPoint']] */
+        AbstractResourceIdentifier_Literal__StreamAccessPoint___: {
+            /**
+             * Type
+             * @constant
+             */
+            type: "StreamAccessPoint";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+        };
+        /** BookmarkAttributes[str] */
+        BookmarkAttributes_str_: {
             /**
              * Name
              * @description Name of the bookmark. Unique per user.
@@ -172,7 +224,17 @@ export interface components {
              */
             path: string;
         };
-        /** BookmarkCreateResource */
+        /**
+         * BookmarkCreateRequest
+         * @description Top-level POST request body for bookmark creation.
+         */
+        BookmarkCreateRequest: {
+            data: components["schemas"]["BookmarkCreateResource"];
+        };
+        /**
+         * BookmarkCreateResource
+         * @description Bookmark resource for POST request bodies.
+         */
         BookmarkCreateResource: {
             /**
              * Type
@@ -180,17 +242,11 @@ export interface components {
              * @constant
              */
             type: "Bookmark";
-            /** @description Attributes belonging to a bookmark */
-            attributes: components["schemas"]["BookmarkAttributes"];
-            /** @description Entities related to a bookmark */
-            relationships: components["schemas"]["BookmarkRelationships"];
+            attributes: components["schemas"]["BookmarkAttributes_str_"];
+            relationships?: components["schemas"]["BookmarkRelationships"] | null;
         };
-        /** BookmarkCreateTopLevel */
-        BookmarkCreateTopLevel: {
-            data: components["schemas"]["BookmarkCreateResource"];
-        };
-        /** BookmarkListResponseAttributes */
-        BookmarkListResponseAttributes: {
+        /** BookmarkListAttributes */
+        BookmarkListAttributes: {
             /**
              * Name
              * @description Name of the bookmark. Unique per user.
@@ -200,9 +256,24 @@ export interface components {
              * Path
              * @description Path to a directory on the collection.
              */
-            path: string | null;
+            path?: string | null;
         };
-        /** BookmarkListResponseResource */
+        /**
+         * BookmarkListResponse
+         * @description Top-level response for a list of bookmarks.
+         */
+        BookmarkListResponse: {
+            /** Included */
+            included?: components["schemas"]["CollectionResponseResource"][] | null;
+            /** Data */
+            data: components["schemas"]["BookmarkListResponseResource"][];
+            links?: components["schemas"]["PaginationLinks"] | null;
+            meta: components["schemas"]["TopLevelMeta"];
+        };
+        /**
+         * BookmarkListResponseResource
+         * @description Bookmark resource returned in list responses. path may be None for HA collections.
+         */
         BookmarkListResponseResource: {
             /**
              * Type
@@ -213,57 +284,33 @@ export interface components {
             /**
              * Id
              * Format: uuid
-             * @description Unique identifier of the bookmark
              */
             id: string;
-            /** @description Attributes belonging to a bookmark */
-            attributes: components["schemas"]["BookmarkListResponseAttributes"];
-            /** @description Entities related to a bookmark */
-            relationships: components["schemas"]["BookmarkRelationships"];
+            attributes: components["schemas"]["BookmarkListAttributes"];
+            relationships?: components["schemas"]["BookmarkRelationships"] | null;
         };
-        /** BookmarkListResponseTopLevel */
-        BookmarkListResponseTopLevel: {
-            /** Data */
-            data: components["schemas"]["BookmarkListResponseResource"][];
-            links?: components["schemas"]["JsonAPIPaginationLinks"];
-            meta: components["schemas"]["JsonApiTopLevelMetaInformation"];
-            /** Included */
-            included?: components["schemas"]["CollectionResponseResource"][];
-        };
-        /** BookmarkPatchAttributes */
-        BookmarkPatchAttributes: {
-            /**
-             * Name
-             * @description Name of the bookmark. Unique per user.
-             */
-            name: string | null;
-            /**
-             * Path
-             * @description Path to a directory on the collection.
-             */
-            path: string;
-        };
-        /** BookmarkPatchResource */
-        BookmarkPatchResource: {
-            /**
-             * Type
-             * @default Bookmark
-             * @constant
-             */
-            type: "Bookmark";
-            /** @description Attributes settable on a stream access point update */
-            attributes: components["schemas"]["BookmarkPatchAttributes"];
-        };
-        /** BookmarkPatchTopLevel */
-        BookmarkPatchTopLevel: {
-            data: components["schemas"]["BookmarkPatchResource"];
-        };
-        /** BookmarkRelationships */
+        /**
+         * BookmarkRelationships
+         * @description Relationships for a bookmark resource.
+         */
         BookmarkRelationships: {
             /** @description Collection the bookmark is on */
             collection: components["schemas"]["CollectionDataRelationship"];
         };
-        /** BookmarkResponseResource */
+        /**
+         * BookmarkResponse
+         * @description Top-level response for a single bookmark.
+         */
+        BookmarkResponse: {
+            /** Included */
+            included?: components["schemas"]["CollectionResponseResource"][] | null;
+            data: components["schemas"]["BookmarkResponseResource"];
+            meta: components["schemas"]["TopLevelMeta"];
+        };
+        /**
+         * BookmarkResponseResource
+         * @description Bookmark resource returned in single-resource responses.
+         */
         BookmarkResponseResource: {
             /**
              * Type
@@ -274,131 +321,129 @@ export interface components {
             /**
              * Id
              * Format: uuid
-             * @description Unique identifier of the bookmark
              */
             id: string;
-            /** @description Attributes belonging to a bookmark */
-            attributes: components["schemas"]["BookmarkAttributes"];
-            /** @description Entities related to a bookmark */
-            relationships: components["schemas"]["BookmarkRelationships"];
+            attributes: components["schemas"]["BookmarkAttributes_str_"];
+            relationships?: components["schemas"]["BookmarkRelationships"] | null;
         };
-        /** BookmarkResponseTopLevel */
-        BookmarkResponseTopLevel: {
-            meta: components["schemas"]["JsonApiTopLevelMetaInformation"];
-            data: components["schemas"]["BookmarkResponseResource"];
-            /** Included */
-            included?: components["schemas"]["CollectionResponseResource"][];
+        /** BookmarkUpdateAttributes */
+        BookmarkUpdateAttributes: {
+            /**
+             * Name
+             * @description Name of the bookmark. Unique per user.
+             */
+            name?: string | null;
+            /**
+             * Path
+             * @description Path to a directory on the collection.
+             */
+            path?: string | null;
         };
-        /** CollectionAttributes */
+        /**
+         * BookmarkUpdateRequest
+         * @description Top-level PATCH request body for bookmark update.
+         */
+        BookmarkUpdateRequest: {
+            data: components["schemas"]["BookmarkUpdateResource"];
+        };
+        /**
+         * BookmarkUpdateResource
+         * @description Bookmark resource for PATCH request bodies.
+         */
+        BookmarkUpdateResource: {
+            /** Id */
+            id?: string | null;
+            /**
+             * Type
+             * @default Bookmark
+             * @constant
+             */
+            type: "Bookmark";
+            attributes: components["schemas"]["BookmarkUpdateAttributes"];
+        };
+        /**
+         * CollectionAttributes
+         * @description Collection attributes. Note: only exposes fields relevant to including features.
+         */
         CollectionAttributes: {
             /** Display Name */
             display_name: string;
             /** High Assurance */
             high_assurance: boolean;
         };
-        /** CollectionDataRelationship */
+        /**
+         * CollectionDataRelationship
+         * @description Relationship to a Globus collection.
+         */
         CollectionDataRelationship: {
-            data: components["schemas"]["CollectionResourceIdentifier"];
+            /** Data */
+            data: components["schemas"]["AbstractResourceIdentifier_Literal__Collection___"] | components["schemas"]["AbstractResourceIdentifier_Literal__Collection___"][];
         };
-        /** CollectionResourceIdentifier */
-        CollectionResourceIdentifier: {
-            /**
-             * Type
-             * @default Collection
-             * @constant
-             */
-            type: "Collection";
-            /**
-             * Id
-             * Format: uuid
-             * @description Unique identifier of the collection
-             */
-            id: string;
-        };
-        /** CollectionResponseResource */
+        /**
+         * CollectionResponseResource
+         * @description Collection resource, used as an included resource in other feature responses.
+         */
         CollectionResponseResource: {
             /**
              * Type
-             * @default Collection
              * @constant
              */
             type: "Collection";
             /**
              * Id
              * Format: uuid
-             * @description Unique identifier of the collection
              */
             id: string;
-            /** @description Attributes belonging to a collection */
             attributes: components["schemas"]["CollectionAttributes"];
+            /** Relationships */
+            relationships?: null;
         };
-        /** EndpointDataRelationship */
+        /**
+         * EndpointDataRelationship
+         * @description Relationship to a Globus Connect Server endpoint.
+         */
         EndpointDataRelationship: {
-            data?: components["schemas"]["EndpointResourceIdentifier"] | null;
-        };
-        /** EndpointResourceIdentifier */
-        EndpointResourceIdentifier: {
-            /**
-             * Type
-             * @default Endpoint
-             */
-            type: string;
-            /**
-             * Id
-             * Format: uuid
-             * @description Unique identifier for Globus Connect Server endpoint
-             */
-            id: string;
+            /** Data */
+            data: components["schemas"]["AbstractResourceIdentifier_Literal__Endpoint___"] | components["schemas"]["AbstractResourceIdentifier_Literal__Endpoint___"][];
         };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
-        /** IdentityDataRelationship */
+        /**
+         * IdentityDataRelationship
+         * @description Relationship to a Globus Auth identity.
+         */
         IdentityDataRelationship: {
-            data?: components["schemas"]["IdentityResourceIdentifier"] | null;
+            /** Data */
+            data: components["schemas"]["AbstractResourceIdentifier_Literal__Identity___"] | components["schemas"]["AbstractResourceIdentifier_Literal__Identity___"][];
         };
-        /** IdentityResourceIdentifier */
-        IdentityResourceIdentifier: {
+        /** Link */
+        Link: {
             /**
-             * Type
-             * @default Identity
+             * Href
+             * @description URI-reference pointing to link target
              */
-            type: string;
-            /**
-             * Id
-             * Format: uuid
-             * @description Unique identifier for a Globus Auth identity
-             */
-            id: string;
+            href: string;
         };
-        /** JsonAPIPaginationLinks */
-        JsonAPIPaginationLinks: {
+        /**
+         * MetaDocument
+         * @description Top-level JSONAPI response with no data, only meta.
+         */
+        MetaDocument: {
+            meta: components["schemas"]["TopLevelMeta"];
+        };
+        /** PaginationLinks */
+        PaginationLinks: {
             /** Next */
-            next: string;
+            next?: string | components["schemas"]["Link"] | null;
         };
-        /** JsonApiAbstractResponseTopLevel */
-        JsonApiAbstractResponseTopLevel: {
-            meta: components["schemas"]["JsonApiTopLevelMetaInformation"];
-        };
-        /** JsonApiTopLevelMetaInformation */
-        JsonApiTopLevelMetaInformation: {
-            /** Request Id */
-            request_id: string;
-        };
-        /** StreamAccessPointAttributes */
+        /**
+         * StreamAccessPointAttributes
+         * @description Attributes for SAP create and response.
+         */
         StreamAccessPointAttributes: {
-            /**
-             * Display Name
-             * @description Friendly name to show in stream access point listings
-             */
-            display_name: string;
-            /**
-             * Tlsftp Server
-             * @description URL for the tlsftp server used for tunnel access; must begin with tlsftp and end with a port number
-             */
-            tlsftp_server: string;
             /**
              * Advertised Owner
              * @description Globus Auth username for the advertised owner identity
@@ -439,39 +484,55 @@ export interface components {
              * @description Organization which operates the stream access point
              */
             organization?: string | null;
+            /**
+             * Display Name
+             * @description Friendly name to show in stream access point listings
+             */
+            display_name: string;
+            /**
+             * Tlsftp Server
+             * @description URL for the tlsftp server used for tunnel access; must begin with tlsftp and end with a port number
+             */
+            tlsftp_server: string;
         };
-        /** StreamAccessPointDataRelationship */
+        /**
+         * StreamAccessPointDataRelationship
+         * @description Relationship to a stream access point.
+         */
         StreamAccessPointDataRelationship: {
-            data?: components["schemas"]["StreamAccessPointResourceIdentifier"] | null;
+            /** Data */
+            data: components["schemas"]["AbstractResourceIdentifier_Literal__StreamAccessPoint___"] | components["schemas"]["AbstractResourceIdentifier_Literal__StreamAccessPoint___"][];
         };
-        /** StreamAccessPointListingTopLevel */
-        StreamAccessPointListingTopLevel: {
+        /**
+         * StreamAccessPointListResponse
+         * @description Top-level response for a list of stream access points.
+         */
+        StreamAccessPointListResponse: {
             /** Data */
             data: components["schemas"]["StreamAccessPointResponseResource"][];
-            links?: components["schemas"]["JsonAPIPaginationLinks"];
-            meta: components["schemas"]["JsonApiTopLevelMetaInformation"];
+            links?: components["schemas"]["PaginationLinks"] | null;
+            meta: components["schemas"]["TopLevelMeta"];
         };
-        /** StreamAccessPointResourceIdentifier */
-        StreamAccessPointResourceIdentifier: {
-            /**
-             * Type
-             * @default StreamAccessPoint
-             * @constant
-             */
-            type: "StreamAccessPoint";
-            /**
-             * Id
-             * Format: uuid
-             * @description Unique identifier of the stream access point
-             */
-            id: string;
+        /**
+         * StreamAccessPointResponse
+         * @description Top-level response for a single stream access point.
+         */
+        StreamAccessPointResponse: {
+            data: components["schemas"]["StreamAccessPointResponseResource"];
+            meta: components["schemas"]["TopLevelMeta"];
         };
-        /** StreamAccessPointResponseRelationships */
+        /**
+         * StreamAccessPointResponseRelationships
+         * @description Relationships returned on a stream access point response.
+         */
         StreamAccessPointResponseRelationships: {
             /** @description Globus Connect Server endpoint that hosts the stream access point */
             host_endpoint: components["schemas"]["EndpointDataRelationship"];
         };
-        /** StreamAccessPointResponseResource */
+        /**
+         * StreamAccessPointResponseResource
+         * @description SAP resource returned in responses.
+         */
         StreamAccessPointResponseResource: {
             /**
              * Type
@@ -482,18 +543,35 @@ export interface components {
             /**
              * Id
              * Format: uuid
-             * @description Unique identifier of the stream access point
              */
             id: string;
-            /** @description Attributes belonging to a stream access point */
             attributes: components["schemas"]["StreamAccessPointAttributes"];
-            /** @description Entities related to a stream access point */
-            relationships: components["schemas"]["StreamAccessPointResponseRelationships"];
+            relationships?: components["schemas"]["StreamAccessPointResponseRelationships"] | null;
         };
-        /** StreamAccessPointResponseTopLevel */
-        StreamAccessPointResponseTopLevel: {
-            meta: components["schemas"]["JsonApiTopLevelMetaInformation"];
-            data: components["schemas"]["StreamAccessPointResponseResource"];
+        /** TopLevelMeta */
+        TopLevelMeta: {
+            /** Request Id */
+            request_id: string;
+        };
+        /**
+         * TunnelCreateRequest
+         * @description Top-level POST request body for tunnel creation.
+         */
+        TunnelCreateRequest: {
+            data: components["schemas"]["TunnelCreateResource"];
+        };
+        /**
+         * TunnelCreateResource
+         * @description Tunnel resource for POST request bodies.
+         */
+        TunnelCreateResource: {
+            /**
+             * Type
+             * @constant
+             */
+            type: "Tunnel";
+            attributes: components["schemas"]["TunnelRequestAttributes"];
+            relationships?: components["schemas"]["TunnelRequestRelationships"] | null;
         };
         /** TunnelEventAttributes */
         TunnelEventAttributes: {
@@ -524,18 +602,23 @@ export interface components {
              */
             time: string;
         };
-        /** TunnelEventListingTopLevel */
-        TunnelEventListingTopLevel: {
+        /**
+         * TunnelEventListResponse
+         * @description Top-level response for a list of tunnel events.
+         */
+        TunnelEventListResponse: {
             /** Data */
             data: components["schemas"]["TunnelEventResponseResource"][];
-            links?: components["schemas"]["JsonAPIPaginationLinks"];
-            meta: components["schemas"]["JsonApiTopLevelMetaInformation"];
+            links?: components["schemas"]["PaginationLinks"] | null;
+            meta: components["schemas"]["TopLevelMeta"];
         };
-        /** TunnelEventResponseResource */
+        /**
+         * TunnelEventResponseResource
+         * @description Tunnel event resource returned in responses.
+         */
         TunnelEventResponseResource: {
             /**
              * Type
-             * @default TunnelEvent
              * @constant
              */
             type: "TunnelEvent";
@@ -544,17 +627,24 @@ export interface components {
              * @description Unique identifier of the event
              */
             id: number;
-            /** @description Attributes of the event */
-            attributes: components["schemas"]["TunnelEventAttributes"] | null;
+            attributes: components["schemas"]["TunnelEventAttributes"];
+            /** Relationships */
+            relationships?: null;
         };
-        /** TunnelListingTopLevel */
-        TunnelListingTopLevel: {
+        /**
+         * TunnelListResponse
+         * @description Top-level response for a list of tunnels.
+         */
+        TunnelListResponse: {
             /** Data */
             data: components["schemas"]["TunnelResponseResource"][];
-            links?: components["schemas"]["JsonAPIPaginationLinks"];
-            meta: components["schemas"]["JsonApiTopLevelMetaInformation"];
+            links?: components["schemas"]["PaginationLinks"] | null;
+            meta: components["schemas"]["TopLevelMeta"];
         };
-        /** TunnelPatchAttributes */
+        /**
+         * TunnelPatchAttributes
+         * @description Attributes settable on a tunnel patch.
+         */
         TunnelPatchAttributes: {
             /**
              * Label
@@ -577,22 +667,21 @@ export interface components {
              */
             state?: "STOPPING" | null;
         };
-        /** TunnelPatchResource */
+        /**
+         * TunnelPatchResource
+         * @description Tunnel resource for PATCH request bodies.
+         */
         TunnelPatchResource: {
-            /**
-             * Type
-             * @default Tunnel
-             * @constant
-             */
-            type: "Tunnel";
-            /** @description Attributes settable on a tunnel update */
+            /** Id */
+            id?: string | null;
+            /** Type */
+            type?: "Tunnel" | null;
             attributes: components["schemas"]["TunnelPatchAttributes"];
         };
-        /** TunnelPatchTopLevel */
-        TunnelPatchTopLevel: {
-            data: components["schemas"]["TunnelPatchResource"];
-        };
-        /** TunnelRequestAttributes */
+        /**
+         * TunnelRequestAttributes
+         * @description Attributes for tunnel creation.
+         */
         TunnelRequestAttributes: {
             /**
              * Label
@@ -628,31 +717,28 @@ export interface components {
              */
             restartable: boolean;
         };
-        /** TunnelRequestRelationships */
+        /**
+         * TunnelRequestRelationships
+         * @description Relationships settable on tunnel creation.
+         */
         TunnelRequestRelationships: {
             /** @description Stream access point for listener application */
             listener: components["schemas"]["StreamAccessPointDataRelationship"];
             /** @description Stream access point for initiator application */
             initiator: components["schemas"]["StreamAccessPointDataRelationship"];
         };
-        /** TunnelRequestResource */
-        TunnelRequestResource: {
-            /**
-             * Type
-             * @default Tunnel
-             * @constant
-             */
-            type: "Tunnel";
-            /** @description Attributes settable on a tunnel request */
-            attributes: components["schemas"]["TunnelRequestAttributes"];
-            /** @description Request-settable entities related to a tunnel */
-            relationships: components["schemas"]["TunnelRequestRelationships"];
+        /**
+         * TunnelResponse
+         * @description Top-level response for a single tunnel.
+         */
+        TunnelResponse: {
+            data: components["schemas"]["TunnelResponseResource"];
+            meta: components["schemas"]["TopLevelMeta"];
         };
-        /** TunnelRequestTopLevel */
-        TunnelRequestTopLevel: {
-            data: components["schemas"]["TunnelRequestResource"];
-        };
-        /** TunnelResponseAttributes */
+        /**
+         * TunnelResponseAttributes
+         * @description Attributes returned in tunnel responses. Includes all request fields.
+         */
         TunnelResponseAttributes: {
             /**
              * Label
@@ -712,7 +798,10 @@ export interface components {
             /** Status */
             readonly status: string;
         };
-        /** TunnelResponseRelationships */
+        /**
+         * TunnelResponseRelationships
+         * @description Relationships returned on a tunnel response.
+         */
         TunnelResponseRelationships: {
             /** @description Stream access point for listener application */
             listener: components["schemas"]["StreamAccessPointDataRelationship"];
@@ -721,7 +810,10 @@ export interface components {
             /** @description Globus Auth identity that created the tunnel */
             owner: components["schemas"]["IdentityDataRelationship"];
         };
-        /** TunnelResponseResource */
+        /**
+         * TunnelResponseResource
+         * @description Tunnel resource returned in responses.
+         */
         TunnelResponseResource: {
             /**
              * Type
@@ -732,18 +824,17 @@ export interface components {
             /**
              * Id
              * Format: uuid
-             * @description Unique identifier of the tunnel
              */
             id: string;
-            /** @description Attributes of the tunnel */
             attributes: components["schemas"]["TunnelResponseAttributes"];
-            /** @description Entities related to the tunnel */
-            relationships: components["schemas"]["TunnelResponseRelationships"];
+            relationships?: components["schemas"]["TunnelResponseRelationships"] | null;
         };
-        /** TunnelResponseTopLevel */
-        TunnelResponseTopLevel: {
-            meta: components["schemas"]["JsonApiTopLevelMetaInformation"];
-            data: components["schemas"]["TunnelResponseResource"];
+        /**
+         * TunnelUpdateRequest
+         * @description Top-level PATCH request body for tunnel update.
+         */
+        TunnelUpdateRequest: {
+            data: components["schemas"]["TunnelPatchResource"];
         };
         /** ValidationError */
         ValidationError: {
@@ -791,7 +882,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["StreamAccessPointListingTopLevel"];
+                    "application/json": components["schemas"]["StreamAccessPointListResponse"];
                 };
             };
             /** @description Validation Error */
@@ -822,7 +913,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["StreamAccessPointResponseTopLevel"];
+                    "application/json": components["schemas"]["StreamAccessPointResponse"];
                 };
             };
             /** @description Validation Error */
@@ -851,7 +942,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["TunnelListingTopLevel"];
+                    "application/json": components["schemas"]["TunnelListResponse"];
                 };
             };
         };
@@ -865,7 +956,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["TunnelRequestTopLevel"];
+                "application/json": components["schemas"]["TunnelCreateRequest"];
             };
         };
         responses: {
@@ -875,7 +966,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["TunnelResponseTopLevel"];
+                    "application/json": components["schemas"]["TunnelResponse"];
                 };
             };
             /** @description Validation Error */
@@ -906,7 +997,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["TunnelResponseTopLevel"];
+                    "application/json": components["schemas"]["TunnelResponse"];
                 };
             };
             /** @description Validation Error */
@@ -937,7 +1028,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["JsonApiAbstractResponseTopLevel"];
+                    "application/json": components["schemas"]["MetaDocument"];
                 };
             };
             /** @description Validation Error */
@@ -962,7 +1053,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["TunnelPatchTopLevel"];
+                "application/json": components["schemas"]["TunnelUpdateRequest"];
             };
         };
         responses: {
@@ -972,7 +1063,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["TunnelResponseTopLevel"];
+                    "application/json": components["schemas"]["TunnelResponse"];
                 };
             };
             /** @description Validation Error */
@@ -1012,7 +1103,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["TunnelEventListingTopLevel"];
+                    "application/json": components["schemas"]["TunnelEventListResponse"];
                 };
             };
             /** @description Validation Error */
@@ -1048,7 +1139,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BookmarkListResponseTopLevel"];
+                    "application/json": components["schemas"]["BookmarkListResponse"];
                 };
             };
             /** @description Validation Error */
@@ -1071,7 +1162,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["BookmarkCreateTopLevel"];
+                "application/json": components["schemas"]["BookmarkCreateRequest"];
             };
         };
         responses: {
@@ -1081,7 +1172,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BookmarkResponseTopLevel"];
+                    "application/json": components["schemas"]["BookmarkResponse"];
                 };
             };
             /** @description Validation Error */
@@ -1115,7 +1206,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BookmarkResponseTopLevel"];
+                    "application/json": components["schemas"]["BookmarkResponse"];
                 };
             };
             /** @description Validation Error */
@@ -1146,7 +1237,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["JsonApiAbstractResponseTopLevel"];
+                    "application/json": components["schemas"]["MetaDocument"];
                 };
             };
             /** @description Validation Error */
@@ -1171,7 +1262,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["BookmarkPatchTopLevel"];
+                "application/json": components["schemas"]["BookmarkUpdateRequest"];
             };
         };
         responses: {
@@ -1181,7 +1272,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BookmarkResponseTopLevel"];
+                    "application/json": components["schemas"]["BookmarkResponse"];
                 };
             };
             /** @description Validation Error */
