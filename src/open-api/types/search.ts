@@ -671,7 +671,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/beta/insights/{collection_configuration_id}/ingest": {
+    "/beta/insights/{catalog_id}/ingest": {
         parameters: {
             query?: never;
             header?: never;
@@ -686,7 +686,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    collection_configuration_id: string;
+                    catalog_id: string;
                 };
                 cookie?: never;
             };
@@ -712,7 +712,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/beta/insights/collection_configuration/{collection_configuration_id}/scan_start": {
+    "/beta/insights/catalog/{catalog_id}/scan_start": {
         parameters: {
             query?: never;
             header?: never;
@@ -727,7 +727,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    collection_configuration_id: string;
+                    catalog_id: string;
                 };
                 cookie?: never;
             };
@@ -753,7 +753,48 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/beta/insights/collection_configuration/{collection_configuration_id}/scan/{scan_id}": {
+    "/beta/insights/collection_configuration/{catalog_id}/scan_start": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** [BETA] Insights Ingest Scan Start */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    catalog_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["InsightsScanStartEvent"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["InsightsScanStartResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/beta/insights/catalog/{catalog_id}/scan/{scan_id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -768,7 +809,49 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    collection_configuration_id: string;
+                    catalog_id: string;
+                    scan_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["InsightsScanStopEvent"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["InsightsScanStopResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/beta/insights/collection_configuration/{catalog_id}/scan/{scan_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** [BETA] Insights Ingest Scan Stop */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    catalog_id: string;
                     scan_id: string;
                 };
                 cookie?: never;
