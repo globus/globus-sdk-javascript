@@ -336,7 +336,10 @@ export interface paths {
         put?: never;
         /**
          * Register Function
-         * @description Register a function.
+         * @deprecated
+         * @description DEPRECATED – POST to `/v3/functions` instead
+         *
+         *     Register a function.
          */
         post: operations["register_function_v2_functions_post"];
         delete?: never;
