@@ -712,6 +712,47 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/beta/insights/catalog/{catalog_id}/query/files": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** [BETA] basic query API for Doris File Datamart */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    catalog_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["InsightsDorisQuery"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["InsightsDorisQueryResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/beta/insights/catalog/{catalog_id}/scan_start": {
         parameters: {
             query?: never;
@@ -2865,6 +2906,30 @@ export interface components {
         InsightsIngestResponse: {
             /** @description Always true for successful ingest submission. */
             acknowledged: boolean;
+        };
+        InsightsDorisQuery: {
+            field_list?: ("path" | "object_type" | "inode" | "size_bytes" | "mode_str" | "gid" | "uid" | "atime" | "ctime" | "mtime")[];
+            /** @default 10 */
+            limit: number;
+            path_like: string;
+        };
+        InsightsFileObject: {
+            object_type: string;
+            path: string;
+            inode?: number;
+            size_bytes?: number;
+            uid?: number;
+            gid?: number;
+            mode_str?: string;
+            /** Format: date-time */
+            atime?: string;
+            /** Format: date-time */
+            ctime?: string;
+            /** Format: date-time */
+            mtime?: string;
+        };
+        InsightsDorisQueryResponse: {
+            file_objects?: components["schemas"]["InsightsFileObject"][];
         };
         InsightsScanStartEvent: {
             /** @enum {string} */

@@ -424,7 +424,7 @@ export interface paths {
         /**
          * Set the endpoint subscription id
          * @description Change the subscription_id of this endpoint. Because subscription
-         *     is enforcement is handled in a separate service than GCS and an
+         *     enforcement is handled in a separate service than GCS and an
          *     organization's subscription manager may not be the administrator
          *     of the endpoint, this API has allows for both role-based
          *     authorization and subscription manager based authorization.
@@ -437,13 +437,13 @@ export interface paths {
          *         caller is not a manager for that subscription.</dd>
          *
          *     <dt>Caller does not have a role but is a subscription manager</dt>
-         *     <dd>Set the subscription_id to a subscription they manage on a
-         *         currently-unmanaged endpoint or remove the subscription_id from
+         *     <dd>Set the subscription_id to a subscription they manage on an
+         *         endpoint that is not subscribed or remove the subscription_id from
          *         the endpoint if it is one that they managed.</dd>
          *
          *     <dt>Caller has a role and is a subscription manager</dt>
          *     <dd>Set the subscription_id to a subscription they manage on an endpoint
-         *         even if it is currently managed by a subscription that the caller is
+         *         even if it is currently subscribed to a subscription that the caller is
          *         not a manager of.</dd>
          *     </dl>
          */
@@ -7624,6 +7624,7 @@ export interface components {
             /** @description String response code */
             code: string;
             data?: Record<string, unknown>[];
+            /** @description Machine readable response details */
             detail?: unknown;
             /**
              * @description Boolean flag indicating whether or not additional pages of response
@@ -7664,6 +7665,7 @@ export interface components {
             /** @description String response code */
             code: string;
             data?: Record<string, unknown>[];
+            /** @description Machine readable response details */
             detail?: unknown;
             /**
              * @description Boolean flag indicating whether or not additional pages of response
