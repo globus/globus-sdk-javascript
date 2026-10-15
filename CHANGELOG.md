@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.5.0](https://github.com/globus/globus-sdk-javascript/compare/v6.4.0...v6.5.0) (2026-10-15)
+
+
+### Features
+
+* **Web:** Adds Web App URLs for Groups, Subscriptions, and Flows ([#933](https://github.com/globus/globus-sdk-javascript/issues/933)) ([3cef3a2](https://github.com/globus/globus-sdk-javascript/commit/3cef3a2bd0e942cb80c3e365a8e9aa3486b70980))
+
 ## [6.4.0](https://github.com/globus/globus-sdk-javascript/compare/v6.3.1...v6.4.0) (2026-08-31)
 
 
