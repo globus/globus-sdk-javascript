@@ -2500,17 +2500,18 @@ export interface components {
         compute_web_service__schemas__v3__function__RegisterFunctionMetadata: {
             /**
              * Python Version
-             * @description version used to serialize function
+             * @description The Python version used to serialize the function; if the POSTed function code is not yet serialized (i.e., `serialized=false`), an acceptable version of Python to run the function.  (Note that this is meta information about the function, and that the receiving endpoint may or may not utilize it.)  Example: `3.14.8`
              */
             python_version: string;
             /**
              * Globus Compute SDK version
-             * @description version used to serialize function
+             * @description Globus Compute SDK version used to serialize function; if the POSTed function code is not yet serialized (i.e., `serialized=false`), an acceptable version of Globus Compute SDK/Endpoint to run the function.  (Note that this is meta information about the function, and that the receiving endpoint may or may not utilize it.)  Example: `4.18.0`
              */
             sdk_version: string;
             /**
              * Serde Identifier
-             * @description Identifier of SDK method used to serialize the function; the identifiers are not currently specifically documented, but may be found in the [Globus Compute SDK repository](https://github.com/globus/globus-compute) as the `identifier` class variable of the respective [serializers](https://github.com/globus/globus-compute/tree/main/compute_sdk/globus_compute_sdk/serialize)
+             * @description Identifier of SDK method used to serialize the function; the identifiers are not currently specifically documented, but may be found in the [Globus Compute SDK repository](https://github.com/globus/globus-compute) as the `identifier` class variable of the respective [serializers](https://github.com/globus/globus-compute/tree/main/compute_sdk/globus_compute_sdk/serialize).  If the POSTed function code is not yet serialized (i.e., `serialized=false`), this will be set to `st` (PureSourceTextInspect).
+             * @default
              */
             serde_identifier: string;
         };
@@ -2536,9 +2537,15 @@ export interface components {
             function_name: string;
             /**
              * Function Code
-             * @description Serialized function source code
+             * @description The function code; if `serialized` is `true`, then this must be a serialized form of the function source code, and should be deserializable by one of the [available SDK strategies](https://globus-compute.readthedocs.io/en/latest/reference/serialization_strategies.html).  If `serialized` is `false`, then this should be raw Python source code (e.g., the content of a Python module); the web service will serialize it using the [`PureSourceTextInspect`](https://globus-compute.readthedocs.io/en/latest/reference/serialization_strategies.html#globus_compute_sdk.serialize.PureSourceTextInspect) method.  (Note that this matches the behavior of the Compute SDK's [`Client.register_source_code()`](https://globus-compute.readthedocs.io/en/latest/reference/client.html#globus_compute_sdk.Client.register_source_code).)
              */
             function_code: string;
+            /**
+             * Serialized
+             * @description Indicates whether the `function_code` field is already serialized. (Consider setting this flag to `false` when registering functions from non-Python contexts, such as a JavaScript web form.)
+             * @default true
+             */
+            serialized: boolean;
             /**
              * Description
              * @description Function description
