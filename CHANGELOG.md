@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.5.0](https://github.com/globus/globus-sdk-javascript/compare/v6.4.0...v6.5.0) (2026-10-21)
+
+
+### Features
+
+* **Downloads:** add downloads service to barrel file and available ESM modules ([d581d19](https://github.com/globus/globus-sdk-javascript/commit/d581d190a96c0df151bf4de16a37f14925948bc9))
+* **Downloads:** Adds integration for the downloads.globus.org metadata service ([#939](https://github.com/globus/globus-sdk-javascript/issues/939)) ([c45c210](https://github.com/globus/globus-sdk-javascript/commit/c45c2102355dc68941bf3966ac31c118b0547cdd))
+* **Web:** Adds Web App URLs for Groups, Subscriptions, and Flows ([#933](https://github.com/globus/globus-sdk-javascript/issues/933)) ([3cef3a2](https://github.com/globus/globus-sdk-javascript/commit/3cef3a2bd0e942cb80c3e365a8e9aa3486b70980))
+
 ## [6.4.0](https://github.com/globus/globus-sdk-javascript/compare/v6.3.1...v6.4.0) (2026-08-31)
 
 
