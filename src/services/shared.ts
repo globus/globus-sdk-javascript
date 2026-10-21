@@ -136,11 +136,12 @@ export async function serviceRequest(
   ) {
     const resourceServer =
       typeof config.service === 'string'
-        ? RESOURCE_SERVERS[config.service]
+        ? // Not every service has a resource server (e.g., unauthenticated services like `DOWNLOADS`).
+          (RESOURCE_SERVERS as Partial<Record<Service, string>>)[config.service]
         : // For `GCSConfiguration` objects, the `endpoint_id` is the resource server.
           config.service.endpoint_id;
 
-    token = manager.tokens.getByResourceServer(resourceServer);
+    token = resourceServer ? manager.tokens.getByResourceServer(resourceServer) : null;
     if (token) {
       headers['Authorization'] = `Bearer ${token.access_token}`;
     }

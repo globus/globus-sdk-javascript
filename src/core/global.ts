@@ -5,6 +5,7 @@ import * as GROUPS from '../services/groups/config.js';
 import * as SEARCH from '../services/search/config.js';
 import * as TIMERS from '../services/timers/config.js';
 import * as COMPUTE from '../services/compute/config.js';
+import * as DOWNLOADS from '../services/downloads/config.js';
 
 import { EnvironmentConfigurationError } from './errors.js';
 import { SDKOptions } from '../services/types.js';
@@ -54,6 +55,7 @@ export const SERVICES = {
   [SEARCH.ID]: SEARCH.ID,
   [TIMERS.ID]: TIMERS.ID,
   [COMPUTE.ID]: COMPUTE.ID,
+  [DOWNLOADS.ID]: DOWNLOADS.ID,
 };
 
 export type Service = keyof typeof SERVICES;
@@ -66,6 +68,7 @@ export const SERVICE_HOSTS: Record<Service, Partial<Record<Environment, string>>
   [SEARCH.ID]: SEARCH.HOSTS,
   [TIMERS.ID]: TIMERS.HOSTS,
   [COMPUTE.ID]: COMPUTE.HOSTS,
+  [DOWNLOADS.ID]: DOWNLOADS.HOSTS,
 };
 
 /**

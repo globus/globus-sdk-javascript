@@ -1,6 +1,6 @@
 import { CONFIG, isToken } from '../../services/auth/index.js';
 
-import { SERVICES, type Service } from '../global.js';
+import { SERVICES } from '../global.js';
 import { AuthorizationManager } from './AuthorizationManager.js';
 
 import type { Token, TokenResponse } from '../../services/auth/types.js';
@@ -49,7 +49,7 @@ export class TokenManager {
     return token;
   }
 
-  #getTokenForService(service: Service) {
+  #getTokenForService(service: keyof typeof CONFIG.RESOURCE_SERVERS) {
     const resourceServer = CONFIG.RESOURCE_SERVERS?.[service];
     return this.getByResourceServer(resourceServer);
   }
