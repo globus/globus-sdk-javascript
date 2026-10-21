@@ -1,5 +1,5 @@
 /**
- * @description A wrapper around the Globus Downloads informational API
+ * @description A wrapper around the Globus Downloads metadata API
  * @group Service
  * @module
  */
@@ -13,13 +13,32 @@ import * as DOWNLOADS from './config.js';
  */
 export const CONFIG = DOWNLOADS;
 
+/**
+ * @description Represents the version information for the Globus Connect Server (GCS)
+ */
 export type GcsVersionInfo = {
   DATA_TYPE: 'gcs_version_info#1.0.0';
+  /**
+   * The URL to the changelog for this GCS version.
+   */
   changelog_url: `https://{string}`;
+  /**
+   * The release date of this GCS version.
+   */
   released: string;
+  /**
+   * The semantic version of this GCS release.
+   */
   version: string;
+  /**
+   * The date when this version of GCS will reach end of (Transfer) support.
+   */
+  end_of_support?: string;
 };
 
+/**
+ * @description Represents the (current) version information for the Globus Connect Personal (GCP)
+ */
 export type GcpVersionInfo = {
   DATA_TYPE: 'gcp_version_info#1.0.0';
   linux_version: string;
@@ -35,6 +54,9 @@ export type GcpVersionInfo = {
 export default {
   releases: {
     gcs: {
+      /**
+       * @description Retrieves the current version metadata for Globus Connect Server (GCS)
+       */
       current: createServiceMethodFactory({
         service: DOWNLOADS.ID,
         path: `releases/gcs/current`,
@@ -43,8 +65,11 @@ export default {
           request?: never;
           data?: never;
         },
-        JSONFetchResponse<[GcsVersionInfo]>
+        JSONFetchResponse<[Omit<GcsVersionInfo, 'end_of_support'>]>
       >(),
+      /**
+       * @description Retrieves all available version metadata for Globus Connect Server (GCS)
+       */
       all: createServiceMethodFactory({
         service: DOWNLOADS.ID,
         path: `releases/gcs/all`,
@@ -57,6 +82,9 @@ export default {
       >(),
     },
     gcp: {
+      /**
+       * @description Retrieves the current version metadata for Globus Connect Personal (GCP)
+       */
       current: createServiceMethodFactory({
         service: DOWNLOADS.ID,
         path: `releases/gcp/current`,
