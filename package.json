@@ -67,6 +67,11 @@
       "import": "./dist/esm/services/transfer/index.js",
       "default": "./dist/esm/services/transfer/index.js"
     },
+    "./services/downloads": {
+      "types": "./dist/esm/services/downloads/index.d.ts",
+      "import": "./dist/esm/services/downloads/index.js",
+      "default": "./dist/esm/services/downloads/index.js"
+    },
     "./*": {
       "types": "./dist/esm/*.d.ts",
       "import": "./dist/esm/*.js",
