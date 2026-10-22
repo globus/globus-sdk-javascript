@@ -733,7 +733,7 @@ export interface paths {
             };
             requestBody?: {
                 content: {
-                    "application/json": components["schemas"]["InsightsDorisQuery"];
+                    "application/json": components["schemas"]["InsightsDatamartQuery"];
                 };
             };
             responses: {
@@ -794,90 +794,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/beta/insights/collection_configuration/{catalog_id}/scan_start": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** [BETA] Insights Ingest Scan Start */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    catalog_id: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: {
-                content: {
-                    "application/json": components["schemas"]["InsightsScanStartEvent"];
-                };
-            };
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["InsightsScanStartResponse"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/beta/insights/catalog/{catalog_id}/scan/{scan_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** [BETA] Insights Ingest Scan Stop */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    catalog_id: string;
-                    scan_id: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: {
-                content: {
-                    "application/json": components["schemas"]["InsightsScanStopEvent"];
-                };
-            };
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["InsightsScanStopResponse"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/beta/insights/collection_configuration/{catalog_id}/scan/{scan_id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -2907,11 +2824,23 @@ export interface components {
             /** @description Always true for successful ingest submission. */
             acknowledged: boolean;
         };
-        InsightsDorisQuery: {
-            field_list?: ("path" | "object_type" | "inode" | "size_bytes" | "mode_str" | "gid" | "uid" | "atime" | "ctime" | "mtime")[];
+        InsightsDatamartSort: {
+            /** @enum {string} */
+            field_name: "size_bytes";
+            /**
+             * @default desc
+             * @enum {string}
+             */
+            order: "asc" | "desc";
+        };
+        InsightsDatamartQuery: {
+            /** @default null */
+            q: string | null;
             /** @default 10 */
             limit: number;
-            path_like: string;
+            offset?: number;
+            sort?: components["schemas"]["InsightsDatamartSort"][];
+            field_list?: ("path" | "object_type" | "inode" | "size_bytes" | "mode_str" | "gid" | "uid" | "atime" | "ctime" | "mtime")[];
         };
         InsightsFileObject: {
             object_type: string;
