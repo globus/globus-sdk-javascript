@@ -101,8 +101,7 @@ export const getAll = function (
 
 type OptionalClientCreateFields = Omit<Client, 'id' | 'name' | 'grant_types' | 'scopes' | 'fqdns'>;
 type ClientCreate = (
-  | Pick<Client, 'name' | 'public_client'>
-  | Pick<Client, 'name' | 'client_type'>
+  Pick<Client, 'name' | 'public_client'> | Pick<Client, 'name' | 'client_type'>
 ) &
   Partial<OptionalClientCreateFields>;
 
