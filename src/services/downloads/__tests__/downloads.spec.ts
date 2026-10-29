@@ -1,8 +1,6 @@
-import downloads from '../index';
+import { releases } from '../index';
 
 import { mirror } from '../../../__mocks__/handlers';
-
-const { releases } = downloads;
 
 describe('downloads.releases', () => {
   describe('gcs', () => {
