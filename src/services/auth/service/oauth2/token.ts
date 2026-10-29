@@ -39,11 +39,7 @@ type ExchangePayload = {
 };
 
 type SupportedPayloads =
-  | IntrospectPayload
-  | RevokePayload
-  | ValidatePayload
-  | RefreshPayload
-  | ExchangePayload;
+  IntrospectPayload | RevokePayload | ValidatePayload | RefreshPayload | ExchangePayload;
 
 function serialize(payload?: SupportedPayloads) {
   return new URLSearchParams(payload);

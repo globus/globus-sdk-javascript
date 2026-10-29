@@ -14,10 +14,7 @@ import type {
  * @see https://docs.globus.org/api/transfer/endpoint_roles/
  */
 export type EndpointRole =
-  | 'administrator'
-  | 'access_manager'
-  | 'activity_manager'
-  | 'activity_monitor';
+  'administrator' | 'access_manager' | 'activity_manager' | 'activity_monitor';
 
 export type EntityType =
   | 'GCSv5_endpoint'
