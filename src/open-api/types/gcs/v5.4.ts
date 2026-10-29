@@ -497,6 +497,28 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/endpoint/domain_migrate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Migrate endpoint domain to gaccess.io
+         * @description Complete the migration of this endpoint to the gaccess.io domain
+         *
+         *     This requires an `administrator` role on the Endpoint.
+         */
+        post: operations["postEndpointDomainMigrate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/info": {
         parameters: {
             query?: never;
@@ -6990,6 +7012,152 @@ export interface components {
             subscription_id?: string | null;
         };
         /**
+         * Endpoint_1_3_0
+         * @description A Globus Connect Server endpoint is a deployment of Globus Connect Server
+         *     version 5. A single endpoint may optionally include multiple data transfer
+         *     nodes. The endpoint provides a link between a Globus Connect Server
+         *     deployment and the Globus Transfer service. The endpoint describes services
+         *     for accessing data via GridFTP and HTTPS and also for configuring and
+         *     managing the policies associated with that access.
+         *
+         *     Version 1.1.0 of the endpoint includes support for customizing the TCP port
+         *     that the GridFTP listens on.
+         *
+         *     Version 1.2.0 of the endpoint includes read-only earliest_last_access
+         *     to put a limit on collections which are missing a last_access value.
+         *
+         *     Version 1.3.0 of the endpoint adds
+         *
+         *     * gaccess_io_domain_name [string]: the domain for the endpoint in the new
+         *       `gaccess.io` DNS zone. This may be null if the endpoint does not yet have
+         *       a gaccess.io domain name.
+         */
+        Endpoint_1_3_0: {
+            /**
+             * @description Type of this document
+             * @default endpoint#1.3.0
+             * @enum {string}
+             */
+            DATA_TYPE: "endpoint#1.3.0";
+            /** @description Allow data transfer on this endpoint using the UDT protocol */
+            allow_udt?: boolean;
+            /**
+             * @description Email address of the support contact for this endpoint. This is visible
+             *     to end users so that they may contact your organization for support.
+             */
+            contact_email?: string;
+            /**
+             * @description Other non-email contact information for the endpoint, e.g.  phone and
+             *     mailing address. This is visible to end users for support.
+             */
+            contact_info?: string;
+            /**
+             * @description Department within organization that runs the server(s).  Searchable.
+             *     Unicode string, max 1024 characters, no new lines.
+             */
+            department?: string;
+            /** @description A description of the endpoint */
+            description?: string;
+            /**
+             * @description Friendly name for the endpoint, not unique.  Unicode string, no new
+             *     lines (`\r` or `\n`).  Searchable.
+             */
+            display_name: string;
+            /**
+             * Format: date
+             * @description Earliest date when this endpoint began tracking last_access for
+             *     collections
+             */
+            readonly earliest_last_access?: string;
+            /**
+             * Format: uuid
+             * @description Unique identifier for this endpoint
+             */
+            id?: string;
+            readonly gaccess_io_domain_name?: string;
+            /** @description URL of the GCS Manager API service for this endpoint */
+            readonly gcs_manager_url?: string;
+            /**
+             * @description TCP port for the Globus control channel to listen on. By default, the
+             *     control channel is passed through 443 with an ALPN header containing
+             *     the value "ftp".
+             */
+            gridftp_control_channel_port?: number | null;
+            /**
+             * @description Link to a web page with more information about the endpoint. The
+             *     administrator is responsible for running a website at this URL and
+             *     verifying that it is accepting public connections.
+             */
+            info_link?: string;
+            /**
+             * @description List of search keywords for the endpoint. Unicode string, max 1024
+             *     characters total across all strings.
+             */
+            keywords?: string[];
+            /**
+             * @description Admin-specified value when the **network_use** property's value is
+             *     `custom`; otherwise the preset value for the specified
+             *     **network_use**.
+             */
+            max_concurrency?: number;
+            /**
+             * @description Admin-specified value when the **network_use** property's value is
+             *     `custom`; otherwise the preset value for the specified **network_use**.
+             */
+            max_parallelism?: number;
+            /**
+             * @description Control how Globus interacts with this endpoint over the network.
+             *
+             *     Allowed values for **network_use** are:
+             *
+             *     * `normal`
+             *         - The default setting. Uses an average level of concurrency and
+             *           parallelism. The levels depend on the number of physical servers
+             *           in the endpoint.
+             *     * `minimal`
+             *         - Uses a minimal level of concurrency and parallelism.
+             *     * `aggressive`
+             *         - Uses a high level of concurrency and parallelism.
+             *     * `custom`
+             *         - Uses custom values of concurrency and parallelism set by the
+             *           endpoint admin. When setting this level, you must also set
+             *           the **max_concurrency**, **preferred_concurrency**,
+             *           **max_parallelism**, and **preferred_parallelism** properties.
+             * @default normal
+             * @enum {string}
+             */
+            network_use: "normal" | "minimal" | "aggressive" | "custom";
+            /**
+             * @description Organization that runs the server(s) represented by the endpoint.
+             *     Unicode string, max 1024 characters, no new lines.
+             */
+            organization?: string;
+            /**
+             * @description Admin-specified value when the **network_use** property's value is
+             *     `custom`; otherwise the preset value for the specified **network_use**.
+             */
+            preferred_concurrency?: number;
+            /**
+             * @description Admin-specified value when the **network_use** property's value is
+             *     `custom`; otherwise the preset value for the specified **network_use**.
+             */
+            preferred_parallelism?: number;
+            /**
+             * @description Flag indicating whether this endpoint is visible to all other Globus
+             *     users. If false, only users which have been granted a role on the
+             *     endpoint or one of its collections, or belong to a domain allowed
+             *     access to any of its storage gateways may view it.
+             * @default true
+             */
+            public: boolean;
+            /**
+             * @description The id of the subscription that is managing this endpoint.  This may
+             *     be the special value `DEFAULT` when using this as input to PATCH or PUT
+             *     to use the caller's default subscription id.
+             */
+            subscription_id?: string | null;
+        };
+        /**
          * EndpointOwner_1_0_0
          * @description Schema for processing the endpoint_owner#1.0.0 data type
          */
@@ -7818,7 +7986,7 @@ export interface components {
              */
             load_dsi_module?: string | null;
             /** @description Connector-specific storage policies */
-            policies?: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["S3StoragePolicies_1_3_0"] | components["schemas"]["AzureBlobStoragePolicies_1_0_0"] | components["schemas"]["AzureBlobStoragePolicies_1_1_0"] | components["schemas"]["BlackPearlStoragePolicies_1_0_0"] | components["schemas"]["BoxStorage_1_0_0"] | components["schemas"]["BoxStorage_1_1_0"] | components["schemas"]["BoxStorage_1_2_0"] | components["schemas"]["CephStoragePolicies_1_0_0"] | components["schemas"]["DropboxStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_1_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_0_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_1_0"] | components["schemas"]["HPSSStoragePolicies_1_0_0"] | components["schemas"]["HPSSStoragePolicies_1_1_0"] | components["schemas"]["IrodsStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_1_0"] | components["schemas"]["PosixStoragePolicies_1_0_0"] | components["schemas"]["PosixStagingStoragePolicies_1_0_0"];
+            policies?: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["S3StoragePolicies_1_3_0"] | components["schemas"]["S3StoragePolicies_1_4_0"] | components["schemas"]["AzureBlobStoragePolicies_1_0_0"] | components["schemas"]["AzureBlobStoragePolicies_1_1_0"] | components["schemas"]["BlackPearlStoragePolicies_1_0_0"] | components["schemas"]["BoxStorage_1_0_0"] | components["schemas"]["BoxStorage_1_1_0"] | components["schemas"]["BoxStorage_1_2_0"] | components["schemas"]["CephStoragePolicies_1_0_0"] | components["schemas"]["DropboxStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_1_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_0_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_1_0"] | components["schemas"]["HPSSStoragePolicies_1_0_0"] | components["schemas"]["HPSSStoragePolicies_1_1_0"] | components["schemas"]["IrodsStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_1_0"] | components["schemas"]["PosixStoragePolicies_1_0_0"] | components["schemas"]["PosixStagingStoragePolicies_1_0_0"];
             /**
              * @description Local POSIX user the GridFTP server should run as when accessing
              *     this storage gateway.
@@ -7918,7 +8086,7 @@ export interface components {
              */
             load_dsi_module?: string | null;
             /** @description Connector-specific storage policies */
-            policies?: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["S3StoragePolicies_1_3_0"] | components["schemas"]["AzureBlobStoragePolicies_1_0_0"] | components["schemas"]["AzureBlobStoragePolicies_1_1_0"] | components["schemas"]["BlackPearlStoragePolicies_1_0_0"] | components["schemas"]["BoxStorage_1_0_0"] | components["schemas"]["BoxStorage_1_1_0"] | components["schemas"]["BoxStorage_1_2_0"] | components["schemas"]["CephStoragePolicies_1_0_0"] | components["schemas"]["DropboxStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_1_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_0_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_1_0"] | components["schemas"]["HPSSStoragePolicies_1_0_0"] | components["schemas"]["HPSSStoragePolicies_1_1_0"] | components["schemas"]["IrodsStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_1_0"] | components["schemas"]["PosixStoragePolicies_1_0_0"] | components["schemas"]["PosixStagingStoragePolicies_1_0_0"];
+            policies?: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["S3StoragePolicies_1_3_0"] | components["schemas"]["S3StoragePolicies_1_4_0"] | components["schemas"]["AzureBlobStoragePolicies_1_0_0"] | components["schemas"]["AzureBlobStoragePolicies_1_1_0"] | components["schemas"]["BlackPearlStoragePolicies_1_0_0"] | components["schemas"]["BoxStorage_1_0_0"] | components["schemas"]["BoxStorage_1_1_0"] | components["schemas"]["BoxStorage_1_2_0"] | components["schemas"]["CephStoragePolicies_1_0_0"] | components["schemas"]["DropboxStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_1_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_0_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_1_0"] | components["schemas"]["HPSSStoragePolicies_1_0_0"] | components["schemas"]["HPSSStoragePolicies_1_1_0"] | components["schemas"]["IrodsStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_1_0"] | components["schemas"]["PosixStoragePolicies_1_0_0"] | components["schemas"]["PosixStagingStoragePolicies_1_0_0"];
             /**
              * @description Local POSIX user the GridFTP server should run as when accessing
              *     this storage gateway.
@@ -8032,7 +8200,7 @@ export interface components {
              */
             load_dsi_module?: string | null;
             /** @description Connector-specific storage policies */
-            policies?: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["S3StoragePolicies_1_3_0"] | components["schemas"]["AzureBlobStoragePolicies_1_0_0"] | components["schemas"]["AzureBlobStoragePolicies_1_1_0"] | components["schemas"]["BlackPearlStoragePolicies_1_0_0"] | components["schemas"]["BoxStorage_1_0_0"] | components["schemas"]["BoxStorage_1_1_0"] | components["schemas"]["BoxStorage_1_2_0"] | components["schemas"]["CephStoragePolicies_1_0_0"] | components["schemas"]["DropboxStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_1_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_0_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_1_0"] | components["schemas"]["HPSSStoragePolicies_1_0_0"] | components["schemas"]["HPSSStoragePolicies_1_1_0"] | components["schemas"]["IrodsStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_1_0"] | components["schemas"]["PosixStoragePolicies_1_0_0"] | components["schemas"]["PosixStagingStoragePolicies_1_0_0"];
+            policies?: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["S3StoragePolicies_1_3_0"] | components["schemas"]["S3StoragePolicies_1_4_0"] | components["schemas"]["AzureBlobStoragePolicies_1_0_0"] | components["schemas"]["AzureBlobStoragePolicies_1_1_0"] | components["schemas"]["BlackPearlStoragePolicies_1_0_0"] | components["schemas"]["BoxStorage_1_0_0"] | components["schemas"]["BoxStorage_1_1_0"] | components["schemas"]["BoxStorage_1_2_0"] | components["schemas"]["CephStoragePolicies_1_0_0"] | components["schemas"]["DropboxStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_1_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_0_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_1_0"] | components["schemas"]["HPSSStoragePolicies_1_0_0"] | components["schemas"]["HPSSStoragePolicies_1_1_0"] | components["schemas"]["IrodsStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_1_0"] | components["schemas"]["PosixStoragePolicies_1_0_0"] | components["schemas"]["PosixStagingStoragePolicies_1_0_0"];
             /**
              * @description Local POSIX user the GridFTP server should run as when accessing
              *     this storage gateway.
@@ -8181,7 +8349,7 @@ export interface components {
              */
             network_use?: "normal" | "minimal" | "aggressive" | "custom" | null;
             /** @description Connector-specific storage policies */
-            policies?: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["S3StoragePolicies_1_3_0"] | components["schemas"]["AzureBlobStoragePolicies_1_0_0"] | components["schemas"]["AzureBlobStoragePolicies_1_1_0"] | components["schemas"]["BlackPearlStoragePolicies_1_0_0"] | components["schemas"]["BoxStorage_1_0_0"] | components["schemas"]["BoxStorage_1_1_0"] | components["schemas"]["BoxStorage_1_2_0"] | components["schemas"]["CephStoragePolicies_1_0_0"] | components["schemas"]["DropboxStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_1_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_0_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_1_0"] | components["schemas"]["HPSSStoragePolicies_1_0_0"] | components["schemas"]["HPSSStoragePolicies_1_1_0"] | components["schemas"]["IrodsStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_1_0"] | components["schemas"]["PosixStoragePolicies_1_0_0"] | components["schemas"]["PosixStagingStoragePolicies_1_0_0"];
+            policies?: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["S3StoragePolicies_1_3_0"] | components["schemas"]["S3StoragePolicies_1_4_0"] | components["schemas"]["AzureBlobStoragePolicies_1_0_0"] | components["schemas"]["AzureBlobStoragePolicies_1_1_0"] | components["schemas"]["BlackPearlStoragePolicies_1_0_0"] | components["schemas"]["BoxStorage_1_0_0"] | components["schemas"]["BoxStorage_1_1_0"] | components["schemas"]["BoxStorage_1_2_0"] | components["schemas"]["CephStoragePolicies_1_0_0"] | components["schemas"]["DropboxStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_0_0"] | components["schemas"]["GoogleCloudStoragePolicies_1_1_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_0_0"] | components["schemas"]["GoogleDriveStoragePolicies_1_1_0"] | components["schemas"]["HPSSStoragePolicies_1_0_0"] | components["schemas"]["HPSSStoragePolicies_1_1_0"] | components["schemas"]["IrodsStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_0_0"] | components["schemas"]["OneDriveStoragePolicies_1_1_0"] | components["schemas"]["PosixStoragePolicies_1_0_0"] | components["schemas"]["PosixStagingStoragePolicies_1_0_0"];
             /**
              * @description Admin-specified value when the **network_use** property's value is
              *     `custom`; otherwise the preset value for the specified **network_use**.
@@ -8480,7 +8648,7 @@ export interface components {
             /** @description Flag indicating that this credential is no longer valid */
             invalid?: boolean;
             /** @description Connector-specific user credential policies */
-            policies?: components["schemas"]["S3UserCredentialPolicies_1_0_0"] | components["schemas"]["S3UserCredentialPolicies_1_1_0"] | components["schemas"]["S3UserCredentialPolicies_1_2_0"] | components["schemas"]["AzureBlobUserCredentialPolicies_1_0_0"] | components["schemas"]["BlackPearlUserCredentialPolicies_1_0_0"] | components["schemas"]["BoxUserCredential_1_0_0"] | components["schemas"]["BoxUserCredential_1_1_0"] | components["schemas"]["CephUserCredentialPolicies_1_0_0"] | components["schemas"]["DropboxUserCredentialPolicies_1_0_0"] | components["schemas"]["GoogleCloudStorageUserCredentialPolicies_1_0_0"] | components["schemas"]["GoogleDriveUserCredentialPolicies_1_0_0"] | components["schemas"]["HPSSUserCredentialPolicies_1_0_0"] | components["schemas"]["IrodsUserCredentialPolicies_1_0_0"] | components["schemas"]["OneDriveUserCredentialPolicies_1_0_0"] | components["schemas"]["PosixUserCredentialPolicies_1_0_0"] | components["schemas"]["PosixStagingUserCredentialPolicies_1_0_0"];
+            policies?: components["schemas"]["S3UserCredentialPolicies_1_0_0"] | components["schemas"]["S3UserCredentialPolicies_1_1_0"] | components["schemas"]["S3UserCredentialPolicies_1_2_0"] | components["schemas"]["S3UserCredentialPolicies_1_3_0"] | components["schemas"]["AzureBlobUserCredentialPolicies_1_0_0"] | components["schemas"]["BlackPearlUserCredentialPolicies_1_0_0"] | components["schemas"]["BoxUserCredential_1_0_0"] | components["schemas"]["BoxUserCredential_1_1_0"] | components["schemas"]["CephUserCredentialPolicies_1_0_0"] | components["schemas"]["DropboxUserCredentialPolicies_1_0_0"] | components["schemas"]["GoogleCloudStorageUserCredentialPolicies_1_0_0"] | components["schemas"]["GoogleDriveUserCredentialPolicies_1_0_0"] | components["schemas"]["HPSSUserCredentialPolicies_1_0_0"] | components["schemas"]["IrodsUserCredentialPolicies_1_0_0"] | components["schemas"]["OneDriveUserCredentialPolicies_1_0_0"] | components["schemas"]["PosixUserCredentialPolicies_1_0_0"] | components["schemas"]["PosixStagingUserCredentialPolicies_1_0_0"];
             /**
              * @description Flag indicating that this credential has been fully provisioned. If
              *     this is false and the invalid property is true, then the credential
@@ -8662,6 +8830,69 @@ export interface components {
             s3_user_credential_required?: boolean;
         };
         /**
+         * S3StoragePolicies_1_4_0
+         * @description Connector-specific storage gateway policies for the S3 connector
+         *
+         *     Version 1.1.0 adds support for the s3_requester_pays property
+         *
+         *     Version 1.2.0 adds support for the s3_allow_multi_keys property
+         *
+         *     Version 1.3.0 adds support for the s3_storage_class and s3_restore properties
+         *
+         *     Version 1.4.0 adds support for the s3_token_required property
+         */
+        S3StoragePolicies_1_4_0: {
+            /**
+             * @description Type of this document
+             * @default s3_storage_policies#1.4.0
+             * @enum {string}
+             */
+            DATA_TYPE: "s3_storage_policies#1.4.0";
+            /**
+             * @description Allow users of this gateway to add multiple s3 IAM keys to their
+             *     credentials
+             */
+            s3_allow_multi_keys?: boolean;
+            /**
+             * @description List of buckets not owned by the collection owner that will be shown
+             *     in the root of collections created at the base of this storage gateway.
+             */
+            s3_buckets?: string[];
+            /**
+             * @description URL of the S3 API endpoint
+             * @example https://s3.amazonaws.com
+             */
+            s3_endpoint?: string;
+            /**
+             * @description Flag indicating that S3 operations will be charged to the account of
+             *     the registered credentials. Credentials used with a storage gateway
+             *     that has the s3_requester_pays property set to true are invalid unless
+             *     they also have this property set to true as an acknowledgement.
+             */
+            s3_requester_pays?: boolean;
+            /**
+             * @description Allow transfer attempts to automatically restore objects from
+             *     Glacier and other archival storage classes.
+             */
+            s3_restore?: boolean;
+            /**
+             * @description The storage class set for newly created objects.  When not set,
+             *     objects will be written to the default storage class of the bucket.
+             */
+            s3_storage_class?: string;
+            /**
+             * @description Require a session token with each access_key_id when creating
+             *     user credentials. When set, only short term S3 credentials
+             *     will be allowed.
+             */
+            s3_token_required?: boolean;
+            /**
+             * @description Flag indicating if a Globus User must register a user credential in
+             *     order to create a guest collection on this storage gateway.
+             */
+            s3_user_credential_required?: boolean;
+        };
+        /**
          * S3CollectionPolicies_1_0_0
          * @description Connector-specific collection policies for the S3 connector
          */
@@ -8748,7 +8979,7 @@ export interface components {
             DATA_TYPE: "s3_user_credential_policies#1.2.0";
             /** @description Access Key ID to use with the S3 API to access your buckets and objects. */
             s3_key_id?: string | null;
-            /** @description A list of path prefixes and S3 key pairs to use with them. */
+            /** @description A list of path prefixes and S3 credentials to use with them. */
             s3_multi_keys?: components["schemas"]["S3KeysPrefixPaths_1_0_0"][] | null;
             /**
              * @description Flag indicating the user acknowledges S3 operations will be charged to
@@ -8758,6 +8989,43 @@ export interface components {
             s3_requester_pays?: boolean;
             /** @description Secret key to use with the S3 API to access your buckets and objects. */
             s3_secret_key?: string | null;
+        };
+        /**
+         * S3UserCredentialPolicies_1_3_0
+         * @description Connector-specific user credential policies for the S3 connector
+         *
+         *     Version 1.1.0 adds support for the s3_requester_pays property.
+         *
+         *     Version 1.2.0 adds support for the s3_multi_keys property list.
+         *
+         *     Version 1.3.0 adds s3_token to support short term credentials.
+         */
+        S3UserCredentialPolicies_1_3_0: {
+            /**
+             * @description Type of this document
+             * @default s3_user_credential_policies#1.3.0
+             * @enum {string}
+             */
+            DATA_TYPE: "s3_user_credential_policies#1.3.0";
+            /** @description Access Key ID to use with the S3 API to access your buckets and objects. */
+            s3_key_id?: string | null;
+            /** @description A list of path prefixes and S3 credentials to use with them. */
+            s3_multi_keys?: components["schemas"]["S3KeysPrefixPaths_1_0_0"][] | null;
+            /**
+             * @description Flag indicating the user acknowledges S3 operations will be charged to
+             *     the account of this credential.  If this flag is true in the storage
+             *     gateway policy, this must also be true or the credential will be invalid.
+             */
+            s3_requester_pays?: boolean;
+            /** @description Secret key to use with the S3 API to access your buckets and objects. */
+            s3_secret_key?: string | null;
+            /**
+             * @description Security token to use with the S3 API to access your buckets and objects.
+             *     May be NULL if short term credentials are not required by the storage
+             *     gateway configuration.  Cleared when a PATCH updates s3_secret_key without
+             *     also updating this value.
+             */
+            s3_token?: string | null;
         };
         /**
          * AzureBlobStoragePolicies_1_0_0
@@ -10145,8 +10413,14 @@ export interface components {
          *
          *     Version 1.2.0 of the endpoint includes read-only earliest_last_access
          *     to put a limit on collections which are missing a last_access value.
+         *
+         *     Version 1.3.0 of the endpoint adds
+         *
+         *     * gaccess_io_domain_name [string]: the domain for the endpoint in the new
+         *       `gaccess.io` DNS zone. This may be null if the endpoint does not yet have
+         *       a gaccess.io domain name.
          */
-        Endpoint: components["schemas"]["Endpoint_1_0_0"] | components["schemas"]["Endpoint_1_1_0"] | components["schemas"]["Endpoint_1_2_0"];
+        Endpoint: components["schemas"]["Endpoint_1_0_0"] | components["schemas"]["Endpoint_1_1_0"] | components["schemas"]["Endpoint_1_2_0"] | components["schemas"]["Endpoint_1_3_0"];
         /**
          * EndpointOwner
          * @description Schema for processing the endpoint_owner#1.0.0 data type
@@ -10323,8 +10597,10 @@ export interface components {
          *     Version 1.2.0 adds support for the s3_allow_multi_keys property
          *
          *     Version 1.3.0 adds support for the s3_storage_class and s3_restore properties
+         *
+         *     Version 1.4.0 adds support for the s3_token_required property
          */
-        S3StoragePolicies: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["S3StoragePolicies_1_3_0"];
+        S3StoragePolicies: components["schemas"]["S3StoragePolicies_1_0_0"] | components["schemas"]["S3StoragePolicies_1_1_0"] | components["schemas"]["S3StoragePolicies_1_2_0"] | components["schemas"]["S3StoragePolicies_1_3_0"] | components["schemas"]["S3StoragePolicies_1_4_0"];
         /**
          * S3CollectionPolicies
          * @description Connector-specific collection policies for the S3 connector
@@ -10337,8 +10613,10 @@ export interface components {
          *     Version 1.1.0 adds support for the s3_requester_pays property.
          *
          *     Version 1.2.0 adds support for the s3_multi_keys property list.
+         *
+         *     Version 1.3.0 adds s3_token to support short term credentials.
          */
-        S3UserCredentialPolicies: components["schemas"]["S3UserCredentialPolicies_1_0_0"] | components["schemas"]["S3UserCredentialPolicies_1_1_0"] | components["schemas"]["S3UserCredentialPolicies_1_2_0"];
+        S3UserCredentialPolicies: components["schemas"]["S3UserCredentialPolicies_1_0_0"] | components["schemas"]["S3UserCredentialPolicies_1_1_0"] | components["schemas"]["S3UserCredentialPolicies_1_2_0"] | components["schemas"]["S3UserCredentialPolicies_1_3_0"];
         /**
          * ActiveScaleStoragePolicies
          * @description Connector-specific storage gateway policies for the ActiveScale connector.
@@ -11497,6 +11775,7 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
+        /** @description New endpoint owner */
         requestBody: {
             content: {
                 "application/json": components["schemas"]["EndpointOwner"];
@@ -11732,6 +12011,42 @@ export interface operations {
         requestBody?: never;
         responses: {
             /** @description Delete endpoint domain response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Result"];
+                };
+            };
+            401: components["responses"]["Unauthorized"];
+            /** @description Permission denied */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code?: "permission_denied";
+                        /** @enum {unknown} */
+                        http_response_code?: 403;
+                        detail?: string | components["schemas"]["MissingRequiredRole"];
+                    } & components["schemas"]["Result"];
+                };
+            };
+        };
+    };
+    postEndpointDomainMigrate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Migrate endpoint domain response */
             200: {
                 headers: {
                     [name: string]: unknown;
