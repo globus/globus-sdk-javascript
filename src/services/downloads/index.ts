@@ -51,50 +51,48 @@ export type GcpVersionInfo = {
   install_url: `https://{string}`;
 };
 
-export default {
-  releases: {
-    gcs: {
-      /**
-       * @description Retrieves the current version metadata for Globus Connect Server (GCS)
-       */
-      current: createServiceMethodFactory({
-        service: DOWNLOADS.ID,
-        path: `releases/gcs/current`,
-      }).generate<
-        {
-          request?: never;
-          data?: never;
-        },
-        JSONFetchResponse<[Omit<GcsVersionInfo, 'end_of_support'>]>
-      >(),
-      /**
-       * @description Retrieves all available version metadata for Globus Connect Server (GCS)
-       */
-      all: createServiceMethodFactory({
-        service: DOWNLOADS.ID,
-        path: `releases/gcs/all`,
-      }).generate<
-        {
-          request?: never;
-          data?: never;
-        },
-        JSONFetchResponse<GcsVersionInfo[]>
-      >(),
-    },
-    gcp: {
-      /**
-       * @description Retrieves the current version metadata for Globus Connect Personal (GCP)
-       */
-      current: createServiceMethodFactory({
-        service: DOWNLOADS.ID,
-        path: `releases/gcp/current`,
-      }).generate<
-        {
-          request?: never;
-          data?: never;
-        },
-        JSONFetchResponse<[GcpVersionInfo]>
-      >(),
-    },
+export const releases = {
+  gcs: {
+    /**
+     * @description Retrieves the current version metadata for Globus Connect Server (GCS)
+     */
+    current: createServiceMethodFactory({
+      service: DOWNLOADS.ID,
+      path: `releases/gcs/current`,
+    }).generate<
+      {
+        request?: never;
+        data?: never;
+      },
+      JSONFetchResponse<[Omit<GcsVersionInfo, 'end_of_support'>]>
+    >(),
+    /**
+     * @description Retrieves all available version metadata for Globus Connect Server (GCS)
+     */
+    all: createServiceMethodFactory({
+      service: DOWNLOADS.ID,
+      path: `releases/gcs/all`,
+    }).generate<
+      {
+        request?: never;
+        data?: never;
+      },
+      JSONFetchResponse<GcsVersionInfo[]>
+    >(),
+  },
+  gcp: {
+    /**
+     * @description Retrieves the current version metadata for Globus Connect Personal (GCP)
+     */
+    current: createServiceMethodFactory({
+      service: DOWNLOADS.ID,
+      path: `releases/gcp/current`,
+    }).generate<
+      {
+        request?: never;
+        data?: never;
+      },
+      JSONFetchResponse<[GcpVersionInfo]>
+    >(),
   },
 };
