@@ -47,8 +47,8 @@ export type GcpVersionInfo = {
   mac_released: string;
   win_version: string;
   win_released: string;
-  changelog_url: `https://{string}`;
-  install_url: `https://{string}`;
+  changelog_url: `https://${string}`;
+  install_url: `https://${string}`;
 };
 
 export const releases = {
