@@ -21,7 +21,7 @@ export type GcsVersionInfo = {
   /**
    * The URL to the changelog for this GCS version.
    */
-  changelog_url: `https://{string}`;
+  changelog_url: `https://${string}`;
   /**
    * The release date of this GCS version.
    */
