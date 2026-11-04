@@ -111,7 +111,7 @@
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.7",
     "jest": "30.5.2",
-    "msw": "2.11.2",
+    "msw": "3.0.3",
     "openapi-typescript": "7.13.0",
     "prettier": "3.9.10",
     "serve": "14.2.6",
