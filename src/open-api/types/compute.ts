@@ -1159,7 +1159,7 @@ export interface components {
          *       "subscription_admin_verified": false,
          *       "subscription_uuid": "b0b7b089-707a-4d90-a036-05b7964d6b60",
          *       "user_config_schema": {},
-         *       "user_config_template": {},
+         *       "user_config_template": "",
          *       "uuid": "7348422a-1074-427b-a08a-0771068afccc"
          *     }
          */
@@ -1830,7 +1830,7 @@ export interface components {
         PythonInfo: {
             /**
              * Version
-             * @description Python [version as a dotted triple](https://docs.python.org/3/library/platform.html#platform.python_version) (e.g., `3.13.7`)
+             * @description Python [version as a dotted triple](https://docs.python.org/3/library/platform.html#platform.python_version) following [PEP 440](https://peps.python.org/pep-0440/) (e.g., `3.13.7`, `2.71.8a0`)
              */
             version?: string | null;
             /**
@@ -1946,7 +1946,6 @@ export interface components {
         /**
          * TaskGroupResponse
          * @example {
-         *       "create_websockets_queue": true,
          *       "taskgroup_id": "4defbef8-0a1a-4c7b-9c83-b59174fca395",
          *       "tasks": [
          *         {
@@ -1963,11 +1962,6 @@ export interface components {
              * @description Task Group UUID
              */
             taskgroup_id: string;
-            /**
-             * Create Websockets Queue
-             * @description Create websockets queue
-             */
-            create_websockets_queue?: boolean | null;
             /** Tasks */
             tasks: components["schemas"]["TaskGroupResponseTask"][];
         };
@@ -2187,7 +2181,7 @@ export interface components {
          *         "python_version": "3.12.7",
          *         "sdk_version": "1.0.10",
          *         "user_config_schema": {},
-         *         "user_config_template": {}
+         *         "user_config_template": ""
          *       },
          *       "multi_user": false,
          *       "version": "1.0.10"
@@ -2252,7 +2246,7 @@ export interface components {
          *       "container_uuid": "b7a42fa2-e97f-4061-9e64-2ede22ae7f5e",
          *       "description": "My first function",
          *       "function_code": "wuX2RpbGyUjBBfY3JlYXRlX2Z1bmN0 ...",
-         *       "function_name": "My Function",
+         *       "function_name": "my_function",
          *       "group": "a2d6feb6-5386-4a06-8a22-99ea5ad7e651",
          *       "metadata": {
          *         "python_version": "3.11.3",
@@ -2431,7 +2425,7 @@ export interface components {
          *         "python_version": "3.12.7",
          *         "sdk_version": "2.2.0",
          *         "user_config_schema": {},
-         *         "user_config_template": {}
+         *         "user_config_template": ""
          *       },
          *       "multi_user": false,
          *       "public": false,
@@ -2589,72 +2583,7 @@ export interface components {
              */
             ha_warning?: string | null;
         };
-        /**
-         * BatchSubmitRequest
-         * @example {
-         *       "create_queue": true,
-         *       "resource_specification": {
-         *         "launcher_options": "--cpu-bind quiet --mem 3072",
-         *         "num_nodes": 2,
-         *         "num_ranks": 4,
-         *         "ranks_per_node": 2
-         *       },
-         *       "result_serializers": [
-         *         "globus_compute_sdk.serialize.JSONData",
-         *         "globus_compute_sdk.serialize.DillDataBase64"
-         *       ],
-         *       "task_group_id": "97241626-8ff4-4550-9938-5909bd221869",
-         *       "tasks": {
-         *         "0a98fd06-edbd-11ed-abcd-0d705ebb4c49": [
-         *           "... <serialized_arguments> ...",
-         *           "..."
-         *         ],
-         *         "ff960aba-fa23-43d5-9cbe-3f4f91a066e1": [
-         *           "... <serialized_arguments> ...",
-         *           "... <serialized_arguments> ...",
-         *           "..."
-         *         ]
-         *       },
-         *       "user_endpoint_config": {
-         *         "max_blocks": 1,
-         *         "min_blocks": 0,
-         *         "scheduler_options": "#SBATCH --constraint=knl,quad,cache"
-         *       },
-         *       "user_runtime": {
-         *         "globus_compute_sdk_version": "3.14.0",
-         *         "globus_sdk_version": "3.60.0",
-         *         "platform": {
-         *           "architecture": [
-         *             "64bit",
-         *             "ELF"
-         *           ],
-         *           "machine": "x86_64",
-         *           "node": "login02",
-         *           "platform": "Linux-6.16.5-2-generic-x86_64-with-glibc2.39",
-         *           "processor": "x86_64",
-         *           "release": "6.16.5-2-generic"
-         *         },
-         *         "python": {
-         *           "compiler": "Clang 14.0.6",
-         *           "implementation": "CPython",
-         *           "version": "3.13.5",
-         *           "version_description": "3.13.7 (main, Aug 21 2025, 13:50:03) [GCC 13.3.0]",
-         *           "version_info": [
-         *             3,
-         *             13,
-         *             5,
-         *             "final",
-         *             0
-         *           ],
-         *           "version_tuple": [
-         *             3,
-         *             13,
-         *             5
-         *           ]
-         *         }
-         *       }
-         *     }
-         */
+        /** BatchSubmitRequest */
         compute_web_service__schemas__v3__tasks__BatchSubmitRequest: {
             /**
              * Task Group Id
@@ -2678,10 +2607,15 @@ export interface components {
             create_queue: boolean;
             /**
              * Tasks
-             * @description Lists of serialized task arguments (strings), grouped by function identifiers
+             * @description Lists of task arguments, grouped by function identifiers.  If the task arguments are serialized (e.g., by the SDK), then they should be lists of strings.  If the arguments are native JSON (e.g., if submitted from a non-Python context like Javascript), then both the `*args` and `**kwargs` must be specified for each task — each task is a 2-tuple of `[["positional", "args"], {"keyword": "args"}]`.  (Note that only one or the other approach is allowed; the two formats may not be mixed.)
              */
             tasks: {
-                [key: string]: string[];
+                [key: string]: string[] | [
+                    unknown[],
+                    {
+                        [key: string]: unknown;
+                    }
+                ][];
             };
             /** @description Information about the runtime that submitted this batch, such as Python and Globus Compute SDK versions. */
             user_runtime?: components["schemas"]["UserRuntime"] | null;
