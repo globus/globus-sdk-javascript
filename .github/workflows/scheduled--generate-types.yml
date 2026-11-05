@@ -59,7 +59,7 @@ jobs:
                 '### Continuous integration workflows were NOT run on the creation of this pull request.',
                 '---',
                 '- [ ] Update the title (scope) of this pull request to match the changes made.',
-                '- [ ] Close and reopen this pull request to trigger workflows.',
+                '- [ ] Trigger workflows.',
               ].join('\n'),
               draft: true
             });
