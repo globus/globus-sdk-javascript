@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.5.1](https://github.com/globus/globus-sdk-javascript/compare/v6.5.0...v6.5.1) (2026-11-05)
+
+
+### Bug Fixes
+
+* **Downloads:** Addresses invalid `GcsVersionInfo.changelog_url` type. ([#950](https://github.com/globus/globus-sdk-javascript/issues/950)) ([6a247bf](https://github.com/globus/globus-sdk-javascript/commit/6a247bf6c3b322ab87da3935139f8be9f5d4e8d4))
+
 ## [6.5.0](https://github.com/globus/globus-sdk-javascript/compare/v6.4.0...v6.5.0) (2026-10-29)
 
 
