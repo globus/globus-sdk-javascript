@@ -2824,6 +2824,17 @@ export interface components {
             /** @description Always true for successful ingest submission. */
             acknowledged: boolean;
         };
+        InsightsDatamartMatchAnyFilter: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "match_any";
+            /** @enum {string} */
+            field_name: "gid" | "uid";
+            values: unknown[];
+        };
+        InsightsDatamartFilter: components["schemas"]["InsightsDatamartMatchAnyFilter"];
         InsightsDatamartSort: {
             /** @enum {string} */
             field_name: "size_bytes";
@@ -2836,6 +2847,7 @@ export interface components {
         InsightsDatamartQuery: {
             /** @default null */
             q: string | null;
+            filters?: components["schemas"]["InsightsDatamartFilter"][];
             /** @default 10 */
             limit: number;
             offset?: number;
