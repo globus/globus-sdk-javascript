@@ -114,7 +114,7 @@
     "msw": "2.11.2",
     "openapi-typescript": "7.13.0",
     "prettier": "3.9.10",
-    "serve": "14.2.6",
+    "serve": "14.2.7",
     "ts-jest": "29.4.15",
     "ts-node": "10.9.2",
     "tslib": "2.9.1",
