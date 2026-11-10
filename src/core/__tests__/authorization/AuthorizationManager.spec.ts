@@ -13,6 +13,7 @@ import { oauth2 } from '../../../services/auth';
 import { RedirectTransport } from '../../authorization/RedirectTransport';
 import { MemoryStorage } from '../../storage/memory';
 import { store } from '../../authorization/pkce';
+import { MapStorage } from '../../../__mocks__/map-storage';
 
 describe('AuthorizationManager', () => {
   beforeEach(() => {
@@ -568,6 +569,53 @@ describe('AuthorizationManager', () => {
     expect(instance.tokens.auth).toBe(null);
     expect(instance.tokens.transfer).toBe(null);
     expect(instance.tokens.groups).toBe(null);
+  });
+
+  describe('non-enumerable Storage implementations', () => {
+    const AUTH = {
+      access_token: 'AUTH',
+      refresh_token: 'AUTH_REFRESH',
+      resource_server: 'auth.globus.org',
+      token_type: 'Bearer',
+      scope: 'openid',
+      expires_in: 1000,
+      other_tokens: [
+        {
+          access_token: 'TRANSFER',
+          resource_server: 'transfer.api.globus.org',
+          token_type: 'Bearer',
+          scope: 'urn:globus:auth:scope:transfer.api.globus.org:all',
+          expires_in: 1000,
+        },
+      ],
+    };
+
+    describe.each([
+      ['MemoryStorage (default)', () => undefined],
+      ['a class implementing Storage', () => new MapStorage()],
+    ])('%s', (_, factory) => {
+      let instance: AuthorizationManager;
+      beforeEach(() => {
+        instance = new AuthorizationManager({
+          client: 'client_id',
+          redirect: 'https://redirect_uri',
+          storage: factory(),
+        });
+        instance.storage.setItem('some-entry', 'some-value');
+        instance.addTokenResponse(AUTH);
+      });
+
+      it('reset clears all managed tokens (and only managed tokens)', () => {
+        expect(instance.tokens.getAll()).toHaveLength(2);
+        instance.reset();
+        expect(instance.authenticated).toBe(false);
+        expect(instance.tokens.getAll()).toEqual([]);
+        expect(instance.tokens.auth).toBeNull();
+        expect(instance.tokens.transfer).toBeNull();
+        expect(instance.storage.getItem('some-entry')).toBe('some-value');
+        expect(instance.storage.length).toBe(1);
+      });
+    });
   });
 
   it('supports adding an existing token', () => {

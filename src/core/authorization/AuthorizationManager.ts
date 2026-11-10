@@ -24,6 +24,7 @@ import type {
   TokenWithRefresh,
 } from '../../services/auth/types.js';
 import { MemoryStorage } from '../storage/memory.js';
+import { getStorageKeys } from '../storage/utils.js';
 import { PopupTransport } from './PopupTransport.js';
 
 const TRANSPORTS = {
@@ -342,7 +343,11 @@ export class AuthorizationManager {
    * This method **does not** emit the `revoke` event. If you need to emit the `revoke` event, use the `AuthorizationManager.revoke` method.
    */
   reset() {
-    Object.keys(this.storage).forEach((key) => {
+    /**
+     * Keys are collected before any items are removed; removing items while iterating
+     * with `Storage.key(index)` would shift the indexes.
+     */
+    getStorageKeys(this.storage).forEach((key) => {
       if (key.startsWith(this.storageKeyPrefix)) {
         this.storage.removeItem(key);
       }

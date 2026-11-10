@@ -2,6 +2,7 @@ import { CONFIG, isToken } from '../../services/auth/index.js';
 
 import { SERVICES } from '../global.js';
 import { AuthorizationManager } from './AuthorizationManager.js';
+import { getStorageKeys } from '../storage/utils.js';
 
 import type { Token, TokenResponse } from '../../services/auth/types.js';
 
@@ -91,7 +92,7 @@ export class TokenManager {
   }
 
   getAll(): StoredToken[] {
-    const entries = Object.keys(this.#manager.storage).reduce(
+    const entries = getStorageKeys(this.#manager.storage).reduce(
       (acc: (StoredToken | null)[], key) => {
         if (key.startsWith(this.#manager.storageKeyPrefix)) {
           acc.push(this.#getTokenFromStorage(key));
