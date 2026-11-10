@@ -590,6 +590,21 @@ describe('AuthorizationManager', () => {
       ],
     };
 
+    /**
+     * Captures the `token` values sent to the revocation endpoint.
+     */
+    function captureRevocations(respond?: (token: string) => Response | undefined) {
+      const revoked: string[] = [];
+      server.use(
+        http.post('https://auth.globus.org/v2/oauth2/token/revoke', async ({ request }) => {
+          const token = `${(await request.formData()).get('token')}`;
+          revoked.push(token);
+          return respond?.(token) ?? HttpResponse.json({ active: false });
+        }),
+      );
+      return revoked;
+    }
+
     describe.each([
       ['MemoryStorage (default)', () => undefined],
       ['a class implementing Storage', () => new MapStorage()],
@@ -615,6 +630,58 @@ describe('AuthorizationManager', () => {
         expect(instance.storage.getItem('some-entry')).toBe('some-value');
         expect(instance.storage.length).toBe(1);
       });
+
+      it('revoke revokes all access and refresh tokens and clears storage', async () => {
+        const revoked = captureRevocations();
+        const listener = jest.fn();
+        instance.events.revoke.addListener(listener);
+
+        const result = await instance.revoke();
+
+        expect(revoked.sort()).toEqual(['AUTH', 'AUTH_REFRESH', 'TRANSFER']);
+        expect(result).toEqual({ failures: [] });
+        expect(listener).toHaveBeenCalledWith({ failures: [] });
+        expect(instance.authenticated).toBe(false);
+        expect(instance.tokens.getAll()).toEqual([]);
+        expect(instance.storage.getItem('some-entry')).toBe('some-value');
+      });
+    });
+
+    it('revoke resets and dispatches "revoke" even when revocation fails, reporting failures', async () => {
+      captureRevocations((token) => {
+        if (token === 'AUTH_REFRESH') return HttpResponse.error();
+        if (token === 'TRANSFER') return HttpResponse.json({}, { status: 500 });
+        return undefined;
+      });
+      const instance = new AuthorizationManager({
+        client: 'client_id',
+        redirect: 'https://redirect_uri',
+      });
+      instance.addTokenResponse(AUTH);
+      const listener = jest.fn();
+      instance.events.revoke.addListener(listener);
+
+      const result = await instance.revoke();
+
+      expect(instance.authenticated).toBe(false);
+      expect(instance.tokens.getAll()).toEqual([]);
+      expect(listener).toHaveBeenCalledTimes(1);
+      expect(listener).toHaveBeenCalledWith(result);
+      expect(result.failures).toHaveLength(2);
+      expect(result.failures).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            resource_server: 'auth.globus.org',
+            token: 'refresh_token',
+            error: expect.any(Error),
+          }),
+          expect.objectContaining({
+            resource_server: 'transfer.api.globus.org',
+            token: 'access_token',
+            response: expect.objectContaining({ status: 500 }),
+          }),
+        ]),
+      );
     });
   });
 
