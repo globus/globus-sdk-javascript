@@ -685,6 +685,53 @@ describe('AuthorizationManager', () => {
     });
   });
 
+  describe('refreshToken', () => {
+    const TOKEN = {
+      access_token: 'access-token',
+      refresh_token: 'refresh-token',
+      resource_server: 'auth.globus.org',
+      token_type: 'Bearer',
+      scope: 'openid',
+      expires_in: 1000,
+    };
+
+    function respondWith(body: Record<string, unknown>) {
+      server.use(
+        http.post('https://auth.globus.org/v2/oauth2/token', () => HttpResponse.json(body)),
+      );
+    }
+
+    it('preserves the existing refresh_token when the response omits it', async () => {
+      respondWith({
+        access_token: 'new-access-token',
+        resource_server: TOKEN.resource_server,
+        token_type: TOKEN.token_type,
+        scope: TOKEN.scope,
+        expires_in: TOKEN.expires_in,
+        other_tokens: [],
+      });
+      const instance = new AuthorizationManager({ client: 'client_id', redirect: 'x' });
+      instance.addTokenResponse(TOKEN);
+
+      const result = await instance.refreshToken(TOKEN);
+
+      expect(result?.access_token).toBe('new-access-token');
+      expect(result?.refresh_token).toBe('refresh-token');
+      expect(instance.tokens.auth?.access_token).toBe('new-access-token');
+      expect(instance.tokens.auth?.refresh_token).toBe('refresh-token');
+    });
+
+    it('uses a rotated refresh_token when the response includes one', async () => {
+      respondWith({ ...TOKEN, access_token: 'new-access-token', refresh_token: 'rotated' });
+      const instance = new AuthorizationManager({ client: 'client_id', redirect: 'x' });
+      instance.addTokenResponse(TOKEN);
+
+      await instance.refreshToken(TOKEN);
+
+      expect(instance.tokens.auth?.refresh_token).toBe('rotated');
+    });
+  });
+
   it('supports adding an existing token', () => {
     const AUTH_TOKEN_FIXTURE = {
       access_token: 'AUTH_TOKEN',

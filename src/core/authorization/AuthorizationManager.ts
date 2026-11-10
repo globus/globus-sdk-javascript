@@ -329,8 +329,17 @@ export class AuthorizationManager {
         })
       ).json();
       if (isGlobusAuthTokenResponse(response)) {
-        this.addTokenResponse(response);
-        return response;
+        /**
+         * A refresh response is allowed to omit `refresh_token`, in which case the client
+         * should continue to use the existing refresh token.
+         * @see https://datatracker.ietf.org/doc/html/rfc6749#section-6
+         */
+        const refreshed =
+          !response.refresh_token && response.resource_server === token.resource_server
+            ? { ...response, refresh_token: token.refresh_token }
+            : response;
+        this.addTokenResponse(refreshed);
+        return refreshed;
       }
     } catch (error) {
       log('error', `AuthorizationManager.refreshToken | resource_server=${token.resource_server}`);
