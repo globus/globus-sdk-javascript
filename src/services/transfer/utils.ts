@@ -107,3 +107,14 @@ export function getDomainFromEndpoint(endpoint: Record<string, unknown>) {
 
   return customDomain || hostname || null;
 }
+
+/**
+ * Returns the `data_access` consent scope (URL) for a given collection.
+ *
+ * @param collectionId The Collection UUID to generate the consent URL for.
+ * @returns The `data_access` consent scope (URL) for the given collection.
+ * @see https://docs.globus.org/api/transfer/overview/#data_access_consent
+ */
+export function getDataAccessScope(collectionId: string) {
+  return `https://auth.globus.org/scopes/${collectionId}/data_access`;
+}
