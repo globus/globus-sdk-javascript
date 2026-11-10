@@ -2834,7 +2834,23 @@ export interface components {
             field_name: "gid" | "uid";
             values: unknown[];
         };
-        InsightsDatamartFilter: components["schemas"]["InsightsDatamartMatchAnyFilter"];
+        InsightsDatamartRangeValue: {
+            gte?: unknown;
+            gt?: unknown;
+            lte?: unknown;
+            lt?: unknown;
+        };
+        InsightsDatamartRangeFilter: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "range";
+            /** @enum {string} */
+            field_name: "size_bytes";
+            values: components["schemas"]["InsightsDatamartRangeValue"][];
+        };
+        InsightsDatamartFilter: components["schemas"]["InsightsDatamartMatchAnyFilter"] | components["schemas"]["InsightsDatamartRangeFilter"];
         InsightsDatamartSort: {
             /** @enum {string} */
             field_name: "size_bytes";
