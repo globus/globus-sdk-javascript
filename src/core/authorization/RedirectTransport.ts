@@ -29,10 +29,11 @@ export type GetTokenOptions = {
   includeConsentedScopes?: boolean;
 };
 
-export type TransportOptions = Pick<
-  AuthorizationManagerConfiguration,
-  'client' | 'redirect' | 'scopes'
-> & {
+export type TransportOptions = Pick<AuthorizationManagerConfiguration, 'client' | 'scopes'> & {
+  /**
+   * The redirect URL to use for the authorization flow.
+   */
+  redirect: string;
   /**
    * Query parameters to include in the authorization request.
    *

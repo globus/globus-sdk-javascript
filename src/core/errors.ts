@@ -140,3 +140,5 @@ export function isAuthorizationRequirementsError(
     test.authorization_parameters !== null
   );
 }
+
+export { OAuthTokenError, isOAuthTokenError } from './authorization/OAuthTokenError.js';

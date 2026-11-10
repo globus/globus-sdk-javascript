@@ -38,6 +38,15 @@ export function getTokenEndpoint() {
   return build(AUTH.ID, '/v2/oauth2/token');
 }
 
+/**
+ * The Globus Auth page that displays an authorization code to the user so it can be copied
+ * (pasted) into a native application, e.g., a CLI.
+ * @see https://docs.globus.org/api/auth/developer-guide/#register-app
+ */
+export function getNativeAppRedirectURI() {
+  return build(AUTH.ID, '/v2/web/auth-code');
+}
+
 export * as developers from './service/developers/index.js';
 export * as identities from './service/identities/index.js';
 export * as oauth2 from './service/oauth2/index.js';
