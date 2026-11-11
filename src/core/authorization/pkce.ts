@@ -21,26 +21,21 @@ async function sha256(input: string) {
 }
 
 /**
- * Character set for generating random alpha-numeric strings.
+ * Generate a base64url-encoded string from `size` cryptographically random octets.
+ *
+ * Encoding random octets (rather than selecting characters with `value % charset.length`)
+ * avoids modulo bias, so every character of the output is uniformly distributed.
  */
-const CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+function generateRandom(size: number) {
+  return encode(String.fromCharCode(...getCrypto().getRandomValues(new Uint8Array(size))));
+}
 
 /**
- * Character set allowed to be used in the PKCE `code_verifier`
- * @see https://www.rfc-editor.org/rfc/rfc7636#section-4.1
- */
-const PKCE_SAFE_CHARSET = `${CHARSET}-._~`;
-/**
- * Create a Code Verifier for PKCE
+ * Create a Code Verifier for PKCE: 32 random octets, base64url-encoded (43 characters).
  * @see https://www.rfc-editor.org/rfc/rfc7636#section-4.1
  */
 export function generateCodeVerifier() {
-  /**
-   * @todo Make length random between 43 and 128 characters
-   */
-  return Array.from(getCrypto().getRandomValues(new Uint8Array(43)))
-    .map((v) => PKCE_SAFE_CHARSET[v % PKCE_SAFE_CHARSET.length])
-    .join('');
+  return generateRandom(32);
 }
 
 /**
@@ -52,10 +47,12 @@ export async function generateCodeChallenge(verifier: string) {
   return encode(hashed);
 }
 
+/**
+ * Create a `state` value: 16 random octets, base64url-encoded (22 characters).
+ * @see https://www.rfc-editor.org/rfc/rfc6749#section-10.12
+ */
 export function generateState() {
-  return Array.from(getCrypto().getRandomValues(new Uint8Array(16)))
-    .map((v) => CHARSET[v % CHARSET.length])
-    .join('');
+  return generateRandom(16);
 }
 
 /**
@@ -89,18 +86,24 @@ export type AuthorizationRequestParameters = {
 export const KEYS = {
   PKCE_STATE: 'pkce_state',
   PKCE_CODE_VERIFIER: 'pkce_code_verifier',
+  PKCE_REDIRECT_URI: 'pkce_redirect_uri',
 };
 
-type Entries = 'state' | 'code_verifier';
+type Entries = 'state' | 'code_verifier' | 'redirect_uri';
+
+const ENTRY_KEYS: Record<Entries, string> = {
+  state: KEYS.PKCE_STATE,
+  code_verifier: KEYS.PKCE_CODE_VERIFIER,
+  redirect_uri: KEYS.PKCE_REDIRECT_URI,
+};
 
 export const store = {
   getKey(key: Entries) {
-    return key === 'state' ? KEYS.PKCE_STATE : KEYS.PKCE_CODE_VERIFIER;
+    return ENTRY_KEYS[key];
   },
   get: (entry: Entries) => sessionStorage.getItem(store.getKey(entry)),
   set: (entry: Entries, value: string) => sessionStorage.setItem(store.getKey(entry), value),
   reset: () => {
-    sessionStorage.removeItem(KEYS.PKCE_STATE);
-    sessionStorage.removeItem(KEYS.PKCE_CODE_VERIFIER);
+    Object.values(ENTRY_KEYS).forEach((key) => sessionStorage.removeItem(key));
   },
 };

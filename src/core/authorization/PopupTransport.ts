@@ -16,6 +16,11 @@ export type PopupTransportOptions = TransportOptions;
 const MESSAGE_SOURCE = 'globus-sdk';
 
 /**
+ * How often to check whether the popup window was closed.
+ */
+const POLL_INTERVAL_MS = 500;
+
+/**
  * The `PopupTransport` (`popup`) uses a popup window to initiate the OAuth 2.0 using PKCE.
  *
  * When using the `PopupTransport`, the `redirect` parameter should be to a location
@@ -73,34 +78,54 @@ export class PopupTransport {
       code_challenge_method: 'S256',
       ...(this.#options.params || {}),
     };
+    /**
+     * The `redirect_uri` sent with the authorization request (which can be overridden with `params`) must be
+     * sent with the token exchange, so it is stored with the PKCE state.
+     */
+    store.set('redirect_uri', params.redirect_uri);
 
     const url = new URL(getAuthorizationEndpoint());
     url.search = new URLSearchParams(params).toString();
 
-    const promise = new Promise((resolve) => {
-      window.addEventListener(
-        'message',
-        async (e) => {
-          const { data } = e;
-          if (e.origin !== window.location.origin || data?.source !== MESSAGE_SOURCE) {
-            return;
-          }
-          this.#window?.close();
-          const response = await this.#getToken(data.url);
-          resolve(response);
-        },
-        false,
-      );
+    return new Promise((resolve, reject) => {
+      let poll: ReturnType<typeof setInterval> | undefined;
+      const cleanup = () => {
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        window.removeEventListener('message', onMessage, false);
+        clearInterval(poll);
+      };
+      const onMessage = async (e: MessageEvent) => {
+        const { data } = e;
+        if (e.origin !== window.location.origin || data?.source !== MESSAGE_SOURCE) {
+          return;
+        }
+        cleanup();
+        this.#window?.close();
+        try {
+          resolve(await this.#getToken(data.url));
+        } catch (error) {
+          reject(error);
+        }
+      };
+      window.addEventListener('message', onMessage, false);
+
+      this.#window = window.open(url.toString(), '_blank', 'width=800,height=600');
+      if (!this.#window) {
+        cleanup();
+        reject(new Error('Unable to open window for PopupTransport.'));
+        return;
+      }
+      /**
+       * Reject if the user closes the window before the flow completes.
+       */
+      poll = setInterval(() => {
+        if (this.#window?.closed) {
+          cleanup();
+          reject(new Error('The authorization window was closed before the flow completed.'));
+        }
+      }, POLL_INTERVAL_MS);
+      this.#window.focus();
     });
-
-    this.#window = window.open(url.toString(), '_blank', 'width=800,height=600');
-
-    if (!this.#window) {
-      throw new Error('Unable to open window for PopupTransport.');
-    }
-
-    this.#window.focus();
-    return promise;
   }
 
   async #getToken(href: string) {
@@ -128,6 +153,7 @@ export class PopupTransport {
      */
     const state = store.get('state');
     const verifier = store.get('code_verifier');
+    const redirectUri = store.get('redirect_uri') ?? this.#options.redirect;
     /**
      * Now that we have the values in memory, we can remove them from session storage.
      */
@@ -136,7 +162,7 @@ export class PopupTransport {
     /**
      * Validate the `state` parameter matches the preserved state (to prevent CSRF attacks).
      */
-    if (params.get('state') !== state) {
+    if (!state || params.get('state') !== state) {
       throw new Error(
         'Invalid State. The received "state" parameter does not match the expected state.',
       );
@@ -157,7 +183,7 @@ export class PopupTransport {
        * Retrieve the code verifier from session storage.
        */
       code_verifier: verifier,
-      redirect_uri: this.#options.redirect,
+      redirect_uri: redirectUri,
       grant_type: 'authorization_code',
     };
     const response = await (

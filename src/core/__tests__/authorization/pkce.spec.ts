@@ -29,10 +29,18 @@ describe('pkce', () => {
       });
     });
 
+    test('code_verifier is 32 random octets, base64url-encoded', () => {
+      Array.from({ length: 10 }, () => generateCodeVerifier()).forEach((verifier) => {
+        expect(verifier).toMatch(/^[A-Za-z0-9_-]{43}$/);
+        expect(Buffer.from(verifier, 'base64url')).toHaveLength(32);
+      });
+    });
+
     test('state', () => {
       const state = generateState();
-      expect(state).toHaveLength(16);
-      expect(state).toMatch(/^[A-Za-z0-9]+$/);
+      expect(state).toMatch(/^[A-Za-z0-9_-]{22}$/);
+      expect(Buffer.from(state, 'base64url')).toHaveLength(16);
+      expect(generateState()).not.toBe(state);
     });
   }
 });
