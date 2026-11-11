@@ -846,6 +846,30 @@ if (RedirectTransport.supported) {
         expect(url.searchParams.get('prompt')).toBe('login');
       });
 
+      it('should not allow an Authorization Requirements error to override protocol parameters', async () => {
+        await instance.handleErrorResponse({
+          authorization_parameters: {
+            session_message: 'Please re-authenticate',
+            redirect_uri: 'https://attacker.example/cb',
+            client_id: 'ATTACKER_CLIENT',
+            response_type: 'token',
+            code_challenge: 'ATTACKER_CHALLENGE',
+            code_challenge_method: 'plain',
+            state: 'ATTACKER_STATE',
+          },
+        });
+        const url = new URL(window.location.href);
+        expect(url.searchParams.get('session_message')).toBe('Please re-authenticate');
+        expect(url.searchParams.get('client_id')).toBe(instance.configuration.client);
+        expect(url.searchParams.get('redirect_uri')).toBe(instance.configuration.redirect);
+        expect(url.searchParams.get('response_type')).toBe('code');
+        expect(url.searchParams.get('code_challenge')).not.toBe('ATTACKER_CHALLENGE');
+        expect(url.searchParams.get('code_challenge_method')).toBe('S256');
+        expect(url.searchParams.get('state')).not.toBe('ATTACKER_STATE');
+        expect(sessionStorage.getItem('pkce_state')).toBe(url.searchParams.get('state'));
+        expect(sessionStorage.getItem('pkce_redirect_uri')).toBe(instance.configuration.redirect);
+      });
+
       describe('additionalParameters', () => {
         it('should preserve passed in query parameters for "authorization_requirements" error', async () => {
           await instance.handleErrorResponse(TRANSFER_AUTHORIZATION_REQUIREMENTS_ERROR, {

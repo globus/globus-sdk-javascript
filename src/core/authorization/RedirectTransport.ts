@@ -6,6 +6,7 @@ import {
   AuthorizationRequestParameters,
   AuthorizationCodeExchangeParameters,
   isSupported,
+  omitProtectedParameters,
   store,
 } from './pkce.js';
 
@@ -38,6 +39,9 @@ export type TransportOptions = Pick<
    *
    * The transport will include all parameters required for a default OAuth PKCE flow, but
    * these parameters can be overridden or extended with this option.
+   *
+   * The `response_type`, `client_id`, `code_challenge`, and `code_challenge_method` parameters
+   * are managed by the transport and **cannot** be overridden.
    */
   params?: {
     [key: string]: string;
@@ -86,7 +90,11 @@ export class RedirectTransport {
       state,
       code_challenge: challenge,
       code_challenge_method: 'S256',
-      ...(this.#options.params || {}),
+      /**
+       * Caller-provided parameters can extend the request (and override `scope`, `redirect_uri`, and `state`),
+       * but are not allowed to replace the parameters that secure the PKCE flow.
+       */
+      ...omitProtectedParameters(this.#options.params),
     };
     /**
      * The `redirect_uri` sent with the authorization request (which can be overridden with `params`) must be

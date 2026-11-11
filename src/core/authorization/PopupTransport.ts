@@ -6,6 +6,7 @@ import {
   AuthorizationRequestParameters,
   AuthorizationCodeExchangeParameters,
   isSupported,
+  omitProtectedParameters,
   store,
 } from './pkce.js';
 
@@ -76,7 +77,11 @@ export class PopupTransport {
       state,
       code_challenge: challenge,
       code_challenge_method: 'S256',
-      ...(this.#options.params || {}),
+      /**
+       * Caller-provided parameters can extend the request (and override `scope`, `redirect_uri`, and `state`),
+       * but are not allowed to replace the parameters that secure the PKCE flow.
+       */
+      ...omitProtectedParameters(this.#options.params),
     };
     /**
      * The `redirect_uri` sent with the authorization request (which can be overridden with `params`) must be

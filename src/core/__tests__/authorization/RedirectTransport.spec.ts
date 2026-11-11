@@ -70,6 +70,26 @@ describe('RedirectTransport', () => {
       expect(store.get('state')).toBe('CUSTOM_STATE');
     });
 
+    it('should not allow "params" to override parameters that secure the PKCE flow', async () => {
+      const transport = new RedirectTransport({
+        ...MOCK_CONFIG,
+        params: {
+          response_type: 'token',
+          client_id: 'OTHER_CLIENT',
+          code_challenge: 'OTHER_CHALLENGE',
+          code_challenge_method: 'plain',
+          foo: 'bar',
+        },
+      });
+      await transport.send();
+      const url = new URL((window.location.assign as jest.Mock).mock.lastCall[0]);
+      expect(url.searchParams.get('response_type')).toBe('code');
+      expect(url.searchParams.get('client_id')).toBe(MOCK_CONFIG.client);
+      expect(url.searchParams.get('code_challenge')).not.toBe('OTHER_CHALLENGE');
+      expect(url.searchParams.get('code_challenge_method')).toBe('S256');
+      expect(url.searchParams.get('foo')).toBe('bar');
+    });
+
     describe('getToken', () => {
       it('returns `undefined` when called on location with missing required parameters (code)', async () => {
         window.location.href = MOCK_CONFIG.redirect;
