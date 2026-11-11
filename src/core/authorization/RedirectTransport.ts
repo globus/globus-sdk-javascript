@@ -88,6 +88,11 @@ export class RedirectTransport {
       code_challenge_method: 'S256',
       ...(this.#options.params || {}),
     };
+    /**
+     * The `redirect_uri` sent with the authorization request (which can be overridden with `params`) must be
+     * sent with the token exchange, so it is stored with the PKCE state.
+     */
+    store.set('redirect_uri', params.redirect_uri);
 
     const url = new URL(getAuthorizationEndpoint());
     url.search = new URLSearchParams(params).toString();
@@ -126,6 +131,7 @@ export class RedirectTransport {
      */
     const state = store.get('state');
     const verifier = store.get('code_verifier');
+    const redirectUri = store.get('redirect_uri') ?? this.#options.redirect;
     /**
      * Now that we have the values in memory, we can remove them from session storage.
      */
@@ -134,7 +140,7 @@ export class RedirectTransport {
     /**
      * Validate the `state` parameter matches the preserved state (to prevent CSRF attacks).
      */
-    if (params.get('state') !== state) {
+    if (!state || params.get('state') !== state) {
       throw new Error(
         'Invalid State. The received "state" parameter does not match the expected state.',
       );
@@ -156,7 +162,7 @@ export class RedirectTransport {
        * Retrieve the code verifier from session storage.
        */
       code_verifier: verifier,
-      redirect_uri: this.#options.redirect,
+      redirect_uri: redirectUri,
       grant_type: 'authorization_code',
     };
 

@@ -5,6 +5,7 @@ import '../../../__mocks__/window-location';
 import { RedirectTransport } from '../../authorization/RedirectTransport';
 import { oauth2 } from '../../../services/auth';
 import { store } from '../../authorization/pkce';
+import { MemoryStorage } from '../../storage/memory';
 
 const MOCK_CONFIG = {
   client: 'CLIENT_ID',
@@ -109,6 +110,46 @@ describe('RedirectTransport', () => {
         await expect(async () => {
           await transport.getToken();
         }).rejects.toThrow('Invalid Code Verifier');
+      });
+
+      it('throws when there is no stored "state" (e.g., the flow was not started in this session)', async () => {
+        /**
+         * Use a `Storage` with real semantics (`getItem` returns `null` for missing items).
+         */
+        Object.defineProperty(globalThis, 'sessionStorage', {
+          value: new MemoryStorage(),
+          writable: true,
+        });
+        store.set('code_verifier', 'CODE_VERIFIER');
+        window.location.href = `${MOCK_CONFIG.redirect}?code=CODE`;
+        const transport = new RedirectTransport(MOCK_CONFIG);
+        await expect(transport.getToken()).rejects.toThrow('Invalid State');
+      });
+
+      it('exchanges the code using the "redirect_uri" sent with the authorization request', async () => {
+        const spy = jest
+          .spyOn(oauth2.token, 'exchange')
+          .mockReturnValue(Promise.resolve(Response.json(MOCK_TOKEN)));
+        const OVERRIDE = 'https://redirect_uri/runtime-override';
+        /**
+         * The authorization request overrides the configured `redirect` with `params.redirect_uri`...
+         */
+        await new RedirectTransport({
+          ...MOCK_CONFIG,
+          params: { redirect_uri: OVERRIDE },
+        }).send();
+        expect(store.get('redirect_uri')).toBe(OVERRIDE);
+        /**
+         * ...and the redirect is processed by a transport created with the default configuration.
+         */
+        window.location.href = `${OVERRIDE}?code=CODE&state=${store.get('state')}`;
+        await new RedirectTransport(MOCK_CONFIG).getToken({ shouldReplace: false });
+        expect(spy).toHaveBeenCalledWith(
+          expect.objectContaining({
+            payload: expect.objectContaining({ redirect_uri: OVERRIDE }),
+          }),
+        );
+        expect(store.get('redirect_uri') ?? null).toBeNull();
       });
 
       it('removes code and state from location after processing (by default)', async () => {
