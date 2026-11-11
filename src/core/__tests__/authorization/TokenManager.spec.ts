@@ -1,6 +1,6 @@
 import { mockLocalStorage, setInitialLocalStorageState } from '../../../__mocks__/localStorage';
 import { AuthorizationManager } from '../../authorization/AuthorizationManager';
-import { TokenManager } from '../../authorization/TokenManager';
+import { TokenManager, TOKEN_STORAGE_VERSION, parseScopes } from '../../authorization/TokenManager';
 import { MemoryStorage } from '../../storage/memory';
 import { MapStorage } from '../../../__mocks__/map-storage';
 
@@ -40,7 +40,14 @@ describe('TokenManager', () => {
   it('should return tokens for services when in storage', () => {
     const TOKEN = { resource_server: RESOURCE_SERVERS.AUTH, access_token: 'AUTH' };
     setInitialLocalStorageState({
-      'CLIENT_ID:auth.globus.org': JSON.stringify(TOKEN),
+      'CLIENT_ID:TokenManager': JSON.stringify({
+        version: TOKEN_STORAGE_VERSION,
+        state: {
+          tokens: {
+            [TOKEN.access_token]: TOKEN,
+          },
+        },
+      }),
     });
 
     expect(tokens.auth).not.toBeNull();
@@ -71,13 +78,14 @@ describe('TokenManager', () => {
     it('handles stored tokens', () => {
       const TOKEN: Token = {
         resource_server: RESOURCE_SERVERS.AUTH,
-        access_token: 'AUTH',
+        access_token: 'AUTH_ACCESS_TOKEN',
         token_type: 'Bearer',
         scope: 'openid',
         expires_in: 1000,
       };
       const EXPIRED_TOKEN = {
         ...TOKEN,
+        access_token: 'FLOWS_ACCESS_TOKEN',
         resource_server: RESOURCE_SERVERS.FLOWS,
         expires_in: 0,
       };
@@ -102,7 +110,7 @@ describe('TokenManager', () => {
         expires_in: 1000,
       };
       tokens.add(TOKEN);
-      tokens.add({ ...TOKEN, resource_server: RESOURCE_SERVERS.FLOWS });
+      tokens.add({ ...TOKEN, access_token: 'FLOWS', resource_server: RESOURCE_SERVERS.FLOWS });
       expect(tokens.auth).not.toBeNull();
       expect(tokens.flows).not.toBeNull();
       tokens.remove(TOKEN);
@@ -133,8 +141,15 @@ describe('TokenManager', () => {
         { resource_server: RESOURCE_SERVERS.COMPUTE, access_token: 'TOKEN-2' },
       ];
       setInitialLocalStorageState({
-        [`CLIENT_ID:${RESOURCE_SERVERS.AUTH}`]: JSON.stringify(TOKENS[0]),
-        [`CLIENT_ID:${RESOURCE_SERVERS.COMPUTE}`]: JSON.stringify(TOKENS[1]),
+        'CLIENT_ID:TokenManager': JSON.stringify({
+          version: TOKEN_STORAGE_VERSION,
+          state: {
+            tokens: {
+              [TOKENS[0].access_token]: TOKENS[0],
+              [TOKENS[1].access_token]: TOKENS[1],
+            },
+          },
+        }),
       });
       expect(tokens.getAll()).toEqual([TOKENS[0], TOKENS[1]]);
     });
@@ -148,11 +163,18 @@ describe('TokenManager', () => {
         { resource_server: 'arbitrary', access_token: 'arbitrary' },
       ];
       setInitialLocalStorageState({
-        [`CLIENT_ID:${RESOURCE_SERVERS.AUTH}`]: JSON.stringify(TOKENS[0]),
-        [`CLIENT_ID:${RESOURCE_SERVERS.COMPUTE}`]: JSON.stringify(TOKENS[1]),
-        [`CLIENT_ID:${GCS_ENDPOINT_UUID}`]: JSON.stringify(TOKENS[2]),
+        'CLIENT_ID:TokenManager': JSON.stringify({
+          version: TOKEN_STORAGE_VERSION,
+          state: {
+            tokens: {
+              [TOKENS[0].access_token]: TOKENS[0],
+              [TOKENS[1].access_token]: TOKENS[1],
+              [TOKENS[2].access_token]: TOKENS[2],
+              [TOKENS[3].access_token]: TOKENS[3],
+            },
+          },
+        }),
         'some-storage-key': 'NOT-A-TOKEN',
-        [`CLIENT_ID:arbitrary`]: JSON.stringify(TOKENS[3]),
       });
       expect(tokens.getAll()).toEqual([TOKENS[0], TOKENS[1], TOKENS[2], TOKENS[3]]);
       expect(tokens.getAll()).not.toContain('NOT-A-TOKEN');
@@ -184,9 +206,16 @@ describe('TokenManager', () => {
       },
     ];
     setInitialLocalStorageState({
-      [`CLIENT_ID:${GCS_ENDPOINT_UUID}`]: JSON.stringify(TOKENS[0]),
-      [`CLIENT_ID:${FLOW_UUID}`]: JSON.stringify(TOKENS[1]),
-      [`CLIENT_ID:${RESOURCE_SERVERS.AUTH}`]: JSON.stringify(TOKENS[2]),
+      'CLIENT_ID:TokenManager': JSON.stringify({
+        version: TOKEN_STORAGE_VERSION,
+        state: {
+          tokens: {
+            [TOKENS[0].access_token]: TOKENS[0],
+            [TOKENS[1].access_token]: TOKENS[1],
+            [TOKENS[2].access_token]: TOKENS[2],
+          },
+        },
+      }),
     });
 
     expect(tokens.getByResourceServer(GCS_ENDPOINT_UUID)).toEqual(TOKENS[0]);
@@ -208,11 +237,39 @@ describe('TokenManager', () => {
       },
     ];
     setInitialLocalStorageState({
-      [`CLIENT_ID:${GCS_ENDPOINT_UUID}`]: JSON.stringify(TOKENS[0]),
+      'CLIENT_ID:TokenManager': JSON.stringify({
+        version: TOKEN_STORAGE_VERSION,
+        state: {
+          tokens: {
+            [TOKENS[0].access_token]: TOKENS[0],
+          },
+        },
+      }),
     });
 
     expect(tokens.gcs(GCS_ENDPOINT_UUID)).toEqual(TOKENS[0]);
   });
+  it('supports .clear()', () => {
+    const TOKENS = [
+      { resource_server: RESOURCE_SERVERS.AUTH, access_token: 'TOKEN-1' },
+      { resource_server: RESOURCE_SERVERS.COMPUTE, access_token: 'TOKEN-2' },
+    ];
+    setInitialLocalStorageState({
+      'CLIENT_ID:TokenManager': JSON.stringify({
+        version: TOKEN_STORAGE_VERSION,
+        state: {
+          tokens: {
+            [TOKENS[0].access_token]: TOKENS[0],
+            [TOKENS[1].access_token]: TOKENS[1],
+          },
+        },
+      }),
+    });
+    expect(tokens.getAll().length).toBe(2);
+    tokens.clear();
+    expect(tokens.getAll().length).toBe(0);
+  });
+
   describe('getAll', () => {
     it.each([
       ['MemoryStorage (default)', undefined],
@@ -249,6 +306,159 @@ describe('TokenManager', () => {
           .map((t) => t.access_token)
           .sort(),
       ).toEqual(['AUTH', 'TRANSFER']);
+    });
+  });
+
+  describe('TokenStorage', () => {
+    const TRANSFER_ALL = 'urn:globus:auth:scope:transfer.api.globus.org:all';
+    const DEPENDENT = `${TRANSFER_ALL}[*https://auth.globus.org/scopes/COLLECTION/data_access *https://auth.globus.org/scopes/OTHER/data_access]`;
+
+    const token = (overrides: Partial<Token> = {}): Token => ({
+      access_token: 'TRANSFER',
+      resource_server: RESOURCE_SERVERS.TRANSFER,
+      token_type: 'Bearer',
+      scope: TRANSFER_ALL,
+      expires_in: 1000,
+      ...overrides,
+    });
+
+    const create = (storage: Storage) =>
+      new AuthorizationManager({ client: 'CLIENT_ID', redirect: 'REDIRECT_URI', storage });
+
+    describe('parseScopes', () => {
+      it('splits on spaces outside of dependent scope brackets', () => {
+        expect(parseScopes(`openid ${DEPENDENT} email`)).toEqual(['openid', DEPENDENT, 'email']);
+        expect(parseScopes('  a   b ')).toEqual(['a', 'b']);
+        expect(parseScopes('')).toEqual([]);
+        expect(parseScopes(undefined)).toEqual([]);
+      });
+    });
+
+    describe('migration', () => {
+      it('migrates legacy tokens from a non-enumerable Storage and removes the legacy items', () => {
+        const storage = new MapStorage();
+        storage.setItem(
+          'CLIENT_ID:auth.globus.org',
+          JSON.stringify(
+            token({
+              access_token: 'AUTH',
+              resource_server: RESOURCE_SERVERS.AUTH,
+              scope: 'openid',
+            }),
+          ),
+        );
+        storage.setItem('CLIENT_ID:transfer.api.globus.org', JSON.stringify(token()));
+        storage.setItem('CLIENT_ID:not-a-token', JSON.stringify({ foo: 'bar' }));
+        storage.setItem(
+          'OTHER_CLIENT:transfer.api.globus.org',
+          JSON.stringify(token({ access_token: 'OTHER' })),
+        );
+
+        const am = create(storage);
+
+        expect(am.authenticated).toBe(true);
+        expect(
+          am.tokens
+            .getAll()
+            .map((t) => t.access_token)
+            .sort(),
+        ).toEqual(['AUTH', 'TRANSFER']);
+        expect(storage.getItem('CLIENT_ID:auth.globus.org')).toBeNull();
+        expect(storage.getItem('CLIENT_ID:transfer.api.globus.org')).toBeNull();
+        /**
+         * Items that are not tokens, or are managed by another client, are left as-is.
+         */
+        expect(storage.getItem('CLIENT_ID:not-a-token')).not.toBeNull();
+        expect(storage.getItem('OTHER_CLIENT:transfer.api.globus.org')).not.toBeNull();
+      });
+
+      it('does not write to storage when there is nothing to migrate', () => {
+        const storage = new MapStorage();
+        const am = create(storage);
+        expect(am.tokens.getAll()).toEqual([]);
+        expect(storage.length).toBe(0);
+      });
+
+      it('ignores (and does not throw for) an unreadable storage entry', () => {
+        const storage = new MapStorage();
+        storage.setItem('CLIENT_ID:TokenManager', '{not json');
+        const am = create(storage);
+        expect(am.tokens.getAll()).toEqual([]);
+        am.addTokenResponse(token());
+        expect(am.tokens.transfer?.access_token).toBe('TRANSFER');
+      });
+    });
+
+    it('observes changes made by other instances sharing the storage', () => {
+      const storage = new MapStorage();
+      const a = create(storage);
+      const b = create(storage);
+      a.addTokenResponse(token({ scope: DEPENDENT }));
+      expect(b.tokens.getByScope(DEPENDENT)?.access_token).toBe('TRANSFER');
+      /**
+       * A refresh in one instance (same resource server and scope) replaces the token for all instances.
+       */
+      b.addTokenResponse(token({ access_token: 'REFRESHED', scope: DEPENDENT }));
+      expect(a.tokens.getByScope(DEPENDENT)?.access_token).toBe('REFRESHED');
+      expect(a.tokens.getAll()).toHaveLength(1);
+    });
+
+    describe('multiple tokens for a resource server', () => {
+      let am: AuthorizationManager;
+      beforeEach(() => {
+        jest.spyOn(Date, 'now').mockReturnValueOnce(1000).mockReturnValueOnce(2000);
+        am = create(new MapStorage());
+        am.addTokenResponse(token({ access_token: 'OLDER' }));
+        am.addTokenResponse(token({ access_token: 'NEWER', scope: DEPENDENT }));
+      });
+
+      it('stores both tokens', () => {
+        expect(
+          am.tokens.getAllByResourceServer(RESOURCE_SERVERS.TRANSFER).map((t) => t.access_token),
+        ).toEqual(['NEWER', 'OLDER']);
+      });
+
+      it('returns the most recently stored token by default', () => {
+        expect(am.tokens.transfer?.access_token).toBe('NEWER');
+        expect(am.tokens.getByResourceServer(RESOURCE_SERVERS.TRANSFER)?.access_token).toBe(
+          'NEWER',
+        );
+      });
+
+      it('returns the token matching a provided scope', () => {
+        expect(
+          am.tokens.getByResourceServer(RESOURCE_SERVERS.TRANSFER, TRANSFER_ALL)?.access_token,
+        ).toBe('OLDER');
+        expect(am.tokens.getByScope(TRANSFER_ALL)?.access_token).toBe('OLDER');
+        expect(am.tokens.getByScope(DEPENDENT)?.access_token).toBe('NEWER');
+      });
+
+      it('falls back to the most recent token for the resource server when no token matches the scope', () => {
+        am.tokens.remove(token({ access_token: 'OLDER' }));
+        expect(
+          am.tokens.getByResourceServer(RESOURCE_SERVERS.TRANSFER, TRANSFER_ALL)?.access_token,
+        ).toBe('NEWER');
+        expect(am.tokens.getByScope(TRANSFER_ALL)).toBeNull();
+      });
+    });
+
+    it('replaces a token with the same resource server and scopes, regardless of scope order', () => {
+      const am = create(new MapStorage());
+      am.addTokenResponse(
+        token({
+          resource_server: RESOURCE_SERVERS.AUTH,
+          scope: 'openid email profile',
+          access_token: 'A',
+        }),
+      );
+      am.addTokenResponse(
+        token({
+          resource_server: RESOURCE_SERVERS.AUTH,
+          scope: 'profile openid email',
+          access_token: 'B',
+        }),
+      );
+      expect(am.tokens.getAll().map((t) => t.access_token)).toEqual(['B']);
     });
   });
 });
