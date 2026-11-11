@@ -738,8 +738,9 @@ export class AuthorizationManager {
    *
    * @param request The value returned by `startAuthorization()`.
    * @param callback The `code` (and `state`) received on the redirect. A `URL` or `URLSearchParams` of the redirect
-   * can be provided directly. `state` is validated whenever it is provided; it can be omitted when the user copies
-   * the `code` from the Globus Auth "auth code" page.
+   * can be provided directly, in which case it **must** include the expected `state`. When a `{ code }` object is
+   * provided, `state` is validated if present, and can be omitted when the user copies the `code` from the Globus
+   * Auth "auth code" page.
    * @param options.includeConsentedScopes Return tokens for all scopes the user has consented to for the client.
    * @throws An `Error` if the redirect contains an `error` or the `state` does not match, or an `OAuthTokenError`
    * if the code could not be exchanged.
@@ -752,7 +753,13 @@ export class AuthorizationManager {
     log('debug', 'AuthorizationManager.completeAuthorization');
     let code: string | null;
     let state: string | null | undefined;
+    /**
+     * A redirect (`URL` / `URLSearchParams`) must always include the expected `state`. Only a code provided
+     * directly (`{ code }`, e.g., copied by the user from the Globus Auth "auth code" page) may omit it.
+     */
+    let requireState = false;
     if (callback instanceof URL || callback instanceof URLSearchParams) {
+      requireState = true;
       const params = callback instanceof URL ? callback.searchParams : callback;
       if (params.get('error')) {
         throw new Error(
@@ -767,7 +774,8 @@ export class AuthorizationManager {
     if (!code) {
       throw new Error('Missing authorization code.');
     }
-    if (state !== undefined && state !== null && state !== request.state) {
+    const hasState = state !== undefined && state !== null;
+    if ((requireState || hasState) && state !== request.state) {
       throw new Error(
         'Invalid State. The received "state" parameter does not match the expected state.',
       );

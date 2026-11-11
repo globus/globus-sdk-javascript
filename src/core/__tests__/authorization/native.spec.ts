@@ -222,6 +222,19 @@ describe('AuthorizationManager without a browser', () => {
       expect(requests).toHaveLength(0);
     });
 
+    it('rejects a redirect without `state` without exchanging the code', async () => {
+      const requests = mockExchange();
+      const manager = authorization.create({ client: 'client_id' });
+      const request = await manager.startAuthorization({ redirect: 'http://127.0.0.1/cb' });
+      await expect(
+        manager.completeAuthorization(request, new URL('http://127.0.0.1/cb?code=injected')),
+      ).rejects.toThrow(/Invalid State/);
+      await expect(
+        manager.completeAuthorization(request, new URLSearchParams({ code: 'injected' })),
+      ).rejects.toThrow(/Invalid State/);
+      expect(requests).toHaveLength(0);
+    });
+
     it('rejects an error redirect', async () => {
       const manager = authorization.create({ client: 'client_id' });
       const request = await manager.startAuthorization();
