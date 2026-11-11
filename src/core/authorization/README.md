@@ -22,6 +22,8 @@ The `AuthorizationManager` emits events to notify the application of changes in 
 
 Where the `AuthorizationManager` stores tokens and other authorization data. The SDK provides an in-memory storage implementation and `localStorage`. Should a user want to use a different storage mechanism, they can implement the `Storage` interface – this should allow use of our authorization utility in most runtimes (e.g. Node.js, Browser, etc.).
 
+Tokens are enumerated (e.g., `TokenManager.getAll()`, `AuthorizationManager.reset()`, `AuthorizationManager.revoke()`) using the `Storage` API (`length` and `key(index)`), so custom implementations **must** implement both. Items do not need to be exposed as own properties of the object.
+
 ### Transport (i.e. `RedirectTransport.ts`)
 
 A "transport" is the actual mechanism the application will use to complete an authorization flow (grant). At the moment,

@@ -24,6 +24,7 @@ import type {
   TokenWithRefresh,
 } from '../../services/auth/types.js';
 import { MemoryStorage } from '../storage/memory.js';
+import { getStorageKeys } from '../storage/utils.js';
 import { PopupTransport } from './PopupTransport.js';
 
 const TRANSPORTS = {
@@ -72,6 +73,35 @@ export type AuthorizationManagerConfiguration = {
       AuthorizationManager['events'][Event]['addListener']
     >[0];
   }>;
+};
+
+/**
+ * A token revocation request that did not succeed during `AuthorizationManager.revoke()`.
+ */
+export type TokenRevocationFailure = {
+  /**
+   * The resource server of the token that could not be revoked.
+   */
+  resource_server: string;
+  /**
+   * Which value of the token could not be revoked.
+   */
+  token: 'access_token' | 'refresh_token';
+  /**
+   * The response from Globus Auth, when it responded with a non-2xx status.
+   */
+  response?: Response;
+  /**
+   * The error thrown while making the request (e.g., a network error).
+   */
+  error?: unknown;
+};
+
+export type TokenRevocationResult = {
+  /**
+   * Revocation requests that did not succeed. Tokens are removed from storage regardless.
+   */
+  failures: TokenRevocationFailure[];
 };
 
 const DEFAULT_CONFIGURATION = {
@@ -194,8 +224,10 @@ export class AuthorizationManager {
     /**
      * Emitted when the user revokes their authentication.
      * @event AuthorizationManager.events#revoke
+     * @type {object}
+     * @property {TokenRevocationFailure[]} failures - Revocation requests that did not succeed (tokens are removed from storage regardless).
      */
-    revoke: new Event('revoke'),
+    revoke: new Event<'revoke', TokenRevocationResult>('revoke'),
   };
 
   constructor(configuration: AuthorizationManagerConfiguration) {
@@ -297,8 +329,17 @@ export class AuthorizationManager {
         })
       ).json();
       if (isGlobusAuthTokenResponse(response)) {
-        this.addTokenResponse(response);
-        return response;
+        /**
+         * A refresh response is allowed to omit `refresh_token`, in which case the client
+         * should continue to use the existing refresh token.
+         * @see https://datatracker.ietf.org/doc/html/rfc6749#section-6
+         */
+        const refreshed =
+          !response.refresh_token && response.resource_server === token.resource_server
+            ? { ...response, refresh_token: token.refresh_token }
+            : response;
+        this.addTokenResponse(refreshed);
+        return refreshed;
       }
     } catch (error) {
       log('error', `AuthorizationManager.refreshToken | resource_server=${token.resource_server}`);
@@ -342,7 +383,11 @@ export class AuthorizationManager {
    * This method **does not** emit the `revoke` event. If you need to emit the `revoke` event, use the `AuthorizationManager.revoke` method.
    */
   reset() {
-    Object.keys(this.storage).forEach((key) => {
+    /**
+     * Keys are collected before any items are removed; removing items while iterating
+     * with `Storage.key(index)` would shift the indexes.
+     */
+    getStorageKeys(this.storage).forEach((key) => {
       if (key.startsWith(this.storageKeyPrefix)) {
         this.storage.removeItem(key);
       }
@@ -576,28 +621,60 @@ export class AuthorizationManager {
   };
 
   /**
-   * Call `AuthroizationManager.reset`, revoke all of the available tokns, and emit the `revoke` event.
+   * Revoke all of the available tokens (access tokens **and** refresh tokens), call `AuthorizationManager.reset`,
+   * and emit the `revoke` event.
+   *
+   * The instance is always reset (all tokens are removed from storage), and the `revoke` event is always
+   * emitted, even when one or more revocation requests fail. Failed revocations are reported in the
+   * resolved value (and the `revoke` event payload) so they can be logged or retried.
+   *
    * @emits AuthorizationManager.events#revoke
    * @see AuthorizationManager.reset
    */
-  async revoke() {
+  async revoke(): Promise<TokenRevocationResult> {
     log('debug', 'AuthorizationManager.revoke');
-    const revocation = Promise.all(this.tokens.getAll().map(this.#revokeToken.bind(this)));
+    /**
+     * Requests are dispatched before the reset, using the tokens that are in storage now.
+     */
+    const revocation = Promise.all(this.tokens.getAll().flatMap((t) => this.#revokeToken(t)));
     this.reset();
-    await revocation;
-    await this.events.revoke.dispatch();
+    const failures = (await revocation).filter((f): f is TokenRevocationFailure => f !== null);
+    failures.forEach((f) => {
+      log(
+        'warn',
+        `AuthorizationManager.revoke | Unable to revoke token | resource_server=${f.resource_server} token=${f.token}`,
+      );
+    });
+    const result = { failures };
+    await this.events.revoke.dispatch(result);
+    return result;
   }
 
   /**
-   * Revoke a token from a resource server.
+   * Revoke a token's `access_token` (and `refresh_token`, when present) with Globus Auth.
+   * @returns One promise per revocation request; each resolves to a `TokenRevocationFailure`, or `null` on success. The promises never reject.
    */
-  #revokeToken(token: Token) {
+  #revokeToken(token: Token): Promise<TokenRevocationFailure | null>[] {
     log('debug', `AuthorizationManager.revokeToken | resource_server=${token.resource_server}`);
-    return oauth2.token.revoke({
-      payload: {
-        client_id: this.configuration.client,
-        token: token.access_token,
-      },
+    const values: [TokenRevocationFailure['token'], string][] = [
+      ['access_token', token.access_token],
+    ];
+    if (token.refresh_token) {
+      values.push(['refresh_token', token.refresh_token]);
+    }
+    return values.map(async ([type, value]) => {
+      const failure = { resource_server: token.resource_server, token: type };
+      try {
+        const response = await oauth2.token.revoke({
+          payload: {
+            client_id: this.configuration.client,
+            token: value,
+          },
+        });
+        return response && response.ok === false ? { ...failure, response } : null;
+      } catch (error) {
+        return { ...failure, error };
+      }
     });
   }
 }

@@ -13,6 +13,7 @@ import { oauth2 } from '../../../services/auth';
 import { RedirectTransport } from '../../authorization/RedirectTransport';
 import { MemoryStorage } from '../../storage/memory';
 import { store } from '../../authorization/pkce';
+import { MapStorage } from '../../../__mocks__/map-storage';
 
 describe('AuthorizationManager', () => {
   beforeEach(() => {
@@ -568,6 +569,167 @@ describe('AuthorizationManager', () => {
     expect(instance.tokens.auth).toBe(null);
     expect(instance.tokens.transfer).toBe(null);
     expect(instance.tokens.groups).toBe(null);
+  });
+
+  describe('non-enumerable Storage implementations', () => {
+    const AUTH = {
+      access_token: 'AUTH',
+      refresh_token: 'AUTH_REFRESH',
+      resource_server: 'auth.globus.org',
+      token_type: 'Bearer',
+      scope: 'openid',
+      expires_in: 1000,
+      other_tokens: [
+        {
+          access_token: 'TRANSFER',
+          resource_server: 'transfer.api.globus.org',
+          token_type: 'Bearer',
+          scope: 'urn:globus:auth:scope:transfer.api.globus.org:all',
+          expires_in: 1000,
+        },
+      ],
+    };
+
+    /**
+     * Captures the `token` values sent to the revocation endpoint.
+     */
+    function captureRevocations(respond?: (token: string) => Response | undefined) {
+      const revoked: string[] = [];
+      server.use(
+        http.post('https://auth.globus.org/v2/oauth2/token/revoke', async ({ request }) => {
+          const token = `${(await request.formData()).get('token')}`;
+          revoked.push(token);
+          return respond?.(token) ?? HttpResponse.json({ active: false });
+        }),
+      );
+      return revoked;
+    }
+
+    describe.each([
+      ['MemoryStorage (default)', () => undefined],
+      ['a class implementing Storage', () => new MapStorage()],
+    ])('%s', (_, factory) => {
+      let instance: AuthorizationManager;
+      beforeEach(() => {
+        instance = new AuthorizationManager({
+          client: 'client_id',
+          redirect: 'https://redirect_uri',
+          storage: factory(),
+        });
+        instance.storage.setItem('some-entry', 'some-value');
+        instance.addTokenResponse(AUTH);
+      });
+
+      it('reset clears all managed tokens (and only managed tokens)', () => {
+        expect(instance.tokens.getAll()).toHaveLength(2);
+        instance.reset();
+        expect(instance.authenticated).toBe(false);
+        expect(instance.tokens.getAll()).toEqual([]);
+        expect(instance.tokens.auth).toBeNull();
+        expect(instance.tokens.transfer).toBeNull();
+        expect(instance.storage.getItem('some-entry')).toBe('some-value');
+        expect(instance.storage.length).toBe(1);
+      });
+
+      it('revoke revokes all access and refresh tokens and clears storage', async () => {
+        const revoked = captureRevocations();
+        const listener = jest.fn();
+        instance.events.revoke.addListener(listener);
+
+        const result = await instance.revoke();
+
+        expect(revoked.sort()).toEqual(['AUTH', 'AUTH_REFRESH', 'TRANSFER']);
+        expect(result).toEqual({ failures: [] });
+        expect(listener).toHaveBeenCalledWith({ failures: [] });
+        expect(instance.authenticated).toBe(false);
+        expect(instance.tokens.getAll()).toEqual([]);
+        expect(instance.storage.getItem('some-entry')).toBe('some-value');
+      });
+    });
+
+    it('revoke resets and dispatches "revoke" even when revocation fails, reporting failures', async () => {
+      captureRevocations((token) => {
+        if (token === 'AUTH_REFRESH') return HttpResponse.error();
+        if (token === 'TRANSFER') return HttpResponse.json({}, { status: 500 });
+        return undefined;
+      });
+      const instance = new AuthorizationManager({
+        client: 'client_id',
+        redirect: 'https://redirect_uri',
+      });
+      instance.addTokenResponse(AUTH);
+      const listener = jest.fn();
+      instance.events.revoke.addListener(listener);
+
+      const result = await instance.revoke();
+
+      expect(instance.authenticated).toBe(false);
+      expect(instance.tokens.getAll()).toEqual([]);
+      expect(listener).toHaveBeenCalledTimes(1);
+      expect(listener).toHaveBeenCalledWith(result);
+      expect(result.failures).toHaveLength(2);
+      expect(result.failures).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            resource_server: 'auth.globus.org',
+            token: 'refresh_token',
+            error: expect.any(Error),
+          }),
+          expect.objectContaining({
+            resource_server: 'transfer.api.globus.org',
+            token: 'access_token',
+            response: expect.objectContaining({ status: 500 }),
+          }),
+        ]),
+      );
+    });
+  });
+
+  describe('refreshToken', () => {
+    const TOKEN = {
+      access_token: 'access-token',
+      refresh_token: 'refresh-token',
+      resource_server: 'auth.globus.org',
+      token_type: 'Bearer',
+      scope: 'openid',
+      expires_in: 1000,
+    };
+
+    function respondWith(body: Record<string, unknown>) {
+      server.use(
+        http.post('https://auth.globus.org/v2/oauth2/token', () => HttpResponse.json(body)),
+      );
+    }
+
+    it('preserves the existing refresh_token when the response omits it', async () => {
+      respondWith({
+        access_token: 'new-access-token',
+        resource_server: TOKEN.resource_server,
+        token_type: TOKEN.token_type,
+        scope: TOKEN.scope,
+        expires_in: TOKEN.expires_in,
+        other_tokens: [],
+      });
+      const instance = new AuthorizationManager({ client: 'client_id', redirect: 'x' });
+      instance.addTokenResponse(TOKEN);
+
+      const result = await instance.refreshToken(TOKEN);
+
+      expect(result?.access_token).toBe('new-access-token');
+      expect(result?.refresh_token).toBe('refresh-token');
+      expect(instance.tokens.auth?.access_token).toBe('new-access-token');
+      expect(instance.tokens.auth?.refresh_token).toBe('refresh-token');
+    });
+
+    it('uses a rotated refresh_token when the response includes one', async () => {
+      respondWith({ ...TOKEN, access_token: 'new-access-token', refresh_token: 'rotated' });
+      const instance = new AuthorizationManager({ client: 'client_id', redirect: 'x' });
+      instance.addTokenResponse(TOKEN);
+
+      await instance.refreshToken(TOKEN);
+
+      expect(instance.tokens.auth?.refresh_token).toBe('rotated');
+    });
   });
 
   it('supports adding an existing token', () => {

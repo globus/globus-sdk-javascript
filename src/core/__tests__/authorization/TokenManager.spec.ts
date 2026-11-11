@@ -1,6 +1,8 @@
 import { mockLocalStorage, setInitialLocalStorageState } from '../../../__mocks__/localStorage';
 import { AuthorizationManager } from '../../authorization/AuthorizationManager';
 import { TokenManager } from '../../authorization/TokenManager';
+import { MemoryStorage } from '../../storage/memory';
+import { MapStorage } from '../../../__mocks__/map-storage';
 
 import { RESOURCE_SERVERS } from '../../../services/auth/config';
 
@@ -210,5 +212,43 @@ describe('TokenManager', () => {
     });
 
     expect(tokens.gcs(GCS_ENDPOINT_UUID)).toEqual(TOKENS[0]);
+  });
+  describe('getAll', () => {
+    it.each([
+      ['MemoryStorage (default)', undefined],
+      ['MemoryStorage (explicit)', () => new MemoryStorage()],
+      ['a class implementing Storage', () => new MapStorage()],
+    ])('returns all stored tokens using %s', (_, factory) => {
+      const m = new AuthorizationManager({
+        client: 'CLIENT_ID',
+        scopes: 'REQUIRED_SCOPES',
+        redirect: 'REDIRECT_URI',
+        storage: factory?.(),
+      });
+      expect(m.tokens.getAll()).toEqual([]);
+      m.storage.setItem('NOT_MANAGED', JSON.stringify({ access_token: 'IGNORED' }));
+      m.addTokenResponse({
+        access_token: 'AUTH',
+        resource_server: RESOURCE_SERVERS.AUTH,
+        token_type: 'Bearer',
+        scope: 'openid',
+        expires_in: 1000,
+        other_tokens: [
+          {
+            access_token: 'TRANSFER',
+            resource_server: RESOURCE_SERVERS.TRANSFER,
+            token_type: 'Bearer',
+            scope: 'urn:globus:auth:scope:transfer.api.globus.org:all',
+            expires_in: 1000,
+          },
+        ],
+      });
+      expect(
+        m.tokens
+          .getAll()
+          .map((t) => t.access_token)
+          .sort(),
+      ).toEqual(['AUTH', 'TRANSFER']);
+    });
   });
 });
