@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.5.1](https://github.com/globus/globus-sdk-javascript/compare/v6.5.0...v6.5.1) (2026-11-12)
+
+
+### Bug Fixes
+
+* **Authorization:** Address Storage-related issues in the AuthorizationManager ([#963](https://github.com/globus/globus-sdk-javascript/issues/963)) ([ac96a7f](https://github.com/globus/globus-sdk-javascript/commit/ac96a7fb1a1545240a31decdc01ddba3f4615a8a))
+* **Authorization:** enumerate stored tokens using the Storage API ([ac96a7f](https://github.com/globus/globus-sdk-javascript/commit/ac96a7fb1a1545240a31decdc01ddba3f4615a8a))
+* **Authorization:** harden PKCE, `state` validation, and `PopupTransport` flows ([#964](https://github.com/globus/globus-sdk-javascript/issues/964)) ([4bc9088](https://github.com/globus/globus-sdk-javascript/commit/4bc9088f6413b9adf740110cfe0bf7c14cdb594f))
+* **Downloads:** Addresses invalid `GcsVersionInfo.changelog_url` type. ([#950](https://github.com/globus/globus-sdk-javascript/issues/950)) ([6a247bf](https://github.com/globus/globus-sdk-javascript/commit/6a247bf6c3b322ab87da3935139f8be9f5d4e8d4))
+* **Globus Connect Server:** Update utils to account for gaccess.io migration (and all well-known GCS domains) ([#957](https://github.com/globus/globus-sdk-javascript/issues/957)) ([b7190a3](https://github.com/globus/globus-sdk-javascript/commit/b7190a3d9d685075264fc7911474e58ae47bb7a6))
+
 ## [6.5.0](https://github.com/globus/globus-sdk-javascript/compare/v6.4.0...v6.5.0) (2026-10-29)
 
 
