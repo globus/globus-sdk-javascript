@@ -1,4 +1,102 @@
 export interface paths {
+    "/tunnels": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Tunnels List
+         * @description List the caller's own tunnels, unredacted. Endpoint role holders list
+         *     other users' tunnels with GET /monitored/tunnels.
+         */
+        get: operations["tunnels_list_tunnels_get"];
+        put?: never;
+        /**
+         * Tunnels Post
+         * @description Create a tunnel owned by the caller. Retrying with the same submission_id
+         *     returns the caller's existing tunnel.
+         */
+        post: operations["tunnels_post_tunnels_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/tunnels/{tunnel_uuid}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Tunnels Get
+         * @description Get a tunnel.
+         *
+         *     Information is redacted as follows:
+         *     - Only the owner sees submission_id
+         *     - A listener role can see the listener IP address and port
+         *     - An initiator role can see the initiator IP address and port
+         *
+         *     Redacted values are null.
+         */
+        get: operations["tunnels_get_tunnels__tunnel_uuid__get"];
+        put?: never;
+        post?: never;
+        /**
+         * Tunnels Delete
+         * @description Delete a STOPPED tunnel. The owner may delete it, as may anyone with an
+         *     administrator or activity_manager role on the host endpoint of either of
+         *     its stream access points.
+         */
+        delete: operations["tunnels_delete_tunnels__tunnel_uuid__delete"];
+        options?: never;
+        head?: never;
+        /**
+         * Tunnels Patch
+         * @description Update a tunnel in the AWAITING_LISTENER, ACTIVATING or ACTIVE state.
+         *
+         *     The owner may change label and state, and the listener contact details
+         *     while the tunnel is AWAITING_LISTENER.
+         *
+         *     Anyone else with an administrator or activity_manager role on the host
+         *     endpoint of either of the tunnel's stream access points may only stop it:
+         *     they must send state STOPPING with a stopped_by_admin_message of at most
+         *     256 characters, which is shown on the tunnel. The response is redacted as
+         *     GET's is.
+         */
+        patch: operations["tunnels_patch_tunnels__tunnel_uuid__patch"];
+        trace?: never;
+    };
+    "/monitored/tunnels": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Monitored Tunnels List
+         * @description List tunnels with a stream access point on a Globus Connect Server endpoint
+         *     where the caller has an administrator, activity_manager or activity_monitor
+         *     role, whoever owns them.
+         *
+         *     Tunnels are redacted the same way that GET /tunnels/{tunnel_uuid} redacts it.
+         *
+         *     Fails with 403 if the caller has no such role on any endpoint.
+         */
+        get: operations["monitored_tunnels_list_monitored_tunnels_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/stream_access_points": {
         parameters: {
             query?: never;
@@ -41,43 +139,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/tunnels": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Tunnels List */
-        get: operations["tunnels_list_tunnels_get"];
-        put?: never;
-        /** Tunnels Post */
-        post: operations["tunnels_post_tunnels_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/tunnels/{tunnel_uuid}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Tunnels Get */
-        get: operations["tunnels_get_tunnels__tunnel_uuid__get"];
-        put?: never;
-        post?: never;
-        /** Tunnels Delete */
-        delete: operations["tunnels_delete_tunnels__tunnel_uuid__delete"];
-        options?: never;
-        head?: never;
-        /** Tunnels Patch */
-        patch: operations["tunnels_patch_tunnels__tunnel_uuid__patch"];
-        trace?: never;
-    };
     "/tunnels/{tunnel_uuid}/events": {
         parameters: {
             query?: never;
@@ -87,8 +148,11 @@ export interface paths {
         };
         /**
          * Get Tunnel Events By Tunnel Uuid
-         * @description Return events associated with a particular tunnel.
-         *     Filter events with code_name or is_error query params.
+         * @description Return events associated with a particular tunnel, oldest first. Anyone who
+         *     may get the tunnel may list its events.
+         *
+         *     Event details are "Details redacted" unless the caller owns the tunnel or
+         *     has a role on the host endpoints of both its stream access points.
          */
         get: operations["get_tunnel_events_by_tunnel_uuid_tunnels__tunnel_uuid__events_get"];
         put?: never;
@@ -376,8 +440,7 @@ export interface components {
          * @description Relationship to a Globus collection.
          */
         CollectionDataRelationship: {
-            /** Data */
-            data: components["schemas"]["AbstractResourceIdentifier_Literal__Collection___"] | components["schemas"]["AbstractResourceIdentifier_Literal__Collection___"][];
+            data: components["schemas"]["AbstractResourceIdentifier_Literal__Collection___"];
         };
         /**
          * CollectionResponseResource
@@ -403,8 +466,7 @@ export interface components {
          * @description Relationship to a Globus Connect Server endpoint.
          */
         EndpointDataRelationship: {
-            /** Data */
-            data: components["schemas"]["AbstractResourceIdentifier_Literal__Endpoint___"] | components["schemas"]["AbstractResourceIdentifier_Literal__Endpoint___"][];
+            data: components["schemas"]["AbstractResourceIdentifier_Literal__Endpoint___"];
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -416,8 +478,7 @@ export interface components {
          * @description Relationship to a Globus Auth identity.
          */
         IdentityDataRelationship: {
-            /** Data */
-            data: components["schemas"]["AbstractResourceIdentifier_Literal__Identity___"] | components["schemas"]["AbstractResourceIdentifier_Literal__Identity___"][];
+            data: components["schemas"]["AbstractResourceIdentifier_Literal__Identity___"];
         };
         /** Link */
         Link: {
@@ -500,8 +561,7 @@ export interface components {
          * @description Relationship to a stream access point.
          */
         StreamAccessPointDataRelationship: {
-            /** Data */
-            data: components["schemas"]["AbstractResourceIdentifier_Literal__StreamAccessPoint___"] | components["schemas"]["AbstractResourceIdentifier_Literal__StreamAccessPoint___"][];
+            data: components["schemas"]["AbstractResourceIdentifier_Literal__StreamAccessPoint___"];
         };
         /**
          * StreamAccessPointListResponse
@@ -592,7 +652,7 @@ export interface components {
             description: string;
             /**
              * Details
-             * @description More extensive information about the event
+             * @description More extensive information about the event; "Details redacted" unless the caller owns the tunnel or holds an endpoint role on the host endpoints of both its stream access points
              */
             details: string;
             /**
@@ -642,6 +702,14 @@ export interface components {
             meta: components["schemas"]["TopLevelMeta"];
         };
         /**
+         * TunnelMeta
+         * @description Meta on a tunnel resource, specific to the caller.
+         */
+        TunnelMeta: {
+            /** @description What the caller may do to this resource. Says only whether the caller is allowed, not whether the resource's current state permits it. Subject to change */
+            permissions: components["schemas"]["TunnelPermissions"];
+        };
+        /**
          * TunnelPatchAttributes
          * @description Attributes settable on a tunnel patch.
          */
@@ -666,6 +734,11 @@ export interface components {
              * @description Short description of tunnel state
              */
             state?: "STOPPING" | null;
+            /**
+             * Stopped By Admin Message
+             * @description Why the tunnel is being stopped, at most 256 characters. Required when an endpoint role holder stops another user's tunnel, and not allowed for the tunnel owner. Shown on the tunnel
+             */
+            stopped_by_admin_message?: string | null;
         };
         /**
          * TunnelPatchResource
@@ -677,6 +750,27 @@ export interface components {
             /** Type */
             type?: "Tunnel" | null;
             attributes: components["schemas"]["TunnelPatchAttributes"];
+        };
+        /**
+         * TunnelPermissions
+         * @description What the caller may do to a tunnel.
+         */
+        TunnelPermissions: {
+            /**
+             * Update
+             * @description Whether the caller may change the label and listener contact
+             */
+            update: boolean;
+            /**
+             * Stop
+             * @description Whether the caller may stop the tunnel
+             */
+            stop: boolean;
+            /**
+             * Delete
+             * @description Whether the caller may delete the tunnel
+             */
+            delete: boolean;
         };
         /**
          * TunnelRequestAttributes
@@ -747,20 +841,19 @@ export interface components {
             label?: string | null;
             /**
              * Listener Port
-             * @description Port number of listening LAN contact
+             * @description Port number of listening LAN contact; null when not yet known or withheld from the caller
              */
             listener_port?: number | null;
             /**
              * Listener Ip Address
-             * @description IP address of listening LAN contact
+             * @description IP address of listening LAN contact; null when not yet known or withheld from the caller
              */
             listener_ip_address?: string | null;
             /**
              * Submission Id
-             * Format: uuid
-             * @description Client-generated UUID for tunnel creation request; use same value on retry to prevent duplicate requests
+             * @description Client-generated UUID for the tunnel creation request; null unless the caller owns the tunnel
              */
-            submission_id: string;
+            submission_id?: string | null;
             /**
              * Lifetime Mins
              * @description Number of minutes the tunnel will exist once created
@@ -775,12 +868,12 @@ export interface components {
             restartable: boolean;
             /**
              * Initiator Ip Address
-             * @description IP address of initiating LAN contact
+             * @description IP address of initiating LAN contact; null when not yet known or withheld from the caller
              */
             initiator_ip_address?: string | null;
             /**
              * Initiator Port
-             * @description Port number of initiating LAN contact
+             * @description Port number of initiating LAN contact; null when not yet known or withheld from the caller
              */
             initiator_port?: number | null;
             /**
@@ -793,8 +886,19 @@ export interface components {
              * State
              * @description Short description of tunnel state
              * @default UNINITIALIZED
+             * @enum {string}
              */
-            state: string;
+            state: "UNINITIALIZED" | "AWAITING_LISTENER" | "ACTIVATING" | "ACTIVE" | "STOPPING" | "STOPPED" | "DELETING" | "DELETED";
+            /**
+             * Stopped By Admin
+             * @description Which side's endpoint role was used when someone other than the owner stopped the tunnel; null otherwise
+             */
+            stopped_by_admin?: ("LISTENER" | "INITIATOR" | "BOTH") | null;
+            /**
+             * Stopped By Admin Message
+             * @description Why an endpoint role holder stopped the tunnel; null unless stopped_by_admin is set
+             */
+            stopped_by_admin_message?: string | null;
             /** Status */
             readonly status: string;
         };
@@ -828,6 +932,7 @@ export interface components {
             id: string;
             attributes: components["schemas"]["TunnelResponseAttributes"];
             relationships?: components["schemas"]["TunnelResponseRelationships"] | null;
+            meta: components["schemas"]["TunnelMeta"];
         };
         /**
          * TunnelUpdateRequest
@@ -858,78 +963,36 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    stream_access_points_list_stream_access_points_get: {
-        parameters: {
-            query?: {
-                /** @description Pagination marker. */
-                "page[marker]"?: string | null;
-                /** @description Limit to page size. */
-                "page[limit]"?: number;
-                /** @description Limit results to stream access points on Globus Connect Server endpoints where the user has an `administrator` role */
-                "filter[endpoint_admin]"?: boolean;
-                /** @description Limit results to stream access points that match on an attribute; each attribute is weighted equally */
-                "filter[fulltext]"?: string | null;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StreamAccessPointListResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    stream_access_points_get_stream_access_points__stream_access_point_uuid__get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                stream_access_point_uuid: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["StreamAccessPointResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
     tunnels_list_tunnels_get: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description AND-ed with other filters on `id`. */
+                "filter[id][eq]"?: string;
+                /** @description AND-ed with other filters on `id`. */
+                "filter[id][in]"?: string[];
+                /** @description AND-ed with other filters on `state`. */
+                "filter[state][eq]"?: "UNINITIALIZED" | "AWAITING_LISTENER" | "ACTIVATING" | "ACTIVE" | "STOPPING" | "STOPPED" | "DELETING" | "DELETED";
+                /** @description AND-ed with other filters on `state`. */
+                "filter[state][in]"?: ("UNINITIALIZED" | "AWAITING_LISTENER" | "ACTIVATING" | "ACTIVE" | "STOPPING" | "STOPPED" | "DELETING" | "DELETED")[];
+                /** @description AND-ed with other filters on `listener`. */
+                "filter[listener][eq]"?: string;
+                /** @description AND-ed with other filters on `listener`. */
+                "filter[listener][in]"?: string[];
+                /** @description AND-ed with other filters on `initiator`. */
+                "filter[initiator][eq]"?: string;
+                /** @description AND-ed with other filters on `initiator`. */
+                "filter[initiator][in]"?: string[];
+                /** @description AND-ed with other filters on `stream_access_point`. */
+                "filter[stream_access_point][eq]"?: string;
+                /** @description AND-ed with other filters on `stream_access_point`. */
+                "filter[stream_access_point][in]"?: string[];
+                /** @description Comma-separated sort fields (prefix with `-` for descending) */
+                sort?: ("created_time" | "-created_time")[];
+                /** @description Maximum results per page */
+                "page[limit]"?: number;
+                /** @description Opaque pagination cursor from the previous response's links.next */
+                "page[marker]"?: string;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -1077,17 +1140,139 @@ export interface operations {
             };
         };
     };
-    get_tunnel_events_by_tunnel_uuid_tunnels__tunnel_uuid__events_get: {
+    monitored_tunnels_list_monitored_tunnels_get: {
+        parameters: {
+            query?: {
+                /** @description AND-ed with other filters on `id`. */
+                "filter[id][eq]"?: string;
+                /** @description AND-ed with other filters on `id`. */
+                "filter[id][in]"?: string[];
+                /** @description AND-ed with other filters on `state`. */
+                "filter[state][eq]"?: "UNINITIALIZED" | "AWAITING_LISTENER" | "ACTIVATING" | "ACTIVE" | "STOPPING" | "STOPPED" | "DELETING" | "DELETED";
+                /** @description AND-ed with other filters on `state`. */
+                "filter[state][in]"?: ("UNINITIALIZED" | "AWAITING_LISTENER" | "ACTIVATING" | "ACTIVE" | "STOPPING" | "STOPPED" | "DELETING" | "DELETED")[];
+                /** @description AND-ed with other filters on `listener`. */
+                "filter[listener][eq]"?: string;
+                /** @description AND-ed with other filters on `listener`. */
+                "filter[listener][in]"?: string[];
+                /** @description AND-ed with other filters on `initiator`. */
+                "filter[initiator][eq]"?: string;
+                /** @description AND-ed with other filters on `initiator`. */
+                "filter[initiator][in]"?: string[];
+                /** @description AND-ed with other filters on `stream_access_point`. */
+                "filter[stream_access_point][eq]"?: string;
+                /** @description AND-ed with other filters on `stream_access_point`. */
+                "filter[stream_access_point][in]"?: string[];
+                /** @description AND-ed with other filters on `owner`. */
+                "filter[owner][eq]"?: string;
+                /** @description AND-ed with other filters on `owner`. */
+                "filter[owner][in]"?: string[];
+                /** @description Comma-separated sort fields (prefix with `-` for descending) */
+                sort?: ("created_time" | "-created_time")[];
+                /** @description Maximum results per page */
+                "page[limit]"?: number;
+                /** @description Opaque pagination cursor from the previous response's links.next */
+                "page[marker]"?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TunnelListResponse"];
+                };
+            };
+        };
+    };
+    stream_access_points_list_stream_access_points_get: {
         parameters: {
             query?: {
                 /** @description Pagination marker. */
                 "page[marker]"?: string | null;
                 /** @description Limit to page size. */
                 "page[limit]"?: number;
-                /** @description Filter events by a specific event code. Cannot be used with `is_error` */
-                code_name?: string | null;
-                /** @description Filter events to errors only. Cannot be used with `code_name` */
-                is_error?: boolean | null;
+                /** @description Limit results to stream access points on Globus Connect Server endpoints where the user has an `administrator` role */
+                "filter[endpoint_admin]"?: boolean;
+                /** @description Limit results to stream access points that match on an attribute; each attribute is weighted equally */
+                "filter[fulltext]"?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StreamAccessPointListResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    stream_access_points_get_stream_access_points__stream_access_point_uuid__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                stream_access_point_uuid: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StreamAccessPointResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_tunnel_events_by_tunnel_uuid_tunnels__tunnel_uuid__events_get: {
+        parameters: {
+            query?: {
+                /** @description AND-ed with other filters on `code`. */
+                "filter[code][eq]"?: string;
+                /** @description AND-ed with other filters on `code`. */
+                "filter[code][in]"?: string[];
+                /** @description AND-ed with other filters on `is_error`. */
+                "filter[is_error][eq]"?: boolean;
+                /** @description Maximum results per page */
+                "page[limit]"?: number;
+                /** @description Opaque pagination cursor from the previous response's links.next */
+                "page[marker]"?: string;
             };
             header?: never;
             path: {
@@ -1120,12 +1305,30 @@ export interface operations {
     bookmarks_list_bookmarks_get: {
         parameters: {
             query?: {
-                /** @description Pagination marker. */
-                "page[marker]"?: string | null;
-                /** @description Limit to page size. */
+                /** @description AND-ed with other filters on `id`. */
+                "filter[id][eq]"?: string;
+                /** @description AND-ed with other filters on `id`. */
+                "filter[id][in]"?: string[];
+                /** @description AND-ed with other filters on `name`. */
+                "filter[name][eq]"?: string;
+                /** @description AND-ed with other filters on `name`. */
+                "filter[name][ne]"?: string;
+                /** @description AND-ed with other filters on `name`. */
+                "filter[name][in]"?: string[];
+                /** @description AND-ed with other filters on `name`. */
+                "filter[name][nin]"?: string[];
+                /** @description AND-ed with other filters on `collection`. */
+                "filter[collection][eq]"?: string;
+                /** @description AND-ed with other filters on `collection`. */
+                "filter[collection][in]"?: string[];
+                /** @description Comma-separated sort fields (prefix with `-` for descending) */
+                sort?: ("id" | "-id" | "name" | "-name")[];
+                /** @description Comma-separated related resources to include */
+                include?: "collection"[];
+                /** @description Maximum results per page */
                 "page[limit]"?: number;
-                /** @description Set to 'collection' to include collection information in the response */
-                include?: "collection" | null;
+                /** @description Opaque pagination cursor from the previous response's links.next */
+                "page[marker]"?: string;
             };
             header?: never;
             path?: never;
@@ -1140,15 +1343,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["BookmarkListResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
