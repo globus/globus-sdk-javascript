@@ -1,18 +1,11 @@
-const { FlatCompat } = require('@eslint/eslintrc');
+const js = require('@eslint/js');
+const tseslint = require('typescript-eslint');
+const importPlugin = require('eslint-plugin-import-x');
 const globals = require('globals');
+const prettierConfig = require('eslint-config-prettier');
 const prettierPlugin = require('eslint-plugin-prettier');
 
-/**
- * `eslint-config-airbnb-base` and `eslint-config-airbnb-typescript` only ship legacy
- * (eslintrc) configurations, so they are translated to flat config using `FlatCompat`.
- */
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const TS_FILES = ['**/*.ts'];
-
-module.exports = [
+module.exports = tseslint.config(
   {
     ignores: [
       '**/dist/',
@@ -23,8 +16,12 @@ module.exports = [
       'src/open-api/types/',
     ],
   },
-  ...compat.extends('airbnb-base', 'prettier'),
+  js.configs.recommended,
   {
+    linterOptions: {
+      // Matches ESLint v8 behavior; ESLint v9+ defaults to "warn".
+      reportUnusedDisableDirectives: 'off',
+    },
     languageOptions: {
       ecmaVersion: 2020,
       sourceType: 'module',
@@ -36,46 +33,87 @@ module.exports = [
         ...globals.node,
         globalThis: 'readonly',
       },
-      /**
-       * `eslint-plugin-import` only forwards `parserOptions` when parsing imported modules,
-       * so the language options are mirrored here.
-       */
-      parserOptions: {
-        ecmaVersion: 2020,
-        sourceType: 'module',
-      },
     },
     plugins: {
+      // Registered as `import` so existing `eslint-disable` directives continue to apply.
+      import: importPlugin,
       prettier: prettierPlugin,
     },
     settings: {
-      // `eslint-plugin-import` cannot infer the parser for JavaScript modules under flat config.
-      'import/parsers': {
-        espree: ['.js', '.cjs', '.mjs'],
-      },
+      'import-x/resolver-next': [importPlugin.createNodeResolver()],
     },
     rules: {
       'prettier/prettier': 'error',
       'import/no-extraneous-dependencies': [
         'error',
-        { devDependencies: ['scripts/**/*.*', 'eslint.config.js'] },
+        {
+          devDependencies: [
+            'scripts/**/*.*',
+            '**/__tests__/**',
+            '**/__mocks__/**',
+            '**/*.spec.ts',
+            'eslint.config.js',
+            'jest.config.ts',
+            'jest.setup.ts',
+          ],
+          optionalDependencies: false,
+        },
       ],
+      /**
+       * Rules (and options) carried over from `eslint-config-airbnb-base`.
+       */
+      'class-methods-use-this': 'error',
+      'no-await-in-loop': 'error',
+      'no-underscore-dangle': [
+        'error',
+        {
+          allowAfterThis: false,
+          allowAfterSuper: false,
+          enforceInMethodNames: true,
+        },
+      ],
+      'no-unused-vars': [
+        'error',
+        { vars: 'all', args: 'after-used', caughtErrors: 'none', ignoreRestSiblings: true },
+      ],
+      'prefer-const': ['error', { destructuring: 'any', ignoreReadBeforeAssign: true }],
+      /**
+       * Rules from `@eslint/js` (recommended) that were not enforced previously.
+       */
+      'no-useless-assignment': 'off',
     },
   },
-  ...compat.extends('airbnb-typescript/base', 'prettier').map((config) => ({
-    ...config,
-    files: TS_FILES,
-  })),
   {
-    files: TS_FILES,
-    languageOptions: {
-      parserOptions: {
-        project: './tsconfig.eslint.json',
-      },
-    },
+    files: ['**/*.ts'],
+    extends: [tseslint.configs.recommended],
     rules: {
-      'import/prefer-default-export': 'off', // Allowed based on many of our files being early-stage abstractions.
-      'func-names': 'off', // Allowed based on our usage of `satisfies`
+      /**
+       * Rules (and options) carried over from `eslint-config-airbnb-typescript`.
+       */
+      '@typescript-eslint/naming-convention': [
+        'error',
+        { selector: 'variable', format: ['camelCase', 'PascalCase', 'UPPER_CASE'] },
+        { selector: 'function', format: ['camelCase', 'PascalCase'] },
+        { selector: 'typeLike', format: ['PascalCase'] },
+      ],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { vars: 'all', args: 'after-used', caughtErrors: 'none', ignoreRestSiblings: true },
+      ],
+      '@typescript-eslint/no-use-before-define': [
+        'error',
+        { functions: true, classes: true, variables: true },
+      ],
+      /**
+       * Rules from `typescript-eslint` (recommended) that were not enforced previously.
+       */
+      '@typescript-eslint/ban-ts-comment': 'off',
+      '@typescript-eslint/no-empty-object-type': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-require-imports': 'off',
+      '@typescript-eslint/no-unnecessary-type-constraint': 'off',
+      '@typescript-eslint/no-wrapper-object-types': 'off',
     },
   },
-];
+  prettierConfig,
+);
