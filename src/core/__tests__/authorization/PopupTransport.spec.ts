@@ -82,6 +82,30 @@ describe('PopupTransport', () => {
     );
   });
 
+  it('does not allow "params" to override parameters that secure the PKCE flow', async () => {
+    const result = new PopupTransport({
+      ...CONFIG,
+      params: {
+        response_type: 'token',
+        client_id: 'OTHER_CLIENT',
+        code_challenge: 'OTHER_CHALLENGE',
+        code_challenge_method: 'plain',
+        foo: 'bar',
+      },
+    }).send();
+    await started();
+    const url = new URL((window.open as jest.Mock).mock.lastCall[0]);
+    expect(url.searchParams.get('response_type')).toBe('code');
+    expect(url.searchParams.get('client_id')).toBe(CONFIG.client);
+    expect(url.searchParams.get('code_challenge')).not.toBe('OTHER_CHALLENGE');
+    expect(url.searchParams.get('code_challenge_method')).toBe('S256');
+    expect(url.searchParams.get('foo')).toBe('bar');
+    const assertion = expect(result).rejects.toThrow(/closed/);
+    popup.closed = true;
+    await jest.advanceTimersByTimeAsync(500);
+    await assertion;
+  });
+
   it('ignores messages from other origins and sources', async () => {
     const result = new PopupTransport(CONFIG).send();
     await started();
