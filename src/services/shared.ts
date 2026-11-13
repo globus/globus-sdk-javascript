@@ -5,11 +5,18 @@ import { getSDKOptions, Service } from '../core/global.js';
 import { isAuthorizationRequirementsError } from '../core/errors.js';
 import { RESOURCE_SERVERS } from './auth/config.js';
 import { isRefreshToken } from './auth/tokens.js';
+import { isTokenExpired } from '../core/authorization/StoredToken.js';
 import type { ServiceMethodOptions, SDKOptions } from './types.js';
 import type {
   GCSConfiguration,
   UnauthenticatedGCSConfiguration,
 } from '../services/globus-connect-server/index.js';
+
+/**
+ * When a token that can be refreshed will expire within this window, it is refreshed
+ * before the request is made (instead of waiting for a `401` response).
+ */
+const PROACTIVE_REFRESH_WINDOW_MS = 60_000;
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export enum HTTP_METHODS {
@@ -109,11 +116,38 @@ export async function serviceRequest(
 
   let token;
   /**
+   * Whether a token refresh was attempted before the request was made.
+   */
+  let refreshed = false;
+  /**
+   * Retrieve the token for a resource server, refreshing it first if it is about to expire.
+   */
+  const getToken = async (resourceServer: string) => {
+    if (!manager) return null;
+    const stored = manager.tokens.getByResourceServer(resourceServer);
+    if (
+      stored &&
+      isRefreshToken(stored) &&
+      isTokenExpired(stored, PROACTIVE_REFRESH_WINDOW_MS) === true
+    ) {
+      refreshed = true;
+      /**
+       * If the refresh fails, the stored token is used and the request is made as-is.
+       */
+      return (
+        (await manager.getToken(resourceServer, {
+          minValidityMs: PROACTIVE_REFRESH_WINDOW_MS,
+        })) ?? stored
+      );
+    }
+    return stored;
+  };
+  /**
    * If a `resource_server` was provided, and the SDK is configured with a `manager`
    * instance, we'll try to get a token for the resource server and use it.
    */
   if (config.resource_server && manager) {
-    token = manager.tokens.getByResourceServer(config.resource_server);
+    token = await getToken(config.resource_server);
     if (token) {
       headers['Authorization'] = `Bearer ${token.access_token}`;
     }
@@ -144,7 +178,7 @@ export async function serviceRequest(
         : // For `GCSConfiguration` objects, the `endpoint_id` is the resource server.
           config.service.endpoint_id;
 
-    token = resourceServer ? manager.tokens.getByResourceServer(resourceServer) : null;
+    token = resourceServer ? await getToken(resourceServer) : null;
     if (token) {
       headers['Authorization'] = `Bearer ${token.access_token}`;
     }
@@ -238,9 +272,19 @@ export async function serviceRequest(
    * We only attempt to refresh the original token supplied with teh request, if the
    * response status is 401 and the response does not contain any authorization requirements.
    */
-  const shouldAttemptTokenRefresh = initialResponse.status === 401 && !hasAuthorizationRequirements;
+  const shouldAttemptTokenRefresh =
+    initialResponse.status === 401 && !hasAuthorizationRequirements && !refreshed;
   if (shouldAttemptTokenRefresh) {
-    const newToken = await manager.refreshToken(token);
+    /**
+     * If the stored token changed while the request was in flight (e.g., it was refreshed
+     * by another request), retry with the stored token instead of refreshing again – the
+     * refresh token used for the request may have been rotated.
+     */
+    const current = manager.tokens.getByResourceServer(token.resource_server);
+    const newToken =
+      current && current.access_token !== token.access_token
+        ? current
+        : await manager.refreshToken(token);
     if (!newToken) {
       return initialResponse;
     }

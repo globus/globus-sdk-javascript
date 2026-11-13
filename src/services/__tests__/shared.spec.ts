@@ -671,4 +671,100 @@ describe.only('serviceRequest', () => {
       });
     });
   });
+
+  describe('proactive token refresh', () => {
+    const EXPIRING = {
+      access_token: 'access-token',
+      refresh_token: 'refresh-token',
+      scope: 'urn:globus:auth:scope:transfer.api.globus.org:all',
+      expires_in: 10,
+      token_type: 'Bearer',
+      resource_server: 'transfer.api.globus.org',
+    };
+
+    function mockTokenEndpoint(respond: () => Response) {
+      const calls = { count: 0 };
+      server.use(
+        http.post('https://auth.globus.org/v2/oauth2/token', () => {
+          calls.count += 1;
+          return respond();
+        }),
+      );
+      return calls;
+    }
+
+    const request = (manager: AuthorizationManager) =>
+      serviceRequest(
+        { service: 'TRANSFER', resource_server: 'transfer.api.globus.org', path: '/fake-resource' },
+        {},
+        { manager },
+      );
+
+    it('refreshes a token that is about to expire before making the request', async () => {
+      const calls = mockTokenEndpoint(() =>
+        HttpResponse.json({ ...EXPIRING, access_token: 'refreshed', expires_in: 172800 }),
+      );
+      const manager = new AuthorizationManager({ client: 'client_id' });
+      manager.addTokenResponse(EXPIRING);
+
+      const response = await request(manager);
+
+      expect(calls.count).toBe(1);
+      const {
+        req: { headers },
+      } = await response.json();
+      expect(headers).toMatchObject({ authorization: 'Bearer refreshed' });
+    });
+
+    it('does not refresh tokens that are not about to expire', async () => {
+      const calls = mockTokenEndpoint(() => HttpResponse.json({}));
+      const manager = new AuthorizationManager({ client: 'client_id' });
+      manager.addTokenResponse({ ...EXPIRING, expires_in: 172800 });
+      await request(manager);
+      expect(calls.count).toBe(0);
+    });
+
+    it('makes the request with the stored token, and does not refresh again on 401, when the refresh fails', async () => {
+      const calls = mockTokenEndpoint(() => HttpResponse.json({}, { status: 503 }));
+      server.use(
+        http.get('https://transfer.api.globus.org/fake-resource', () =>
+          HttpResponse.json({ code: 'AuthenticationFailed' }, { status: 401 }),
+        ),
+      );
+      const manager = new AuthorizationManager({ client: 'client_id' });
+      manager.addTokenResponse(EXPIRING);
+
+      const response = await request(manager);
+
+      expect(response.status).toBe(401);
+      expect(calls.count).toBe(1);
+    });
+
+    it('retries with the stored token (instead of refreshing) when it changed during the request', async () => {
+      const manager = new AuthorizationManager({ client: 'client_id' });
+      manager.addTokenResponse({ ...EXPIRING, expires_in: 172800 });
+      const spy = jest.spyOn(manager, 'refreshToken');
+      server.use(
+        http.get(
+          'https://transfer.api.globus.org/fake-resource',
+          () => {
+            /**
+             * Simulate another request refreshing the token while this request is in flight.
+             */
+            manager.addTokenResponse({ ...EXPIRING, access_token: 'refreshed-elsewhere' });
+            return HttpResponse.json({ code: 'AuthenticationFailed' }, { status: 401 });
+          },
+          { once: true },
+        ),
+      );
+
+      const response = await request(manager);
+
+      expect(spy).not.toHaveBeenCalled();
+      const {
+        req: { headers },
+      } = await response.json();
+      expect(headers).toMatchObject({ authorization: 'Bearer refreshed-elsewhere' });
+    });
+  });
 });

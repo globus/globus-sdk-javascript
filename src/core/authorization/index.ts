@@ -18,3 +18,22 @@ export function create(configuration: AuthorizationManagerConfiguration) {
 }
 
 export { AuthorizationManager, AuthorizationManagerConfiguration };
+
+export type {
+  AuthorizationRequest,
+  StartAuthorizationOptions,
+  TokenRevocationFailure,
+  TokenRevocationResult,
+} from './AuthorizationManager.js';
+
+export { TokenManager } from './TokenManager.js';
+export { isTokenExpired, type StoredToken, type TokenMetadata } from './StoredToken.js';
+export { OAuthTokenError, isOAuthTokenError } from './OAuthTokenError.js';
+export { MemoryStorage } from '../storage/memory.js';
+
+export type {
+  Token,
+  TokenResponse,
+  TokenWithRefresh,
+  JwtUserInfo,
+} from '../../services/auth/types.js';
