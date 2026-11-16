@@ -24,6 +24,7 @@ import * as roles from './service/roles.js';
 import * as storageGateways from './service/storage-gateways.js';
 import * as userCredentials from './service/user-credentials.js';
 import * as versioning from './service/versioning.js';
+import * as streamGateways from './service/stream-gateways.js';
 
 type TailOfTuple<T extends unknown[], Head extends unknown[]> = T extends [...Head, ...infer Tail]
   ? Tail
@@ -140,6 +141,20 @@ export function getClient(configuration: GCSConfiguration) {
         update: bind(storageGateways.next.update, configuration),
         patch: bind(storageGateways.next.patch, configuration),
         remove: bind(storageGateways.next.remove, configuration),
+      },
+    },
+    streamGateways: {
+      get: bind(streamGateways.get, configuration),
+      getAll: bind(streamGateways.getAll, configuration),
+      create: bind(streamGateways.create, configuration),
+      remove: bind(streamGateways.remove, configuration),
+      update: bind(streamGateways.update, configuration),
+      next: {
+        getAll: bind(streamGateways.next.getAll, configuration),
+        get: bind(streamGateways.next.get, configuration),
+        create: bind(streamGateways.next.create, configuration),
+        update: bind(streamGateways.next.update, configuration),
+        remove: bind(streamGateways.next.remove, configuration),
       },
     },
     roles: {

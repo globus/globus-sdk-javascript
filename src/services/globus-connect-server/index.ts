@@ -26,6 +26,7 @@ export * as roles from './service/roles.js';
 export * as storageGateways from './service/storage-gateways.js';
 export * as userCredentials from './service/user-credentials.js';
 export * as versioning from './service/versioning.js';
+export * as streamGateways from './service/stream-gateways.js';
 
 export * as utils from './utils.js';
 
