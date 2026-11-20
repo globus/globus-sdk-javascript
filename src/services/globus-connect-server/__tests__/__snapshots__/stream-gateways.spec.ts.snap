@@ -1,0 +1,212 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`gcs – streamGateways create 1`] = `
+{
+  "formData": {},
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "427",
+    "content-type": "application/json",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "DATA_TYPE": "stream_gateway#1.1.0",
+    "allowed_domains": [
+      "example.allowed.domain",
+    ],
+    "authentication_timeout_mins": 5,
+    "contact_email": "email@email.com",
+    "contact_info": "Contact information for the stream gateway",
+    "department": "Example department",
+    "description": "Example stream gateway",
+    "display_name": "Example display name",
+    "domain_name": "example.domain.com",
+    "info_link": "https://example.info.link",
+    "keywords": [
+      "example",
+      "keywords",
+    ],
+  },
+  "method": "POST",
+  "url": "https://fa5e.bd7c.data.globus.org/api/stream_gateways",
+}
+`;
+
+exports[`gcs – streamGateways get 1`] = `
+{
+  "formData": {},
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://fa5e.bd7c.data.globus.org/api/stream_gateways/example-stream-gateway-id",
+}
+`;
+
+exports[`gcs – streamGateways getAll 1`] = `
+{
+  "formData": {},
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://fa5e.bd7c.data.globus.org/api/stream_gateways",
+}
+`;
+
+exports[`gcs – streamGateways next create 1`] = `
+{
+  "formData": {},
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "427",
+    "content-type": "application/json",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "DATA_TYPE": "stream_gateway#1.1.0",
+    "allowed_domains": [
+      "example.allowed.domain",
+    ],
+    "authentication_timeout_mins": 5,
+    "contact_email": "email@email.com",
+    "contact_info": "Contact information for the stream gateway",
+    "department": "Example department",
+    "description": "Example stream gateway",
+    "display_name": "Example display name",
+    "domain_name": "example.domain.com",
+    "info_link": "https://example.info.link",
+    "keywords": [
+      "example",
+      "keywords",
+    ],
+  },
+  "method": "POST",
+  "url": "https://fa5e.bd7c.data.globus.org/api/stream_gateways",
+}
+`;
+
+exports[`gcs – streamGateways next get 1`] = `
+{
+  "formData": {},
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://fa5e.bd7c.data.globus.org/api/stream_gateways/example-stream-gateway-id",
+}
+`;
+
+exports[`gcs – streamGateways next getAll 1`] = `
+{
+  "formData": {},
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "GET",
+  "url": "https://fa5e.bd7c.data.globus.org/api/stream_gateways",
+}
+`;
+
+exports[`gcs – streamGateways next remove 1`] = `
+{
+  "formData": {},
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "DELETE",
+  "url": "https://fa5e.bd7c.data.globus.org/api/stream_gateways/example-stream-gateway-id",
+}
+`;
+
+exports[`gcs – streamGateways next update 1`] = `
+{
+  "formData": {},
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "0",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "PATCH",
+  "url": "https://fa5e.bd7c.data.globus.org/api/stream_gateways/example-stream-gateway-id",
+}
+`;
+
+exports[`gcs – streamGateways remove 1`] = `
+{
+  "formData": {},
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "method": "DELETE",
+  "url": "https://fa5e.bd7c.data.globus.org/api/stream_gateways/example-stream-gateway-id",
+}
+`;
+
+exports[`gcs – streamGateways update 1`] = `
+{
+  "formData": {},
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip,deflate",
+    "connection": "close",
+    "content-length": "427",
+    "content-type": "application/json",
+    "host": "fa5e.bd7c.data.globus.org",
+    "user-agent": "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)",
+  },
+  "json": {
+    "DATA_TYPE": "stream_gateway#1.1.0",
+    "allowed_domains": [
+      "example.allowed.domain",
+    ],
+    "authentication_timeout_mins": 5,
+    "contact_email": "email@email.com",
+    "contact_info": "Contact information for the stream gateway",
+    "department": "Example department",
+    "description": "Example stream gateway",
+    "display_name": "Example display name",
+    "domain_name": "example.domain.com",
+    "info_link": "https://example.info.link",
+    "keywords": [
+      "example",
+      "keywords",
+    ],
+  },
+  "method": "PUT",
+  "url": "https://fa5e.bd7c.data.globus.org/api/stream_gateways/example-stream-gateway-id",
+}
+`;
