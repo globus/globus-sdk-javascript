@@ -37,4 +37,7 @@ An instance of `TokenManager` is used to retrieve tokens from the token store. T
 
 ## Implementation Notes
 
-- Tokens are stored as `${client_id}:${resource_server}` keys in the token store. This allows multiple `AuthorizationManager` instances to be used in the same application without conflict (multiple `client_id`s).
+- Tokens are stored in a single, versioned entry (`${client_id}:TokenManager`) in the token store, keyed by `access_token`. This allows multiple `AuthorizationManager` instances to be used in the same application without conflict (multiple `client_id`s), and multiple tokens for the same resource server (with different scopes).
+  - Tokens stored in the legacy format (`${client_id}:${resource_server}` keys) are migrated when the `TokenManager` is created, and the legacy items are removed.
+  - The entry is read on every access (not cached on the instance), so changes made by other instances, browser tabs, or processes sharing the storage are observed.
+  - When multiple tokens match a lookup (e.g., `tokens.transfer`), the most recently stored token is returned. Adding a token replaces any token with the same resource server and scopes.

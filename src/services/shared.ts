@@ -144,7 +144,9 @@ export async function serviceRequest(
         : // For `GCSConfiguration` objects, the `endpoint_id` is the resource server.
           config.service.endpoint_id;
 
-    token = resourceServer ? manager.tokens.getByResourceServer(resourceServer) : null;
+    token = resourceServer
+      ? manager.tokens.getByResourceServer(resourceServer, config.scope)
+      : null;
     if (token) {
       headers['Authorization'] = `Bearer ${token.access_token}`;
     }
