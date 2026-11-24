@@ -23,6 +23,7 @@ export type GSearchIndex = {
   id: string;
   description: string;
   creation_date: string;
+  content_last_modified_date: string;
   is_trial: boolean;
   subscription_id: string;
   max_size_in_mb: number;
