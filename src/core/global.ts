@@ -19,6 +19,39 @@ function isBrowser(runtime: Window | NodeJS.Process): runtime is Window {
   return typeof window === typeof runtime;
 }
 
+/**
+ * Whether or not the value is a plain object (e.g., an object literal).
+ */
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  if (typeof value !== 'object' || value === null) {
+    return false;
+  }
+  const prototype = Object.getPrototypeOf(value);
+  return prototype === Object.prototype || prototype === null;
+}
+
+/**
+ * Configuration keys that are allowed to be sourced as (plain) objects.
+ */
+const OBJECT_CONFIGURATION_KEYS = ['GLOBUS_SDK_OPTIONS'];
+
+/**
+ * Whether or not a value sourced from the runtime is an acceptable configuration value.
+ *
+ * In browsers, configuration is sourced from properties of `window`, which can be
+ * created by the document itself (e.g., `<a id="GLOBUS_SDK_...">` is exposed as `window.GLOBUS_SDK_...`).
+ * To ensure injected markup cannot be used to configure the SDK ("DOM clobbering"), only
+ * primitive values (and, a plain object for `GLOBUS_SDK_OPTIONS`) are honored.
+ */
+function isValidConfigurationValue(key: string, value: unknown) {
+  return (
+    typeof value === 'string' ||
+    typeof value === 'number' ||
+    typeof value === 'boolean' ||
+    (OBJECT_CONFIGURATION_KEYS.includes(key) && isPlainObject(value))
+  );
+}
+
 function env<T>(key: string, fallback: T): T {
   const runtime = getRuntime();
   let envConfiguration;
@@ -27,10 +60,15 @@ function env<T>(key: string, fallback: T): T {
   } else {
     envConfiguration = runtime.env;
   }
-  if (key in envConfiguration) {
-    return (envConfiguration as Record<typeof key, T>)[key];
+  if (!(key in envConfiguration)) {
+    return fallback;
   }
-  return fallback;
+  const value = (envConfiguration as Record<typeof key, unknown>)[key];
+  if (!isValidConfigurationValue(key, value)) {
+    log('warn', `Ignoring invalid runtime configuration value provided for ${key}.`);
+    return fallback;
+  }
+  return value as T;
 }
 
 /**
@@ -152,7 +190,50 @@ export function getServiceHost(service: Service, environment: Environment = getE
   return SERVICE_HOSTS[service][environment];
 }
 
+/**
+ * Hostnames that are allowed to be used with `http:` for service URL overrides.
+ */
+const LOOPBACK_HOSTNAMES = ['localhost', '127.0.0.1', '[::1]'];
+
+/**
+ * Whether or not the provided value can be used as the base URL of a service.
+ * - The value must be a string that can be parsed as a URL.
+ * - The URL must use `https:`; `http:` is only allowed for loopback addresses (i.e., local development).
+ */
+function isValidServiceBaseUrl(value: unknown): value is string {
+  if (typeof value !== 'string') {
+    return false;
+  }
+  let url;
+  try {
+    url = new URL(value);
+  } catch {
+    return false;
+  }
+  return (
+    url.protocol === 'https:' ||
+    (url.protocol === 'http:' && LOOPBACK_HOSTNAMES.includes(url.hostname))
+  );
+}
+
+/**
+ * Get the base URL for a service.
+ *
+ * The default URL (based on the environment) can be overridden using `GLOBUS_SDK_SERVICE_URL_{SERVICE}`.
+ * Since requests to the resulting URL will include credentials, overrides that
+ * are not valid `https:` (or, loopback `http:`) URLs are ignored.
+ */
 export function getServiceBaseUrl(service: Service, environment: Environment = getEnvironment()) {
   const host = getServiceHost(service, environment);
-  return env(`GLOBUS_SDK_SERVICE_URL_${service}`, host ? `https://${host}` : undefined);
+  const fallback = host ? `https://${host}` : undefined;
+  const key = `GLOBUS_SDK_SERVICE_URL_${service}`;
+  const override = env<unknown>(key, undefined);
+  if (override === undefined) {
+    return fallback;
+  }
+  if (!isValidServiceBaseUrl(override)) {
+    log('warn', `Ignoring invalid service URL provided for ${key}.`);
+    return fallback;
+  }
+  return override;
 }

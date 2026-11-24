@@ -81,6 +81,30 @@ export type AuthorizationRequestParameters = {
 };
 
 /**
+ * Authorization request parameters that are owned by the SDK and
+ * cannot be overridden by caller-provided parameters.
+ */
+const PROTECTED_AUTHORIZATION_REQUEST_PARAMETERS = [
+  'response_type',
+  'client_id',
+  'code_challenge',
+  'code_challenge_method',
+];
+
+/**
+ * Remove parameters that are required to be managed by the SDK for a
+ * secure PKCE flow from a caller-provided set of parameters.
+ * @private
+ */
+export function omitProtectedParameters(params: Record<string, string> = {}) {
+  return Object.fromEntries(
+    Object.entries(params).filter(
+      ([key]) => !PROTECTED_AUTHORIZATION_REQUEST_PARAMETERS.includes(key),
+    ),
+  );
+}
+
+/**
  * @private
  */
 export const KEYS = {

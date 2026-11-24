@@ -111,4 +111,62 @@ describe('toAuthorizationQueryParams', () => {
       scope: 'foobar data_access',
     });
   });
+
+  it('includes allowed session parameters', () => {
+    expect(
+      toAuthorizationQueryParams({
+        authorization_parameters: {
+          session_message: 'message',
+          session_required_identities: ['a', 'b'],
+          session_required_single_domain: ['globus.org'],
+          session_required_mfa: true,
+          session_required_policies: ['policy-a', 'policy-b'],
+          prompt: 'login',
+        },
+      }),
+    ).toEqual({
+      session_message: 'message',
+      session_required_identities: 'a,b',
+      session_required_single_domain: 'globus.org',
+      session_required_mfa: 'true',
+      session_required_policies: 'policy-a,policy-b',
+      prompt: 'login',
+    });
+  });
+
+  it('ignores protocol-level and unknown parameters', () => {
+    expect(
+      toAuthorizationQueryParams({
+        authorization_parameters: {
+          session_message: 'message',
+          required_scopes: ['foobar'],
+          client_id: 'ATTACKER_CLIENT',
+          redirect_uri: 'https://attacker.example/cb',
+          response_type: 'token',
+          code_challenge: 'ATTACKER_CHALLENGE',
+          code_challenge_method: 'plain',
+          state: 'ATTACKER_STATE',
+          scope: 'ATTACKER_SCOPE',
+          unknown: 'value',
+        } as never,
+      }),
+    ).toEqual({
+      session_message: 'message',
+      scope: 'foobar',
+    });
+  });
+
+  it('ignores values of an unexpected type', () => {
+    expect(
+      toAuthorizationQueryParams({
+        authorization_parameters: {
+          session_message: { toString: () => 'message' },
+          session_required_identities: [{}, 1],
+          session_required_mfa: 1,
+          prompt: null,
+          required_scopes: 'not-an-array',
+        } as never,
+      }),
+    ).toEqual({});
+  });
 });

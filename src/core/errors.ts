@@ -78,51 +78,72 @@ export type AuthorizationRequirementsError = {
   [key: string]: unknown;
 };
 /**
- * Keys that should not be included in the query string object (not recognized by Globus Auth),
- * but are found on the `AuthorizationRequirementsError` object.
+ * The `authorization_parameters` that are allowed to be mapped to Globus Auth query parameters.
+ *
+ * The contents of an `AuthorizationRequirementsError` are provided by the service that
+ * produced the error (which may be operated by a third-party, e.g., Globus Connect Server) and
+ * should be treated as untrusted. Only parameters related to session requirements are
+ * forwarded to Globus Auth – an error response must never be able to influence
+ * protocol-level parameters (e.g., `client_id`, `redirect_uri`, `state`, `code_challenge`).
+ * @see https://docs.globus.org/api/auth/sessions/#client-initiated-authns
  */
-const NO_OP_KEYS: (keyof AuthorizationRequirementsError)[] = ['required_scopes'];
+const ALLOWED_AUTHORIZATION_PARAMETERS = [
+  'session_message',
+  'session_required_identities',
+  'session_required_single_domain',
+  'session_required_mfa',
+  'session_required_policies',
+  'prompt',
+] as const;
+
+/**
+ * Convert a value from an `AuthorizationRequirementsError` to its query parameter (string) equivalent.
+ * Values that are not of an expected type result in `undefined`.
+ */
+function toQueryParamValue(value: unknown): string | undefined {
+  if (typeof value === 'string') {
+    return value;
+  }
+  if (typeof value === 'boolean') {
+    return value ? 'true' : 'false';
+  }
+  if (Array.isArray(value) && value.every((v) => typeof v === 'string')) {
+    return value.join(',');
+  }
+  return undefined;
+}
+
 /**
  * Convert an `AuthorizationRequirementsError` to a query string object accepted by Globus Auth.
+ *
+ * Only known session-related parameters (and `required_scopes`, as `scope`) are included
+ * in the result; any other properties found in `authorization_parameters` are ignored.
  */
 export function toAuthorizationQueryParams(
   error: AuthorizationRequirementsError,
-): AuthorizationQueryParameters & Partial<AuthorizationRequestParameters> {
+): AuthorizationQueryParameters & Partial<Pick<AuthorizationRequestParameters, 'scope'>> {
+  const { authorization_parameters: parameters } = error;
+  const mapped: Record<string, string> = {};
   /**
-   * Map properties from the `AuthorizationRequirementsError` to accepted query parameters.
+   * `required_scopes` isn't a query parameter accepted by Globus Auth, but
+   * in most cases the `required_scopes` represented in the error are intended
+   * to be included in the `scopes` (OAuth) parameter.
+   * @see https://docs.globus.org/api/auth/sessions/#client-initiated-authns
    */
-  const mapped = {
-    /**
-     * `required_scopes` isn't a query parameter accepted by Globus Auth, but
-     * in most cases the `required_scopes` represented in the error are intended
-     * to be included in the `scopes` (OAuth) parameter.
-     * @see https://docs.globus.org/api/auth/sessions/#client-initiated-authns
-     */
-    scope: error.authorization_parameters.required_scopes?.join(' '),
-    /**
-     * We still include the entire `authorization_parameters` object in addition to the mapped values for parsing.
-     */
-    ...error.authorization_parameters,
-  };
+  const { required_scopes: requiredScopes } = parameters;
+  if (Array.isArray(requiredScopes) && requiredScopes.every((v) => typeof v === 'string')) {
+    mapped['scope'] = requiredScopes.join(' ');
+  }
 
-  return Object.entries(mapped).reduce((acc, [key, v]) => {
-    /**
-     * Remove keys that are not recognized by Globus Auth and empty values.
-     */
-    if (NO_OP_KEYS.includes(key) || v === undefined || v === null) {
-      return acc;
+  ALLOWED_AUTHORIZATION_PARAMETERS.forEach((key) => {
+    if (!Object.prototype.hasOwnProperty.call(parameters, key)) return;
+    const value = toQueryParamValue(parameters[key]);
+    if (value !== undefined) {
+      mapped[key] = value;
     }
-    /**
-     * All other values are converted to strings.
-     */
-    let value = v;
-    if (Array.isArray(value)) {
-      value = value.join(',');
-    } else if (typeof v === 'boolean') {
-      value = value ? 'true' : 'false';
-    }
-    return { ...acc, [key]: value };
-  }, {});
+  });
+
+  return mapped;
 }
 
 /**
