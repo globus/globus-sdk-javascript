@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.6.0](https://github.com/globus/globus-sdk-javascript/compare/v6.5.0...v6.6.0) (2026-11-24)
+
+
+### Features
+
+* **GCS:** Adds support for Stream Gateway methods ([#969](https://github.com/globus/globus-sdk-javascript/issues/969)) ([0d7255f](https://github.com/globus/globus-sdk-javascript/commit/0d7255fa8a074f5260679e77cb2978b105d68221))
+
+
+### Bug Fixes
+
+* **Authorization:** Address Storage-related issues in the AuthorizationManager ([#963](https://github.com/globus/globus-sdk-javascript/issues/963)) ([ac96a7f](https://github.com/globus/globus-sdk-javascript/commit/ac96a7fb1a1545240a31decdc01ddba3f4615a8a))
+* **Authorization:** Authorization request and runtime config hardening ([#965](https://github.com/globus/globus-sdk-javascript/issues/965)) ([a6cdb9a](https://github.com/globus/globus-sdk-javascript/commit/a6cdb9a93db1176718b8504c837f9124876e649d))
+* **Authorization:** enumerate stored tokens using the Storage API ([ac96a7f](https://github.com/globus/globus-sdk-javascript/commit/ac96a7fb1a1545240a31decdc01ddba3f4615a8a))
+* **Authorization:** harden PKCE, `state` validation, and `PopupTransport` flows ([#964](https://github.com/globus/globus-sdk-javascript/issues/964)) ([4bc9088](https://github.com/globus/globus-sdk-javascript/commit/4bc9088f6413b9adf740110cfe0bf7c14cdb594f))
+* **Downloads:** Addresses invalid `GcsVersionInfo.changelog_url` type. ([#950](https://github.com/globus/globus-sdk-javascript/issues/950)) ([6a247bf](https://github.com/globus/globus-sdk-javascript/commit/6a247bf6c3b322ab87da3935139f8be9f5d4e8d4))
+* **Globus Connect Server:** Update utils to account for gaccess.io migration (and all well-known GCS domains) ([#957](https://github.com/globus/globus-sdk-javascript/issues/957)) ([b7190a3](https://github.com/globus/globus-sdk-javascript/commit/b7190a3d9d685075264fc7911474e58ae47bb7a6))
+* **Search, Typescript:** adds content_last_modified_date to Search Index type ([#977](https://github.com/globus/globus-sdk-javascript/issues/977)) ([b1df859](https://github.com/globus/globus-sdk-javascript/commit/b1df8595e04517ee5eb14bf1fb6193a9c6990dd5))
+
 ## [6.5.0](https://github.com/globus/globus-sdk-javascript/compare/v6.4.0...v6.5.0) (2026-10-29)
 
 
