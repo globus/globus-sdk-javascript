@@ -2899,6 +2899,8 @@ export interface components {
         InsightsScanStopEvent: {
             /** @enum {string} */
             status: "succeeded" | "failed" | "terminated";
+            /** @default null */
+            events_produced_count: number | null;
         };
         InsightsScanStopResponse: {
             /** @description Always true for successful scan stop requests. */
