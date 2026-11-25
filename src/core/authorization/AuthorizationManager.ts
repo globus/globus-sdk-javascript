@@ -1,6 +1,12 @@
 import { jwtDecode } from 'jwt-decode';
 
-import { isGlobusAuthTokenResponse, isRefreshToken, oauth2 } from '../../services/auth/index.js';
+import {
+  getAuthorizationEndpoint,
+  getNativeAppRedirectURI,
+  isGlobusAuthTokenResponse,
+  isRefreshToken,
+  oauth2,
+} from '../../services/auth/index.js';
 import { RESOURCE_SERVERS } from '../../services/auth/config.js';
 
 import { log } from '../logger.js';
@@ -8,6 +14,13 @@ import { log } from '../logger.js';
 import { Event } from './Event.js';
 import { GetTokenOptions, RedirectTransport, TransportOptions } from './RedirectTransport.js';
 import { TokenManager } from './TokenManager.js';
+import { isTokenExpired, type StoredToken } from './StoredToken.js';
+import {
+  generateCodeChallenge,
+  generateCodeVerifier,
+  generateState,
+  type AuthorizationRequestParameters,
+} from './pkce.js';
 
 import {
   isConsentRequiredError,
@@ -16,6 +29,7 @@ import {
   ConsentRequiredError,
   toAuthorizationQueryParams,
 } from '../errors.js';
+import { OAuthTokenError } from './OAuthTokenError.js';
 
 import type {
   JwtUserInfo,
@@ -35,7 +49,30 @@ const TRANSPORTS = {
 export type AuthorizationManagerConfiguration = {
   client: string;
   scopes?: string;
-  redirect: string;
+  /**
+   * The redirect URL used by the browser transports (`redirect`, `popup`); This is where you will call `manager.handleCodeRedirect()`.
+   *
+   * **Required** when using `login()`, `prompt()`, `handleCodeRedirect()`, or `handleErrorResponse()`
+   * (an error is thrown if it is missing). It is not required for applications that only manage existing tokens,
+   * or that use `startAuthorization()` and `completeAuthorization()` (e.g., native applications in Node.js).
+   */
+  redirect?: string;
+  /**
+   * The prefix used for keys of items stored by the instance.
+   *
+   * Use this option to isolate tokens when a single storage is shared by multiple instances that use the same `client`,
+   * e.g., a file in a user's home directory shared between the `sandbox` and `production` Globus environments.
+   *
+   * **IMPORTANT**: A prefix should not be the start of another instance's prefix (e.g., `client:` and `client:sandbox:`)
+   * when they share a storage, otherwise the instance with the shorter prefix will also enumerate (and `reset()`) the
+   * other instance's tokens. Prefer prefixes that differ at the start, e.g., `sandbox:client:` and `production:client:`.
+   *
+   * Changing this value for an existing application will "log out" existing users; tokens stored with the previous
+   * prefix will not be found.
+   *
+   * @default `${client}:`
+   */
+  storageKeyPrefix?: string;
   /**
    * The storage system used by the `AuthorizationManager`.
    *
@@ -102,6 +139,39 @@ export type TokenRevocationResult = {
    * Revocation requests that did not succeed. Tokens are removed from storage regardless.
    */
   failures: TokenRevocationFailure[];
+};
+
+export type StartAuthorizationOptions = {
+  /**
+   * The redirect URL for the authorization flow, e.g., a loopback address (`http://127.0.0.1:<port>/...`).
+   * @default The configured `redirect`, or the Globus Auth "auth code" page (see `auth.getNativeAppRedirectURI()`).
+   */
+  redirect?: string;
+  /**
+   * Scopes to request instead of the configured `scopes`.
+   */
+  scopes?: string;
+  /**
+   * Additional (or overriding) query parameters for the authorization request,
+   * e.g., `{ prompt: 'login' }` or `{ state: '...' }`.
+   */
+  params?: Record<string, string>;
+};
+
+/**
+ * An authorization request created by `AuthorizationManager.startAuthorization()`.
+ *
+ * **IMPORTANT**: `code_verifier` is a secret; keep it in memory, or wherever your application keeps tokens, until the flow is completed.
+ */
+export type AuthorizationRequest = {
+  /**
+   * The Globus Auth authorization URL the user should be directed to.
+   */
+  url: string;
+  state: string;
+  code_verifier: string;
+  redirect_uri: string;
+  scope: string;
 };
 
 const DEFAULT_CONFIGURATION = {
@@ -276,7 +346,7 @@ export class AuthorizationManager {
   }
 
   get storageKeyPrefix() {
-    return `${this.configuration.client}:`;
+    return this.configuration.storageKeyPrefix ?? `${this.configuration.client}:`;
   }
 
   /**
@@ -313,38 +383,148 @@ export class AuthorizationManager {
   }
 
   /**
-   * Use the `refresh_token` attribute of a token to obtain a new access token.
-   * @param token The well-formed token with a `refresh_token` attribute.
+   * In-flight refresh requests, keyed by resource server.
    */
-  async refreshToken(token: TokenWithRefresh) {
+  #refreshes = new Map<string, Promise<TokenResponse>>();
+
+  /**
+   * Use the `refresh_token` attribute of a token to obtain a new access token.
+   *
+   * Only one refresh request is made at a time for a resource server; concurrent calls
+   * for the same resource server will receive the result of the in-flight request.
+   *
+   * If the response omits a `refresh_token`, the existing refresh token is preserved.
+   *
+   * @param token The well-formed token with a `refresh_token` attribute.
+   * @param options.throwOnError When `true`, an `OAuthTokenError` is thrown when the token cannot be refreshed,
+   * instead of resolving `null`. Use this to distinguish a refused refresh (`error.requiresReauthentication`)
+   * from an outage (`error.status >= 500`) or a network error (`error.status === undefined`).
+   * @returns The token response, or `null` if the token could not be refreshed (unless `throwOnError` is set).
+   */
+  async refreshToken(
+    token: TokenWithRefresh,
+    options: { throwOnError: true },
+  ): Promise<TokenResponse>;
+  async refreshToken(
+    token: TokenWithRefresh,
+    options?: { throwOnError?: boolean },
+  ): Promise<TokenResponse | null>;
+  async refreshToken(token: TokenWithRefresh, options?: { throwOnError?: boolean }) {
     log('debug', `AuthorizationManager.refreshToken | resource_server=${token.resource_server}`);
-    try {
-      const response = await (
-        await oauth2.token.refresh({
-          payload: {
-            client_id: this.configuration.client,
-            refresh_token: token.refresh_token,
-            grant_type: 'refresh_token',
-          },
-        })
-      ).json();
-      if (isGlobusAuthTokenResponse(response)) {
-        /**
-         * A refresh response is allowed to omit `refresh_token`, in which case the client
-         * should continue to use the existing refresh token.
-         * @see https://datatracker.ietf.org/doc/html/rfc6749#section-6
-         */
-        const refreshed =
-          !response.refresh_token && response.resource_server === token.resource_server
-            ? { ...response, refresh_token: token.refresh_token }
-            : response;
-        this.addTokenResponse(refreshed);
-        return refreshed;
-      }
-    } catch (error) {
-      log('error', `AuthorizationManager.refreshToken | resource_server=${token.resource_server}`);
+    const { resource_server: resourceServer } = token;
+    let refresh = this.#refreshes.get(resourceServer);
+    if (!refresh) {
+      refresh = this.#refresh(token).finally(() => {
+        this.#refreshes.delete(resourceServer);
+      });
+      this.#refreshes.set(resourceServer, refresh);
     }
-    return null;
+    try {
+      return await refresh;
+    } catch (error) {
+      if (options?.throwOnError) {
+        throw error;
+      }
+      log('error', `AuthorizationManager.refreshToken | resource_server=${token.resource_server}`);
+      return null;
+    }
+  }
+
+  /**
+   * Perform a refresh request and store the result.
+   * @throws {OAuthTokenError}
+   */
+  async #refresh(token: TokenWithRefresh): Promise<TokenResponse> {
+    const details = {
+      grant_type: 'refresh_token' as const,
+      resource_server: token.resource_server,
+    };
+    let response: Response;
+    try {
+      response = await oauth2.token.refresh({
+        payload: {
+          client_id: this.configuration.client,
+          refresh_token: token.refresh_token,
+          grant_type: 'refresh_token',
+        },
+      });
+    } catch (cause) {
+      throw new OAuthTokenError('Unable to refresh token: the request failed.', details, { cause });
+    }
+    let body: unknown = null;
+    try {
+      body = await response.json();
+    } catch (_e) {
+      // The response body is not JSON; handled below.
+    }
+    if (!response.ok || !isGlobusAuthTokenResponse(body)) {
+      throw new OAuthTokenError(
+        `Unable to refresh token: Globus Auth responded with status ${response.status}.`,
+        { ...details, status: response.status, body },
+      );
+    }
+    /**
+     * A refresh response is allowed to omit `refresh_token`, in which case the client
+     * should continue to use the existing refresh token.
+     * @see https://datatracker.ietf.org/doc/html/rfc6749#section-6
+     */
+    const refreshed =
+      !body.refresh_token && body.resource_server === token.resource_server
+        ? { ...body, refresh_token: token.refresh_token }
+        : body;
+    this.addTokenResponse(refreshed);
+    return refreshed;
+  }
+
+  /**
+   * Get a token for a resource server that is valid for at least `minValidityMs`, refreshing it if necessary (and possible).
+   *
+   * - When the stored token is valid for at least `minValidityMs`, it is returned as-is.
+   * - Otherwise, when the token has a `refresh_token`, it is refreshed (see `refreshToken` – one refresh at a time per resource server)
+   *   and the new token is returned.
+   * - When the token can't be refreshed (no `refresh_token`, or the refresh fails), the stored token is returned if it
+   *   is not yet expired, otherwise `null`.
+   * - Tokens without expiration metadata (stored before `4.3.0`) are returned as-is.
+   *
+   * An expired token is never returned.
+   *
+   * @example
+   * ```ts
+   * const token = await manager.getToken('transfer.api.globus.org', { minValidityMs: 30_000 });
+   * if (!token) {
+   *   // The user needs to authenticate.
+   * }
+   * ```
+   * @param resourceServer The resource server of the token, e.g., `transfer.api.globus.org`.
+   * @param options.minValidityMs The minimum number of milliseconds the token should be valid for. @default 0
+   * @param options.throwOnError When `true`, a failed refresh throws an `OAuthTokenError` instead of falling back
+   * to the stored token or `null`. `null` is still returned when there is no stored token.
+   */
+  async getToken(
+    resourceServer: string,
+    options?: { minValidityMs?: number; throwOnError?: boolean },
+  ): Promise<StoredToken | null> {
+    const token = this.tokens.getByResourceServer(resourceServer);
+    if (!token || isTokenExpired(token, options?.minValidityMs ?? 0) !== true) {
+      return token;
+    }
+    const usable = isTokenExpired(token) ? null : token;
+    if (!isRefreshToken(token)) {
+      return usable;
+    }
+    try {
+      await this.refreshToken(token, { throwOnError: true });
+    } catch (error) {
+      if (options?.throwOnError) {
+        throw error;
+      }
+      log(
+        'warn',
+        `AuthorizationManager.getToken | refresh failed | resource_server=${resourceServer}`,
+      );
+      return usable;
+    }
+    return this.tokens.getByResourceServer(resourceServer);
   }
 
   /**
@@ -403,10 +583,11 @@ export class AuthorizationManager {
     return `${scopes}${this.configuration.useRefreshTokens ? ' offline_access' : ''}`;
   }
 
-  #buildTransport(options?: Partial<TransportOptions>) {
-    const { scopes, ...overrides } = options ?? {};
-    const TransportFactory = TRANSPORTS[this.configuration.transport || 'redirect'];
-
+  /**
+   * Determine the scopes to request for an authorization flow.
+   * @param scopes Scopes to request instead of the configured scopes.
+   */
+  #resolveScopes(scopes?: string) {
     let scopesToRequest = this.#withOfflineAccess(scopes ?? (this.configuration.scopes || ''));
 
     if (this.storage instanceof MemoryStorage) {
@@ -422,14 +603,29 @@ export class AuthorizationManager {
         ...new Set(
           scopesToRequest.split(' ').concat((this.configuration?.scopes || '').split(' ')),
         ),
-      ].join(' ');
+      ]
+        .filter((scope) => scope.length)
+        .join(' ');
+    }
+    return scopesToRequest;
+  }
+
+  #buildTransport(options?: Partial<TransportOptions>) {
+    const { scopes, ...overrides } = options ?? {};
+    const TransportFactory = TRANSPORTS[this.configuration.transport || 'redirect'];
+
+    const redirect = overrides.redirect ?? this.configuration.redirect;
+    if (!redirect) {
+      throw new Error(
+        'A `redirect` must be configured to use the browser-based transports (`redirect`, `popup`). To authorize without a browser transport, use `startAuthorization()` and `completeAuthorization()`.',
+      );
     }
 
     return new TransportFactory({
       client: this.configuration.client,
-      redirect: this.configuration.redirect,
-      scopes: scopesToRequest,
+      scopes: this.#resolveScopes(scopes),
       ...overrides,
+      redirect,
       params: {
         ...overrides?.params,
       },
@@ -482,6 +678,144 @@ export class AuthorizationManager {
       this.addTokenResponse(result);
     }
     return result;
+  }
+
+  /**
+   * Start an authorization code flow (with PKCE) **without** using a browser transport, e.g., in a CLI,
+   * a local MCP server, or a desktop application.
+   *
+   * This method only builds the authorization request; it does not navigate, open a browser, or modify the instance state.
+   * Direct the user to the returned `url`, then pass the returned request, along with the `code` (and `state`) received
+   * on the redirect, to `completeAuthorization()`.
+   *
+   * Unlike `login()`, the instance is **not** reset; tokens obtained with `completeAuthorization()` are added
+   * to the existing tokens, so this can be used to request additional consents.
+   *
+   * @example Using the Globus Auth "auth code" page (the user copies the code into your application).
+   * ```ts
+   * const request = await manager.startAuthorization();
+   * console.log(`Please log in: ${request.url}`);
+   * const code = await readCodeFromStdin();
+   * await manager.completeAuthorization(request, { code });
+   * ```
+   * @example Using a loopback redirect (your application listens on `http://127.0.0.1:<port>`).
+   * ```ts
+   * const request = await manager.startAuthorization({ redirect: 'http://127.0.0.1:8080/callback' });
+   * openBrowser(request.url);
+   * // ...in the HTTP handler for `/callback`:
+   * await manager.completeAuthorization(request, new URL(req.url, 'http://127.0.0.1:8080'));
+   * ```
+   */
+  async startAuthorization(options?: StartAuthorizationOptions): Promise<AuthorizationRequest> {
+    log('debug', 'AuthorizationManager.startAuthorization');
+    const codeVerifier = generateCodeVerifier();
+    const state = options?.params?.['state'] ?? generateState();
+    const redirect = options?.redirect ?? this.configuration.redirect ?? getNativeAppRedirectURI();
+    const params: AuthorizationRequestParameters = {
+      response_type: 'code',
+      client_id: this.configuration.client,
+      scope: this.#resolveScopes(options?.scopes),
+      redirect_uri: redirect,
+      state,
+      code_challenge: await generateCodeChallenge(codeVerifier),
+      code_challenge_method: 'S256',
+      ...options?.params,
+    };
+    const url = new URL(getAuthorizationEndpoint());
+    url.search = new URLSearchParams(params).toString();
+    return {
+      url: url.toString(),
+      state: params.state,
+      code_verifier: codeVerifier,
+      redirect_uri: params.redirect_uri,
+      scope: params.scope,
+    };
+  }
+
+  /**
+   * Complete an authorization code flow started with `startAuthorization()`: validate the `state`,
+   * exchange the `code` for tokens, and add them to the instance (without resetting existing tokens).
+   *
+   * @param request The value returned by `startAuthorization()`.
+   * @param callback The `code` (and `state`) received on the redirect. A `URL` or `URLSearchParams` of the redirect
+   * can be provided directly, in which case it **must** include the expected `state`. When a `{ code }` object is
+   * provided, `state` is validated if present, and can be omitted when the user copies the `code` from the Globus
+   * Auth "auth code" page.
+   * @param options.includeConsentedScopes Return tokens for all scopes the user has consented to for the client.
+   * @throws An `Error` if the redirect contains an `error` or the `state` does not match, or an `OAuthTokenError`
+   * if the code could not be exchanged.
+   */
+  async completeAuthorization(
+    request: Pick<AuthorizationRequest, 'state' | 'code_verifier' | 'redirect_uri'>,
+    callback: { code: string; state?: string | null } | URL | URLSearchParams,
+    options?: { includeConsentedScopes?: boolean },
+  ): Promise<TokenResponse> {
+    log('debug', 'AuthorizationManager.completeAuthorization');
+    let code: string | null;
+    let state: string | null | undefined;
+    /**
+     * A redirect (`URL` / `URLSearchParams`) must always include the expected `state`. Only a code provided
+     * directly (`{ code }`, e.g., copied by the user from the Globus Auth "auth code" page) may omit it.
+     */
+    let requireState = false;
+    if (callback instanceof URL || callback instanceof URLSearchParams) {
+      requireState = true;
+      const params = callback instanceof URL ? callback.searchParams : callback;
+      if (params.get('error')) {
+        throw new Error(
+          params.get('error_description') || 'An error occurred during the authorization process.',
+        );
+      }
+      code = params.get('code');
+      state = params.get('state');
+    } else {
+      ({ code, state } = callback);
+    }
+    if (!code) {
+      throw new Error('Missing authorization code.');
+    }
+    const hasState = state !== undefined && state !== null;
+    if ((requireState || hasState) && state !== request.state) {
+      throw new Error(
+        'Invalid State. The received "state" parameter does not match the expected state.',
+      );
+    }
+    const details = { grant_type: 'authorization_code' as const };
+    let response: Response;
+    try {
+      response = await oauth2.token.exchange({
+        query: options?.includeConsentedScopes ? { include_consented_scopes: true } : undefined,
+        payload: {
+          grant_type: 'authorization_code',
+          code,
+          client_id: this.configuration.client,
+          code_verifier: request.code_verifier,
+          redirect_uri: request.redirect_uri,
+        },
+      });
+    } catch (cause) {
+      throw new OAuthTokenError(
+        'Unable to exchange authorization code: the request failed.',
+        details,
+        {
+          cause,
+        },
+      );
+    }
+    let body: unknown = null;
+    try {
+      body = await response.json();
+    } catch (_e) {
+      // The response body is not JSON; handled below.
+    }
+    if (!response.ok || !isGlobusAuthTokenResponse(body)) {
+      throw new OAuthTokenError(
+        `Unable to exchange authorization code: Globus Auth responded with status ${response.status}.`,
+        { ...details, status: response.status, body },
+      );
+    }
+    this.addTokenResponse(body);
+    return body;
   }
 
   /**
